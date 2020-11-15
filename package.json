@@ -1,0 +1,43 @@
+{
+  "name": "CaBr2",
+  "version": "0.1.0",
+  "author": "Epsilon_02, crapStone, 6543",
+  "license": "GPLv3+",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "tauri-start": "tauri dev",
+    "build": "parcel build src/index.html && tauri build",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.10.2",
+    "@material-ui/icons": "^4.9.1",
+    "fontsource-roboto": "^2.1.4",
+    "material-ui-image": "^3.2.3",
+    "material-ui-search-bar": "^1.0.0-beta.14",
+    "mobx": "^5.15.4",
+    "mobx-react-lite": "^2.0.7",
+    "pullstate": "^1.17.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-waypoint": "^9.0.3",
+    "tauri": "^0.12.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.38",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-router-dom": "^5.1.5",
+    "@typescript-eslint/eslint-plugin": "^4.1.0",
+    "@typescript-eslint/parser": "^4.1.0",
+    "eslint": "7.2.0",
+    "eslint-config-airbnb": "18.2.0",
+    "eslint-config-airbnb-typescript": "^10.0.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-jsx-a11y": "^6.3.0",
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-hooks": "4.0.0",
+    "panic-overlay": "^1.0.42",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.9.5"
+  }
+}

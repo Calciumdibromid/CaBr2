@@ -1,0 +1,67 @@
+env:
+  browser: true
+  es2020: true
+extends:
+  - 'eslint:recommended'
+  - 'plugin:react/recommended'
+  - 'plugin:@typescript-eslint/eslint-recommended'
+  - 'plugin:@typescript-eslint/recommended'
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 12
+  sourceType: module
+plugins:
+  - react
+  - '@typescript-eslint'
+rules:
+  indent:
+    - error
+    - 4
+  linebreak-style:
+    - error
+    - unix
+  quotes:
+    - error
+    - single
+  semi:
+    - error
+    - always
+  array-bracket-newline:
+    - warn
+  comma-dangle:
+    - warn
+    - always-multiline
+  arrow-parens:
+    - warn
+    - always
+  no-template-curly-in-string:
+    - warn
+  curly:
+    - warn
+    - all
+  default-case:
+    - error
+  default-param-last:
+    - error
+  default-case-last:
+    - error
+  dot-location:
+    - error
+    - property
+  dot-notation:
+    - error
+  eqeqeq:
+    - warn
+    - smart
+  max-classes-per-file:
+    - warn
+    - 2
+  no-constructor-return:
+    - error
+  no-empty-function:
+    - warn
+  no-eval:
+    - error
+  
