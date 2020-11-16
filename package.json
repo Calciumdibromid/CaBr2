@@ -1,7 +1,7 @@
 {
-  "name": "CaBr2",
+  "name": "cabr2",
   "version": "0.1.0",
-  "author": "Epsilon_02, crapStone, 6543",
+  "contributors": ["Epsilon_02 <epsilon_02@mailbox.org>", "crapStone <crapstone01@gmail.com>"],
   "license": "GPLv3+",
   "scripts": {
     "start": "parcel src/index.html",

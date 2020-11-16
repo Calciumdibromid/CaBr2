@@ -157,7 +157,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "ca-br-2"
+name = "cabr2"
 version = "0.1.0"
 dependencies = [
  "serde",
