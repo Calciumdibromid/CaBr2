@@ -4,8 +4,17 @@
 )]
 
 mod cmd;
+mod logging;
+
+use logging::Logger;
 
 fn main() {
+  #[cfg(debug_assertions)]
+  let logger = Logger::new();
+  #[cfg(not(debug_assertions))]
+  // TODO: set log_level to Info
+  let logger = Logger::new();
+
   tauri::AppBuilder::new()
     .invoke_handler(|_webview, arg| {
       use cmd::Cmd::*;
@@ -25,6 +34,7 @@ fn main() {
         }
       }
     })
+    .plugin(logger)
     .build()
     .run();
 }

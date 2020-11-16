@@ -2,7 +2,10 @@
 name = "cabr2"
 version = "0.1.0"
 description = "A Tauri App"
-authors = [ "Epsilon_02 <epsilon_02@mailbox.org>", "crapStone <crapstone01@gmail.com>" ]
+authors = [
+  "Epsilon_02 <epsilon_02@mailbox.org>",
+  "crapStone <crapstone01@gmail.com>"
+]
 license = "GPLv3+"
 repository = "https://github.com/th-rosenheim/CaBr2"
 default-run = "cabr2"
