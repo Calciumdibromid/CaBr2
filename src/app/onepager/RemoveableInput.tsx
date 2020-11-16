@@ -15,29 +15,40 @@ const useStyle = makeStyles(() => ({
 
 // TODO make this actually removable
 // TODO find better naming
-export default function RemoveableInput(props: { defaultValue: string, index: number }): React.ReactElement {
+export default function RemoveableInput(props: { defaultValue: string, index: number, defaultValues: Array<string>, updateCallBack(change: Array<string>): void }): React.ReactElement {
     const classes = useStyle();
     const [removeMouse, setRemoveMouse] = React.useState(false);
 
+    const onUpdateItem = (change: string) => {
+        const list = props.defaultValues.map((item, i) => {
+            if (i === props.index) {
+                return change;
+            } else {
+                return item;
+            }
+        });
+        props.updateCallBack(list);
+    };
+
+    const onRemoveItem = (i: number) => {
+        const list = props.defaultValues.filter((_, j) => i !== j);
+        props.updateCallBack(list);
+    };
+
     return (
         <Box className={classes.inputDirection}>
-            <Input className={classes.inputs} defaultValue={props.defaultValue} onChange={(evt) => {
-                // TODO evaluate this
-                // const foo = props.defaultValue;
-                // foo[props.index] = evt.currentTarget.value;
-                // props.updateCallBack(foo);
-                console.log(props.defaultValue);
-            }}></Input>
+            <Input
+                className={classes.inputs}
+                defaultValue={props.defaultValue}
+                autoFocus // TODO this is a very hacky solution!! find a better way!
+                onChange={(evt) => {
+                    evt.preventDefault();
+                    onUpdateItem(evt.currentTarget.value);
+                }} />
             <IconButton
-                // TODO evaluate this
-                // onClick={() => {
-                //     const array = [...props.defaultValues];
-                //     const inde = array.indexOf(i);
-                //     if (inde !== -1) {
-                //         array.splice(inde, 1);
-                //         props.updateCallBack(array);
-                //     }
-                // }}
+                onClick={() => {
+                    onRemoveItem(props.index);
+                }}
                 onMouseEnter={() => setRemoveMouse(true)}
                 onMouseLeave={() => setRemoveMouse(false)}
             >{removeMouse ? <RemoveCircleIcon /> : <RemoveCircleOutlineIcon />}</IconButton>
