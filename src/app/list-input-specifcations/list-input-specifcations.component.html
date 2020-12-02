@@ -1,0 +1,34 @@
+<div class="border-margin-padding-rounded">
+    <h5 class="mat-h5">{{title}}</h5>
+    <div *ngFor="let element of elements; index as i">
+        <mat-form-field class="width-100">
+            <textarea
+                matInput
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"
+                [(ngModel)]="element.content"></textarea>
+            <button 
+                matSuffix
+                mat-icon-button
+                (mouseenter)="setRemoveHover(true, i)"
+                (mouseleave)="setRemoveHover(false, i)"
+                (click)="removeElement(i)"
+                matTooltip="Eintrag entfernen"
+                matTooltipPosition="left">
+                <mat-icon *ngIf="!element.hover">remove_circle_outline</mat-icon>
+                <mat-icon color="primary" *ngIf="element.hover">remove_circle</mat-icon>
+            </button>
+        </mat-form-field>
+    </div>
+    <button
+        mat-icon-button
+        (mouseenter)="setHover(true)"
+         (mouseleave)="setHover(false)"
+         (click)="addElement()"
+         matTooltip="Eintrag hinzufügen"
+         matTooltipPosition="right">
+        <mat-icon *ngIf="!addHover">add_circle_outline</mat-icon>
+        <mat-icon color="primary" *ngIf="addHover">add_circle</mat-icon>
+    </button>
+</div>

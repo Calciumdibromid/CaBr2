@@ -1,0 +1,65 @@
+<mat-sidenav-container>
+    <mat-sidenav class="fixed" mode="side" opened>
+        <button
+            mat-icon-button
+            (click)="scroll(headertarget)">
+                <span class="material-icons icon">fingerprint</span>
+        </button><br />
+        <button
+            mat-icon-button
+            (click)="scroll(search)">
+                <span class="material-icons icon">search</span>
+        </button><br />
+        <button
+            mat-icon-button
+            (click)="scroll(securitythings)">
+                <span class="material-icons icon">extension</span>
+        </button><br />
+        <button
+            mat-icon-button
+            (click)="scroll(preview)">
+                <span class="material-icons icon">whatshot</span>
+        </button><br />
+    </mat-sidenav>
+    <mat-sidenav-content class="smooth-scroll">
+        <div #headertarget>
+            <app-header [header]="header"></app-header>
+        </div>
+        <div #search>
+            <app-search></app-search>
+        </div>
+        <div #securitythings>
+            <app-list-input-specifcations
+                [title]="descriptions.humanAndEnvironmentDanger"
+                [(elements)]="humanAndEnvironmentDanger"></app-list-input-specifcations>
+            <app-list-input-specifcations
+                [title]="descriptions.rulesOfConduct"
+                [(elements)]="rulesOfConduct"></app-list-input-specifcations>
+            <app-list-input-specifcations
+                [title]="descriptions.inCaseOfDanger"
+                [(elements)]="inCaseOfDanger"></app-list-input-specifcations>
+            <app-list-input-specifcations
+                [title]="descriptions.disposal"
+                [(elements)]="disposal"></app-list-input-specifcations>
+        </div>
+        <div #preview>
+            <app-preview
+                [header]="header"
+                [searchResults]="searchResults"
+                [humanAndEnvironmentDanger]="humanAndEnvironmentDanger"
+                [rulesOfConduct]="rulesOfConduct"
+                [inCaseOfDanger]="inCaseOfDanger"
+                [disposal]="disposal"
+            ></app-preview>
+        </div>
+        <app-print-preview
+                class="print"
+                [header]="header"
+                [searchResults]="searchResults"
+                [humanAndEnvironmentDanger]="humanAndEnvironmentDanger"
+                [rulesOfConduct]="rulesOfConduct"
+                [inCaseOfDanger]="inCaseOfDanger"
+                [disposal]="disposal"
+            ></app-print-preview>
+    </mat-sidenav-content>
+</mat-sidenav-container>

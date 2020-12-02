@@ -1,0 +1,63 @@
+.flex {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+table, th, td {
+    border: 1px solid #000000;
+    border-collapse: collapse;
+}
+
+table {
+    width: 21cm;
+    height: 29.7cm;
+    margin: 4mm;
+}
+
+tr {
+    th {
+        text-align: center;
+        padding: 8px;
+        height: 8mm;
+        font-size: 20px;
+    }
+
+    td {
+        height: 8mm;
+        text-align: left;
+        padding: 8px;
+
+        &.full-height {
+            height: unset !important;
+        }
+
+        &.top {
+            vertical-align: top;
+        }
+
+        &.center {
+            text-align: center;
+        }
+
+        &.min-width-5cm {
+            min-width: 5cm;
+        }
+
+        &.min-width-2cm {
+            min-width: 2cm;
+        }
+
+        &.height-2cm {
+            height: 3.7cm;
+            min-height: 3.7cm;
+            max-height: 3.7cm;
+        }
+
+        &.height-5cm9 {
+            // height: 5.9cm;
+            max-height: 5.9cm;
+        }
+    }
+}

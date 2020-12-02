@@ -1,0 +1,83 @@
+// .header, .header-space, .footer, .footer-space { height: 100px; }
+// .header { position: fixed; top: 0; }
+// .footer { position: fixed; bottom: 0; }
+@media screen {
+  :host {
+    display: none;
+  }
+}
+
+@media print {
+    @page {
+        margin: 0;
+        size: A4;
+    }
+
+    table, th, td {
+        border: 1px solid #000000;
+        border-collapse: collapse;
+    }
+
+    table {
+        max-width: 21cm;
+        width:100%;
+        max-height: 29.7cm;
+        height: 100%;
+
+        page-break-after: always;
+        page-break-before: always;
+
+        margin: 6mm 8mm 4mm 0;
+    }
+
+    tr {
+        page-break-inside:avoid;
+        page-break-after:auto;
+
+        th {
+            text-align: center;
+            padding: 8px;
+            height: 8mm;
+            font-size: 20px;
+        }
+
+        td {
+            height: 8mm;
+            text-align: left;
+            padding: 8px;
+
+            font-size: 15px;
+
+            &.full-height {
+                height: unset !important;
+            }
+
+            &.top {
+                vertical-align: top;
+            }
+
+            &.center {
+                text-align: center;
+            }
+
+            &.min-width-5cm {
+                min-width: 5cm;
+            }
+
+            &.min-width-2cm {
+                min-width: 2cm;
+            }
+
+            &.height-2cm {
+                height: 3.7cm;
+                min-height: 3.7cm;
+                max-height: 3.7cm;
+            }
+
+            &.height-5cm9 {
+                // height: 5.9cm;
+                max-height: 5.9cm;
+            }
+        }
+    }
+}

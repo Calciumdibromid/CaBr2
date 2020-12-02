@@ -1,0 +1,14 @@
+<div class="border-margin-padding-rounded">
+    <mat-form-field class="width-100">
+        <input matInput
+              placeholder="Suche"
+               [formControl]="control"
+               [matAutocomplete]="auto" />
+        <span class="material-icons" matSuffix>search</span>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let result of filteredResults | async" [value]="result">
+            {{result}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+</div>
