@@ -16,6 +16,8 @@ build = "src/build.rs"
 serde_json = "1.0"
 serde = { version = "1.0", features = [ "derive" ] }
 tauri = { version = "0.9", features = [ "all-api" ] }
+thiserror = "1.0.22"
+ureq = { version = "1.5.4", features = [ "tls", "json" ] }
 
 [target."cfg(windows)".build-dependencies]
 winres = "0.1"

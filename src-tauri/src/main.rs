@@ -3,10 +3,11 @@
   windows_subsystem = "windows"
 )]
 
-mod cmd;
 mod logging;
+mod search;
 
 use logging::Logger;
+use search::Search;
 
 fn main() {
   #[cfg(debug_assertions)]
@@ -15,26 +16,11 @@ fn main() {
   // TODO: set log_level to Info
   let logger = Logger::new();
 
+  let search = Search::new();
+
   tauri::AppBuilder::new()
-    .invoke_handler(|_webview, arg| {
-      use cmd::Cmd::*;
-      match serde_json::from_str(arg) {
-        Err(e) => {
-          Err(e.to_string())
-        }
-        Ok(command) => {
-          match command {
-            // definitions for your custom commands from Cmd here
-            MyCustomCommand { argument } => {
-              //  your command code
-              println!("{}", argument);
-            }
-          }
-          Ok(())
-        }
-      }
-    })
     .plugin(logger)
+    .plugin(search)
     .build()
     .run();
 }
