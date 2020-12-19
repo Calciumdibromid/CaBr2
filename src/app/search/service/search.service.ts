@@ -1,17 +1,21 @@
-import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { from, Observable, throwError } from "rxjs";
+import { from, Observable } from "rxjs";
 import { promisified } from 'tauri/api/tauri';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SearchService {
-    constructor() {
-    }
+    searchTypeMapping = new Map([
+        ['Stoffname', 'chemicalName'],
+        ['Summenformel', 'empiricalFormula'],
+        ['Nummern', 'numbers'],
+        ['Volltext', 'fullText'],
+    ]);
 
-    public static handleError(err: HttpErrorResponse | any) {
-        return throwError(err.message || 'Error: Unable to complete search');
+    public searchOptions = Array.from(this.searchTypeMapping.keys());
+
+    constructor() {
     }
 
     quickSearch(searchType: string, query: string): Observable<string[]> {
@@ -19,28 +23,8 @@ export class SearchService {
             promisified<string[]>({
                 cmd: 'quickSearchSuggestions',
                 pattern: query,
-                searchType: this.mapper(searchType)
+                searchType: this.searchTypeMapping.get(searchType)
             })
         );
-    }
-
-    // TODO have fun @crapStone ;)
-    mapper(searchType: string): string {
-        if (searchType === 'Stoffname') {
-            return 'chemicalName';
-        }
-        
-        if (searchType === 'Summenformel') {
-            return 'empiricalFormula';
-        }
-        
-        if (searchType === 'Nummern') {
-            return 'numbers';
-        }
-        
-        if (searchType === 'Volltext') {
-            return 'fullText';
-        }
-        throw new Error('Something went wrong...');
     }
 }

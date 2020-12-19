@@ -35,12 +35,26 @@ impl Plugin for Search {
             tauri::execute_promise(
               webview,
               move || {
-                Ok(handler::quick_search_suggestions(
+                Ok(handler::get_quick_search_suggestions(
                   agent,
                   search_type,
                   pattern,
                 ))
               },
+              callback,
+              error,
+            );
+          }
+          Cmd::Search {
+            pattern,
+            search_type,
+            callback,
+            error,
+          } => {
+            let agent = self.agent.clone();
+            tauri::execute_promise(
+              webview,
+              move || Ok(handler::get_search_results(agent, search_type, pattern)),
               callback,
               error,
             );

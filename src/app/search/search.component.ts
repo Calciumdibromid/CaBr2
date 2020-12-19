@@ -15,12 +15,7 @@ export class SearchComponent implements OnInit {
   control = new FormControl();
   filteredResults: Observable<string[]> = new Observable;
 
-  searchOptions: string[] = [
-    'Stoffname',
-    'Summenformel',
-    'Nummern',
-    'Volltext'
-  ];
+  searchOptions = this.searchService.searchOptions;
 
   placeholder: string = this.searchOptions[0];
 
