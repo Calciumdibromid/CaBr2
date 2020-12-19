@@ -4,7 +4,8 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
     imports: [
@@ -14,6 +15,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         MatAutocompleteModule,
         MatButtonModule,
         MatTooltipModule,
+        MatSelectModule,
     ],
     exports: [
         MatIconModule,
@@ -22,6 +24,7 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         MatAutocompleteModule,
         MatButtonModule,
         MatTooltipModule,
+        MatSelectModule,
     ],
 })
 export class MatModules { }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import { SearchService } from './service/search.service';
 
 @Component({
   selector: 'app-search',
@@ -11,26 +11,27 @@ import { map, startWith } from 'rxjs/operators';
 export class SearchComponent implements OnInit {
 
   searchQuery: string = '';
-  results = ['foo', 'bar', 'baz'];
+  results: string[] = [];
   control = new FormControl();
   filteredResults: Observable<string[]> = new Observable;
 
-  constructor() { }
+  searchOptions: string[] = [
+    'Stoffname',
+    'Summenformel',
+    'Nummern',
+    'Volltext'
+  ];
+
+  placeholder: string = this.searchOptions[0];
+
+  constructor(private searchService: SearchService) { }
 
   ngOnInit(): void {
-    this.filteredResults = this.control.valueChanges.pipe(
-      startWith(''),
-      map(value => this._filter(value))
-    );
-  }
-
-  private _filter(value: string): string[] {
-    const filterValue = this._normalizeValue(value);
-    return this.results.filter(street => this._normalizeValue(street).includes(filterValue));
-  }
-
-  private _normalizeValue(value: string): string {
-    return value.toLowerCase().replace(/\s/g, '');
+    this.control.valueChanges
+      .subscribe(result => this.searchService.quickSearch(this.placeholder, result)
+        .subscribe(response => {
+          this.results = response;
+        }));
   }
 
 }
