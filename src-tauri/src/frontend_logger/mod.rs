@@ -28,9 +28,9 @@ impl Logger {
       })
       .level({
         if debug {
-          LevelFilter::Debug
+          LevelFilter::Trace
         } else {
-          LevelFilter::Info
+          LevelFilter::Debug
         }
       })
       .level_for("ureq", LevelFilter::Warn)
