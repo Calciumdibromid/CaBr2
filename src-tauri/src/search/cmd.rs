@@ -7,9 +7,8 @@ use super::handler;
 #[derive(Deserialize)]
 #[serde(tag = "cmd", rename_all = "camelCase")]
 pub enum Cmd {
-  // TODO delete
   #[serde(rename_all = "camelCase")]
-  QuickSearchSuggestions {
+  SearchSuggestions {
     pattern: String,
     search_type: SearchType,
     callback: String,

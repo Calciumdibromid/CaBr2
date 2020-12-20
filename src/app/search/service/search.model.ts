@@ -1,5 +1,5 @@
-export class SearchResult {
-    constructor(
-        public test: string,
-    ) {};
+export interface SearchResult {
+  zvgNumber: string,
+  casNumber: string,
+  name: string,
 }

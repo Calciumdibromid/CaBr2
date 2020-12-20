@@ -25,7 +25,7 @@ impl Plugin for Search {
       Err(e) => Err(e.to_string()),
       Ok(command) => {
         match command {
-          Cmd::QuickSearchSuggestions {
+          Cmd::SearchSuggestions {
             pattern,
             search_type,
             callback,

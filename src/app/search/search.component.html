@@ -1,22 +1,25 @@
 <div class="border-margin-padding-rounded flex">
-    <mat-form-field class="select">
-      <mat-label>Search Option</mat-label>
-      <mat-select [(value)]="placeholder">
-        <mat-option *ngFor="let option of searchOptions" [value]="option">
-          {{option}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field class="width-100">
-        <input matInput
-              placeholder="Suche"
-               [formControl]="control"
-               [matAutocomplete]="auto" />
-        <span class="material-icons" matSuffix>search</span>
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option *ngFor="let result of results" [value]="result">
-            {{result}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
+  <mat-form-field class="select">
+    <mat-label>Search Option</mat-label>
+    <mat-select [(value)]="placeholder">
+      <mat-option *ngFor="let option of searchOptions" [value]="option">
+        {{ option }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="width-100">
+    <input
+      matInput
+      placeholder="Suche"
+      [formControl]="control"
+      [matAutocomplete]="auto"
+    />
+    <span class="material-icons" matSuffix>search</span>
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let result of results" [value]="result.name">
+        <!-- TODO fixed width for CAS-Number -->
+        {{ result.casNumber }} -- {{ result.name }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 </div>
