@@ -20,7 +20,12 @@ function testSearchSuggestions() {
 }
 
 function testSearch() {
-  promisified({ cmd: "search", searchType: "chemicalName", pattern: "salzsäure" }).then((res) => {
+  const args = [
+    { searchType: "chemicalName", pattern: "wasser" },
+    { searchType: "empiricalFormula", pattern: "h2" },
+    { searchType: "numbers", pattern: "701" },
+  ];
+  promisified({ cmd: "search", arguments: args }).then((res) => {
     logger.debug(res);
   }).catch((err) => {
     logger.error(err);

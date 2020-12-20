@@ -16,9 +16,9 @@
     />
     <span class="material-icons" matSuffix>search</span>
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let result of results" [value]="result.name">
+      <mat-option *ngFor="let result of results" [value]="result">
         <!-- TODO fixed width for CAS-Number -->
-        {{ result.casNumber }} -- {{ result.name }}
+        {{ result }}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>

@@ -13,7 +13,7 @@ import { SearchResult } from './service/search.model';
 export class SearchComponent implements OnInit {
 
   searchQuery: string = '';
-  results: SearchResult[] = [];
+  results: string[] = [];
   control = new FormControl();
   filteredResults: Observable<string[]> = new Observable;
 
@@ -28,7 +28,7 @@ export class SearchComponent implements OnInit {
       .pipe(
         debounceTime(500),
       )
-      .subscribe(result => this.searchService.search(this.placeholder, result)
+      .subscribe(result => this.searchService.searchSuggestions(this.placeholder, result)
         .subscribe(response => {
           this.results = response;
         })

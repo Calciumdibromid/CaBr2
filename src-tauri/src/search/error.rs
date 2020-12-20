@@ -2,11 +2,15 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum SearchError {
-  #[error("invalid search pattern")]
-  InvalidPattern,
+  #[error("rate limited by server")]
+  RateLimit,
 
-  /// Represents all other cases of `std::io::Error`.
-  #[error(transparent)]
+  #[error("request error: {0}")]
+  RequestError(u16),
+
+  #[error("parsing json failed")]
+  JsonError(#[from] serde_json::Error),
+  #[error("io error")]
   IOError(#[from] std::io::Error),
 }
 
