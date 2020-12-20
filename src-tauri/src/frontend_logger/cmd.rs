@@ -3,6 +3,7 @@ use serde_json::Value;
 
 #[derive(Deserialize)]
 pub enum LogLevel {
+  TRACE,
   DEBUG,
   INFO,
   WARNING,

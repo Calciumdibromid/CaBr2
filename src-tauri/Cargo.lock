@@ -172,6 +172,9 @@ dependencies = [
 name = "cabr2"
 version = "0.1.0"
 dependencies = [
+ "chrono",
+ "fern",
+ "log",
  "serde",
  "serde_json",
  "tauri",
@@ -419,6 +422,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d32e9bd16cc02eae7db7ef620b392808b89f6a5e16bb3497d159c6b92a0f4f86"
 dependencies = [
  "backtrace",
+]
+
+[[package]]
+name = "fern"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8c9a4820f0ccc8a7afd67c39a0f1a0f4b07ca1725164271a64939d7aeb9af065"
+dependencies = [
+ "log",
 ]
 
 [[package]]

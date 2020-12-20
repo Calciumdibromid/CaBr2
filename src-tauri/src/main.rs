@@ -3,18 +3,18 @@
   windows_subsystem = "windows"
 )]
 
-mod logging;
+mod frontend_logger;
 mod search;
 
-use logging::Logger;
+use frontend_logger::Logger;
 use search::Search;
 
 fn main() {
   #[cfg(debug_assertions)]
-  let logger = Logger::new();
+  let logger = Logger::new(true);
   #[cfg(not(debug_assertions))]
   // TODO: set log_level to Info
-  let logger = Logger::new();
+  let logger = Logger::new(false);
 
   let search = Search::new();
 
