@@ -1,13 +1,13 @@
 import { Injectable } from "@angular/core";
 import { from, Observable } from "rxjs";
 import { promisified } from 'tauri/api/tauri';
-import { SearchArgument, SearchResult } from './search.model';
+import { SearchArgument, SearchResult, SearchType } from './search.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
-  searchTypeMapping = new Map([
+  searchTypeMapping: Map<string, SearchType> = new Map([
     ['Stoffname', 'chemicalName'],
     ['Summenformel', 'empiricalFormula'],
     ['Nummern', 'numbers'],
