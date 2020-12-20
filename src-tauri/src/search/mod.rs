@@ -14,7 +14,11 @@ pub struct Search {
 impl Search {
   pub fn new() -> Self {
     Search {
-      agent: Agent::new().build(),
+      agent: Agent::new()
+        // don't ask, just leave itZ
+        // https://gestis.dguv.de/search -> webpack:///./src/api.ts?
+        .auth_kind("Bearer", "dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd")
+        .build(),
     }
   }
 }
@@ -55,6 +59,19 @@ impl Plugin for Search {
             tauri::execute_promise(
               webview,
               move || Ok(handler::get_search_results(agent, search_type, pattern)),
+              callback,
+              error,
+            );
+          }
+          Cmd::Article {
+            zvg_number,
+            callback,
+            error,
+          } => {
+            let agent = self.agent.clone();
+            tauri::execute_promise(
+              webview,
+              move || Ok(handler::get_article(agent, zvg_number)),
               callback,
               error,
             );

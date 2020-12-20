@@ -21,4 +21,10 @@ pub enum Cmd {
     callback: String,
     error: String,
   },
+  #[serde(rename_all = "camelCase")]
+  Article {
+    zvg_number: String,
+    callback: String,
+    error: String,
+  },
 }

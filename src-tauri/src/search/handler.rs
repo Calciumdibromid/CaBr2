@@ -77,3 +77,18 @@ pub fn get_search_results(
     }
   }
 }
+
+pub fn get_article(agent: Agent, zvg_number: String) -> Value {
+  // https://gestis-api.dguv.de/api/article/de/007010
+  // Authorization: Bearer dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd
+  let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, zvg_number);
+  log::debug!("{}", &url);
+  let res = agent.get(&url).call();
+  log::debug!("{}", res.status_line());
+  if !res.ok() {
+    log::debug!("not OK");
+    return Value::Null;
+  }
+
+  res.into_json_deserialize().unwrap()
+}
