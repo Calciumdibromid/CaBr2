@@ -1,5 +1,7 @@
 mod cmd;
 
+use std::fs;
+
 use fern::Dispatch;
 use log::LevelFilter;
 use serde_json::{to_string_pretty, Value};
@@ -16,6 +18,12 @@ impl Logger {
   }
 
   fn setup_logger(debug: bool) -> Result<(), fern::InitError> {
+    let log_file = format!(
+      // TODO cross platform solution
+      "/tmp/cabr2_{}.log",
+      chrono::Local::now().format("%F_%H.%M.%S")
+    );
+    println!("log file: {}", log_file);
     Dispatch::new()
       .format(|out, message, record| {
         out.finish(format_args!(
@@ -36,8 +44,14 @@ impl Logger {
       .level_for("ureq", LevelFilter::Warn)
       .level_for("rustls", LevelFilter::Warn)
       .chain(std::io::stdout())
-      .chain(fern::log_file("cabr2.log")?)
+      .chain(
+        fs::OpenOptions::new()
+          .create(true)
+          .write(true)
+          .open(&log_file)?,
+      )
       .apply()?;
+    log::info!("log file: {}", log_file);
     Ok(())
   }
 
