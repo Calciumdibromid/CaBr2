@@ -27,6 +27,14 @@ pub struct SearchArgument {
   pattern: String,
 }
 
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SearchArguments {
+  #[serde(default)]
+  exact: bool,
+  arguments: Vec<SearchArgument>,
+}
+
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SearchResponse {
@@ -66,11 +74,8 @@ pub fn get_quick_search_suggestions(
   Ok(res.into_json_deserialize()?)
 }
 
-pub fn get_search_results(
-  agent: Agent,
-  arguments: Vec<SearchArgument>,
-) -> Result<Vec<SearchResponse>> {
-  let arguments = arguments.into_iter().filter(|a| a.pattern.len() > 0);
+pub fn get_search_results(agent: Agent, args: SearchArguments) -> Result<Vec<SearchResponse>> {
+  let arguments = args.arguments.into_iter().filter(|a| a.pattern.len() > 0);
 
   if arguments.size_hint().1.unwrap() == 0 {
     return Ok(vec![]);
@@ -86,10 +91,11 @@ pub fn get_search_results(
     .collect();
 
   let url = format!(
-    "{}/{}/de?{}&exact=false",
+    "{}/{}/de?{}&exact={}",
     BASE_URL,
     SEARCH,
-    arguments.join("&")
+    arguments.join("&"),
+    args.exact,
   );
   let res = make_request(agent, &url)?;
 

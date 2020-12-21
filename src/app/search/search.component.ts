@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { debounceTime, defaultIfEmpty } from 'rxjs/operators'
+import { debounceTime } from 'rxjs/operators'
 import { SearchService } from './service/search.service';
-import { SearchResult } from './service/search.model';
 
 @Component({
   selector: 'app-search',
@@ -28,10 +27,14 @@ export class SearchComponent implements OnInit {
       .pipe(
         debounceTime(500),
       )
-      .subscribe(result => this.searchService.searchSuggestions(this.placeholder, result)
-        .subscribe(response => {
-          this.results = response;
-        })
+      .subscribe(result => {
+        const searchType = this.searchService.searchTypeMapping.get(this.placeholder)!;
+        this.searchService.searchSuggestions(searchType, result)
+          .subscribe(response => {
+            this.results = response;
+          }
+          )
+      }
       );
   }
 }

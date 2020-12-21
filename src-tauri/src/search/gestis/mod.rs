@@ -15,7 +15,7 @@ impl Gestis {
   pub fn new() -> Self {
     Gestis {
       agent: Agent::new()
-        // don't ask, just leave itZ
+        // don't ask, just leave it
         // https://gestis.dguv.de/search -> webpack:///./src/api.ts?
         .auth_kind("Bearer", "dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd")
         .build(),

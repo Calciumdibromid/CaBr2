@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { from, Observable } from "rxjs";
 import { promisified } from 'tauri/api/tauri';
-import { SearchArgument, SearchResult, SearchType } from './search.model';
+import { SearchArguments, SearchResult, SearchType } from './search.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,12 +32,12 @@ export class SearchService {
    * ]
    * ```
    */
-  searchSuggestions(searchType: string, query: string): Observable<string[]> {
+  searchSuggestions(searchType: SearchType, query: string): Observable<string[]> {
     return from(
       promisified<string[]>({
         cmd: 'searchSuggestions',
         pattern: query,
-        searchType: this.searchTypeMapping.get(searchType)
+        searchType: searchType
       })
     );
   }
@@ -48,6 +48,12 @@ export class SearchService {
    * For example:
    * 
    * ```ts
+   * // TODO
+   * ```
+   * 
+   * returns:
+   * 
+   * ```ts
    * [
    *   {name: "Wasser", casNumber: "7732-18-5", zvgNumber: "001140"},
    *   {name: "Wasserstoff", casNumber: "1333-74-0", zvgNumber: "007010"},
@@ -55,7 +61,7 @@ export class SearchService {
    * ]
    * ```
    */
-  search(args: SearchArgument[]): Observable<SearchResult[]> {
+  search(args: SearchArguments): Observable<SearchResult[]> {
     return from(
       promisified<SearchResult[]>({
         cmd: 'search',

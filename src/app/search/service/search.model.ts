@@ -5,6 +5,11 @@ export interface SearchArgument {
   pattern: String,
 }
 
+export interface SearchArguments {
+  arguments: SearchArgument[],
+  exact?: boolean,
+}
+
 export interface SearchResult {
   zvgNumber: string,
   casNumber: string,

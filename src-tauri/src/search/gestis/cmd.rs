@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use handler::{SearchArgument, SearchType};
+use handler::{SearchArguments, SearchType};
 
 use super::handler;
 
@@ -16,7 +16,7 @@ pub enum Cmd {
   },
   #[serde(rename_all = "camelCase")]
   Search {
-    arguments: Vec<SearchArgument>,
+    arguments: SearchArguments,
     callback: String,
     error: String,
   },
