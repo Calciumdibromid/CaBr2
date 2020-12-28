@@ -1,24 +1,33 @@
 <mat-sidenav-container>
     <mat-sidenav class="fixed" mode="side" opened>
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <span class="material-icons icon">menu</span>
+        </button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item>Neue Betriebsanweisung</button>
+            <button mat-menu-item>Bestehen Betriebsanweisung öffnen</button>
+            <button mat-menu-item>Import Beryllium Datei</button>
+            <button mat-menu-item>Als PDF speichern</button>
+        </mat-menu><br />
         <button
             mat-icon-button
             (click)="scroll(headertarget)">
-                <span class="material-icons icon">fingerprint</span>
+                <img class="icon" src="assets/icons/Kolben.svg">
         </button><br />
         <button
             mat-icon-button
             (click)="scroll(search)">
-                <span class="material-icons icon">search</span>
+                <img class="icon" src="assets/icons/Lupe.svg">
         </button><br />
         <button
             mat-icon-button
             (click)="scroll(securitythings)">
-                <span class="material-icons icon">extension</span>
+                <img class="icon" src="assets/icons/Puzzel.svg">
         </button><br />
         <button
             mat-icon-button
             (click)="scroll(preview)">
-                <span class="material-icons icon">whatshot</span>
+                <img class="icon" src="assets/icons/Pfeil.svg">
         </button><br />
     </mat-sidenav>
     <mat-sidenav-content class="smooth-scroll">

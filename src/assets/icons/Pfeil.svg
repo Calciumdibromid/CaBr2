@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <g id="Pfeil" transform="matrix(0.539959,0,0,0.539959,-82.3441,129.085)">
+        <g transform="matrix(5.19244,0,0,5.19244,-871.805,-1356.59)">
+            <circle cx="284.673" cy="304.467" r="73.193" style="fill:rgb(224,239,244);stroke:black;stroke-width:1.43px;"/>
+        </g>
+        <g id="Pfeil1" serif:id="Pfeil" transform="matrix(3.66478,0,0,3.77863,-846.229,-1215.16)">
+            <g transform="matrix(0.785657,1.68866,-1.57742,0.733903,-216.099,-1281.34)">
+                <path d="M934.978,78L958,101L914,101L934.978,78Z" style="fill:rgb(171,0,140);stroke:black;stroke-width:1.09px;"/>
+            </g>
+            <g transform="matrix(2.0232,-0.675784,0.633387,1.89627,-1531.08,836.69)">
+                <path d="M929.792,78L958,101L914,101L929.792,78Z" style="fill:rgb(171,0,140);stroke:black;stroke-width:0.97px;"/>
+            </g>
+            <g transform="matrix(-0.569221,0.839499,-0.834533,-0.565854,966.938,-321.384)">
+                <path d="M927.956,78L958,101L914,101L927.956,78Z" style="fill:rgb(171,0,140);stroke:black;stroke-width:2px;"/>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators'
+import { debounceTime } from 'rxjs/operators';
 import { SearchService } from './service/search.service';
 
 @Component({
