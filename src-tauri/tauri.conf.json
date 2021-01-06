@@ -1,6 +1,6 @@
 {
   "build": {
-    "distDir": "../dist",
+    "distDir": "../dist/CaBr2",
     "devPath": "http://localhost:4200",
     "beforeDevCommand": "",
     "beforeBuildCommand": ""
