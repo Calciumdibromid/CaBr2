@@ -86,7 +86,7 @@
                 <td colspan="2" class="top height-5cm9">
                     <b>{{descriptions.humanAndEnvironmentDanger}}</b>
                     <ul *ngFor="let entry of humanAndEnvironmentDanger">
-                        <li>
+                        <li *ngIf="entry.content">
                             {{entry.content}}
                         </li>
                     </ul>
@@ -96,7 +96,7 @@
                 <td colspan="2" class="top height-5cm9">
                     <b>{{descriptions.rulesOfConduct}}</b>
                     <ul *ngFor="let entry of rulesOfConduct">
-                        <li>
+                        <li *ngIf="entry.content">
                             {{entry.content}}
                         </li>
                     </ul>
@@ -106,7 +106,7 @@
                 <td colspan="2" class="top height-5cm9">
                     <b>{{descriptions.inCaseOfDanger}}</b>
                     <ul *ngFor="let entry of inCaseOfDanger">
-                        <li>
+                        <li *ngIf="entry.content">
                             {{entry.content}}
                         </li>
                     </ul>
@@ -116,7 +116,7 @@
                 <td colspan="2" class="top height-5cm9">
                     <b>{{descriptions.disposal}}</b>
                     <ul *ngFor="let entry of disposal">
-                        <li>
+                        <li *ngIf="entry.content">
                             {{entry.content}}
                         </li>
                     </ul>
