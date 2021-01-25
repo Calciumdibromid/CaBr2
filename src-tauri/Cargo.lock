@@ -1216,22 +1216,22 @@ dependencies = [
 
 [[package]]
 name = "serde"
-version = "1.0.118"
+version = "1.0.123"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "06c64263859d87aa2eb554587e2d23183398d617427327cf2b3d0ed8c69e4800"
+checksum = "92d5161132722baa40d802cc70b15262b98258453e85e5d1d365c757c73869ae"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.118"
+version = "1.0.123"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c84d3526699cd55261af4b941e4e725444df67aa4f9e6a3564f18030d12672df"
+checksum = "9391c295d64fc0abb2c556bad848f33cb8296276b1ad2677d1ae1ace4f258f31"
 dependencies = [
  "proc-macro2",
  "quote 1.0.7",
- "syn 1.0.54",
+ "syn 1.0.60",
 ]
 
 [[package]]
@@ -1253,7 +1253,7 @@ checksum = "2dc6b7951b17b051f3210b063f12cc17320e2fe30ae05b0fe2a3abb068551c76"
 dependencies = [
  "proc-macro2",
  "quote 1.0.7",
- "syn 1.0.54",
+ "syn 1.0.60",
 ]
 
 [[package]]
@@ -1319,7 +1319,7 @@ dependencies = [
  "quote 1.0.7",
  "serde",
  "serde_derive",
- "syn 1.0.54",
+ "syn 1.0.60",
 ]
 
 [[package]]
@@ -1335,7 +1335,7 @@ dependencies = [
  "serde_derive",
  "serde_json",
  "sha1",
- "syn 1.0.54",
+ "syn 1.0.60",
 ]
 
 [[package]]
@@ -1373,9 +1373,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "1.0.54"
+version = "1.0.60"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9a2af957a63d6bd42255c359c93d9bfdb97076bd3b820897ce55ffbfbf107f44"
+checksum = "c700597eca8a5a762beb35753ef6b94df201c81cca676604f547495a0d7f0081"
 dependencies = [
  "proc-macro2",
  "quote 1.0.7",
@@ -1556,7 +1556,7 @@ checksum = "9be73a2caec27583d0046ef3796c3794f868a5bc813db689eed00c7631275cd1"
 dependencies = [
  "proc-macro2",
  "quote 1.0.7",
- "syn 1.0.54",
+ "syn 1.0.60",
 ]
 
 [[package]]
@@ -1614,7 +1614,7 @@ dependencies = [
  "proc-macro2",
  "quote 1.0.7",
  "standback",
- "syn 1.0.54",
+ "syn 1.0.60",
 ]
 
 [[package]]
@@ -1790,7 +1790,7 @@ dependencies = [
  "log",
  "proc-macro2",
  "quote 1.0.7",
- "syn 1.0.54",
+ "syn 1.0.60",
  "wasm-bindgen-shared",
 ]
 
@@ -1812,7 +1812,7 @@ checksum = "f249f06ef7ee334cc3b8ff031bfc11ec99d00f34d86da7498396dc1e3b1498fe"
 dependencies = [
  "proc-macro2",
  "quote 1.0.7",
- "syn 1.0.54",
+ "syn 1.0.60",
  "wasm-bindgen-backend",
  "wasm-bindgen-shared",
 ]
