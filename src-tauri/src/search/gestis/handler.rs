@@ -75,7 +75,7 @@ pub fn get_quick_search_suggestions(
 }
 
 pub fn get_search_results(agent: Agent, args: SearchArguments) -> Result<Vec<SearchResponse>> {
-  let arguments = args.arguments.into_iter().filter(|a| a.pattern.len() > 0);
+  let arguments = args.arguments.into_iter().filter(|a| !a.pattern.is_empty());
 
   if arguments.size_hint().1.unwrap() == 0 {
     return Ok(vec![]);
