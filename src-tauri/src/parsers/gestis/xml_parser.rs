@@ -2,10 +2,9 @@ use std::collections::HashMap;
 
 use lazy_static::lazy_static;
 use roxmltree::{Document, Node, NodeId};
-use serde::Serialize;
 
 use super::error::{ParseError, Result};
-use super::types::GestisResponse;
+use super::types::{Data, GestisResponse, Image};
 
 // maybe needed for later
 // pub const PARTS: [(&str, &str, &str); 8] = [
@@ -31,27 +30,6 @@ lazy_static! {
   .iter()
   .cloned()
   .collect();
-}
-
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Data {
-  molecular_formula: String,
-  melting_point: Option<String>,
-  boiling_point: Option<String>,
-  water_hazard_class: Option<String>,
-  h_phrases: Option<Vec<(String, String)>>,
-  p_phrases: Option<Vec<(String, String)>>,
-  signal_word: Option<String>,
-  symbols: Option<Vec<Image>>,
-  lethal_dose: Option<String>,
-}
-
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
-struct Image {
-  url: String,
-  alt: String,
 }
 
 pub fn parse_response(json: GestisResponse) -> Result<Data> {

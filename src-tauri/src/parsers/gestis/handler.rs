@@ -1,7 +1,6 @@
 use ureq::Agent;
 
-use super::types::GestisResponse;
-use super::xml_parser::Data;
+use super::types::{Data, GestisResponse};
 use super::{
   error::{ParseError, Result},
   xml_parser,
