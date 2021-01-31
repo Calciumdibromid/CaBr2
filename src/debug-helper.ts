@@ -8,7 +8,7 @@ export default function debugMain() {
 
   testSearchSuggestions();
   testSearch();
-  // testArticle();
+  testChemicalInfo();
 
   logger.warning("======== end of frontend debugging calls ========")
 }
@@ -35,8 +35,8 @@ function testSearch() {
   });
 }
 
-function testArticle() {
-  promisified({ cmd: "article", zvgNumber: "520030" }).then((res) => {
+function testChemicalInfo() {
+  promisified({ cmd: "getChemicalInfo", zvgNumber: "520030" }).then((res) => {
     logger.debug(res);
   }).catch((err) => {
     logger.error(err);

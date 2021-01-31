@@ -21,6 +21,8 @@ ureq = { version = "1.5.4", features = [ "tls", "json" ] }
 log = "0.4.14"
 fern = "0.6.0"
 chrono = "0.4.19"
+roxmltree = "0.14.0"
+lazy_static = "1.4.0"
 
 [target."cfg(windows)".build-dependencies]
 winres = "0.1"
