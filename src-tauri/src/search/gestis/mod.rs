@@ -63,22 +63,6 @@ impl Plugin for Gestis {
               error,
             );
           }
-          Cmd::Article {
-            zvg_number,
-            callback,
-            error,
-          } => {
-            let agent = self.agent.clone();
-            tauri::execute_promise(
-              webview,
-              move || match handler::get_article(agent, zvg_number) {
-                Ok(res) => Ok(res),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
         }
         Ok(true)
       }

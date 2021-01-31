@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use ureq::Agent;
 
 use super::error::{Result, SearchError};
@@ -7,7 +6,6 @@ use super::error::{Result, SearchError};
 const BASE_URL: &str = "https://gestis-api.dguv.de/api";
 const SEARCH_SUGGESTIONS: &str = "search_suggestions";
 const SEARCH: &str = "search";
-const ARTICLE: &str = "article";
 
 const SEARCH_TYPE_NAMES: [&str; 4] = ["stoffname", "nummern", "summenformel", "volltextsuche"];
 
@@ -97,13 +95,6 @@ pub fn get_search_results(agent: Agent, args: SearchArguments) -> Result<Vec<Sea
     arguments.join("&"),
     args.exact,
   );
-  let res = make_request(agent, &url)?;
-
-  Ok(res.into_json_deserialize()?)
-}
-
-pub fn get_article(agent: Agent, zvg_number: String) -> Result<Value> {
-  let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, zvg_number);
   let res = make_request(agent, &url)?;
 
   Ok(res.into_json_deserialize()?)
