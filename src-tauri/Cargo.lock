@@ -173,9 +173,12 @@ dependencies = [
 name = "cabr2"
 version = "0.1.0"
 dependencies = [
+ "base64 0.13.0",
  "chrono",
  "fern",
+ "lazy_static",
  "log",
+ "roxmltree",
  "serde",
  "serde_json",
  "tauri",
@@ -1065,6 +1068,15 @@ dependencies = [
  "untrusted",
  "web-sys",
  "winapi",
+]
+
+[[package]]
+name = "roxmltree"
+version = "0.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bf58a7d05b28e14b1e8902fa04c4d5d6109f5450ef71a5e6597f66e53f541504"
+dependencies = [
+ "xmlparser",
 ]
 
 [[package]]
@@ -1983,6 +1995,12 @@ checksum = "e1945e12e16b951721d7976520b0832496ef79c31602c7a29d950de79ba74621"
 dependencies = [
  "bitflags 0.9.1",
 ]
+
+[[package]]
+name = "xmlparser"
+version = "0.13.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "114ba2b24d2167ef6d67d7d04c8cc86522b87f490025f39f0303b7db5bf5e3d8"
 
 [[package]]
 name = "zip"

@@ -1,10 +1,12 @@
 mod cmd;
+mod error;
 mod handler;
+mod types;
+mod xml_parser;
 
 use tauri::plugin::Plugin;
 use ureq::Agent;
 
-use super::error;
 use cmd::Cmd;
 
 pub struct Gestis {
@@ -63,7 +65,7 @@ impl Plugin for Gestis {
               error,
             );
           }
-          Cmd::Article {
+          Cmd::GetChemicalInfo {
             zvg_number,
             callback,
             error,
@@ -71,7 +73,7 @@ impl Plugin for Gestis {
             let agent = self.agent.clone();
             tauri::execute_promise(
               webview,
-              move || match handler::get_article(agent, zvg_number) {
+              move || match handler::get_chemical_info(agent, zvg_number) {
                 Ok(res) => Ok(res),
                 Err(e) => Err(e.into()),
               },

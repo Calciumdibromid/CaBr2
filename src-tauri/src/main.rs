@@ -7,7 +7,6 @@ mod frontend_logger;
 mod search;
 
 use frontend_logger::Logger;
-use search::Gestis;
 
 fn main() {
   #[cfg(debug_assertions)]
@@ -16,7 +15,7 @@ fn main() {
   // TODO: set log_level to Info
   let logger = Logger::new(false);
 
-  let gestis = Gestis::new();
+  let gestis = search::Gestis::new();
 
   tauri::AppBuilder::new()
     .plugin(logger)
