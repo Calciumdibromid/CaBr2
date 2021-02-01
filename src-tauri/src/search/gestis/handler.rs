@@ -1,12 +1,11 @@
 use std::{collections::HashMap, io::Read, sync::Mutex};
 
 use lazy_static::lazy_static;
-use serde::{Deserialize, Serialize};
 use ureq::Agent;
 
 use super::{
   error::{Result, SearchError},
-  types::GestisResponse,
+  types::{GestisResponse, Image, ChemicalInfo, SearchArguments, SearchResponse, SearchType},
   xml_parser,
 };
 
@@ -19,66 +18,6 @@ const SEARCH_TYPE_NAMES: [&str; 4] = ["stoffname", "nummern", "summenformel", "v
 
 lazy_static! {
   static ref IMAGE_CACHE: Mutex<HashMap<String, String>> = Mutex::new(HashMap::new());
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub enum SearchType {
-  ChemicalName,
-  Numbers,
-  EmpiricalFormula,
-  FullText,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SearchArgument {
-  search_type: SearchType,
-  pattern: String,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SearchArguments {
-  #[serde(default)]
-  exact: bool,
-  arguments: Vec<SearchArgument>,
-}
-
-#[derive(Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SearchResponse {
-  #[serde(rename(deserialize = "zvg_nr"))]
-  zvg_number: String,
-  #[serde(rename(deserialize = "cas_nr"))]
-  cas_number: Option<String>,
-  name: String,
-}
-
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct ResponseData {
-  pub molecular_formula: String,
-  #[serde(skip_serializing_if = "Option::is_none")]
-  pub melting_point: Option<String>,
-  #[serde(skip_serializing_if = "Option::is_none")]
-  pub boiling_point: Option<String>,
-  #[serde(skip_serializing_if = "Option::is_none")]
-  pub water_hazard_class: Option<String>,
-  pub h_phrases: Vec<(String, String)>,
-  pub p_phrases: Vec<(String, String)>,
-  #[serde(skip_serializing_if = "Option::is_none")]
-  pub signal_word: Option<String>,
-  pub symbols: Vec<Image>,
-  #[serde(skip_serializing_if = "Option::is_none")]
-  pub lethal_dose: Option<String>,
-}
-
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Image {
-  pub src: String,
-  pub alt: String,
 }
 
 fn make_request(agent: &Agent, url: &str) -> Result<ureq::Response> {
@@ -138,7 +77,7 @@ pub fn get_search_results(agent: Agent, args: SearchArguments) -> Result<Vec<Sea
   Ok(res.into_json_deserialize()?)
 }
 
-pub fn get_chemical_info(agent: Agent, zvg_number: String) -> Result<ResponseData> {
+pub fn get_chemical_info(agent: Agent, zvg_number: String) -> Result<ChemicalInfo> {
   let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, zvg_number);
   let res = make_request(&agent, &url)?;
 
@@ -146,7 +85,7 @@ pub fn get_chemical_info(agent: Agent, zvg_number: String) -> Result<ResponseDat
 
   let data = xml_parser::parse_response(json)?;
 
-  let res_data = ResponseData {
+  let res_data = ChemicalInfo {
     molecular_formula: data.molecular_formula,
     melting_point: data.melting_point,
     boiling_point: data.boiling_point,
@@ -168,10 +107,10 @@ pub fn get_chemical_info(agent: Agent, zvg_number: String) -> Result<ResponseDat
           .into_iter()
           .map(|i| Image {
             src: {
-              if let Some(src) = cache.get(&i.url) {
+              if let Some(src) = cache.get(&i.src) {
                 src.clone()
               } else {
-                match make_request(&agent, &i.url) {
+                match make_request(&agent, &i.src) {
                   Ok(res) => {
                     let len = res
                       .header("Content-Length")
@@ -184,7 +123,7 @@ pub fn get_chemical_info(agent: Agent, zvg_number: String) -> Result<ResponseDat
 
                     let base_64_img =
                       format!("data:image/image/gif;base64,{}", base64::encode(buf));
-                    cache.insert(i.url, base_64_img.clone());
+                    cache.insert(i.src, base_64_img.clone());
 
                     base_64_img
                   }

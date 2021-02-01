@@ -1,8 +1,6 @@
 use serde::Deserialize;
 
-use handler::{SearchArguments, SearchType};
-
-use super::handler;
+use super::types::{SearchArguments, SearchType};
 
 #[derive(Debug, Deserialize)]
 #[serde(tag = "cmd", rename_all = "camelCase")]

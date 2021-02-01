@@ -4,7 +4,7 @@ use lazy_static::lazy_static;
 use roxmltree::{Document, Node, NodeId};
 
 use super::error::{SearchError, Result};
-use super::types::{Data, GestisResponse, Image};
+use super::types::{ParsedData, GestisResponse, Image};
 
 // maybe needed for later
 // pub const PARTS: [(&str, &str, &str); 8] = [
@@ -32,7 +32,7 @@ lazy_static! {
   .collect();
 }
 
-pub fn parse_response(json: GestisResponse) -> Result<Data> {
+pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
   println!("extracting data for: {} ...", json.name);
 
   let h_p_signal_symbols_error;
@@ -54,7 +54,7 @@ pub fn parse_response(json: GestisResponse) -> Result<Data> {
     }
   };
 
-  Ok(Data {
+  Ok(ParsedData {
     molecular_formula: match get_molecular_formula(&json) {
       Ok(inner) => inner,
       Err(e) => {
@@ -364,7 +364,7 @@ fn get_h_p_signal_symbols(json: &GestisResponse) -> HPSignalSymbolsResult {
                 .map(|n| {
                   let data = n.unwrap();
                   Image {
-                    url: data.attribute("src").unwrap().into(),
+                    src: data.attribute("src").unwrap().into(),
                     alt: data.attribute("alt").unwrap().into(),
                   }
                 })
