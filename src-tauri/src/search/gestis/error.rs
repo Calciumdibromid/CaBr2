@@ -1,7 +1,7 @@
 use thiserror::Error;
 
 #[derive(Error, Debug)]
-pub enum ParseError {
+pub enum SearchError {
   #[error("rate limited by server")]
   RateLimit,
 
@@ -29,11 +29,11 @@ pub enum ParseError {
   IOError(#[from] std::io::Error),
 }
 
-impl From<roxmltree::Error> for ParseError {
+impl From<roxmltree::Error> for SearchError {
   #[inline]
   fn from(e: roxmltree::Error) -> Self {
-    ParseError::XmlError(e)
+    SearchError::XmlError(e)
   }
 }
 
-pub type Result<T> = std::result::Result<T, ParseError>;
+pub type Result<T> = std::result::Result<T, SearchError>;

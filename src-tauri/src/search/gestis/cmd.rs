@@ -20,4 +20,10 @@ pub enum Cmd {
     callback: String,
     error: String,
   },
+  #[serde(rename_all = "camelCase")]
+  GetChemicalInfo {
+    zvg_number: String,
+    callback: String,
+    error: String,
+  },
 }

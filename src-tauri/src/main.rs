@@ -4,7 +4,6 @@
 )]
 
 mod frontend_logger;
-mod parsers;
 mod search;
 
 use frontend_logger::Logger;
@@ -16,13 +15,11 @@ fn main() {
   // TODO: set log_level to Info
   let logger = Logger::new(false);
 
-  let gestis_search = search::Gestis::new();
-  let gestis_parser = parsers::Gestis::new();
+  let gestis = search::Gestis::new();
 
   tauri::AppBuilder::new()
     .plugin(logger)
-    .plugin(gestis_search)
-    .plugin(gestis_parser)
+    .plugin(gestis)
     .build()
     .run();
 }

@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use lazy_static::lazy_static;
 use roxmltree::{Document, Node, NodeId};
 
-use super::error::{ParseError, Result};
+use super::error::{SearchError, Result};
 use super::types::{Data, GestisResponse, Image};
 
 // maybe needed for later
@@ -46,10 +46,10 @@ pub fn parse_response(json: GestisResponse) -> Result<Data> {
       (
         // this error type should not be used like this but here it is
         // only a sentinel value that is ignored further down anyways
-        Err(ParseError::Empty),
-        Err(ParseError::Empty),
-        Err(ParseError::Empty),
-        Err(ParseError::Empty),
+        Err(SearchError::Empty),
+        Err(SearchError::Empty),
+        Err(SearchError::Empty),
+        Err(SearchError::Empty),
       )
     }
   };
@@ -133,7 +133,7 @@ pub fn parse_response(json: GestisResponse) -> Result<Data> {
       Err(e) => {
         eprintln!("[lethal_dose] error: {:#?}", e);
         match e {
-          ParseError::Multiple(inner) => Some(inner),
+          SearchError::Multiple(inner) => Some(inner),
           _ => None,
         }
       }
@@ -153,7 +153,7 @@ pub fn get_xml(json: &GestisResponse, chapter: &str, subchapter: &str) -> Result
       return Ok(format!("<div>\n{}</div>\n", sub.text.as_ref().unwrap()));
     }
   }
-  Err(ParseError::NoXML)
+  Err(SearchError::NoXML)
 }
 
 #[inline]
@@ -211,7 +211,7 @@ fn get_molecular_formula(json: &GestisResponse) -> Result<String> {
     return Ok(mf.first_child().unwrap().text().unwrap().into());
   }
 
-  Err(ParseError::MissingInfo("molecular formula".into()))
+  Err(SearchError::MissingInfo("molecular formula".into()))
 }
 
 fn get_melting_point(json: &GestisResponse) -> Result<String> {
@@ -262,7 +262,7 @@ fn get_mp_bp(json: &GestisResponse, name: &str, xml_check: &str) -> Result<Strin
 
   match mp_bp_point {
     Some(mp) => Ok(mp.trim().into()),
-    None => Err(ParseError::MissingInfo(name.into())),
+    None => Err(SearchError::MissingInfo(name.into())),
   }
 }
 
@@ -296,13 +296,13 @@ fn get_whc(json: &GestisResponse) -> Result<String> {
     data = doc.get_node(node_id).unwrap();
     let text = data.text().unwrap();
     if text == KEYWORD {
-      return Err(ParseError::Empty);
+      return Err(SearchError::Empty);
     } else {
       return Ok(text.split('-').next().unwrap().trim().into());
     }
   }
 
-  Err(ParseError::MissingInfo("water hazard class".into()))
+  Err(SearchError::MissingInfo("water hazard class".into()))
 }
 
 type HPSignalSymbolsResult = Result<(
@@ -330,10 +330,10 @@ fn get_h_p_signal_symbols(json: &GestisResponse) -> HPSignalSymbolsResult {
   let xml = get_xml(json, chapter, subchapter)?;
   let doc = Document::parse(&xml)?;
 
-  let mut h_phrases = Err(ParseError::MissingInfo("h phrases".into()));
-  let mut p_phrases = Err(ParseError::MissingInfo("p phrases".into()));
-  let mut signal_word = Err(ParseError::MissingInfo("signal word".into()));
-  let mut symbols = Err(ParseError::MissingInfo("symbols".into()));
+  let mut h_phrases = Err(SearchError::MissingInfo("h phrases".into()));
+  let mut p_phrases = Err(SearchError::MissingInfo("p phrases".into()));
+  let mut signal_word = Err(SearchError::MissingInfo("signal word".into()));
+  let mut symbols = Err(SearchError::MissingInfo("symbols".into()));
 
   for table in tables(&doc.root().first_child().unwrap(), "block").into_iter() {
     let mut row_iter = table.into_iter();
@@ -423,7 +423,7 @@ fn get_lethal_dose(json: &GestisResponse) -> Result<Option<String>> {
           if inner.has_tag_name("b") {
             if inner.text() == Some("LD50 oral Ratte") {
               if let Some(inner) = ld50 {
-                return Err(ParseError::Multiple(inner.into()));
+                return Err(SearchError::Multiple(inner.into()));
               } else if let Some(table) = table_iter.next() {
                 let mut row_iter = table.into_iter();
 
@@ -450,7 +450,7 @@ fn get_lethal_dose(json: &GestisResponse) -> Result<Option<String>> {
 
   match ld50 {
     Some(inner) => Ok(Some(inner.into())),
-    None => Err(ParseError::MissingInfo("lethal dose".into())),
+    None => Err(SearchError::MissingInfo("lethal dose".into())),
   }
 }
 
