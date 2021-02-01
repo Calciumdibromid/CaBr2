@@ -36,7 +36,7 @@ function testSearch() {
 }
 
 function testChemicalInfo() {
-  promisified({ cmd: "getChemicalInfo", zvgNumber: "520030" }).then((res) => {
+  promisified({ cmd: "getChemicalInfo", zvgNumber: "005340" }).then((res) => {
     logger.debug(res);
   }).catch((err) => {
     logger.error(err);

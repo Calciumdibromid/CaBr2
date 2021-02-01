@@ -23,6 +23,7 @@ fern = "0.6.0"
 chrono = "0.4.19"
 roxmltree = "0.14.0"
 lazy_static = "1.4.0"
+base64 = "0.13.0"
 
 [target."cfg(windows)".build-dependencies]
 winres = "0.1"

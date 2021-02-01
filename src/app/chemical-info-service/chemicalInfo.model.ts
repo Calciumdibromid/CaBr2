@@ -3,14 +3,14 @@ export interface Data {
   melting_point?: string;
   boiling_point?: string;
   water_hazard_class?: string;
-  h_phrases?: [string, string][];
-  p_phrases?: [string, string][];
+  h_phrases: [string, string][];
+  p_phrases: [string, string][];
   signal_word?: string;
-  symbols?: Image[];
+  symbols: Image[];
   lethal_dose?: string;
 }
 
 export interface Image {
-  url: string;
+  src: string;
   alt: string;
 }

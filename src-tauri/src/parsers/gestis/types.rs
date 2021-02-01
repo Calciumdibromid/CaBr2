@@ -1,7 +1,6 @@
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
+#[derive(Debug)]
 pub struct Data {
   pub molecular_formula: String,
   pub melting_point: Option<String>,
@@ -14,8 +13,7 @@ pub struct Data {
   pub lethal_dose: Option<String>,
 }
 
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
+#[derive(Debug)]
 pub struct Image {
   pub url: String,
   pub alt: String,
