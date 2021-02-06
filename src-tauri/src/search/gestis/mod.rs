@@ -65,7 +65,7 @@ impl Plugin for Gestis {
               error,
             );
           }
-          Cmd::GetChemicalInfo {
+          Cmd::GetSubstanceData {
             zvg_number,
             callback,
             error,
@@ -73,7 +73,7 @@ impl Plugin for Gestis {
             let agent = self.agent.clone();
             tauri::execute_promise(
               webview,
-              move || match handler::get_chemical_info(agent, zvg_number) {
+              move || match handler::get_substance_data(agent, zvg_number) {
                 Ok(res) => Ok(res),
                 Err(e) => Err(e.into()),
               },

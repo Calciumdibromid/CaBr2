@@ -4,13 +4,13 @@ import { SearchService } from './app/@core/services/search/search.service';
 import logger from './app/@core/utils/logger';
 
 export default function debugMain() {
-  logger.warning("======== frontend debugging file called ========")
+  logger.warning("======== frontend debugging file called ========");
 
-  testSearchSuggestions();
-  testSearch();
-  testChemicalInfo();
+  // testSearchSuggestions();
+  // testSearch();
+  // testSubstanceData();
 
-  logger.warning("======== end of frontend debugging calls ========")
+  logger.warning("======== end of frontend debugging calls ========");
 }
 
 const service = new SearchService();
@@ -28,17 +28,19 @@ function testSearch() {
       { searchType: "chemicalName", pattern: "wasser" },
       { searchType: "empiricalFormula", pattern: "h2" },
       { searchType: "numbers", pattern: "701" },
-    ]
+    ],
   };
   service.search(args).subscribe((res) => {
     logger.debug(res);
   });
 }
 
-function testChemicalInfo() {
-  promisified({ cmd: "getChemicalInfo", zvgNumber: "005340" }).then((res) => {
-    logger.debug(res);
-  }).catch((err) => {
-    logger.error(err);
-  });
+function testSubstanceData() {
+  promisified({ cmd: "getChemicalInfo", zvgNumber: "005340" })
+    .then((res) => {
+      logger.debug(res);
+    })
+    .catch((err) => {
+      logger.error(err);
+    });
 }
