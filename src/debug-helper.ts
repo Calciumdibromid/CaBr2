@@ -1,7 +1,7 @@
 import { promisified } from 'tauri/api/tauri';
-import { SearchArguments } from './app/search/service/search.model';
-import { SearchService } from './app/search/service/search.service';
-import logger from './app/utils/logger';
+import { SearchArguments } from './app/@core/services/search/search.model';
+import { SearchService } from './app/@core/services/search/search.service';
+import logger from './app/@core/utils/logger';
 
 export default function debugMain() {
   logger.warning("======== frontend debugging file called ========")

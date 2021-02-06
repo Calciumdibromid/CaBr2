@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import {SearchArgument, SearchResult} from '../service/search.model';
-import {SearchService} from '../service/search.service';
+import {SearchArgument, SearchResult} from '../../@core/services/search/search.model';
+import {SearchService} from '../../@core/services/search/search.service';
 import {Observable} from 'rxjs';
 
 @Component({
