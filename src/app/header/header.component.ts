@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Header } from '../interfaces/Header';
+import { Header } from '../@core/interfaces/Header';
 
 @Component({
   selector: 'app-header',

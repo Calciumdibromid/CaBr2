@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Header } from '../interfaces/Header';
-import ListInputSpecifcations from '../interfaces/ListInputSpecifications';
+import { Header } from '../@core/interfaces/Header';
+import ListInputSpecifcations from '../@core/interfaces/ListInputSpecifications';
 import { descriptions } from '../../assets/descriptions.json'
 
 @Component({

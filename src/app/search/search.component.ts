@@ -2,8 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {SearchDialogComponent} from './search-dialog/search-dialog.component';
-import {SearchArgument, SearchResult} from './service/search.model';
-import {SearchService} from './service/search.service';
+import {SearchArgument, SearchResult} from '../@core/services/search/search.model';
+import {SearchService} from '../@core/services/search/search.service';
 import {SelectedSearchComponent} from './selected-search/selected-search.component';
 
 @Component({

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import ListInputSpecifcations from '../interfaces/ListInputSpecifications';
+import ListInputSpecifcations from '../@core/interfaces/ListInputSpecifications';
 
 @Component({
   selector: 'app-list-input-specifcations',
