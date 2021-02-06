@@ -11,6 +11,8 @@ import { SearchComponent } from './search/search.component';
 import { ListInputSpecifcationsComponent } from './list-input-specifcations/list-input-specifcations.component';
 import { PreviewComponent } from './preview/preview.component';
 import { PrintPreviewComponent } from './print-preview/print-preview.component';
+import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
+import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import { PrintPreviewComponent } from './print-preview/print-preview.component';
     SearchComponent,
     ListInputSpecifcationsComponent,
     PreviewComponent,
-    PrintPreviewComponent
+    PrintPreviewComponent,
+    SelectedSearchComponent,
+    SearchDialogComponent,
   ],
   imports: [
     BrowserModule,

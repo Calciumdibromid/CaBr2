@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
-import { SearchService } from './service/search.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {MatDialog} from '@angular/material/dialog';
+import {SearchDialogComponent} from './search-dialog/search-dialog.component';
+import {SearchArgument, SearchResult} from './service/search.model';
+import {SearchService} from './service/search.service';
+import {SelectedSearchComponent} from './selected-search/selected-search.component';
 
 @Component({
   selector: 'app-search',
@@ -10,31 +12,40 @@ import { SearchService } from './service/search.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-
-  searchQuery: string = '';
-  results: string[] = [];
+  res: SearchArgument[] = [];
   control = new FormControl();
-  filteredResults: Observable<string[]> = new Observable;
 
-  searchOptions = this.searchService.searchOptions;
+  selectedResults: SearchResult[] = [];
 
-  placeholder: string = this.searchOptions[0];
+  @ViewChild(SelectedSearchComponent)
+  selectedSearch: SelectedSearchComponent | undefined;
 
-  constructor(private searchService: SearchService) { }
+  constructor(
+    private searchService: SearchService,
+    private dialog: MatDialog
+  ) {
+  }
 
   ngOnInit(): void {
-    this.control.valueChanges
-      .pipe(
-        debounceTime(500),
-      )
-      .subscribe(result => {
-        const searchType = this.searchService.searchTypeMapping.get(this.placeholder)!;
-        this.searchService.searchSuggestions(searchType, result)
-          .subscribe(response => {
-            this.results = response;
-          }
-          )
+    // TODO get specificationjson from backend as synchron callback
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(SearchDialogComponent, {
+      data: {
+        arguments: this.selectedSearch?.onSubmit(),
+        results: this.selectedResults,
+      },
+      maxWidth: 1500,
+      minWidth: 800,
+      maxHeight: 900,
+      minHeight: 300,
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.selectedResults = result;
       }
-      );
+    });
   }
 }

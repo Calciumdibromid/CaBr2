@@ -15,9 +15,9 @@ export class ListInputSpecifcationsComponent implements OnInit {
   elementsChange: EventEmitter<Array<ListInputSpecifcations>> = new EventEmitter<Array<ListInputSpecifcations>>();
 
   @Input()
-  title: string = '';
+  title = '';
 
-  addHover: boolean = false;
+  addHover = false;
 
   constructor() { }
 
@@ -28,16 +28,15 @@ export class ListInputSpecifcationsComponent implements OnInit {
     this.elements.push({ content: '', hover: false });
   }
 
-  setHover(value: boolean): void {
-    this.addHover = value;
-  };
-
-  setRemoveHover(value: boolean, index: number) {
-    this.elements[index].hover = value;
-  }
-
-  removeElement(index: number) {
+  removeElement(index: number): void {
     this.elements.splice(index, 1);
   }
 
+  setHover(value: boolean): void {
+    this.addHover = value;
+  }
+
+  setRemoveHover(value: boolean, index: number): void {
+    this.elements[index].hover = value;
+  }
 }

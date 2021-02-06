@@ -1,17 +1,22 @@
 export type SearchType = 'chemicalName' | 'empiricalFormula' | 'numbers' | 'fullText';
 
+export interface SearchTypeMapping {
+  viewValue: string;
+  value: SearchType;
+}
+
 export interface SearchArgument {
-  searchType: SearchType,
-  pattern: String,
+  searchType: SearchType;
+  pattern: string;
 }
 
 export interface SearchArguments {
-  arguments: SearchArgument[],
-  exact?: boolean,
+  arguments: SearchArgument[];
+  exact?: boolean;
 }
 
 export interface SearchResult {
-  zvgNumber: string,
-  casNumber: string,
-  name: string,
+  zvgNumber: string;
+  casNumber: string;
+  name: string;
 }
