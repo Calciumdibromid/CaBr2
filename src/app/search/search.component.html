@@ -1,25 +1,13 @@
-<div class="border-margin-padding-rounded flex">
-  <mat-form-field class="select">
-    <mat-label>Search Option</mat-label>
-    <mat-select [(value)]="placeholder">
-      <mat-option *ngFor="let option of searchOptions" [value]="option">
-        {{ option }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="width-100">
-    <input
-      matInput
-      placeholder="Suche"
-      [formControl]="control"
-      [matAutocomplete]="auto"
-    />
-    <span class="material-icons" matSuffix>search</span>
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let result of results" [value]="result">
-        <!-- TODO fixed width for CAS-Number -->
-        {{ result }}
-      </mat-option>
-    </mat-autocomplete>
-  </mat-form-field>
+<div class="border-margin-padding-rounded">
+  <div class="flex">
+    <!-- TODO make this to one way databinding -->
+    <app-selected-search class="width-100"></app-selected-search>
+  </div>
+  <button class="button" mat-flat-button color="primary" (click)="openDialog()">Suchen</button>
+  <mat-divider class="divider"></mat-divider>
+  <mat-selection-list [multiple]="false">
+    <mat-list-item *ngFor="let foo of selectedResults">
+      {{foo.name}}
+    </mat-list-item>
+  </mat-selection-list>
 </div>

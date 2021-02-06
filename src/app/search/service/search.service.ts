@@ -1,29 +1,27 @@
-import { Injectable } from "@angular/core";
-import { from, Observable } from "rxjs";
-import { promisified } from 'tauri/api/tauri';
-import { SearchArguments, SearchResult, SearchType } from './search.model';
+import {Injectable} from '@angular/core';
+import {from, Observable} from 'rxjs';
+import {promisified} from 'tauri/api/tauri';
+import {SearchArguments, SearchResult, SearchType, SearchTypeMapping} from './search.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
-  searchTypeMapping: Map<string, SearchType> = new Map([
-    ['Stoffname', 'chemicalName'],
-    ['Summenformel', 'empiricalFormula'],
-    ['Nummern', 'numbers'],
-    ['Volltext', 'fullText'],
-  ]);
-
-  public searchOptions = Array.from(this.searchTypeMapping.keys());
+  public searchTypeMappings: SearchTypeMapping[] = [
+    {viewValue: 'Stoffname', value: 'chemicalName'},
+    {viewValue: 'Summenformel', value: 'empiricalFormula'},
+    {viewValue: 'Nummern', value: 'numbers'},
+    {viewValue: 'Volltext', value: 'fullText'},
+  ];
 
   constructor() {
   }
 
   /**
    * Returns a string[] with names to use in an search query.
-   * 
+   *
    * For example:
-   * 
+   *
    * ```ts
    * [
    *   "wasser",
@@ -44,15 +42,15 @@ export class SearchService {
 
   /**
    * Returns a SearchResult[] with objects!.
-   * 
+   *
    * For example:
-   * 
+   *
    * ```ts
    * // TODO
    * ```
-   * 
+   *
    * returns:
-   * 
+   *
    * ```ts
    * [
    *   {name: "Wasser", casNumber: "7732-18-5", zvgNumber: "001140"},
