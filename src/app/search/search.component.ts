@@ -5,6 +5,7 @@ import {SearchDialogComponent} from './search-dialog/search-dialog.component';
 import {SearchArgument, SearchResult} from '../@core/services/search/search.model';
 import {SearchService} from '../@core/services/search/search.service';
 import {SelectedSearchComponent} from './selected-search/selected-search.component';
+import {GlobalModel} from '../@core/models/global.model';
 
 @Component({
   selector: 'app-search',
@@ -15,14 +16,13 @@ export class SearchComponent implements OnInit {
   res: SearchArgument[] = [];
   control = new FormControl();
 
-  selectedResults: SearchResult[] = [];
-
   @ViewChild(SelectedSearchComponent)
   selectedSearch: SelectedSearchComponent | undefined;
 
   constructor(
     private searchService: SearchService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    public globals: GlobalModel,
   ) {
   }
 
@@ -34,7 +34,7 @@ export class SearchComponent implements OnInit {
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       data: {
         arguments: this.selectedSearch?.onSubmit(),
-        results: this.selectedResults,
+        results: this.globals.searchResults,
       },
       maxWidth: 1500,
       minWidth: 800,
@@ -44,7 +44,7 @@ export class SearchComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.selectedResults = result;
+        this.globals.searchResults = result;
       }
     });
   }

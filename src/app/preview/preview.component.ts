@@ -1,7 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Header } from '../@core/interfaces/Header';
-import ListInputSpecifcations from '../@core/interfaces/ListInputSpecifications';
-import { descriptions } from '../../assets/descriptions.json';
+import {Component, OnInit} from '@angular/core';
+import {descriptions} from '../../assets/descriptions.json';
+import {GlobalModel} from '../@core/models/global.model';
 
 @Component({
   selector: 'app-preview',
@@ -10,35 +9,11 @@ import { descriptions } from '../../assets/descriptions.json';
 })
 export class PreviewComponent implements OnInit {
 
-  @Input()
-  header: Header = {
-    documentTitle: '',
-    organisation: '',
-    labCourse: '',
-    name: '',
-    place: '',
-    assistant: '',
-    preparation: '',
-  };
-
   descriptions = descriptions;
 
-  @Input()
-  humanAndEnvironmentDanger: ListInputSpecifcations[] = [];
-
-  @Input()
-  rulesOfConduct: ListInputSpecifcations[] = [];
-
-  @Input()
-  inCaseOfDanger: ListInputSpecifcations[] = [];
-
-  @Input()
-  disposal: ListInputSpecifcations[] = [];
-
-  @Input()
-  searchResults: string[] = [];
-
-  constructor() { }
+  constructor(
+    public globals: GlobalModel,
+  ) { }
 
   ngOnInit(): void {
   }

@@ -1,4 +1,4 @@
 export default interface ListInputSpecifcations {
-    content: string,
-    hover: boolean,
+    content: string;
+    hover: boolean;
 }
