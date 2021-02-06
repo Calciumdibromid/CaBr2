@@ -1,134 +1,134 @@
 <div style="float: none;">
-<table class="print">
-    <!-- header -->
-    <tr>
-        <th colspan="8">{{header.documentTitle}}</th>
-    </tr>
-    <tr>
-        <th colspan="8">{{header.organisation}}</th>
-    </tr>
-    <tr>
-        <th colspan="8">{{header.labCourse}}</th>
-    </tr>
-    <tr>
-        <td colspan="3">
-            Name(n)<br />
-            {{header.name}}
-        </td>
-        <td colspan="2">
-            Platz<br />
-            {{header.place}}
-        </td>
-        <td colspan="3">
-            Assistent/in<br />
-            {{header.assistant}}
-        </td>
-    </tr>
-    <tr>
-        <td colspan="8">
-            Herzustellendes Präparat:<br />
-            <b>{{header.preparation}}</b>
-        </td>
-    </tr>
+    <table class="print">
+        <!-- header -->
+        <tr>
+            <th colspan="8">{{globals.header.documentTitle}}</th>
+        </tr>
+        <tr>
+            <th colspan="8">{{globals.header.organisation}}</th>
+        </tr>
+        <tr>
+            <th colspan="8">{{globals.header.labCourse}}</th>
+        </tr>
+        <tr>
+            <td colspan="3">
+                Name(n)<br/>
+                {{globals.header.name}}
+            </td>
+            <td colspan="2">
+                Platz<br/>
+                {{globals.header.place}}
+            </td>
+            <td colspan="3">
+                Assistent/in<br/>
+                {{globals.header.assistant}}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="8">
+                Herzustellendes Präparat:<br/>
+                <b>{{globals.header.preparation}}</b>
+            </td>
+        </tr>
 
-    <!-- ingredients -->
-    <tr>
-        <td colspan="2">
-            eingesetzte Stoffe und Produkt(e)
-        </td>
-        <td>
-            MG<br />
-            [g/mol]
-        </td>
-        <td>
-            Sdp.<br />
-            Smp.
-        </td>
-        <td>
-            GHS-Symbol(e)
-        </td>
-        <td>
-            Nummern der H/P-Sätze
-        </td>
-        <td>
-            MAK, LD50<br />
-            WGK
-        </td>
-        <td>
-            für Ansatz benötigt
-        </td>
-    </tr>
+        <!-- ingredients -->
+        <tr>
+            <td colspan="2">
+                eingesetzte Stoffe und Produkt(e)
+            </td>
+            <td>
+                MG<br/>
+                [g/mol]
+            </td>
+            <td>
+                Sdp.<br/>
+                Smp.
+            </td>
+            <td>
+                GHS-Symbol(e)
+            </td>
+            <td>
+                Nummern der H/P-Sätze
+            </td>
+            <td>
+                MAK, LD50<br/>
+                WGK
+            </td>
+            <td>
+                für Ansatz benötigt
+            </td>
+        </tr>
 
-    <tr *ngFor="let result of searchResults">
-        <td class="min-width-5cm" colspan="2">{{result}}</td>
-        <td class="min-width-2cm">{{result}}</td>
-        <td class="min-width-2cm">{{result}}</td>
-        <td>{{result}}</td>
-        <td>{{result}}</td>
-        <td>{{result}}</td>
-        <td>{{result}}</td>
-    </tr>
+        <tr *ngFor="let result of globals.searchResults">
+            <td class="min-width-5cm" colspan="2">{{result.name}}</td>
+            <td class="min-width-2cm">{{result.casNumber}}</td>
+            <td class="min-width-2cm">{{result.casNumber}}</td>
+            <td>{{result.casNumber}}</td>
+            <td>{{result.casNumber}}</td>
+            <td>{{result.casNumber}}</td>
+            <td>{{result.casNumber}}</td>
+        </tr>
 
-    <!-- h and p -->
-    <tr>
-        <td class="center" colspan="8">
-            Wortlaut der wesentlichen oben genannten H- und P-Sätze:
-        </td>
-    </tr>
-    <tr>
-        <td colspan="4" class="full-height top">asdf</td>
-        <td colspan="4" class="full-height top">asdf</td>
-    </tr>
-</table>
+        <!-- h and p -->
+        <tr>
+            <td class="center" colspan="8">
+                Wortlaut der wesentlichen oben genannten H- und P-Sätze:
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="full-height top">asdf</td>
+            <td colspan="4" class="full-height top">asdf</td>
+        </tr>
+    </table>
 
-<table class="print">
-    <tr>
-        <td colspan="2" class="top height-5cm9">
-            <b>{{descriptions.humanAndEnvironmentDanger}}</b>
-            <ul *ngFor="let entry of humanAndEnvironmentDanger">
-                <li *ngIf="entry.content">
-                    {{entry.content}}
-                </li>
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2" class="top height-5cm9">
-            <b>{{descriptions.rulesOfConduct}}</b>
-            <ul *ngFor="let entry of rulesOfConduct">
-                <li *ngIf="entry.content">
-                    {{entry.content}}
-                </li>
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2" class="top height-5cm9">
-            <b>{{descriptions.inCaseOfDanger}}</b>
-            <ul *ngFor="let entry of inCaseOfDanger">
-                <li *ngIf="entry.content">
-                    {{entry.content}}
-                </li>
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td colspan="2" class="top height-5cm9">
-            <b>{{descriptions.disposal}}</b>
-            <ul *ngFor="let entry of disposal">
-                <li *ngIf="entry.content">
-                    {{entry.content}}
-                </li>
-            </ul>
-        </td>
-    </tr>
-    <tr>
-        <td class="top height-2cm">
-            {{descriptions.signStudent}}
-        </td>
-        <td class="top height-2cm">
-            {{descriptions.signAssistant}}
-        </td>
-    </tr>
-</table>
+    <table class="print">
+        <tr>
+            <td colspan="2" class="top height-5cm9">
+                <b>{{descriptions.humanAndEnvironmentDanger}}</b>
+                <ul *ngFor="let entry of globals.humanAndEnvironmentDanger">
+                    <li *ngIf="entry.content">
+                        {{entry.content}}
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="top height-5cm9">
+                <b>{{descriptions.rulesOfConduct}}</b>
+                <ul *ngFor="let entry of globals.rulesOfConduct">
+                    <li *ngIf="entry.content">
+                        {{entry.content}}
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="top height-5cm9">
+                <b>{{descriptions.inCaseOfDanger}}</b>
+                <ul *ngFor="let entry of globals.inCaseOfDanger">
+                    <li *ngIf="entry.content">
+                        {{entry.content}}
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="top height-5cm9">
+                <b>{{descriptions.disposal}}</b>
+                <ul *ngFor="let entry of globals.disposal">
+                    <li *ngIf="entry.content">
+                        {{entry.content}}
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td class="top height-2cm">
+                {{descriptions.signStudent}}
+            </td>
+            <td class="top height-2cm">
+                {{descriptions.signAssistant}}
+            </td>
+        </tr>
+    </table>
 </div>

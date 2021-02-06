@@ -3,32 +3,32 @@
         <table class="print">
             <!-- header -->
             <tr>
-                <th colspan="8">{{header.documentTitle}}</th>
+                <th colspan="8">{{globals.header.documentTitle}}</th>
             </tr>
             <tr>
-                <th colspan="8">{{header.organisation}}</th>
+                <th colspan="8">{{globals.header.organisation}}</th>
             </tr>
             <tr>
-                <th colspan="8">{{header.labCourse}}</th>
+                <th colspan="8">{{globals.header.labCourse}}</th>
             </tr>
             <tr>
                 <td colspan="3">
                     Name(n)<br />
-                    {{header.name}}
+                    {{globals.header.name}}
                 </td>
                 <td colspan="2">
                     Platz<br />
-                    {{header.place}}
+                    {{globals.header.place}}
                 </td>
                 <td colspan="3">
                     Assistent/in<br />
-                    {{header.assistant}}
+                    {{globals.header.assistant}}
                 </td>
             </tr>
             <tr>
                 <td colspan="8">
                     Herzustellendes Präparat:<br />
-                    <b>{{header.preparation}}</b>
+                    <b>{{globals.header.preparation}}</b>
                 </td>
             </tr>
 
@@ -60,14 +60,14 @@
                 </td>
             </tr>
 
-            <tr *ngFor="let result of searchResults">
-                <td class="min-width-5cm" colspan="2">{{result}}</td>
-                <td class="min-width-2cm">{{result}}</td>
-                <td class="min-width-2cm">{{result}}</td>
-                <td>{{result}}</td>
-                <td>{{result}}</td>
-                <td>{{result}}</td>
-                <td>{{result}}</td>
+            <tr *ngFor="let result of globals.searchResults">
+                <td class="min-width-5cm" colspan="2">{{result.name}}</td>
+                <td class="min-width-2cm">{{result.casNumber}}</td>
+                <td class="min-width-2cm">{{result.casNumber}}</td>
+                <td>{{result.casNumber}}</td>
+                <td>{{result.casNumber}}</td>
+                <td>{{result.casNumber}}</td>
+                <td>{{result.casNumber}}</td>
             </tr>
 
             <!-- h and p -->
@@ -85,7 +85,7 @@
             <tr>
                 <td colspan="2" class="top height-5cm9">
                     <b>{{descriptions.humanAndEnvironmentDanger}}</b>
-                    <ul *ngFor="let entry of humanAndEnvironmentDanger">
+                    <ul *ngFor="let entry of globals.humanAndEnvironmentDanger">
                         <li *ngIf="entry.content">
                             {{entry.content}}
                         </li>
@@ -95,7 +95,7 @@
             <tr>
                 <td colspan="2" class="top height-5cm9">
                     <b>{{descriptions.rulesOfConduct}}</b>
-                    <ul *ngFor="let entry of rulesOfConduct">
+                    <ul *ngFor="let entry of globals.rulesOfConduct">
                         <li *ngIf="entry.content">
                             {{entry.content}}
                         </li>
@@ -105,7 +105,7 @@
             <tr>
                 <td colspan="2" class="top height-5cm9">
                     <b>{{descriptions.inCaseOfDanger}}</b>
-                    <ul *ngFor="let entry of inCaseOfDanger">
+                    <ul *ngFor="let entry of globals.inCaseOfDanger">
                         <li *ngIf="entry.content">
                             {{entry.content}}
                         </li>
@@ -115,7 +115,7 @@
             <tr>
                 <td colspan="2" class="top height-5cm9">
                     <b>{{descriptions.disposal}}</b>
-                    <ul *ngFor="let entry of disposal">
+                    <ul *ngFor="let entry of globals.disposal">
                         <li *ngIf="entry.content">
                             {{entry.content}}
                         </li>

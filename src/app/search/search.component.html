@@ -6,8 +6,8 @@
   <button class="button" mat-flat-button color="primary" (click)="openDialog()">Suchen</button>
   <mat-divider class="divider"></mat-divider>
   <mat-selection-list [multiple]="false">
-    <mat-list-item *ngFor="let foo of selectedResults">
-      {{foo.name}}
+    <mat-list-item *ngFor="let result of globals.searchResults">
+      {{result.name}}
     </mat-list-item>
   </mat-selection-list>
 </div>

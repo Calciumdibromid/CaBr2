@@ -11,9 +11,6 @@ export class ListInputSpecifcationsComponent implements OnInit {
   @Input()
   elements: Array<ListInputSpecifcations> = [];
 
-  @Output()
-  elementsChange: EventEmitter<Array<ListInputSpecifcations>> = new EventEmitter<Array<ListInputSpecifcations>>();
-
   @Input()
   title = '';
 
