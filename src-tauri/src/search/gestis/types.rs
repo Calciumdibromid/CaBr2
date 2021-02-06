@@ -79,19 +79,30 @@ pub struct SearchResponse {
 
 #[derive(Debug, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ChemicalInfo {
-  pub molecular_formula: String,
-  #[serde(skip_serializing_if = "Option::is_none")]
-  pub melting_point: Option<String>,
-  #[serde(skip_serializing_if = "Option::is_none")]
-  pub boiling_point: Option<String>,
-  #[serde(skip_serializing_if = "Option::is_none")]
-  pub water_hazard_class: Option<String>,
-  pub h_phrases: Vec<(String, String)>,
-  pub p_phrases: Vec<(String, String)>,
-  #[serde(skip_serializing_if = "Option::is_none")]
-  pub signal_word: Option<String>,
-  pub symbols: Vec<Image>,
-  #[serde(skip_serializing_if = "Option::is_none")]
-  pub lethal_dose: Option<String>,
+pub struct Data<T> {
+  data: T,
+  modified: bool,
+}
+
+impl<T> Data<T> {
+  pub fn new(data: T) -> Data<T> {
+    Data {
+      data,
+      modified: false,
+    }
+  }
+}
+
+#[derive(Debug, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SubstanceData {
+  pub molecular_formula: Data<String>,
+  pub melting_point: Data<Option<String>>,
+  pub boiling_point: Data<Option<String>>,
+  pub water_hazard_class: Data<Option<String>>,
+  pub h_phrases: Data<Vec<(String, String)>>,
+  pub p_phrases: Data<Vec<(String, String)>>,
+  pub signal_word: Data<Option<String>>,
+  pub symbols: Data<Vec<Image>>,
+  pub lethal_dose: Data<Option<String>>,
 }

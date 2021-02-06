@@ -5,7 +5,9 @@ use ureq::Agent;
 
 use super::{
   error::{Result, SearchError},
-  types::{GestisResponse, Image, ChemicalInfo, SearchArguments, SearchResponse, SearchType},
+  types::{
+    Data, GestisResponse, Image, SearchArguments, SearchResponse, SearchType, SubstanceData,
+  },
   xml_parser,
 };
 
@@ -77,7 +79,7 @@ pub fn get_search_results(agent: Agent, args: SearchArguments) -> Result<Vec<Sea
   Ok(res.into_json_deserialize()?)
 }
 
-pub fn get_chemical_info(agent: Agent, zvg_number: String) -> Result<ChemicalInfo> {
+pub fn get_substance_data(agent: Agent, zvg_number: String) -> Result<SubstanceData> {
   let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, zvg_number);
   let res = make_request(&agent, &url)?;
 
@@ -85,22 +87,22 @@ pub fn get_chemical_info(agent: Agent, zvg_number: String) -> Result<ChemicalInf
 
   let data = xml_parser::parse_response(json)?;
 
-  let res_data = ChemicalInfo {
-    molecular_formula: data.molecular_formula,
-    melting_point: data.melting_point,
-    boiling_point: data.boiling_point,
-    water_hazard_class: data.water_hazard_class,
-    lethal_dose: data.lethal_dose,
-    signal_word: data.signal_word,
-    h_phrases: match data.h_phrases {
+  let res_data = SubstanceData {
+    molecular_formula: Data::new(data.molecular_formula),
+    melting_point: Data::new(data.melting_point),
+    boiling_point: Data::new(data.boiling_point),
+    water_hazard_class: Data::new(data.water_hazard_class),
+    lethal_dose: Data::new(data.lethal_dose),
+    signal_word: Data::new(data.signal_word),
+    h_phrases: Data::new(match data.h_phrases {
       Some(inner) => inner,
       None => Vec::new(),
-    },
-    p_phrases: match data.p_phrases {
+    }),
+    p_phrases: Data::new(match data.p_phrases {
       Some(inner) => inner,
       None => Vec::new(),
-    },
-    symbols: match data.symbols {
+    }),
+    symbols: Data::new(match data.symbols {
       Some(symbols) => {
         let mut cache = IMAGE_CACHE.lock().unwrap();
         symbols
@@ -139,7 +141,7 @@ pub fn get_chemical_info(agent: Agent, zvg_number: String) -> Result<ChemicalInf
           .collect()
       }
       None => Vec::new(),
-    },
+    }),
   };
 
   Ok(res_data)
