@@ -3,8 +3,8 @@ use std::collections::HashMap;
 use lazy_static::lazy_static;
 use roxmltree::{Document, Node, NodeId};
 
-use super::error::{SearchError, Result};
-use super::types::{ParsedData, GestisResponse, Image};
+use super::error::{Result, SearchError};
+use super::types::{GestisResponse, Image, ParsedData};
 
 // maybe needed for later
 // pub const PARTS: [(&str, &str, &str); 8] = [
@@ -144,11 +144,11 @@ pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
 /* #region  helpers */
 
 pub fn get_xml(json: &GestisResponse, chapter: &str, subchapter: &str) -> Result<String> {
-  if let Some(subchapters) = json.chapters.iter().find(|c| c.dr_number == chapter) {
+  if let Some(subchapters) = json.chapters.iter().find(|c| c.number == chapter) {
     if let Some(sub) = subchapters
       .subchapters
       .iter()
-      .find(|s| s.dr_number == subchapter)
+      .find(|s| s.number == subchapter)
     {
       return Ok(format!("<div>\n{}</div>\n", sub.text.as_ref().unwrap()));
     }
@@ -420,22 +420,20 @@ fn get_lethal_dose(json: &GestisResponse) -> Result<Option<String>> {
 
       if let Some(data) = data_iter.peek() {
         if let Some(inner) = data.first_element_child() {
-          if inner.has_tag_name("b") {
-            if inner.text() == Some("LD50 oral Ratte") {
-              if let Some(inner) = ld50 {
-                return Err(SearchError::Multiple(inner.into()));
-              } else if let Some(table) = table_iter.next() {
-                let mut row_iter = table.into_iter();
+          if inner.has_tag_name("b") && inner.text() == Some("LD50 oral Ratte") {
+            if let Some(inner) = ld50 {
+              return Err(SearchError::Multiple(inner.into()));
+            } else if let Some(table) = table_iter.next() {
+              let mut row_iter = table.into_iter();
 
-                if let Some(row) = row_iter.next() {
-                  let mut data_iter = row.into_iter().map(|id| doc.get_node(id).unwrap());
+              if let Some(row) = row_iter.next() {
+                let mut data_iter = row.into_iter().map(|id| doc.get_node(id).unwrap());
 
-                  if let Some(data) = data_iter.next() {
-                    if let Some(text) = data.first_child() {
-                      if text.text() == Some("Wert:") {
-                        if let Some(value) = data_iter.next() {
-                          ld50 = value.text();
-                        }
+                if let Some(data) = data_iter.next() {
+                  if let Some(text) = data.first_child() {
+                    if text.text() == Some("Wert:") {
+                      if let Some(value) = data_iter.next() {
+                        ld50 = value.text();
                       }
                     }
                   }

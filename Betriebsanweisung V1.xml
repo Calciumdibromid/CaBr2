@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beryllium>
+  <options>
+    <showcolumn>ansatz</showcolumn>
+    <showcolumn>toxicology</showcolumn>
+    <showcolumn>harzardphrases</showcolumn>
+    <showcolumn>ghssymbols</showcolumn>
+    <showcolumn>boilingmelting</showcolumn>
+    <showcolumn>mass</showcolumn>
+    <showcolumn>name</showcolumn>
+    <ghs-mode>1</ghs-mode>
+  </options>
+  <general>
+    <signaturright>Unterschrift des (der) Assistent(in)</signaturright>
+    <statementright>Präparat zur Synthese mit den auf der Vorderseite berechneten Chemikalienmengen freigegeben.</statementright>
+    <signaturleft>Unterschrift des (der) Student(in)</signaturleft>
+    <statementleft>Hiermit verpflichte ich mich, den Versuch gemäß den in dieser Betriebsanweisung aufgeführten Sicherheitsvorschriften durchzuführen.</statementleft>
+    <institute>Praktikum Chemie Grundlagen</institute>
+    <location>für chemische Laboratorien des Campus Burghausen</location>
+    <title_ghs>Betriebsanweisungen nach EG Nr. 1272/2008</title_ghs>
+    <title>Betriebsanweisungen nach EG Nr. 1272/2008</title>
+  </general>
+  <personal>
+    <assistant>Stettner</assistant>
+    <spot>12</spot>
+    <name>Huber Katrin   </name>
+  </personal>
+  <product>
+    <chemical-formula></chemical-formula>
+    <name>Leere Substanzdaten</name>
+  </product>
+</beryllium>

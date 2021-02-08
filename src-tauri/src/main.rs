@@ -4,7 +4,9 @@
 )]
 
 mod frontend_logger;
+mod load_save;
 mod search;
+mod types;
 
 use frontend_logger::Logger;
 
@@ -16,10 +18,12 @@ fn main() {
   let logger = Logger::new(false);
 
   let gestis = search::Gestis::new();
+  let load_save = load_save::LoadSave::new();
 
   tauri::AppBuilder::new()
     .plugin(logger)
     .plugin(gestis)
+    .plugin(load_save)
     .build()
     .run();
 }
