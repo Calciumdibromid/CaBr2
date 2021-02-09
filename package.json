@@ -24,7 +24,7 @@
     "@angular/platform-browser-dynamic": "~11.0.1",
     "@angular/router": "~11.0.1",
     "rxjs": "~6.6.0",
-    "tauri": "^0.13.0",
+    "tauri": "^0.14.1",
     "tslib": "^2.1.0",
     "zone.js": "~0.10.2"
   },
