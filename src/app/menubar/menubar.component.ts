@@ -5,8 +5,7 @@ import {GlobalModel} from '../@core/models/global.model';
 @Component({
   selector: 'app-menubar',
   templateUrl: './menubar.component.html',
-  styleUrls: ['./menubar.component.scss'],
-  providers: [GlobalModel]
+  styleUrls: ['./menubar.component.scss']
 })
 export class MenubarComponent implements OnInit {
 

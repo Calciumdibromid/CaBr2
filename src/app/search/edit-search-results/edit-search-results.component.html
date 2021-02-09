@@ -1,0 +1,19 @@
+<form [formGroup]="form" (submit)="onSubmit()">
+    <mat-form-field>
+        <mat-label>Summenformel</mat-label>
+        <input matInput formControlName="molecularFormula"/>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Schmelzpunkt</mat-label>
+        <input matInput formControlName="meltingPoint"/>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Siedepunkt</mat-label>
+        <input matInput formControlName="boilingPoint"/>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Wassergefährdungsklasse</mat-label>
+        <input matInput formControlName="waterHazardClass"/>
+    </mat-form-field>
+    <button type="submit">Speichern</button>
+</form>

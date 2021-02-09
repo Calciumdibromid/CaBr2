@@ -13,6 +13,8 @@ import { PreviewComponent } from './preview/preview.component';
 import { PrintPreviewComponent } from './print-preview/print-preview.component';
 import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
+import { EditSearchResultsComponent } from './search/edit-search-results/edit-search-results.component';
+import {GlobalModel} from './@core/models/global.model';
 
 
 @NgModule({
@@ -26,6 +28,7 @@ import { SearchDialogComponent } from './search/search-dialog/search-dialog.comp
     PrintPreviewComponent,
     SelectedSearchComponent,
     SearchDialogComponent,
+    EditSearchResultsComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,7 @@ import { SearchDialogComponent } from './search/search-dialog/search-dialog.comp
     HttpClientModule,
     MatModules,
   ],
-  providers: [],
+  providers: [GlobalModel],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

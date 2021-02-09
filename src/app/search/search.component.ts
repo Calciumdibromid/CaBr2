@@ -6,6 +6,9 @@ import {SearchArgument, SearchResult} from '../@core/services/search/search.mode
 import {SearchService} from '../@core/services/search/search.service';
 import {SelectedSearchComponent} from './selected-search/selected-search.component';
 import {GlobalModel} from '../@core/models/global.model';
+import {EditSearchResultsComponent} from './edit-search-results/edit-search-results.component';
+import {SubstanceData} from '../@core/services/substances/substances.model';
+import {SubstancesService} from '../@core/services/substances/substances.service';
 
 @Component({
   selector: 'app-search',
@@ -15,12 +18,14 @@ import {GlobalModel} from '../@core/models/global.model';
 export class SearchComponent implements OnInit {
   res: SearchArgument[] = [];
   control = new FormControl();
+  substanceData: SubstanceData[] = [];
 
   @ViewChild(SelectedSearchComponent)
   selectedSearch: SelectedSearchComponent | undefined;
 
   constructor(
     private searchService: SearchService,
+    private substanceService: SubstancesService,
     private dialog: MatDialog,
     public globals: GlobalModel,
   ) {
@@ -42,10 +47,19 @@ export class SearchComponent implements OnInit {
       minHeight: 300,
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.globals.searchResults = result;
-      }
+    dialogRef.afterClosed().subscribe(() => {
+      this.substanceService
+        .substanceInfo(this.globals.searchResults[this.globals.searchResults.length - 1].zvgNumber)
+        .subscribe(value => {
+          this.substanceData.push(value);
+          this.globals.substances.push(value);
+        });
+    });
+  }
+
+  openResultDialog(index: number): void {
+    const dialogRef = this.dialog.open(EditSearchResultsComponent, {
+      data: {index}
     });
   }
 }

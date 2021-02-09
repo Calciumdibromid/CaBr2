@@ -1,16 +1,16 @@
 export interface SubstanceData {
-  molecular_formula: Data<string>;
-  melting_point?: Data<string>;
-  boiling_point?: Data<string>;
-  water_hazard_class?: Data<string>;
-  h_phrases: Data<[string, string][]>;
-  p_phrases: Data<[string, string][]>;
-  signal_word?: Data<string>;
+  molecularFormula: Data<string>;
+  meltingPoint?: Data<string>;
+  boilingPoint?: Data<string>;
+  waterHazardClass?: Data<string>;
+  hPhrases: Data<[string, string][]>;
+  pPhrases: Data<[string, string][]>;
+  signalWord?: Data<string>;
   symbols: Data<Image[]>;
-  lethal_dose?: Data<string>;
+  lethalDose?: Data<string>;
 }
 
-interface Data<T> {
+export interface Data<T> {
   data: T;
   modified: boolean;
 }
