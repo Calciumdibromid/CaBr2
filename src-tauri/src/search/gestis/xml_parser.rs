@@ -33,7 +33,7 @@ lazy_static! {
 }
 
 pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
-  println!("extracting data for: {} ...", json.name);
+  log::debug!("extracting data for: {} ...", json.name);
 
   let h_p_signal_symbols_error;
   let (h_phrases, p_phrases, signal_word, symbols) = match get_h_p_signal_symbols(&json) {
@@ -59,28 +59,28 @@ pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
       Ok(inner) => inner,
       Err(e) => {
         // should never occur
-        eprintln!("[molecular_formula] error: {:#?}", e);
+        log::debug!("[molecular_formula] error: {:#?}", e);
         return Err(e);
       }
     },
     melting_point: match get_melting_point(&json) {
       Ok(inner) => Some(inner),
       Err(e) => {
-        eprintln!("[melting_point] error: {:#?}", e);
+        log::debug!("[melting_point] error: {:#?}", e);
         None
       }
     },
     boiling_point: match get_boiling_point(&json) {
       Ok(inner) => Some(inner),
       Err(e) => {
-        eprintln!("[boiling_point] error: {:#?}", e);
+        log::debug!("[boiling_point] error: {:#?}", e);
         None
       }
     },
     water_hazard_class: match get_whc(&json) {
       Ok(inner) => Some(inner),
       Err(e) => {
-        eprintln!("[water_hazard_class] error: {:#?}", e);
+        log::debug!("[water_hazard_class] error: {:#?}", e);
         None
       }
     },
@@ -91,7 +91,7 @@ pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
           Some(e_new) => e_new,
           None => &e,
         };
-        eprintln!("[h_phrases] error: {:#?}", e);
+        log::debug!("[h_phrases] error: {:#?}", e);
         None
       }
     },
@@ -102,7 +102,7 @@ pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
           Some(e_new) => e_new,
           None => &e,
         };
-        eprintln!("[p_phrases] error: {:#?}", e);
+        log::debug!("[p_phrases] error: {:#?}", e);
         None
       }
     },
@@ -113,7 +113,7 @@ pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
           Some(e_new) => e_new,
           None => &e,
         };
-        eprintln!("[signal_word] error: {:#?}", e);
+        log::debug!("[signal_word] error: {:#?}", e);
         None
       }
     },
@@ -124,14 +124,14 @@ pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
           Some(e_new) => e_new,
           None => &e,
         };
-        eprintln!("[symbols] error: {:#?}", e);
+        log::debug!("[symbols] error: {:#?}", e);
         None
       }
     },
     lethal_dose: match get_lethal_dose(&json) {
       Ok(inner) => inner,
       Err(e) => {
-        eprintln!("[lethal_dose] error: {:#?}", e);
+        log::debug!("[lethal_dose] error: {:#?}", e);
         match e {
           SearchError::Multiple(inner) => Some(inner),
           _ => None,

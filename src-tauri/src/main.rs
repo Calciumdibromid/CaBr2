@@ -3,8 +3,8 @@
   windows_subsystem = "windows"
 )]
 
-mod logger;
 mod load_save;
+mod logger;
 mod search;
 mod types;
 
