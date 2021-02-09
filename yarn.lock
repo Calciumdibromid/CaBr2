@@ -9460,11 +9460,6 @@ semver@7.0.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.0.0.tgz#5f3ca35761e47e05b206c6daff2cf814f0316b8e"
   integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
 
-semver@7.3.2:
-  version "7.3.2"
-  resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.2.tgz#604962b052b81ed0786aae84389ffba70ffd3938"
-  integrity sha512-OrOb32TeeambH6UrhtShmF7CRDqhL6/5XpPNp2DuRH6+9QLw/orhp72j87v8Qa1ScDkvrrBNpZcDejAirJmfXQ==
-
 semver@7.3.4, semver@^7.0.0, semver@^7.1.1, semver@^7.3.2, semver@^7.3.4:
   version "7.3.4"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.4.tgz#27aaa7d2e4ca76452f98d3add093a72c943edc97"
@@ -10343,10 +10338,10 @@ tar@^6.1.0:
     mkdirp "^1.0.3"
     yallist "^4.0.0"
 
-tauri@^0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/tauri/-/tauri-0.13.0.tgz#a776f7ce5233092bb5ceb460df3215ccce34e726"
-  integrity sha512-YvUB81oiO+lECQaVsXnUI7/Eyx7DbyMESqA6fn0h2+B26enXmZgr73EymXtyXVquAN+DUEmVLxD+k+ZNHbJrpQ==
+tauri@^0.14.1:
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/tauri/-/tauri-0.14.1.tgz#c0d9206d8dcea45113409a48ce90dad86229a5b7"
+  integrity sha512-67tRs7FSxRcdL/tPElsNbafz4xtwWpfiKIMv3ZSwMI3YgO6mkFWFPtvby7t5/VuOp5nZe6QCPPMbW5YBQ4GMaQ==
   dependencies:
     "@tauri-apps/tauri-inliner" "1.14.1"
     "@tauri-apps/toml" "2.2.4"
