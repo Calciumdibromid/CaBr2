@@ -15,5 +15,8 @@
         <mat-label>Wassergefährdungsklasse</mat-label>
         <input matInput formControlName="waterHazardClass"/>
     </mat-form-field>
-    <button type="submit">Speichern</button>
+    <div mat-dialog-actions>
+        <button mat-button (click)="close()">Abbrechen</button>
+        <button mat-button (click)="onSubmit()">Speichern</button>
+    </div>
 </form>

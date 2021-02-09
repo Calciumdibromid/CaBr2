@@ -19,17 +19,22 @@ export class EditSearchResultsComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { index: number },
     private formBuilder: FormBuilder,
   ) {
-    // TODO make tuple working with formarray
     const substanceData = this.globals.substances[this.data.index];
     this.form = this.formBuilder.group({
       molecularFormula: substanceData.molecularFormula.data ?? '',
       meltingPoint: substanceData.meltingPoint?.data ?? '',
       boilingPoint: substanceData.boilingPoint?.data ?? '',
       waterHazardClass: substanceData.waterHazardClass?.data ?? '',
-      hPhrases: this.formBuilder.array(substanceData.hPhrases.data.map(this.initHPhrases) ?? []),
-      pPhrases: this.formBuilder.array(substanceData.pPhrases.data.map(this.initPPhrases) ?? []),
+      hPhrases: this.formBuilder.array(substanceData.hPhrases.data.map(hPhrase => {
+        return this.initHPhrases(hPhrase);
+      })),
+      pPhrases: this.formBuilder.array(substanceData.pPhrases.data.map(pPhrase => {
+        return this.initPPhrases(pPhrase);
+      })),
       signalWord: substanceData.signalWord?.data ?? '',
-      symbols: this.formBuilder.array(substanceData.symbols.data.map(this.initSymbols) ?? []),
+      symbols: this.formBuilder.array(substanceData.symbols.data.map(symbol => {
+        return this.initSymbols(symbol);
+      })),
       lethalDose: substanceData.lethalDose?.data ?? '',
     });
   }
@@ -51,14 +56,14 @@ export class EditSearchResultsComponent implements OnInit {
 
   initHPhrases(value: [string, string]): FormGroup {
     return this.formBuilder.group({
-      hNumber: [value[0], Validators.pattern('^H\d{3}\w?$')],
+      hNumber: [value[0], Validators.pattern('/^H\d{3}\w?$/')],
       hPhrase: value[1],
     });
   }
 
   initPPhrases(value: [string, string]): FormGroup {
     return this.formBuilder.group({
-      pNumber: [value[0], Validators.pattern('^(?:P\d{3}\+?)+$')],
+      pNumber: [value[0], Validators.pattern('/^(?:P\d{3}\\+?)+$/')],
       pPhrase: value[1],
     });
   }
@@ -66,6 +71,10 @@ export class EditSearchResultsComponent implements OnInit {
   initSymbols(value: Image): FormGroup {
     const {src, alt} = value;
     return this.formBuilder.group({src, alt}) as FormGroup;
+  }
+
+  close(): void {
+    this.dialogRef.close();
   }
 
   onSubmit(): void {
@@ -98,6 +107,8 @@ export class EditSearchResultsComponent implements OnInit {
       },
       lethalDose: this.evaluateForm('lethalDose'),
     };
+
+    close();
   }
 
   private evaluateForm<T>(formControlName: string, formGroup?: FormGroup): Data<T> {
