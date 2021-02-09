@@ -3,10 +3,10 @@
   windows_subsystem = "windows"
 )]
 
-mod frontend_logger;
+mod logger;
 mod search;
 
-use frontend_logger::Logger;
+use logger::Logger;
 
 fn main() {
   #[cfg(debug_assertions)]
