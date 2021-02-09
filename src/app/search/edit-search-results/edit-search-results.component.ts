@@ -3,6 +3,7 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Image, SubstanceData, Data} from '../../@core/services/substances/substances.model';
 import {GlobalModel} from '../../@core/models/global.model';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-edit-search-results',
@@ -13,12 +14,18 @@ export class EditSearchResultsComponent implements OnInit {
 
   form: FormGroup;
 
+  addHPhraseHover = false;
+
+  addPPhraseHover = false;
+
   constructor(
     public dialogRef: MatDialogRef<EditSearchResultsComponent>,
     private globals: GlobalModel,
     @Inject(MAT_DIALOG_DATA) public data: { index: number },
     private formBuilder: FormBuilder,
+    private sanitizer: DomSanitizer,
   ) {
+    // TODO disable Databinding
     const substanceData = this.globals.substances[this.data.index];
     this.form = this.formBuilder.group({
       molecularFormula: substanceData.molecularFormula.data ?? '',
@@ -56,21 +63,39 @@ export class EditSearchResultsComponent implements OnInit {
 
   initHPhrases(value: [string, string]): FormGroup {
     return this.formBuilder.group({
-      hNumber: [value[0], Validators.pattern('/^H\d{3}\w?$/')],
+      hNumber: [value[0], Validators.pattern('^H\\d{3}\\w?$')],
       hPhrase: value[1],
+      hover: false,
     });
   }
 
   initPPhrases(value: [string, string]): FormGroup {
     return this.formBuilder.group({
-      pNumber: [value[0], Validators.pattern('/^(?:P\d{3}\\+?)+$/')],
+      pNumber: [value[0], Validators.pattern('^(?:P\\d{3}\\+?)+$')],
       pPhrase: value[1],
+      hover: false,
     });
   }
 
   initSymbols(value: Image): FormGroup {
     const {src, alt} = value;
     return this.formBuilder.group({src, alt}) as FormGroup;
+  }
+
+  sanitizeImage(imgUrl: string): SafeResourceUrl {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(imgUrl);
+  }
+
+  addNewHPhrase(): void {
+    this.hPhrases.push(this.initHPhrases(['', '']));
+  }
+
+  addNewPPhrase(): void {
+    this.pPhrases.push(this.initPPhrases(['', '']));
+  }
+
+  removePhrase(index: number, formArray: FormArray): void {
+    formArray.removeAt(index);
   }
 
   close(): void {
@@ -108,7 +133,9 @@ export class EditSearchResultsComponent implements OnInit {
       lethalDose: this.evaluateForm('lethalDose'),
     };
 
-    close();
+    if (!this.form.invalid) {
+      this.close();
+    }
   }
 
   private evaluateForm<T>(formControlName: string, formGroup?: FormGroup): Data<T> {
