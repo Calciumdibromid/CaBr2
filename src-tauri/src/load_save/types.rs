@@ -15,23 +15,23 @@ pub trait Saver {
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Header {
-  document_title: String,
-  organisation: String,
-  lab_course: String,
-  name: String,
-  place: String,
-  assistant: String,
-  preparation: String,
+pub struct CaBr2Document {
+  pub header: Header,
+  pub substance_data: Vec<SubstanceData>,
+  pub human_and_environment_danger: Vec<String>,
+  pub rules_of_conduct: Vec<String>,
+  pub in_case_of_danger: Vec<String>,
+  pub disposal: Vec<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CaBr2Document {
-  header: Header,
-  substance_data: Vec<SubstanceData>,
-  human_and_environment_danger: Vec<String>,
-  rules_of_conduct: Vec<String>,
-  in_case_of_danger: Vec<String>,
-  disposal: Vec<String>,
+pub struct Header {
+  pub document_title: String,
+  pub organisation: String,
+  pub lab_course: String,
+  pub name: String,
+  pub place: String,
+  pub assistant: String,
+  pub preparation: String,
 }

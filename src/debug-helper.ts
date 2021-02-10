@@ -9,6 +9,7 @@ export default function debugMain() {
   // testSearchSuggestions();
   // testSearch();
   // testSubstanceData();
+  testLoadBeryllium();
 
   logger.warning("======== end of frontend debugging calls ========");
 }
@@ -37,6 +38,16 @@ function testSearch() {
 
 function testSubstanceData() {
   promisified({ cmd: "getChemicalInfo", zvgNumber: "005340" })
+    .then((res) => {
+      logger.debug(res);
+    })
+    .catch((err) => {
+      logger.error(err);
+    });
+}
+
+function testLoadBeryllium() {
+  promisified({ cmd: "loadDocument", filename: "/tmp/test.be" })
     .then((res) => {
       logger.debug(res);
     })

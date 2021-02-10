@@ -5,9 +5,12 @@ pub enum LoadSaveError {
   #[error("unknown file type")]
   UnknownFileType,
 
-  #[error("parsing json failed")]
+  #[error("failed to load file: '{0}'")]
+  DeserializeError(String),
+
+  #[error("parsing json failed: '{0}'")]
   JsonError(#[from] serde_json::Error),
-  #[error("io error")]
+  #[error("io error: '{0}'")]
   IOError(#[from] std::io::Error),
 }
 
