@@ -1,10 +1,10 @@
-import { Injectable } from "@angular/core";
-import { from, Observable } from "rxjs";
-import { promisified } from "tauri/api/tauri";
-import { CaBr2Document } from "./loadSave.model";
+import { Injectable } from '@angular/core';
+import { from, Observable } from 'rxjs';
+import { promisified } from 'tauri/api/tauri';
+import { CaBr2Document } from './loadSave.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class LoadSaveService {
   constructor() {}
@@ -16,7 +16,7 @@ export class LoadSaveService {
   ): Observable<string> {
     return from(
       promisified<string>({
-        cmd: "saveDocument",
+        cmd: 'saveDocument',
         fileType,
         filename,
         document,
@@ -27,7 +27,7 @@ export class LoadSaveService {
   loadDocument(filename: string): Observable<CaBr2Document> {
     return from(
       promisified<CaBr2Document>({
-        cmd: "loadDocument",
+        cmd: 'loadDocument',
         filename,
       })
     );

@@ -1,21 +1,21 @@
-import { Component, OnInit } from "@angular/core";
-import { descriptions } from "../../assets/descriptions.json";
-import ListInputSpecifcations from "../@core/interfaces/ListInputSpecifications";
-import { GlobalModel } from "../@core/models/global.model";
-import { CaBr2Document } from "../@core/services/loadSave/loadSave.model";
-import { LoadSaveService } from "../@core/services/loadSave/loadSave.service";
-import logger, { log } from "../@core/utils/logger";
+import { Component, OnInit } from '@angular/core';
+import { descriptions } from '../../assets/descriptions.json';
+import ListInputSpecifcations from '../@core/interfaces/ListInputSpecifications';
+import { GlobalModel } from '../@core/models/global.model';
+import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
+import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
+import logger, { log } from '../@core/utils/logger';
 
 @Component({
-  selector: "app-menubar",
-  templateUrl: "./menubar.component.html",
-  styleUrls: ["./menubar.component.scss"],
+  selector: 'app-menubar',
+  templateUrl: './menubar.component.html',
+  styleUrls: ['./menubar.component.scss'],
   providers: [GlobalModel],
 })
 export class MenubarComponent implements OnInit {
   descriptions = descriptions;
 
-  searchResults: string[] = ["foo", "bar", "baz"];
+  searchResults: string[] = ['foo', 'bar', 'baz'];
 
   constructor(
     public globals: GlobalModel,
@@ -24,22 +24,22 @@ export class MenubarComponent implements OnInit {
 
   ngOnInit(): void {
     this.globals.header.documentTitle =
-      "Betriebsanweisungen nach EG Nr. 1272/2008";
+      'Betriebsanweisungen nach EG Nr. 1272/2008';
     this.globals.header.organisation =
-      "für chemische Laboratorien des Campus Burghausen";
-    this.globals.header.labCourse = "Praktikum Anorganische Chemie";
+      'für chemische Laboratorien des Campus Burghausen';
+    this.globals.header.labCourse = 'Praktikum Anorganische Chemie';
 
     this.globals.humanAndEnvironmentDanger = [
       {
         content:
-          "Bei anhaltender Augenreizung ärztlichen Rat einholen. Funkenerzeugung und elektrische Aufladung vermeiden.",
+          'Bei anhaltender Augenreizung ärztlichen Rat einholen. Funkenerzeugung und elektrische Aufladung vermeiden.',
         hover: false,
       },
     ];
 
     this.globals.rulesOfConduct = [
       {
-        content: "Hautschutz und Schutzkleidung mit Schutzbrille tragen.",
+        content: 'Hautschutz und Schutzkleidung mit Schutzbrille tragen.',
         hover: false,
       },
     ];
@@ -47,23 +47,24 @@ export class MenubarComponent implements OnInit {
     this.globals.inCaseOfDanger = [
       {
         content:
-          "Nach Einatmen: An die frische Luft bringen. Sofort Arzt hinzuziehen.",
+          'Nach Einatmen: An die frische Luft bringen. Sofort Arzt hinzuziehen.',
         hover: false,
       },
       {
         content:
-          "Nach Hautkontakt: Sofort mit Wasser abwaschen. Kontaminierte Kleidung entfernen. Sofort Arzt hinzuziehen.",
+          'Nach Hautkontakt: Sofort mit Wasser abwaschen. Kontaminierte Kleidung entfernen. Sofort Arzt hinzuziehen.',
         hover: false,
       },
       {
         content:
-          "Nach Verschlucken: Mund mit Wasser spülen, Wasser trinken lassen. Kein Erbrechen auslösen. Nur bei Bewusstsein!",
+          'Nach Verschlucken: Mund mit Wasser spülen, Wasser trinken lassen. Kein Erbrechen auslösen. Nur bei Bewusstsein!',
         hover: false,
       },
       {
         // eslint-disable-next-line max-len
-        content: 'Nach Augenkontakt: Mit Wasser spülen. Falls vorhanden nach Möglichkeit Kontaktlinsen entfernen und weiter spülen. Sofort Augenarzt hinzuziehen.',
-        hover: false
+        content:
+          'Nach Augenkontakt: Mit Wasser spülen. Falls vorhanden nach Möglichkeit Kontaktlinsen entfernen und weiter spülen. Sofort Augenarzt hinzuziehen.',
+        hover: false,
       },
     ];
 
@@ -71,7 +72,7 @@ export class MenubarComponent implements OnInit {
   }
 
   scroll(el: HTMLElement): void {
-    el.scrollIntoView({ behavior: "smooth" });
+    el.scrollIntoView({ behavior: 'smooth' });
   }
 
   modelToDocument(): CaBr2Document {
@@ -120,7 +121,7 @@ export class MenubarComponent implements OnInit {
   }
 
   loadFile(): void {
-    this.loadSaveService.loadDocument("/tmp/test.cb2").subscribe(
+    this.loadSaveService.loadDocument('/tmp/test.cb2').subscribe(
       (res) => this.documentToModel(res),
       (err) => logger.error(err)
     );
@@ -128,7 +129,7 @@ export class MenubarComponent implements OnInit {
 
   saveFile(): void {
     this.loadSaveService
-      .saveDocument("cb2", "/tmp/test.cb2", this.modelToDocument())
+      .saveDocument('cb2', '/tmp/test.cb2', this.modelToDocument())
       .subscribe(
         (res) => logger.debug(res),
         (err) => logger.error(err)
@@ -137,7 +138,7 @@ export class MenubarComponent implements OnInit {
 
   exportPDF(): void {
     this.loadSaveService
-      .saveDocument("pdf", "/tmp/test.pdf", this.modelToDocument())
+      .saveDocument('pdf', '/tmp/test.pdf', this.modelToDocument())
       .subscribe(
         (res) => logger.debug(res),
         (err) => logger.error(err)

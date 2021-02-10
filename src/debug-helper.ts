@@ -1,6 +1,6 @@
-import {promisified} from 'tauri/api/tauri';
-import {SearchArguments} from './app/@core/services/search/search.model';
-import {SearchService} from './app/@core/services/search/search.service';
+import { promisified } from 'tauri/api/tauri';
+import { SearchArguments } from './app/@core/services/search/search.model';
+import { SearchService } from './app/@core/services/search/search.service';
 import logger from './app/@core/utils/logger';
 
 export default function debugMain() {
@@ -26,9 +26,9 @@ function testSearch() {
   const args: SearchArguments = {
     // exact: true,
     arguments: [
-      {searchType: 'chemicalName', pattern: 'wasser'},
-      {searchType: 'empiricalFormula', pattern: 'h2'},
-      {searchType: 'numbers', pattern: '701'},
+      { searchType: 'chemicalName', pattern: 'wasser' },
+      { searchType: 'empiricalFormula', pattern: 'h2' },
+      { searchType: 'numbers', pattern: '701' },
     ],
   };
   service.search(args).subscribe((res) => {
@@ -37,7 +37,7 @@ function testSearch() {
 }
 
 function testSubstanceData() {
-  promisified({cmd: 'getChemicalInfo', zvgNumber: '005340'})
+  promisified({ cmd: 'getChemicalInfo', zvgNumber: '005340' })
     .then((res) => {
       logger.debug(res);
     })
@@ -47,7 +47,7 @@ function testSubstanceData() {
 }
 
 function testLoadBeryllium() {
-  promisified({ cmd: "loadDocument", filename: "/tmp/test.be" })
+  promisified({ cmd: 'loadDocument', filename: '/tmp/test.be' })
     .then((res) => {
       logger.debug(res);
     })
