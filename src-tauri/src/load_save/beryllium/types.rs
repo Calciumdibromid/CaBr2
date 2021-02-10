@@ -8,8 +8,8 @@ pub struct BerylliumDocument {
   pub product: Product,
   pub templates: Templates,
   pub options: Options,
-  // #[serde(rename = "substance")]
-  // pub substances: Vec<Substance>,
+  #[serde(rename = "substance")]
+  pub substances: Vec<Substance>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -44,18 +44,18 @@ pub struct Product {
 }
 
 #[derive(Debug, Deserialize)]
+pub struct Templates {
+  #[serde(rename = "template")]
+  templates: Vec<Template>,
+}
+
+#[derive(Debug, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub enum TemplateCategory {
   Danger,
   Security,
   Behavior,
   Dumping,
-}
-
-#[derive(Debug, Deserialize)]
-pub struct Templates {
-  #[serde(rename = "template")]
-  templates: Vec<Template>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -78,5 +78,81 @@ pub struct Options {
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct Substance {
-  // TODO
+  #[serde(rename = "name")]
+  pub names: Vec<String>,
+  pub molecular_weight: Option<String>, // double
+  pub chemical_formula: String,
+  pub density: Option<String>, // double
+  pub melting_point: Option<MeltingPoint>,
+  pub boiling_point: Option<String>,
+  pub flashpoint: Option<String>,
+  #[serde(rename = "hazard")]
+  pub harzards: Option<Vec<String>>,
+  #[serde(rename = "GHS-symbol")]
+  pub symbols: Option<Vec<String>>,
+  #[serde(rename = "GHS-signalword")]
+  pub signal_word: Option<String>,
+  pub risk: Option<String>,
+  pub safety: Option<String>,
+  pub harzard_statements: Option<String>,
+  pub eu_harzard_statements: Option<String>,
+  pub precautionary_statements: Option<String>,
+  #[serde(rename = "MAK")]
+  pub mak: Option<MAK>, // double
+  #[serde(rename = "WGK")]
+  pub wgk: Option<String>, // unsigned int
+  pub lethaldose50: Option<LD50>,
+  #[serde(rename = "CAS")]
+  pub cas: Option<String>,
+  pub group: Option<String>,
+  pub setting_up: Option<SettingUp>,
+  pub concentration: Option<Concentration>,
+  pub solution_volumina: Option<String>, // double
+  pub template: Option<Templates>,
+  #[serde(rename = "source.provider")]
+  pub source_provider: Option<String>,
+  #[serde(rename = "source.fetched")]
+  pub source_fetched: Option<String>,
+  #[serde(rename = "source.url")]
+  pub source_url: Option<String>,
+  #[serde(rename = "source.changed")]
+  pub source_changed: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct MeltingPoint {
+  pub decomposition: Option<bool>,
+  #[serde(rename = "$value")]
+  pub value: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct MAK {
+  pub ppm: Option<bool>,
+  #[serde(rename = "$value")]
+  pub value: String,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct LD50 {
+  pub exposuretype: Option<String>,
+  pub species: Option<String>,
+  pub unit: Option<String>,
+  #[serde(rename = "$value")]
+  pub value: String, // double
+}
+
+#[derive(Debug, Deserialize)]
+pub struct SettingUp {
+  pub volumina: Option<bool>,
+  pub mass: Option<bool>,
+  #[serde(rename = "$value")]
+  pub value: String, // double
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Concentration {
+  pub relative: Option<bool>,
+  #[serde(rename = "$value")]
+  pub value: String, // double
 }
