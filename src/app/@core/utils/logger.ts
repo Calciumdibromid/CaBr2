@@ -11,7 +11,7 @@ export enum LogLevel {
 export function log(level: LogLevel, msg: unknown): void {
   invoke({
     cmd: 'log',
-    level: level,
+    level,
     message: msg,
   });
 }

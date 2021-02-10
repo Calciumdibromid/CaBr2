@@ -49,22 +49,6 @@ export class SelectedSearchComponent implements OnInit {
     return selectionGroup;
   }
 
-  private registerValueChangeListener(selectionGroup: FormGroup): void {
-    selectionGroup
-      .get('userInput')
-      ?.valueChanges.pipe(debounceTime(500))
-      .subscribe((result) => {
-        this.searchService
-          .searchSuggestions(selectionGroup.get('searchOption')?.value, result)
-          .subscribe((response) => {
-            this.suggestionResults.set(
-              selectionGroup.get('searchOption')?.value,
-              response
-            );
-          });
-      });
-  }
-
   get selections(): FormArray {
     return this.form?.get('selections') as FormArray;
   }
@@ -90,5 +74,21 @@ export class SelectedSearchComponent implements OnInit {
       searchType: control.get('searchOption')?.value,
       pattern: control.get('userInput')?.value,
     }));
+  }
+
+  private registerValueChangeListener(selectionGroup: FormGroup): void {
+    selectionGroup
+      .get('userInput')
+      ?.valueChanges.pipe(debounceTime(500))
+      .subscribe((result) => {
+        this.searchService
+          .searchSuggestions(selectionGroup.get('searchOption')?.value, result)
+          .subscribe((response) => {
+            this.suggestionResults.set(
+              selectionGroup.get('searchOption')?.value,
+              response
+            );
+          });
+      });
   }
 }
