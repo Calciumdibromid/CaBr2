@@ -13,11 +13,11 @@ import {GlobalModel} from '../@core/models/global.model';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  res: SearchArgument[] = [];
-  control = new FormControl();
-
   @ViewChild(SelectedSearchComponent)
   selectedSearch: SelectedSearchComponent | undefined;
+
+  res: SearchArgument[] = [];
+  control = new FormControl();
 
   constructor(
     private searchService: SearchService,

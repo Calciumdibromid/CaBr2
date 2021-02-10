@@ -35,7 +35,7 @@ export class SearchService {
       promisified<string[]>({
         cmd: 'searchSuggestions',
         pattern: query,
-        searchType: searchType
+        searchType
       })
     );
   }
