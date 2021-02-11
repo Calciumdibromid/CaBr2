@@ -23,6 +23,9 @@ export class SearchComponent implements OnInit {
   @ViewChild(SelectedSearchComponent)
   selectedSearch: SelectedSearchComponent | undefined;
 
+  res: SearchArgument[] = [];
+  control = new FormControl();
+
   constructor(
     private searchService: SearchService,
     private substanceService: SubstancesService,

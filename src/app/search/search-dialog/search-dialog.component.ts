@@ -17,7 +17,7 @@ export class SearchDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<SearchDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { arguments: SearchArgument[], results: SearchResult[] },
+    @Inject(MAT_DIALOG_DATA) public data: { arguments: SearchArgument[]; results: SearchResult[] },
     private searchService: SearchService,
   ) {
   }

@@ -39,6 +39,7 @@ export class MenubarComponent implements OnInit {
         hover: false
       },
       {
+        // eslint-disable-next-line max-len
         content: 'Nach Augenkontakt: Mit Wasser spülen. Falls vorhanden nach Möglichkeit Kontaktlinsen entfernen und weiter spülen. Sofort Augenarzt hinzuziehen.',
         hover: false
       },
