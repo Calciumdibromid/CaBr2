@@ -2,7 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
 import {SearchDialogComponent} from './search-dialog/search-dialog.component';
-import {SearchArgument, SearchResult} from '../@core/services/search/search.model';
+import {SearchArgument} from '../@core/services/search/search.model';
 import {SearchService} from '../@core/services/search/search.service';
 import {SelectedSearchComponent} from './selected-search/selected-search.component';
 import {GlobalModel} from '../@core/models/global.model';
@@ -16,15 +16,13 @@ import {SubstancesService} from '../@core/services/substances/substances.service
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  res: SearchArgument[] = [];
-  control = new FormControl();
-  substanceData: SubstanceData[] = [];
-
   @ViewChild(SelectedSearchComponent)
   selectedSearch: SelectedSearchComponent | undefined;
 
   res: SearchArgument[] = [];
   control = new FormControl();
+
+  substanceData: SubstanceData[] = [];
 
   constructor(
     private searchService: SearchService,
