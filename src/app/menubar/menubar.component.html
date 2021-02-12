@@ -5,9 +5,9 @@
         </button>
         <mat-menu #menu="matMenu">
             <button mat-menu-item>Neue Betriebsanweisung</button>
-            <button mat-menu-item>Bestehen Betriebsanweisung öffnen</button>
-            <button mat-menu-item>Import Beryllium Datei</button>
-            <button mat-menu-item>Als PDF speichern</button>
+            <button mat-menu-item (click)="loadFile()">Bestehende Betriebsanweisung öffnen</button>
+            <button mat-menu-item (click)="saveFile()">Betriebsanweisung speichern</button>
+            <button mat-menu-item (click)="exportPDF()">Als PDF exportieren</button>
         </mat-menu>
         <br/>
         <button

@@ -144,11 +144,11 @@ pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
 /* #region  helpers */
 
 pub fn get_xml(json: &GestisResponse, chapter: &str, subchapter: &str) -> Result<String> {
-  if let Some(subchapters) = json.chapters.iter().find(|c| c.dr_number == chapter) {
+  if let Some(subchapters) = json.chapters.iter().find(|c| c.number == chapter) {
     if let Some(sub) = subchapters
       .subchapters
       .iter()
-      .find(|s| s.dr_number == subchapter)
+      .find(|s| s.number == subchapter)
     {
       return Ok(format!("<div>\n{}</div>\n", sub.text.as_ref().unwrap()));
     }
