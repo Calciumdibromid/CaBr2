@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+pub use crate::types::{Data, Image, SubstanceData};
+
 #[derive(Debug)]
 pub struct ParsedData {
   pub molecular_formula: String,
@@ -11,12 +13,6 @@ pub struct ParsedData {
   pub signal_word: Option<String>,
   pub symbols: Option<Vec<Image>>,
   pub lethal_dose: Option<String>,
-}
-
-#[derive(Debug, Serialize)]
-pub struct Image {
-  pub src: String,
-  pub alt: String,
 }
 
 #[derive(Debug, Deserialize)]
@@ -31,7 +27,7 @@ pub struct GestisResponse {
 #[derive(Debug, Deserialize)]
 pub struct Chapter {
   #[serde(rename = "drnr")]
-  pub dr_number: String,
+  pub number: String,
   #[serde(rename = "unterkapitel")]
   pub subchapters: Vec<Subchapter>,
 }
@@ -39,7 +35,7 @@ pub struct Chapter {
 #[derive(Debug, Deserialize)]
 pub struct Subchapter {
   #[serde(rename = "drnr")]
-  pub dr_number: String,
+  pub number: String,
   pub text: Option<String>,
 }
 
@@ -75,34 +71,4 @@ pub struct SearchResponse {
   #[serde(rename(deserialize = "cas_nr"))]
   pub cas_number: Option<String>,
   pub name: String,
-}
-
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct Data<T> {
-  data: T,
-  modified: bool,
-}
-
-impl<T> Data<T> {
-  pub fn new(data: T) -> Data<T> {
-    Data {
-      data,
-      modified: false,
-    }
-  }
-}
-
-#[derive(Debug, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SubstanceData {
-  pub molecular_formula: Data<String>,
-  pub melting_point: Data<Option<String>>,
-  pub boiling_point: Data<Option<String>>,
-  pub water_hazard_class: Data<Option<String>>,
-  pub h_phrases: Data<Vec<(String, String)>>,
-  pub p_phrases: Data<Vec<(String, String)>>,
-  pub signal_word: Data<Option<String>>,
-  pub symbols: Data<Vec<Image>>,
-  pub lethal_dose: Data<Option<String>>,
 }

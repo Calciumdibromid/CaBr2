@@ -1,7 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Image, SubstanceData, Data} from '../../@core/services/substances/substances.model';
+import {Image, Data} from '../../@core/services/substances/substances.model';
 import {GlobalModel} from '../../@core/models/global.model';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
@@ -32,16 +32,16 @@ export class EditSearchResultsComponent implements OnInit {
   }
 
   initControls(): FormGroup {
-    const substanceData = this.globals.substances[this.data.index];
+    const substanceData = this.globals.substanceData[this.data.index];
     return this.formBuilder.group({
       molecularFormula: substanceData.molecularFormula.data ?? '',
-      meltingPoint: substanceData.meltingPoint?.data ?? '',
-      boilingPoint: substanceData.boilingPoint?.data ?? '',
+      meltingPoint: substanceData.meltingPoint.data ?? '',
+      boilingPoint: substanceData.boilingPoint.data ?? '',
       waterHazardClass: substanceData.waterHazardClass?.data ?? '',
-      hPhrases: this.formBuilder.array(substanceData.hPhrases.data.map(hPhrase => this.initHPhrases(hPhrase))),
-      pPhrases: this.formBuilder.array(substanceData.pPhrases.data.map(pPhrase => this.initPPhrases(pPhrase))),
+      hPhrases: this.formBuilder.array((substanceData.hPhrases.data ?? []).map(hPhrase => this.initHPhrases(hPhrase))),
+      pPhrases: this.formBuilder.array((substanceData.pPhrases.data ?? []).map(pPhrase => this.initPPhrases(pPhrase))),
       signalWord: substanceData.signalWord?.data ?? '',
-      symbols: this.formBuilder.array(substanceData.symbols.data.map(symbol => this.initSymbols(symbol))),
+      symbols: this.formBuilder.array((substanceData.symbols.data ?? []).map(symbol => this.initSymbols(symbol))),
       lethalDose: substanceData.lethalDose?.data ?? '',
     });
   }
@@ -101,7 +101,7 @@ export class EditSearchResultsComponent implements OnInit {
   }
 
   onSubmit(): void {
-    this.globals.substances[this.data.index] = {
+    this.globals.substanceData[this.data.index] = {
       molecularFormula: this.evaluateForm('molecularFormula'),
       meltingPoint: this.evaluateForm('meltingPoint'),
       boilingPoint: this.evaluateForm('boilingPoint'),
