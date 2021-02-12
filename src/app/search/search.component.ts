@@ -52,8 +52,8 @@ export class SearchComponent implements OnInit {
       this.substanceService
         .substanceInfo(this.globals.searchResults[this.globals.searchResults.length - 1].zvgNumber)
         .subscribe(value => {
-          this.substanceData.push(value);
           this.globals.substanceData.push(value);
+          console.log(this.globals.substanceData);
         });
     });
   }

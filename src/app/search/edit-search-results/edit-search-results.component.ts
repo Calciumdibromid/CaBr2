@@ -32,6 +32,7 @@ export class EditSearchResultsComponent implements OnInit {
   }
 
   initControls(): FormGroup {
+    console.log(this.globals.substanceData);
     const substanceData = this.globals.substanceData[this.data.index];
     return this.formBuilder.group({
       molecularFormula: substanceData.molecularFormula.data ?? '',

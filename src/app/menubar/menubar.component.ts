@@ -8,8 +8,7 @@ import logger from '../@core/utils/logger';
 @Component({
   selector: 'app-menubar',
   templateUrl: './menubar.component.html',
-  styleUrls: ['./menubar.component.scss'],
-  providers: [GlobalModel],
+  styleUrls: ['./menubar.component.scss']
 })
 export class MenubarComponent implements OnInit {
   descriptions = descriptions;

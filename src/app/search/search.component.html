@@ -5,9 +5,13 @@
   </div>
   <button class="button" mat-flat-button color="primary" (click)="openDialog()">Suchen</button>
   <mat-divider class="divider"></mat-divider>
+  <div class="margin-bottom"></div>
   <mat-selection-list [multiple]="false">
-    <mat-list-item *ngFor="let result of globals.searchResults; let i = index" (click)="openResultDialog(i)">
+    <mat-list-option
+        matTooltip="Zum bearbeiten Klicken"
+        *ngFor="let result of globals.searchResults; let i = index"
+        (click)="openResultDialog(i)">
       {{result.name}}
-    </mat-list-item>
+    </mat-list-option>
   </mat-selection-list>
 </mat-card>
