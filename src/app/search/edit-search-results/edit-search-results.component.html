@@ -1,5 +1,5 @@
 <form [formGroup]="form" (submit)="onSubmit()">
-    <mat-dialog-content>
+    <mat-dialog-content class="grid">
         <mat-card class="flex">
             <mat-form-field>
                 <mat-label>Summenformel</mat-label>
@@ -118,7 +118,6 @@
                 </a>
             </mat-card>
         </div>
-        <mat-divider></mat-divider>
 
         <mat-card class="flex" formArrayName="symbols">
             <div *ngFor="let control of symbols.controls; let i = index">

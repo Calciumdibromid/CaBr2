@@ -60,7 +60,11 @@ export class SearchComponent implements OnInit {
 
   openResultDialog(index: number): void {
     const dialogRef = this.dialog.open(EditSearchResultsComponent, {
-      data: {index}
+      data: {index},
+      maxWidth: 1500,
+      minWidth: 800,
+      maxHeight: 900,
+      minHeight: 300,
     });
   }
 }

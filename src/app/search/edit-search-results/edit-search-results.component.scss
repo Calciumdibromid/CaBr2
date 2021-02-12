@@ -1,5 +1,10 @@
+.grid {
+  display: grid;
+  grid-template-columns: 690px;
+}
+
 .flex {
-  display: flex;
+  display: inline-flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
@@ -8,10 +13,5 @@
 mat-form-field {
   padding-left: 8px;
   padding-right: 2px;
-}
-
-mat-card {
-  padding: 7px 80px;
-  margin: 12px;
 }
 
