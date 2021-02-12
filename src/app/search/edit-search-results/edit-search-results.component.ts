@@ -25,28 +25,25 @@ export class EditSearchResultsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
   ) {
-    // TODO disable Databinding
+    this.form = this.initControls();
+  }
+
+  ngOnInit(): void {
+  }
+
+  initControls(): FormGroup {
     const substanceData = this.globals.substances[this.data.index];
-    this.form = this.formBuilder.group({
+    return this.formBuilder.group({
       molecularFormula: substanceData.molecularFormula.data ?? '',
       meltingPoint: substanceData.meltingPoint?.data ?? '',
       boilingPoint: substanceData.boilingPoint?.data ?? '',
       waterHazardClass: substanceData.waterHazardClass?.data ?? '',
-      hPhrases: this.formBuilder.array(substanceData.hPhrases.data.map(hPhrase => {
-        return this.initHPhrases(hPhrase);
-      })),
-      pPhrases: this.formBuilder.array(substanceData.pPhrases.data.map(pPhrase => {
-        return this.initPPhrases(pPhrase);
-      })),
+      hPhrases: this.formBuilder.array(substanceData.hPhrases.data.map(hPhrase => this.initHPhrases(hPhrase))),
+      pPhrases: this.formBuilder.array(substanceData.pPhrases.data.map(pPhrase => this.initPPhrases(pPhrase))),
       signalWord: substanceData.signalWord?.data ?? '',
-      symbols: this.formBuilder.array(substanceData.symbols.data.map(symbol => {
-        return this.initSymbols(symbol);
-      })),
+      symbols: this.formBuilder.array(substanceData.symbols.data.map(symbol => this.initSymbols(symbol))),
       lethalDose: substanceData.lethalDose?.data ?? '',
     });
-  }
-
-  ngOnInit(): void {
   }
 
   get hPhrases(): FormArray {
@@ -99,6 +96,7 @@ export class EditSearchResultsComponent implements OnInit {
   }
 
   close(): void {
+    this.form = this.initControls();
     this.dialogRef.close();
   }
 
