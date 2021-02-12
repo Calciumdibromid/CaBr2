@@ -60,7 +60,7 @@ export class EditSearchResultsComponent implements OnInit {
 
   initHPhrases(value: [string, string]): FormGroup {
     return this.formBuilder.group({
-      hNumber: [value[0], Validators.pattern('^H\\d{3}\\w?$')],
+      hNumber: [value[0], Validators.pattern('^(H\\d{3}\\w?\\+?)+$')],
       hPhrase: value[1],
       hover: false,
     });
