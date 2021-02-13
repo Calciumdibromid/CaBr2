@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter,OnInit, Output} from '@angular/core';
 import {descriptions} from '../../assets/descriptions.json';
 import {GlobalModel} from '../@core/models/global.model';
 import {CaBr2Document} from '../@core/services/loadSave/loadSave.model';
 import {LoadSaveService} from '../@core/services/loadSave/loadSave.service';
 import logger from '../@core/utils/logger';
+import {MatSlideToggleChange} from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-menubar',
@@ -11,9 +12,10 @@ import logger from '../@core/utils/logger';
   styleUrls: ['./menubar.component.scss']
 })
 export class MenubarComponent implements OnInit {
-  descriptions = descriptions;
+  @Output()
+  readonly darkModeSwitched = new EventEmitter<boolean>();
 
-  searchResults: string[] = ['foo', 'bar', 'baz'];
+  descriptions = descriptions;
 
   constructor(
     public globals: GlobalModel,
@@ -70,7 +72,7 @@ export class MenubarComponent implements OnInit {
   }
 
   scroll(el: HTMLElement): void {
-    el.scrollIntoView({ behavior: 'smooth' });
+    el.scrollIntoView({behavior: 'smooth'});
   }
 
   modelToDocument(): CaBr2Document {
@@ -104,7 +106,7 @@ export class MenubarComponent implements OnInit {
     }));
     // TODO DELETE hover !!!!!!!!
     this.globals.humanAndEnvironmentDanger = doc.humanAndEnvironmentDanger.map(
-      (element) => ({ content: element, hover: false })
+      (element) => ({content: element, hover: false})
     );
     // TODO DELETE hover !!!!!!!!
     this.globals.inCaseOfDanger = doc.inCaseOfDanger.map((element) => ({
@@ -141,5 +143,9 @@ export class MenubarComponent implements OnInit {
         (res) => logger.debug(res),
         (err) => logger.error(err)
       );
+  }
+
+  onDarkModeSwitched({checked}: MatSlideToggleChange) {
+    this.darkModeSwitched.emit(checked);
   }
 }
