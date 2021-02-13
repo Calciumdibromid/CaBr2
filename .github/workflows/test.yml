@@ -17,6 +17,10 @@ jobs:
           override: true
       - uses: actions-rs/cargo@v1
       - uses: actions/checkout@v1
+      - name: install ubuntu dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y webkit2gtk-4.0 libwebkit2gtk-4.0-dev build-essential curl wget libssl-dev
       - name: Rust Linting
         working-directory: ./src-tauri
         run: cargo clippy
