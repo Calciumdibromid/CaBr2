@@ -6,7 +6,7 @@ Generate "experiment wise safety sheets" in compliance to European law.
 
 CaBr2 is a [tauri](https://github.com/tauri-apps/tauri) project.
 
-Frontend is written in angular (JS) and backend is in pure rust.
+Frontend is written in Angular 11 and backend is in pure rust.
 
 To start execute `yarn start` to build ans serve UI,
 execute `yarn tauri-start` to get the aplication window.
