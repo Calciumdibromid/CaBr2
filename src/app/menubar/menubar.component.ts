@@ -21,8 +21,7 @@ export class MenubarComponent implements OnInit {
   constructor(
     public globals: GlobalModel,
     private loadSaveService: LoadSaveService
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.globals.header.documentTitle =
