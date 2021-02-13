@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Header} from '../interfaces/Header';
-import ListInputSpecifcations from '../interfaces/ListInputSpecifications';
 import {SearchResult} from '../services/search/search.model';
-import { SubstanceData } from '../services/substances/substances.model';
+import {SubstanceData} from '../services/substances/substances.model';
 
 @Injectable()
 export class GlobalModel {
@@ -20,12 +19,12 @@ export class GlobalModel {
 
   substanceData: SubstanceData[] = [];
 
-  humanAndEnvironmentDanger: ListInputSpecifcations[] = [];
+  humanAndEnvironmentDanger: string[] = [];
 
-  rulesOfConduct: ListInputSpecifcations[] = [];
+  rulesOfConduct: string[] = [];
 
-  inCaseOfDanger: ListInputSpecifcations[] = [];
+  inCaseOfDanger: string[] = [];
 
-  disposal: ListInputSpecifcations[] = [];
+  disposal: string[] = [];
 
 }

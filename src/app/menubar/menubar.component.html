@@ -34,7 +34,7 @@
       <img class="icon" src="assets/icons/Pfeil.svg">
     </button>
     <br/>
-    <mat-slide-toggle (change)="onDarkModeSwitched($event)" color="primary" matTooltip="Auf dunkles Thema umschalten">
+  <mat-slide-toggle (change)="onDarkModeSwitched($event)" color="primary" matTooltip="Auf dunkles Thema umschalten">
       <span class="material-icons">invert_colors</span>
     </mat-slide-toggle>
   </mat-sidenav>
@@ -48,7 +48,8 @@
     <div #securitythings>
       <app-list-input-specifcations
           [title]="descriptions.humanAndEnvironmentDanger"
-          [elements]="globals.humanAndEnvironmentDanger"></app-list-input-specifcations>
+          [elements]="globals.humanAndEnvironmentDanger"
+      ></app-list-input-specifcations>
       <app-list-input-specifcations
           [title]="descriptions.rulesOfConduct"
           [elements]="globals.rulesOfConduct"></app-list-input-specifcations>
