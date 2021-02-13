@@ -1,65 +1,65 @@
 <form [formGroup]="form" (submit)="onSubmit()">
-    <div formArrayName="selections">
-        <div *ngFor="let control of selections.controls; let i = index">
-            <div class="flex" [formGroupName]="i">
-                <mat-form-field class="select">
-                    <mat-label>Suchoption</mat-label>
-                    <mat-select formControlName="searchOption">
-                        <mat-option
-                                *ngFor="let option of searchOptions"
-                                [value]="option.value"
-                                [disabled]="isDisabled(option.value)"
-                        >
-                            {{ option.viewValue }}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="width-100">
-                    <mat-label>Suche</mat-label>
-                    <input
-                            matInput
-                            formControlName="userInput"
-                            [matAutocomplete]="auto"
-                    />
-                    <span class="material-icons" matSuffix>search</span>
-                    <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option
-                                *ngFor="let result of suggestionResults.get(selections.at(i).get('searchOption')?.value)"
-                                [value]="result">
-                            {{ result }}
-                        </mat-option>
-                    </mat-autocomplete>
-                    <button
-                            matSuffix
-                            mat-icon-button
-                            (click)="removeSearchOption(i)"
-                            (mouseenter)="selections.at(i).get('hover')?.patchValue(true)"
-                            (mouseleave)="selections.at(i).get('hover')?.patchValue(false)"
-                            matTooltip="Suchoption entfernen"
-                            matTooltipPosition="left"
-                            [disabled]="selections.controls.length === 1"
-                    >
-                        <mat-icon *ngIf="!selections.at(i).get('hover')?.value">remove_circle_outline</mat-icon>
-                        <mat-icon color="primary" *ngIf="selections.at(i).get('hover')?.value">remove_circle</mat-icon>
-                    </button>
-                </mat-form-field>
-            </div>
-        </div>
-        <button
-                mat-icon-button
-                (click)="addSearchOption()"
-                (mouseenter)="addButtonHover = true"
-                (mouseleave)="addButtonHover = false"
-                matTooltip="Suchoption hinzufügen"
-                matTooltipPosition="right"
-                [disabled]="selections.length >= 4"
-        >
-            <mat-icon *ngIf="!addButtonHover || selections.controls.length >= 4">
-                add_circle_outline
-            </mat-icon>
-            <mat-icon color="primary" *ngIf="addButtonHover && selections.controls.length < 4">
-                add_circle
-            </mat-icon>
-        </button>
+  <div formArrayName="selections">
+    <div *ngFor="let control of selections.controls; let i = index">
+      <div class="flex" [formGroupName]="i">
+        <mat-form-field class="select">
+          <mat-label>Suchoption</mat-label>
+          <mat-select formControlName="searchOption">
+            <mat-option
+                *ngFor="let option of searchOptions"
+                [value]="option.value"
+                [disabled]="isDisabled(option.value)"
+            >
+              {{ option.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="width-100">
+          <mat-label>Suche</mat-label>
+          <input
+              matInput
+              formControlName="userInput"
+              [matAutocomplete]="auto"
+          />
+          <span class="material-icons" matSuffix>search</span>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option
+                *ngFor="let result of suggestionResults.get(selections.at(i).get('searchOption')?.value)"
+                [value]="result">
+              {{ result }}
+            </mat-option>
+          </mat-autocomplete>
+          <button
+              matSuffix
+              mat-icon-button
+              (click)="removeSearchOption(i)"
+              (mouseenter)="selections.at(i).get('hover')?.patchValue(true)"
+              (mouseleave)="selections.at(i).get('hover')?.patchValue(false)"
+              matTooltip="Suchoption entfernen"
+              matTooltipPosition="left"
+              [disabled]="selections.controls.length === 1"
+          >
+            <mat-icon *ngIf="!selections.at(i).get('hover')?.value">remove_circle_outline</mat-icon>
+            <mat-icon color="primary" *ngIf="selections.at(i).get('hover')?.value">remove_circle</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
     </div>
+    <button
+        mat-icon-button
+        (click)="addSearchOption()"
+        (mouseenter)="addButtonHover = true"
+        (mouseleave)="addButtonHover = false"
+        matTooltip="Suchoption hinzufügen"
+        matTooltipPosition="right"
+        [disabled]="selections.length >= 4"
+    >
+      <mat-icon *ngIf="!addButtonHover || selections.controls.length >= 4">
+        add_circle_outline
+      </mat-icon>
+      <mat-icon color="primary" *ngIf="addButtonHover && selections.controls.length < 4">
+        add_circle
+      </mat-icon>
+    </button>
+  </div>
 </form>
