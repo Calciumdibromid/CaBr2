@@ -21,12 +21,13 @@ export class ListInputSpecifcationsComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
   ) {
-    this.form = this.formBuilder.group({
-      elements: this.formBuilder.array(this.elements.map(value => this.initForm(value)))
-    });
+    this.form = this.formBuilder.group({});
   }
 
   ngOnInit(): void {
+    this.form = this.formBuilder.group({
+      elements: this.formBuilder.array(this.elements.map(value => this.initForm(value)))
+    });
   }
 
   get controlElements(): FormArray {
@@ -46,5 +47,6 @@ export class ListInputSpecifcationsComponent implements OnInit {
 
   removeElement(index: number): void {
     this.elements.splice(index, 1);
+    this.controlElements.removeAt(index);
   }
 }

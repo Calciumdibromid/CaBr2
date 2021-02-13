@@ -6,6 +6,7 @@
         <mat-form-field class="width-100">
           <textarea
               formControlName="value"
+              [(ngModel)]="elements[i]"
               matInput
               cdkTextareaAutosize
               cdkAutosizeMinRows="1"

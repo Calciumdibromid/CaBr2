@@ -22,7 +22,8 @@ export class MenubarComponent implements OnInit {
   constructor(
     public globals: GlobalModel,
     private loadSaveService: LoadSaveService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.globals.header.documentTitle =
@@ -99,7 +100,7 @@ export class MenubarComponent implements OnInit {
       );
   }
 
-  onDarkModeSwitched({checked}: MatSlideToggleChange) {
+  onDarkModeSwitched({checked}: MatSlideToggleChange): void {
     this.darkModeSwitched.emit(checked);
   }
 }
