@@ -29,7 +29,6 @@
             "style": "kebab-case"
           }
         ],
-        "no-shadow": "off"
         "@angular-eslint/directive-selector": [
           "error",
           {
@@ -38,6 +37,7 @@
             "style": "camelCase"
           }
         ],
+        "no-shadow": "off"
         "@typescript-eslint/no-shadow": [
           "error"
         ],
