@@ -13,6 +13,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatListModule} from '@angular/material/list';
 import {MatDividerModule} from '@angular/material/divider';
 import {ScrollingModule} from '@angular/cdk/scrolling';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 const modules = [
   MatIconModule,
@@ -29,6 +30,7 @@ const modules = [
   MatListModule,
   MatDividerModule,
   ScrollingModule,
+  MatSlideToggleModule,
 ];
 
 @NgModule({
