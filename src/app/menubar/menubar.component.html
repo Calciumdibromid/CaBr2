@@ -34,6 +34,9 @@
       <img class="icon" src="assets/icons/Pfeil.svg">
     </button>
     <br/>
+  <mat-slide-toggle (change)="onDarkModeSwitched($event)" color="primary" matTooltip="Auf dunkles Thema umschalten">
+      <span class="material-icons">invert_colors</span>
+    </mat-slide-toggle>
   </mat-sidenav>
   <mat-sidenav-content class="smooth-scroll">
     <div #headerTarget>
