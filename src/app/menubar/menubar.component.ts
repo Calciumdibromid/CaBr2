@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { descriptions } from '../../assets/descriptions.json';
+import {Component, OnInit} from '@angular/core';
+import {descriptions} from '../../assets/descriptions.json';
 import ListInputSpecifcations from '../@core/interfaces/ListInputSpecifications';
-import { GlobalModel } from '../@core/models/global.model';
-import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
-import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
-import logger, { log } from '../@core/utils/logger';
+import {GlobalModel} from '../@core/models/global.model';
+import {CaBr2Document} from '../@core/services/loadSave/loadSave.model';
+import {LoadSaveService} from '../@core/services/loadSave/loadSave.service';
+import logger, {log} from '../@core/utils/logger';
 
 @Component({
   selector: 'app-menubar',
@@ -20,7 +20,8 @@ export class MenubarComponent implements OnInit {
   constructor(
     public globals: GlobalModel,
     private loadSaveService: LoadSaveService
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.globals.header.documentTitle =
@@ -30,94 +31,46 @@ export class MenubarComponent implements OnInit {
     this.globals.header.labCourse = 'Praktikum Anorganische Chemie';
 
     this.globals.humanAndEnvironmentDanger = [
-      {
-        content:
-          'Bei anhaltender Augenreizung ärztlichen Rat einholen. Funkenerzeugung und elektrische Aufladung vermeiden.',
-        hover: false,
-      },
+      'Bei anhaltender Augenreizung ärztlichen Rat einholen. Funkenerzeugung und elektrische Aufladung vermeiden.',
     ];
 
     this.globals.rulesOfConduct = [
-      {
-        content: 'Hautschutz und Schutzkleidung mit Schutzbrille tragen.',
-        hover: false,
-      },
+      'Hautschutz und Schutzkleidung mit Schutzbrille tragen.',
     ];
 
     this.globals.inCaseOfDanger = [
-      {
-        content:
-          'Nach Einatmen: An die frische Luft bringen. Sofort Arzt hinzuziehen.',
-        hover: false,
-      },
-      {
-        content:
-          'Nach Hautkontakt: Sofort mit Wasser abwaschen. Kontaminierte Kleidung entfernen. Sofort Arzt hinzuziehen.',
-        hover: false,
-      },
-      {
-        content:
-          'Nach Verschlucken: Mund mit Wasser spülen, Wasser trinken lassen. Kein Erbrechen auslösen. Nur bei Bewusstsein!',
-        hover: false,
-      },
-      {
-        // eslint-disable-next-line max-len
-        content:
-          'Nach Augenkontakt: Mit Wasser spülen. Falls vorhanden nach Möglichkeit Kontaktlinsen entfernen und weiter spülen. Sofort Augenarzt hinzuziehen.',
-        hover: false,
-      },
+      'Nach Einatmen: An die frische Luft bringen. Sofort Arzt hinzuziehen.',
+      'Nach Hautkontakt: Sofort mit Wasser abwaschen. Kontaminierte Kleidung entfernen. Sofort Arzt hinzuziehen.',
+      'Nach Verschlucken: Mund mit Wasser spülen, Wasser trinken lassen. Kein Erbrechen auslösen. Nur bei Bewusstsein!',
+      // eslint-disable-next-line max-len
+      'Nach Augenkontakt: Mit Wasser spülen. Falls vorhanden nach Möglichkeit Kontaktlinsen entfernen und weiter spülen. Sofort Augenarzt hinzuziehen.',
     ];
 
     this.globals.disposal = [];
   }
 
   scroll(el: HTMLElement): void {
-    el.scrollIntoView({ behavior: 'smooth' });
+    el.scrollIntoView({behavior: 'smooth'});
   }
 
   modelToDocument(): CaBr2Document {
     return {
       header: this.globals.header,
       substanceData: this.globals.substanceData,
-      // TODO DELETE hover !!!!!!!!
-      disposal: this.globals.disposal.map((element) => element.content),
-      // TODO DELETE hover !!!!!!!!
-      humanAndEnvironmentDanger: this.globals.humanAndEnvironmentDanger.map(
-        (element) => element.content
-      ),
-      // TODO DELETE hover !!!!!!!!
-      inCaseOfDanger: this.globals.inCaseOfDanger.map(
-        (element) => element.content
-      ),
-      // TODO DELETE hover !!!!!!!!
-      rulesOfConduct: this.globals.rulesOfConduct.map(
-        (element) => element.content
-      ),
+      disposal: this.globals.disposal,
+      humanAndEnvironmentDanger: this.globals.humanAndEnvironmentDanger,
+      inCaseOfDanger: this.globals.inCaseOfDanger,
+      rulesOfConduct: this.globals.rulesOfConduct,
     };
   }
 
   documentToModel(doc: CaBr2Document): void {
     this.globals.header = doc.header;
     this.globals.substanceData = doc.substanceData;
-    // TODO DELETE hover !!!!!!!!
-    this.globals.disposal = doc.disposal.map((element) => ({
-      content: element,
-      hover: false,
-    }));
-    // TODO DELETE hover !!!!!!!!
-    this.globals.humanAndEnvironmentDanger = doc.humanAndEnvironmentDanger.map(
-      (element) => ({ content: element, hover: false })
-    );
-    // TODO DELETE hover !!!!!!!!
-    this.globals.inCaseOfDanger = doc.inCaseOfDanger.map((element) => ({
-      content: element,
-      hover: false,
-    }));
-    // TODO DELETE hover !!!!!!!!
-    this.globals.rulesOfConduct = doc.rulesOfConduct.map((element) => ({
-      content: element,
-      hover: false,
-    }));
+    this.globals.disposal = doc.disposal;
+    this.globals.humanAndEnvironmentDanger = doc.humanAndEnvironmentDanger;
+    this.globals.inCaseOfDanger = doc.inCaseOfDanger;
+    this.globals.rulesOfConduct = doc.rulesOfConduct;
   }
 
   loadFile(): void {

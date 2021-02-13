@@ -20,12 +20,12 @@ export class GlobalModel {
 
   substanceData: SubstanceData[] = [];
 
-  humanAndEnvironmentDanger: ListInputSpecifcations[] = [];
+  humanAndEnvironmentDanger: string[] = [];
 
-  rulesOfConduct: ListInputSpecifcations[] = [];
+  rulesOfConduct: string[] = [];
 
-  inCaseOfDanger: ListInputSpecifcations[] = [];
+  inCaseOfDanger: string[] = [];
 
-  disposal: ListInputSpecifcations[] = [];
+  disposal: string[] = [];
 
 }

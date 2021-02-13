@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import ListInputSpecifcations from '../@core/interfaces/ListInputSpecifications';
+import {Component, Input, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-list-input-specifcations',
@@ -9,31 +9,42 @@ import ListInputSpecifcations from '../@core/interfaces/ListInputSpecifications'
 export class ListInputSpecifcationsComponent implements OnInit {
 
   @Input()
-  elements: Array<ListInputSpecifcations> = [];
+  elements: string[] = [];
 
   @Input()
   title = '';
 
+  form: FormGroup;
+
   addHover = false;
 
-  constructor() { }
+  constructor(
+    private formBuilder: FormBuilder,
+  ) {
+    this.form = this.formBuilder.group({
+      elements: this.formBuilder.array(this.elements.map(value => this.initForm(value)))
+    });
+  }
 
   ngOnInit(): void {
   }
 
+  get controlElements(): FormArray {
+    return this.form.get('elements') as FormArray;
+  }
+
+  initForm(value: string): FormGroup {
+    return this.formBuilder.group({
+      value,
+      hover: false
+    });
+  }
+
   addElement(): void {
-    this.elements.push({ content: '', hover: false });
+    this.controlElements.push(this.initForm(''));
   }
 
   removeElement(index: number): void {
     this.elements.splice(index, 1);
-  }
-
-  setHover(value: boolean): void {
-    this.addHover = value;
-  }
-
-  setRemoveHover(value: boolean, index: number): void {
-    this.elements[index].hover = value;
   }
 }
