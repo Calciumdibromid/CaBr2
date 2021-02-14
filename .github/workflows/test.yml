@@ -30,7 +30,7 @@ jobs:
           cd ./src-tauri
           cargo test
 
-  lint-frontend:
+  frontend:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
