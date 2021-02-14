@@ -1,7 +1,7 @@
+import logger from './app/@core/utils/logger';
 import { promisified } from 'tauri/api/tauri';
 import { SearchArguments } from './app/@core/services/search/search.model';
 import { SearchService } from './app/@core/services/search/search.service';
-import logger from './app/@core/utils/logger';
 import { TauriService } from './app/@core/services/tauri/tauri.service';
 
 const debugMain = () => {
