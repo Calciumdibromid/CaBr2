@@ -37,7 +37,7 @@
             "style": "camelCase"
           }
         ],
-        "no-shadow": "off"
+        "no-shadow": "off",
         "@typescript-eslint/no-shadow": [
           "error"
         ],
@@ -52,7 +52,7 @@
             ]
           }
         ],
-        "max-len": ["error", 120],
+        "max-len": ["error", 120]
       }
     },
     {
