@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Header} from '../@core/interfaces/Header';
-import {GlobalModel} from '../@core/models/global.model';
+import { Component, OnInit } from '@angular/core';
+import { GlobalModel } from '../@core/models/global.model';
 
 @Component({
   selector: 'app-header',

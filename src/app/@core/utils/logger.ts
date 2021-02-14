@@ -16,7 +16,7 @@ const log = (level: LogLevel, msg: unknown): void  => {
   });
 };
 
-export {log};
+export { log };
 
 export default class logger {
   static trace(msg: unknown): void {

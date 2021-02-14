@@ -1,17 +1,17 @@
-import {Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
-import {SearchArguments, SearchResult, SearchType, SearchTypeMapping} from './search.model';
-import {TauriService} from '../tauri/tauri.service';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { SearchArguments, SearchResult, SearchType, SearchTypeMapping } from './search.model';
+import { TauriService } from '../tauri/tauri.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
   public searchTypeMappings: SearchTypeMapping[] = [
-    {viewValue: 'Stoffname', value: 'chemicalName'},
-    {viewValue: 'Summenformel', value: 'empiricalFormula'},
-    {viewValue: 'Nummern', value: 'numbers'},
-    {viewValue: 'Volltext', value: 'fullText'},
+    { viewValue: 'Stoffname', value: 'chemicalName' },
+    { viewValue: 'Summenformel', value: 'empiricalFormula' },
+    { viewValue: 'Nummern', value: 'numbers' },
+    { viewValue: 'Volltext', value: 'fullText' },
   ];
 
   constructor(

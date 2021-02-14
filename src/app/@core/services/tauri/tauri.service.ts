@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {from, Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { from, Observable } from 'rxjs';
 import * as dialog from 'tauri/api/dialog';
 import * as tauri from 'tauri/api/tauri';
 

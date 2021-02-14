@@ -1,8 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
-import {debounceTime} from 'rxjs/operators';
-import {SearchArgument, SearchType, SearchTypeMapping} from '../../@core/services/search/search.model';
-import {SearchService} from '../../@core/services/search/search.service';
+import { Component, OnInit } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
+import { SearchArgument, SearchType, SearchTypeMapping } from '../../@core/services/search/search.model';
+import { SearchService } from '../../@core/services/search/search.service';
 
 @Component({
   selector: 'app-selected-search',
