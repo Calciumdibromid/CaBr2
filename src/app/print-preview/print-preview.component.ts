@@ -1,6 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {descriptions} from '../../assets/descriptions.json';
-import {GlobalModel} from '../@core/models/global.model';
+import { Component, OnInit } from '@angular/core';
+import { descriptions } from '../../assets/descriptions.json';
+import { GlobalModel } from '../@core/models/global.model';
 
 @Component({
   selector: 'app-print-preview',

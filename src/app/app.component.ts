@@ -1,6 +1,6 @@
-import {Component, HostBinding, Inject, OnInit, Renderer2} from '@angular/core';
-import {name, version} from '../../package.json';
-import {DOCUMENT} from '@angular/common';
+import { Component, HostBinding, Inject, OnInit, Renderer2 } from '@angular/core';
+import { name, version } from '../../package.json';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-root',
