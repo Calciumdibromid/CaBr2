@@ -29,6 +29,14 @@
             "style": "kebab-case"
           }
         ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
         "no-shadow": "off",
         "@typescript-eslint/no-shadow": [
           "error"
@@ -44,14 +52,8 @@
             ]
           }
         ],
-        "@angular-eslint/directive-selector": [
-          "error",
-          {
-            "type": "attribute",
-            "prefix": "app",
-            "style": "camelCase"
-          }
-        ]
+        "max-len": ["error", 120],
+        "object-curly-spacing": ["error", "always"]
       }
     },
     {
