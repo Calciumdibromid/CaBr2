@@ -1,18 +1,21 @@
 use serde::{Deserialize, Serialize};
 
-pub use crate::types::{Data, Image, SubstanceData};
+pub use crate::types::{Data, SubstanceData};
 
 #[derive(Debug)]
 pub struct ParsedData {
+  pub cas: String,
   pub molecular_formula: String,
+  pub molar_mass: Option<String>,
   pub melting_point: Option<String>,
   pub boiling_point: Option<String>,
   pub water_hazard_class: Option<String>,
   pub h_phrases: Option<Vec<(String, String)>>,
   pub p_phrases: Option<Vec<(String, String)>>,
   pub signal_word: Option<String>,
-  pub symbols: Option<Vec<Image>>,
+  pub symbols: Option<Vec<String>>,
   pub lethal_dose: Option<String>,
+  pub mak: Option<String>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -22,6 +25,7 @@ pub struct GestisResponse {
   pub name: String,
   #[serde(rename = "hauptkapitel")]
   pub chapters: Vec<Chapter>,
+  pub aliases: Vec<Alias>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -37,6 +41,11 @@ pub struct Subchapter {
   #[serde(rename = "drnr")]
   pub number: String,
   pub text: Option<String>,
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Alias {
+  pub name: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

@@ -9,7 +9,7 @@ export default function debugMain() {
   // testSearchSuggestions();
   // testSearch();
   // testSubstanceData();
-  testLoadBeryllium();
+  // testLoadBeryllium();
 
   logger.warning('======== end of frontend debugging calls ========');
 }
@@ -37,7 +37,7 @@ function testSearch() {
 }
 
 function testSubstanceData() {
-  promisified({ cmd: 'getChemicalInfo', zvgNumber: '005340' })
+  promisified({ cmd: 'getSubstanceData', zvgNumber: '005340' })
     .then((res) => {
       logger.debug(res);
     })

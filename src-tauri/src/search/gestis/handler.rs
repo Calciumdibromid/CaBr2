@@ -1,13 +1,10 @@
-use std::{collections::HashMap, io::Read, sync::Mutex};
-
-use lazy_static::lazy_static;
 use ureq::Agent;
+
+use crate::types::Source;
 
 use super::{
   error::{Result, SearchError},
-  types::{
-    Data, GestisResponse, Image, SearchArguments, SearchResponse, SearchType, SubstanceData,
-  },
+  types::{Data, GestisResponse, SearchArguments, SearchResponse, SearchType, SubstanceData},
   xml_parser,
 };
 
@@ -17,10 +14,6 @@ const SEARCH: &str = "search";
 const ARTICLE: &str = "article";
 
 const SEARCH_TYPE_NAMES: [&str; 4] = ["stoffname", "nummern", "summenformel", "volltextsuche"];
-
-lazy_static! {
-  static ref IMAGE_CACHE: Mutex<HashMap<String, String>> = Mutex::new(HashMap::new());
-}
 
 fn make_request(agent: &Agent, url: &str) -> Result<ureq::Response> {
   let res = agent.get(&url).call();
@@ -85,15 +78,21 @@ pub fn get_substance_data(agent: Agent, zvg_number: String) -> Result<SubstanceD
 
   let json: GestisResponse = res.into_json_deserialize()?;
 
-  let data = xml_parser::parse_response(json)?;
+  let data = xml_parser::parse_response(&json)?;
 
   let res_data = SubstanceData {
+    name: Data::new(json.name.clone()),
+    alternative_names: Data::new(json.aliases.into_iter().map(|a| a.name).collect()),
+    cas: Data::new(Some(data.cas)),
     molecular_formula: Data::new(data.molecular_formula),
+    molar_mass: Data::new(data.molar_mass),
     melting_point: Data::new(data.melting_point),
     boiling_point: Data::new(data.boiling_point),
     water_hazard_class: Data::new(data.water_hazard_class),
     lethal_dose: Data::new(data.lethal_dose),
     signal_word: Data::new(data.signal_word),
+    mak: Data::new(data.mak),
+    amount: Data::new(None),
     h_phrases: Data::new(match data.h_phrases {
       Some(inner) => inner,
       None => Vec::new(),
@@ -103,45 +102,14 @@ pub fn get_substance_data(agent: Agent, zvg_number: String) -> Result<SubstanceD
       None => Vec::new(),
     }),
     symbols: Data::new(match data.symbols {
-      Some(symbols) => {
-        let mut cache = IMAGE_CACHE.lock().unwrap();
-        symbols
-          .into_iter()
-          .map(|i| Image {
-            src: {
-              if let Some(src) = cache.get(&i.src) {
-                src.clone()
-              } else {
-                match make_request(&agent, &i.src) {
-                  Ok(res) => {
-                    let len = res
-                      .header("Content-Length")
-                      .and_then(|s| s.parse::<usize>().ok())
-                      .unwrap();
-
-                    let mut reader = res.into_reader();
-                    let mut buf = Vec::with_capacity(len);
-                    reader.read_to_end(&mut buf).unwrap();
-
-                    let base_64_img =
-                      format!("data:image/image/gif;base64,{}", base64::encode(buf));
-                    cache.insert(i.src, base_64_img.clone());
-
-                    base_64_img
-                  }
-                  Err(e) => {
-                    log::debug!("{:#?}", e);
-                    "".into()
-                  }
-                }
-              }
-            },
-            alt: i.alt,
-          })
-          .collect()
-      }
+      Some(inner) => inner,
       None => Vec::new(),
     }),
+    source: Source {
+      provider: "gestis".into(),
+      url: "".into(),
+      last_updated: chrono::Utc::now(),
+    },
   };
 
   Ok(res_data)
