@@ -1,20 +1,22 @@
-import {Injectable} from '@angular/core';
-import {from, Observable} from 'rxjs';
-import {promisified} from 'tauri/api/tauri';
-import {SearchArguments, SearchResult, SearchType, SearchTypeMapping} from './search.model';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { SearchArguments, SearchResult, SearchType, SearchTypeMapping } from './search.model';
+import { TauriService } from '../tauri/tauri.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
   public searchTypeMappings: SearchTypeMapping[] = [
-    {viewValue: 'Stoffname', value: 'chemicalName'},
-    {viewValue: 'Summenformel', value: 'empiricalFormula'},
-    {viewValue: 'Nummern', value: 'numbers'},
-    {viewValue: 'Volltext', value: 'fullText'},
+    { viewValue: 'Stoffname', value: 'chemicalName' },
+    { viewValue: 'Summenformel', value: 'empiricalFormula' },
+    { viewValue: 'Nummern', value: 'numbers' },
+    { viewValue: 'Volltext', value: 'fullText' },
   ];
 
-  constructor() {
+  constructor(
+    private tauriService: TauriService,
+  ) {
   }
 
   /**
@@ -31,13 +33,11 @@ export class SearchService {
    * ```
    */
   searchSuggestions(searchType: SearchType, query: string): Observable<string[]> {
-    return from(
-      promisified<string[]>({
-        cmd: 'searchSuggestions',
-        pattern: query,
-        searchType
-      })
-    );
+    return this.tauriService.promisified({
+      cmd: 'searchSuggestions',
+      pattern: query,
+      searchType
+    });
   }
 
   /**
@@ -60,11 +60,9 @@ export class SearchService {
    * ```
    */
   search(args: SearchArguments): Observable<SearchResult[]> {
-    return from(
-      promisified<SearchResult[]>({
-        cmd: 'search',
-        arguments: args,
-      })
-    );
+    return this.tauriService.promisified({
+      cmd: 'search',
+      arguments: args,
+    });
   }
 }

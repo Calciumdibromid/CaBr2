@@ -2,6 +2,7 @@ import { promisified } from 'tauri/api/tauri';
 import { SearchArguments } from './app/@core/services/search/search.model';
 import { SearchService } from './app/@core/services/search/search.service';
 import logger from './app/@core/utils/logger';
+import { TauriService } from './app/@core/services/tauri/tauri.service';
 
 const debugMain = () => {
   logger.warning('======== frontend debugging file called ========');
@@ -9,14 +10,14 @@ const debugMain = () => {
   // testSearchSuggestions();
   // testSearch();
   // testSubstanceData();
-  testLoadBeryllium();
+  // testLoadBeryllium();
 
   logger.warning('======== end of frontend debugging calls ========');
 };
 
 export default debugMain;
 
-const service = new SearchService();
+const service = new SearchService(new TauriService());
 
 const testSearchSuggestions = () => {
   service.searchSuggestions('chemicalName', 'salzsäure').subscribe((res) => {
@@ -39,7 +40,7 @@ const testSearch = () => {
 };
 
 const testSubstanceData = () => {
-  promisified({ cmd: 'getChemicalInfo', zvgNumber: '005340' })
+  promisified({ cmd: 'getSubstanceData', zvgNumber: '005340' })
     .then((res) => {
       logger.debug(res);
     })

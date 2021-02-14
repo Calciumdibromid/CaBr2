@@ -1,11 +1,11 @@
-import {Component, EventEmitter,OnInit, Output} from '@angular/core';
-import {descriptions} from '../../assets/descriptions.json';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { descriptions } from '../../assets/descriptions.json';
 
-import {GlobalModel} from '../@core/models/global.model';
-import {CaBr2Document} from '../@core/services/loadSave/loadSave.model';
-import {LoadSaveService} from '../@core/services/loadSave/loadSave.service';
+import { GlobalModel } from '../@core/models/global.model';
+import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
+import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import logger from '../@core/utils/logger';
-import {MatSlideToggleChange} from '@angular/material/slide-toggle';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-menubar',
@@ -50,7 +50,7 @@ export class MenubarComponent implements OnInit {
   }
 
   scroll(el: HTMLElement): void {
-    el.scrollIntoView({behavior: 'smooth'});
+    el.scrollIntoView({ behavior: 'smooth' });
   }
 
   modelToDocument(): CaBr2Document {
@@ -98,7 +98,7 @@ export class MenubarComponent implements OnInit {
       );
   }
 
-  onDarkModeSwitched({checked}: MatSlideToggleChange): void {
+  onDarkModeSwitched({ checked }: MatSlideToggleChange): void {
     this.darkModeSwitched.emit(checked);
   }
 }

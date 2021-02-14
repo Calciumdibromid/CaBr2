@@ -4,7 +4,7 @@ use lazy_static::lazy_static;
 use roxmltree::{Document, Node, NodeId};
 
 use super::error::{Result, SearchError};
-use super::types::{GestisResponse, Image, ParsedData};
+use super::types::{GestisResponse, ParsedData};
 
 // maybe needed for later
 // pub const PARTS: [(&str, &str, &str); 8] = [
@@ -32,7 +32,7 @@ lazy_static! {
   .collect();
 }
 
-pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
+pub fn parse_response(json: &GestisResponse) -> Result<ParsedData> {
   log::debug!("extracting data for: {} ...", json.name);
 
   let h_p_signal_symbols_error;
@@ -55,7 +55,15 @@ pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
   };
 
   Ok(ParsedData {
-    molecular_formula: match get_molecular_formula(&json) {
+    cas: match get_cas(json) {
+      Ok(inner) => inner,
+      Err(e) => {
+        // should never occur
+        log::debug!("[cas] error: {:#?}", e);
+        return Err(e);
+      }
+    },
+    molecular_formula: match get_molecular_formula(json) {
       Ok(inner) => inner,
       Err(e) => {
         // should never occur
@@ -63,21 +71,28 @@ pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
         return Err(e);
       }
     },
-    melting_point: match get_melting_point(&json) {
+    molar_mass: match get_molar_mass(json) {
+      Ok(inner) => Some(inner),
+      Err(e) => {
+        log::debug!("[molar_mass] error: {:#?}", e);
+        None
+      }
+    },
+    melting_point: match get_melting_point(json) {
       Ok(inner) => Some(inner),
       Err(e) => {
         log::debug!("[melting_point] error: {:#?}", e);
         None
       }
     },
-    boiling_point: match get_boiling_point(&json) {
+    boiling_point: match get_boiling_point(json) {
       Ok(inner) => Some(inner),
       Err(e) => {
         log::debug!("[boiling_point] error: {:#?}", e);
         None
       }
     },
-    water_hazard_class: match get_whc(&json) {
+    water_hazard_class: match get_whc(json) {
       Ok(inner) => Some(inner),
       Err(e) => {
         log::debug!("[water_hazard_class] error: {:#?}", e);
@@ -128,7 +143,7 @@ pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
         None
       }
     },
-    lethal_dose: match get_lethal_dose(&json) {
+    lethal_dose: match get_lethal_dose(json) {
       Ok(inner) => inner,
       Err(e) => {
         log::debug!("[lethal_dose] error: {:#?}", e);
@@ -136,6 +151,13 @@ pub fn parse_response(json: GestisResponse) -> Result<ParsedData> {
           SearchError::Multiple(inner) => Some(inner),
           _ => None,
         }
+      }
+    },
+    mak: match get_mak(json) {
+      Ok(inner) => Some(inner),
+      Err(e) => {
+        log::debug!("[mak] error: {:#?}", e);
+        None
       }
     },
   })
@@ -183,6 +205,12 @@ fn tables(node: &Node, class: &str) -> Vec<Vec<Vec<NodeId>>> {
 
 /* #region  extractors */
 
+fn get_cas(_json: &GestisResponse) -> Result<String> {
+  // TODO implement function
+  log::error!("not implemented: 'get_cas()'");
+  Err(SearchError::MissingInfo("cas".into()))
+}
+
 fn get_molecular_formula(json: &GestisResponse) -> Result<String> {
   let (chapter, subchapter) = CHAPTER_MAPPING.get("molecular_formula").unwrap();
   let xml = get_xml(json, chapter, subchapter)?;
@@ -212,6 +240,12 @@ fn get_molecular_formula(json: &GestisResponse) -> Result<String> {
   }
 
   Err(SearchError::MissingInfo("molecular formula".into()))
+}
+
+fn get_molar_mass(_json: &GestisResponse) -> Result<String> {
+  // TODO implement function
+  log::error!("not implemented: 'get_molar_mass()'");
+  Err(SearchError::MissingInfo("molar mass".into()))
 }
 
 fn get_melting_point(json: &GestisResponse) -> Result<String> {
@@ -309,7 +343,7 @@ type HPSignalSymbolsResult = Result<(
   Result<Vec<(std::string::String, std::string::String)>>,
   Result<Vec<(std::string::String, std::string::String)>>,
   Result<std::string::String>,
-  Result<Vec<Image>>,
+  Result<Vec<String>>,
 )>;
 
 fn get_h_p_signal_symbols(json: &GestisResponse) -> HPSignalSymbolsResult {
@@ -321,6 +355,7 @@ fn get_h_p_signal_symbols(json: &GestisResponse) -> HPSignalSymbolsResult {
       .filter(|n| n.is_text())
       .map(|n| n.text().unwrap())
       .map(|s| s.splitn(2, ':').map(|s| s.trim()).collect::<Vec<&str>>())
+      // TODO remove lines that are no h/p-phrases
       .filter(|v| v.len() > 1) // TODO quickfix, remove
       .map(|v| (v[0].into(), v[1].into()))
       .collect()
@@ -363,12 +398,14 @@ fn get_h_p_signal_symbols(json: &GestisResponse) -> HPSignalSymbolsResult {
                 .filter(|n| n.is_some())
                 .map(|n| {
                   let data = n.unwrap();
-                  Image {
-                    src: data.attribute("src").unwrap().into(),
-                    alt: data.attribute("alt").unwrap().into(),
-                  }
+                  // only alt text is needed as identifier
+                  data
+                    .attribute("alt")
+                    .unwrap()
+                    .trim_end_matches("-neu")
+                    .into()
                 })
-                .collect::<Vec<Image>>(),
+                .collect::<Vec<String>>(),
             );
           } else if inner.has_tag_name("table") {
             let mut table_iter = tables(data, "feldmitlabel")
@@ -450,6 +487,12 @@ fn get_lethal_dose(json: &GestisResponse) -> Result<Option<String>> {
     Some(inner) => Ok(Some(inner.into())),
     None => Err(SearchError::MissingInfo("lethal dose".into())),
   }
+}
+
+fn get_mak(_json: &GestisResponse) -> Result<String> {
+  // TODO implement function
+  log::error!("not implemented: 'get_mak()'");
+  Err(SearchError::MissingInfo("mak".into()))
 }
 
 /* #endregion */
