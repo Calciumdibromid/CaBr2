@@ -3,7 +3,7 @@ import { SearchArguments } from './app/@core/services/search/search.model';
 import { SearchService } from './app/@core/services/search/search.service';
 import logger from './app/@core/utils/logger';
 
-export default function debugMain() {
+const debugMain = () => {
   logger.warning('======== frontend debugging file called ========');
 
   // testSearchSuggestions();
@@ -12,17 +12,19 @@ export default function debugMain() {
   // testLoadBeryllium();
 
   logger.warning('======== end of frontend debugging calls ========');
-}
+};
+
+export default debugMain;
 
 const service = new SearchService();
 
-function testSearchSuggestions() {
+const testSearchSuggestions = () => {
   service.searchSuggestions('chemicalName', 'salzsäure').subscribe((res) => {
     logger.debug(res);
   });
-}
+};
 
-function testSearch() {
+const testSearch = () => {
   const args: SearchArguments = {
     // exact: true,
     arguments: [
@@ -34,9 +36,9 @@ function testSearch() {
   service.search(args).subscribe((res) => {
     logger.debug(res);
   });
-}
+};
 
-function testSubstanceData() {
+const testSubstanceData = () => {
   promisified({ cmd: 'getSubstanceData', zvgNumber: '005340' })
     .then((res) => {
       logger.debug(res);
@@ -44,9 +46,9 @@ function testSubstanceData() {
     .catch((err) => {
       logger.error(err);
     });
-}
+};
 
-function testLoadBeryllium() {
+const testLoadBeryllium = () => {
   promisified({ cmd: 'loadDocument', filename: '/tmp/test.be' })
     .then((res) => {
       logger.debug(res);
@@ -54,4 +56,4 @@ function testLoadBeryllium() {
     .catch((err) => {
       logger.error(err);
     });
-}
+};

@@ -52,7 +52,7 @@
     }
 </style>
 
-<app-menubar></app-menubar>
+<app-menubar (darkModeSwitched)="switchMode($event)"></app-menubar>
 <!-- <app-header></app-header> -->
 
 <div class="version">{{ name }} {{ version }}</div>
