@@ -75,7 +75,7 @@ export class MenubarComponent implements OnInit {
   loadFile(): void {
     this.tauriService
       .open({
-        filter: '*.cb2',
+        filter: '*.cb2', // TODO get filetypes from backend
         multiple: false,
       })
       .subscribe((path) => {
