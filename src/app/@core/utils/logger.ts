@@ -8,13 +8,15 @@ export enum LogLevel {
   ERROR = 'ERROR',
 }
 
-export function log(level: LogLevel, msg: unknown): void {
+const log = (level: LogLevel, msg: unknown): void  => {
   invoke({
     cmd: 'log',
     level,
     message: msg,
   });
-}
+};
+
+export {log};
 
 export default class logger {
   static trace(msg: unknown): void {
