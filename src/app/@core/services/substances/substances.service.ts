@@ -1,21 +1,21 @@
 import {Injectable} from '@angular/core';
-import {from, Observable} from 'rxjs';
-import {promisified} from 'tauri/api/tauri';
+import {Observable} from 'rxjs';
 import {SubstanceData} from './substances.model';
+import {TauriService} from '../tauri/tauri.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SearchService {
-  constructor() {
+export class SubstancesService {
+  constructor(
+    private tauriService: TauriService,
+  ) {
   }
 
   substanceInfo(zvgNumber: string): Observable<SubstanceData> {
-    return from(
-      promisified<SubstanceData>({
-        cmd: 'getSubstanceData',
-        zvgNumber,
-      })
-    );
+    return this.tauriService.promisified({
+      cmd: 'getSubstanceData',
+      zvgNumber,
+    });
   }
 }
