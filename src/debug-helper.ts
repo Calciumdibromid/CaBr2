@@ -10,7 +10,7 @@ const debugMain = () => {
   // testSearchSuggestions();
   // testSearch();
   // testSubstanceData();
-  testLoadBeryllium();
+  // testLoadBeryllium();
 
   logger.warning('======== end of frontend debugging calls ========');
 };
@@ -40,7 +40,7 @@ const testSearch = () => {
 };
 
 const testSubstanceData = () => {
-  promisified({ cmd: 'getChemicalInfo', zvgNumber: '005340' })
+  promisified({ cmd: 'getSubstanceData', zvgNumber: '005340' })
     .then((res) => {
       logger.debug(res);
     })
