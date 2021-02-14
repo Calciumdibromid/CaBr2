@@ -2,8 +2,20 @@
   <mat-dialog-content class="grid">
     <mat-card class="flex">
       <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>CAS Nummer</mat-label>
+        <input matInput formControlName="cas"/>
+      </mat-form-field>
+      <mat-form-field>
         <mat-label>Summenformel</mat-label>
         <input matInput formControlName="molecularFormula"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Molare Masse</mat-label>
+        <input matInput formControlName="molaMass"/>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Schmelzpunkt</mat-label>
@@ -25,6 +37,28 @@
         <mat-label>Lethale Dosis</mat-label>
         <input matInput formControlName="lethalDose"/>
       </mat-form-field>
+      <mat-form-field>
+        <mat-label>MAK</mat-label>
+        <input matInput formControlName="mak"/>
+      </mat-form-field>
+      <div formGroupName="amount">
+        <mat-form-field>
+          <mat-label>Menge</mat-label>
+          <input matInput formControlName="value">
+          <mat-error *ngIf="this.form.get('amount')?.get('value')?.invalid">Keine Zahl</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Einheit</mat-label>
+          <mat-select formControlName="unit">
+            <mat-option
+                *ngFor="let option of unitMappings"
+                [value]="option.value"
+            >
+              {{ option.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </mat-card>
 
     <div class="flex">
@@ -121,12 +155,12 @@
 
     <mat-card class="flex" formArrayName="symbols">
       <div *ngFor="let control of symbols.controls; let i = index">
-        <img [src]="sanitizeImage(control.get('src')?.value)" alt="{{control.get('alt')?.value}}">
+        <img [src]="sanitizeImage(control.get('value')?.value)" alt="{{control.get('value')?.value}}">
       </div>
     </mat-card>
   </mat-dialog-content>
   <div mat-dialog-actions>
     <button mat-button (click)="close()">Abbrechen</button>
-    <button mat-button (click)="onSubmit()">Speichern</button>
+    <button mat-button type="submit">Speichern</button>
   </div>
 </form>

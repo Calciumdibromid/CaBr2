@@ -1,6 +1,6 @@
 export interface SubstanceData {
   name: Data<string>;
-  alternativeNames: Data<string[]>;
+  readonly alternativeNames: string[];
   cas: Data<string | undefined>;
   molecularFormula: Data<string>;
   molarMass: Data<string | undefined>;
@@ -13,13 +13,13 @@ export interface SubstanceData {
   symbols: Data<string[]>;
   lethalDose: Data<string | undefined>;
   mak: Data<string | undefined>;
-  source: Source;
+  readonly source: Source;
   amount: Data<Amount | undefined>;
 }
 
-interface Data<T> {
+export interface Data<T> {
   modifiedData?: T;
-  originalData: T;
+  readonly originalData: T;
 }
 
 export interface Image {
@@ -34,7 +34,7 @@ export interface Source {
 }
 
 export interface Amount {
-  amount: string;
+  value: string;
   unit: Unit;
 }
 
@@ -48,3 +48,21 @@ export enum Unit {
   PIECES = 'PIECES',
   CUSTOM = 'CUSTOM', // needs String
 }
+
+export interface UnitMapping {
+  viewValue: string;
+  value: Unit;
+}
+
+const unitMappings: UnitMapping[] = [
+  { viewValue: 'l (Liter)', value: Unit.LITRE },
+  { viewValue: 'ml (Milliliter)', value: Unit.MILLILITER },
+  { viewValue: 'µl (Mikroliter)', value: Unit.MICROLITRE },
+  { viewValue: 'g (Gramm)', value: Unit.GRAM },
+  { viewValue: 'mg (Milligramm)', value: Unit.MILLIGRAM },
+  { viewValue: 'µg (Mikrogramm)', value: Unit.MICROGRAM },
+  { viewValue: 'Stück', value: Unit.PIECES },
+  // { viewValue: 'Custom', value: Unit.CUSTOM }, // TODO implement custom type
+];
+
+export { unitMappings };

@@ -26,11 +26,7 @@ fn make_request(agent: &Agent, url: &str) -> Result<ureq::Response> {
   }
 }
 
-pub fn get_quick_search_suggestions(
-  agent: Agent,
-  search_type: SearchType,
-  pattern: String,
-) -> Result<Vec<String>> {
+pub fn get_quick_search_suggestions(agent: Agent, search_type: SearchType, pattern: String) -> Result<Vec<String>> {
   if pattern.len() < 2 {
     return Ok(vec![]);
   }
@@ -52,12 +48,7 @@ pub fn get_search_results(agent: Agent, args: SearchArguments) -> Result<Vec<Sea
   }
 
   let arguments: Vec<String> = arguments
-    .map(|a| {
-      format!(
-        "{}={}",
-        SEARCH_TYPE_NAMES[a.search_type as usize], a.pattern
-      )
-    })
+    .map(|a| format!("{}={}", SEARCH_TYPE_NAMES[a.search_type as usize], a.pattern))
     .collect();
 
   let url = format!(
@@ -82,7 +73,7 @@ pub fn get_substance_data(agent: Agent, zvg_number: String) -> Result<SubstanceD
 
   let res_data = SubstanceData {
     name: Data::new(json.name.clone()),
-    alternative_names: Data::new(json.aliases.into_iter().map(|a| a.name).collect()),
+    alternative_names: json.aliases.into_iter().map(|a| a.name).collect(),
     cas: Data::new(Some(data.cas)),
     molecular_formula: Data::new(data.molecular_formula),
     molar_mass: Data::new(data.molar_mass),

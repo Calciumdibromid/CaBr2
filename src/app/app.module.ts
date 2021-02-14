@@ -14,7 +14,7 @@ import { PrintPreviewComponent } from './print-preview/print-preview.component';
 import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
 import { EditSearchResultsComponent } from './search/edit-search-results/edit-search-results.component';
-import {GlobalModel} from './@core/models/global.model';
+import { GlobalModel } from './@core/models/global.model';
 
 
 @NgModule({
