@@ -25,6 +25,7 @@ roxmltree = "0.14.0"
 lazy_static = "1.4.0"
 base64 = "0.13.0"
 quick-xml = { version = "0.21.0", features = [ "serialize" ] }
+wkhtmltopdf = "0.3.0"
 
 [target."cfg(windows)".build-dependencies]
 winres = "0.1"
