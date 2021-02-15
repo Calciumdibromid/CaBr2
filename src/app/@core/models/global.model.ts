@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
 import { Header } from '../interfaces/Header';
+import { Injectable } from '@angular/core';
 import { SearchResult } from '../services/search/search.model';
 import { SubstanceData } from '../services/substances/substances.model';
 
@@ -27,4 +27,8 @@ export class GlobalModel {
 
   disposal: string[] = [];
 
+  ghsSymbols: GHSSymbols = new Map();
+
 }
+
+export type GHSSymbols = Map<string, string>;

@@ -1,49 +1,49 @@
 <mat-sidenav-container>
-  <mat-sidenav class="fixed" mode="side" opened disableClose>
-    <button class="icon" mat-icon-button [matMenuTriggerFor]="menu">
-      <span class="material-icons" style="margin: -80%">menu</span>
+  <mat-sidenav class='fixed' mode='side' opened disableClose>
+    <button class='hamburger' mat-icon-button [matMenuTriggerFor]='menu'>
+      <span class='material-icons' style='margin: -80%'>menu</span>
     </button>
-    <mat-menu #menu="matMenu">
+    <mat-menu #menu='matMenu'>
       <button mat-menu-item>Neue Betriebsanweisung</button>
-      <button mat-menu-item (click)="loadFile()">Bestehende Betriebsanweisung öffnen</button>
-      <button mat-menu-item (click)="saveFile()">Betriebsanweisung speichern</button>
-      <button mat-menu-item (click)="exportPDF()">Als PDF exportieren</button>
+      <button mat-menu-item (click)='loadFile()'>Bestehende Betriebsanweisung öffnen</button>
+      <button mat-menu-item (click)='saveFile()'>Betriebsanweisung speichern</button>
+      <button mat-menu-item (click)='exportPDF()'>Als PDF exportieren</button>
     </mat-menu>
-    <br/>
+    <br />
     <button
-        class="icon"
-        mat-icon-button
-        (click)="scroll(headerTarget)">
+      class='icon'
+      mat-icon-button
+      (click)='scroll(headerTarget)'>
       <mat-icon>
-        <img class="svg" src="assets/icons/Kolben.svg">
+        <img class='svg' src='assets/icons/Kolben.svg'>
       </mat-icon>
     </button>
-    <br/>
+    <br />
     <button
-        class="icon"
-        mat-icon-button
-        (click)="scroll(search)">
-      <img class="svg-icon" src="assets/icons/Lupe.svg">
+      class='icon'
+      mat-icon-button
+      (click)='scroll(search)'>
+      <img class='svg-icon' src='assets/icons/Lupe.svg'>
+    </button>
+    <br />
+    <button
+      class='icon'
+      mat-icon-button
+      (click)='scroll(securitythings)'>
+      <img class='svg-icon' src='assets/icons/Puzzel.svg'>
+    </button>
+    <br />
+    <button
+      class='icon'
+      mat-icon-button
+      (click)='scroll(preview)'>
+      <img class='svg-icon' src='assets/icons/Pfeil.svg'>
     </button>
     <br/>
-    <button
-        class="icon"
-        mat-icon-button
-        (click)="scroll(securitythings)">
-      <img class="svg-icon" src="assets/icons/Puzzel.svg">
-    </button>
-    <br/>
-    <button
-        class="icon"
-        mat-icon-button
-        (click)="scroll(preview)">
-      <img class="svg-icon" src="assets/icons/Pfeil.svg">
-    </button>
-    <br/>
-    <mat-slide-toggle (change)="onDarkModeSwitched($event)" color="primary" matTooltip="Auf dunkles Thema umschalten">
+    <mat-slide-toggle (change)="onDarkModeSwitched($event)" [checked]="config.global.darkTheme" color="primary" matTooltip="Auf dunkles Thema umschalten">
     </mat-slide-toggle>
   </mat-sidenav>
-  <mat-sidenav-content class="smooth-scroll">
+  <mat-sidenav-content class='smooth-scroll'>
     <div #headerTarget>
       <app-header></app-header>
     </div>
@@ -52,22 +52,22 @@
     </div>
     <div #securitythings>
       <app-list-input-specifcations
-          [title]="descriptions.humanAndEnvironmentDanger"
-          [elements]="globals.humanAndEnvironmentDanger"
+        [title]='descriptions.humanAndEnvironmentDanger'
+        [elements]='globals.humanAndEnvironmentDanger'
       ></app-list-input-specifcations>
       <app-list-input-specifcations
-          [title]="descriptions.rulesOfConduct"
-          [elements]="globals.rulesOfConduct"></app-list-input-specifcations>
+        [title]='descriptions.rulesOfConduct'
+        [elements]='globals.rulesOfConduct'></app-list-input-specifcations>
       <app-list-input-specifcations
-          [title]="descriptions.inCaseOfDanger"
-          [elements]="globals.inCaseOfDanger"></app-list-input-specifcations>
+        [title]='descriptions.inCaseOfDanger'
+        [elements]='globals.inCaseOfDanger'></app-list-input-specifcations>
       <app-list-input-specifcations
-          [title]="descriptions.disposal"
-          [elements]="globals.disposal"></app-list-input-specifcations>
+        [title]='descriptions.disposal'
+        [elements]='globals.disposal'></app-list-input-specifcations>
     </div>
     <div #preview>
       <app-preview></app-preview>
     </div>
-    <app-print-preview class="print"></app-print-preview>
+    <app-print-preview class='print'></app-print-preview>
   </mat-sidenav-content>
 </mat-sidenav-container>

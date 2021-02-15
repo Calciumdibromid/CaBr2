@@ -1,18 +1,18 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { descriptions } from '../../assets/descriptions.json';
-
-import { GlobalModel } from '../@core/models/global.model';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
+import { ConfigModel } from '../@core/models/config.model';
+import { descriptions } from '../../assets/descriptions.json';
+import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import logger from '../@core/utils/logger';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
+
 @Component({
   selector: 'app-menubar',
   templateUrl: './menubar.component.html',
   styleUrls: ['./menubar.component.scss'],
-  providers: [GlobalModel],
 })
 export class MenubarComponent implements OnInit {
   @Output()
@@ -22,6 +22,7 @@ export class MenubarComponent implements OnInit {
 
   constructor(
     public globals: GlobalModel,
+    public config: ConfigModel,
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
   ) {}
@@ -75,7 +76,7 @@ export class MenubarComponent implements OnInit {
   loadFile(): void {
     this.tauriService
       .open({
-        filter: '*.cb2', // TODO get filetypes from backend
+        filter: 'cb2', // TODO get filetypes from backend
         multiple: false,
       })
       .subscribe((path) => {
@@ -89,7 +90,7 @@ export class MenubarComponent implements OnInit {
   saveFile(): void {
     this.tauriService
       .save({
-        filter: '*.cb2',
+        filter: 'cb2',
       })
       .subscribe((path) => {
         this.loadSaveService.saveDocument('cb2', path as string, this.modelToDocument()).subscribe(
@@ -102,7 +103,7 @@ export class MenubarComponent implements OnInit {
   exportPDF(): void {
     this.tauriService
       .save({
-        filter: '*.pdf',
+        filter: 'pdf',
       })
       .subscribe((path) => {
         this.loadSaveService.saveDocument('pdf', path as string, this.modelToDocument()).subscribe(

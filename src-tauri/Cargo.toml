@@ -25,6 +25,8 @@ roxmltree = "0.14.0"
 lazy_static = "1.4.0"
 base64 = "0.13.0"
 quick-xml = { version = "0.21.0", features = [ "serialize" ] }
+directories-next = "2.0.0"
+toml = { version = "0.5.8", features = [ "preserve_order" ] }
 wkhtmltopdf = "0.3.0"
 
 [target."cfg(windows)".build-dependencies]
@@ -37,3 +39,8 @@ no-server = [ "tauri/no-server" ]
 [[bin]]
 name = "cabr2"
 path = "src/main.rs"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true

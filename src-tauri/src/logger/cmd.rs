@@ -13,8 +13,5 @@ pub enum LogLevel {
 #[derive(Deserialize)]
 #[serde(tag = "cmd", rename_all = "camelCase")]
 pub enum Cmd {
-  Log {
-    level: LogLevel,
-    message: Option<Value>,
-  },
+  Log { level: LogLevel, message: Option<Value> },
 }
