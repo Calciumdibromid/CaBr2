@@ -20,15 +20,20 @@ lazy_static! {
 
 pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Document) -> Result<()> {
   log::debug!("type: {}", file_type);
-  log::debug!("filename: {:?}", filename);
+  log::debug!("file: {:?}", filename);
   log::debug!("doc: {:#?}", document);
 
   // make sure right extention is set in filename
-  let mut filename = filename;
-  filename.set_extension(&file_type);
+  let mut file = filename;
+  if !file.ends_with(&file_type) {
+    file
+      //.extend_one(['.'].iter())
+      .extend_one(file_type.as_str())
+  }
+  log::debug!("file_name: {:?}", file.file_name());
 
   if let Some(saver) = REGISTERED_SAVERS.lock().unwrap().get(file_type.as_str()) {
-    return saver.save_document(filename, document);
+    return saver.save_document(file, document);
   }
 
   Err(LoadSaveError::UnknownFileType)
