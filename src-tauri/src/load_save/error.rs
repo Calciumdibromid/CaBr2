@@ -8,6 +8,9 @@ pub enum LoadSaveError {
   #[error("failed to load file: '{0}'")]
   DeserializeError(String),
 
+  #[error("file already exists: '{0}'")]
+  FileExists(String),
+
   #[error("parsing json failed: '{0}'")]
   JsonError(#[from] serde_json::Error),
   #[error("io error: '{0}'")]
