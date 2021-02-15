@@ -19,6 +19,11 @@
   place-content: center;
 }
 
+.symbol {
+  max-width: 100%;
+  height: auto;
+}
+
 .grayscale {
   filter: grayscale(100%);
 

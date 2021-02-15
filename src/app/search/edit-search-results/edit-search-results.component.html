@@ -214,6 +214,7 @@
       <p>Grau: nicht gewählt / Farbig: Gewählt</p>
       <div class="symbols-grid">
         <img
+          class="symbol"
           *ngFor="let key of symbolKeys"
           [ngClass]="isSymbolActive(key) ? '' : 'grayscale'"
           (click)="toggleSymbol(key)"
