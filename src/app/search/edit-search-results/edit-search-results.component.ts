@@ -1,17 +1,23 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { GlobalModel } from '../../@core/models/global.model';
-import { Data, SubstanceData, Unit, unitMappings } from '../../@core/services/substances/substances.model';
+import {
+  Data,
+  SubstanceData,
+  TemperatureUnit,
+  temperatureUnitMapping,
+  Unit,
+  unitMappings,
+} from '../../@core/services/substances/substances.model';
 
 @Component({
   selector: 'app-edit-search-results',
   templateUrl: './edit-search-results.component.html',
-  styleUrls: ['./edit-search-results.component.scss']
+  styleUrls: ['./edit-search-results.component.scss'],
 })
 export class EditSearchResultsComponent implements OnInit {
-
   form: FormGroup;
   substanceData: SubstanceData;
 
@@ -20,6 +26,14 @@ export class EditSearchResultsComponent implements OnInit {
   addPPhraseHover = false;
 
   unitMappings = unitMappings;
+
+  unit = Unit;
+
+  temperatureUnitMappings = temperatureUnitMapping;
+
+  temperatureUnit = TemperatureUnit;
+
+  customUnitVisible = false;
 
   constructor(
     public dialogRef: MatDialogRef<EditSearchResultsComponent>,
@@ -34,6 +48,10 @@ export class EditSearchResultsComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.initControls();
+
+    this.amount.get('unit')?.valueChanges.subscribe((value: Unit) => {
+      this.customUnitVisible = value === Unit.CUSTOM;
+    });
   }
 
   initControls(): FormGroup {
@@ -47,21 +65,21 @@ export class EditSearchResultsComponent implements OnInit {
       boilingPoint: this.modifiedOrOriginal(this.substanceData.boilingPoint) ?? '',
       waterHazardClass: this.modifiedOrOriginal(this.substanceData.waterHazardClass) ?? '',
       hPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal(this.substanceData.hPhrases).map(hPhrase => this.initHPhrases(hPhrase))
+        this.modifiedOrOriginal(this.substanceData.hPhrases).map((hPhrase) => this.initHPhrases(hPhrase)),
       ),
       pPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal(this.substanceData.pPhrases).map(pPhrase => this.initPPhrases(pPhrase))
+        this.modifiedOrOriginal(this.substanceData.pPhrases).map((pPhrase) => this.initPPhrases(pPhrase)),
       ),
       signalWord: this.modifiedOrOriginal(this.substanceData.signalWord) ?? '',
       symbols: this.formBuilder.array(
-        this.modifiedOrOriginal(this.substanceData.symbols).map(symbol => this.initSymbols(symbol))
+        this.modifiedOrOriginal(this.substanceData.symbols).map((symbol) => this.initSymbols(symbol)),
       ),
       lethalDose: this.modifiedOrOriginal(this.substanceData.lethalDose) ?? '',
       mak: this.modifiedOrOriginal(this.substanceData.mak) ?? '',
       amount: this.formBuilder.group({
         value: [amount.value, Validators.pattern('^\\d[\\d,\\.]*$')],
         unit: amount.unit,
-      })
+      }),
     });
   }
 
@@ -130,30 +148,38 @@ export class EditSearchResultsComponent implements OnInit {
       name: this.evaluateForm('name', this.substanceData.name, (value) => value.length === 0),
       cas: this.evaluateForm('cas', this.substanceData.cas, (value) => value?.length === 0),
       molecularFormula: this.evaluateForm(
-        'molecularFormula', this.substanceData.molecularFormula, (value) => value.length === 0
+        'molecularFormula',
+        this.substanceData.molecularFormula,
+        (value) => value.length === 0,
       ),
       molarMass: this.evaluateForm('molarMass', this.substanceData.molarMass, (value) => value?.length === 0),
       meltingPoint: this.evaluateForm('meltingPoint', this.substanceData.meltingPoint, (value) => value?.length === 0),
       boilingPoint: this.evaluateForm('boilingPoint', this.substanceData.boilingPoint, (value) => value?.length === 0),
       waterHazardClass: this.evaluateForm(
-        'waterHazardClass', this.substanceData.waterHazardClass, (value) => value?.length === 0
+        'waterHazardClass',
+        this.substanceData.waterHazardClass,
+        (value) => value?.length === 0,
       ),
       hPhrases: this.evaluateFormArray(
-        this.hPhrases, value => [value.get('hNumber')?.value, value.get('hPhrase')?.value], this.substanceData.hPhrases
+        this.hPhrases,
+        (value) => [value.get('hNumber')?.value, value.get('hPhrase')?.value],
+        this.substanceData.hPhrases,
       ),
       pPhrases: this.evaluateFormArray(
-        this.pPhrases, value => [value.get('pNumber')?.value, value.get('pPhrase')?.value], this.substanceData.pPhrases
+        this.pPhrases,
+        (value) => [value.get('pNumber')?.value, value.get('pPhrase')?.value],
+        this.substanceData.pPhrases,
       ),
       signalWord: this.evaluateForm('signalWord', this.substanceData.signalWord, (value) => value?.length === 0),
-      symbols: this.evaluateFormArray(this.symbols, value => value.get('value')?.value, this.substanceData.symbols),
+      symbols: this.evaluateFormArray(this.symbols, (value) => value.get('value')?.value, this.substanceData.symbols),
       lethalDose: this.evaluateForm('lethalDose', this.substanceData.lethalDose, (value) => value?.length === 0),
       mak: this.evaluateForm('mak', this.substanceData.mak, (value) => value?.length === 0),
       amount: this.evaluateFormGroup(
         this.amount,
-        obj => ({ value: obj.get('value')?.value, unit: obj.get('unit')?.value }),
+        (obj) => ({ value: obj.get('value')?.value, unit: obj.get('unit')?.value }),
         (newObj, oldObj) => newObj?.value !== oldObj.modifiedData?.value,
-        obj => obj?.value.length === 0,
-        this.substanceData.amount
+        (obj) => obj?.value.length === 0,
+        this.substanceData.amount,
       ),
     };
 
@@ -169,7 +195,7 @@ export class EditSearchResultsComponent implements OnInit {
   private evaluateForm<T>(
     formControlName: string,
     currentData: Data<T>,
-    emptyCallback: (value: T) => boolean
+    emptyCallback: (value: T) => boolean,
   ): Data<T> {
     const control = this.form?.get(formControlName);
 
@@ -187,8 +213,8 @@ export class EditSearchResultsComponent implements OnInit {
 
   private evaluateFormArray<T>(
     formArray: FormArray,
-    mapCallback: ((value: AbstractControl) => T),
-    currentData: Data<T[]>
+    mapCallback: (value: AbstractControl) => T,
+    currentData: Data<T[]>,
   ): Data<T[]> {
     if (formArray.touched) {
       const newArray = formArray.controls.map(mapCallback);
@@ -205,10 +231,10 @@ export class EditSearchResultsComponent implements OnInit {
 
   private evaluateFormGroup<T>(
     formGroup: FormGroup,
-    mapCallback: ((value: AbstractControl) => T),
-    cmpCallback: ((newObj: T, oldObj: Data<T>) => boolean),
-    emptyCallback: ((obj: T) => boolean),
-    currentData: Data<T>
+    mapCallback: (value: AbstractControl) => T,
+    cmpCallback: (newObj: T, oldObj: Data<T>) => boolean,
+    emptyCallback: (obj: T) => boolean,
+    currentData: Data<T>,
   ): Data<T> {
     if (formGroup.dirty) {
       const newObject = mapCallback(formGroup);

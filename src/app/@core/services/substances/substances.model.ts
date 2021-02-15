@@ -49,12 +49,17 @@ export enum Unit {
   CUSTOM = 'CUSTOM', // needs String
 }
 
-export interface UnitMapping {
-  viewValue: string;
-  value: Unit;
+export enum TemperatureUnit {
+  CELSIUS = 'CELSIUS',
+  FAHRENHEIT = 'FAHRENHEIT',
 }
 
-const unitMappings: UnitMapping[] = [
+export interface UnitMapping<T> {
+  viewValue: string;
+  value: T;
+}
+
+const unitMappings: UnitMapping<Unit>[] = [
   { viewValue: 'l (Liter)', value: Unit.LITRE },
   { viewValue: 'ml (Milliliter)', value: Unit.MILLILITER },
   { viewValue: 'µl (Mikroliter)', value: Unit.MICROLITRE },
@@ -62,7 +67,12 @@ const unitMappings: UnitMapping[] = [
   { viewValue: 'mg (Milligramm)', value: Unit.MILLIGRAM },
   { viewValue: 'µg (Mikrogramm)', value: Unit.MICROGRAM },
   { viewValue: 'Stück', value: Unit.PIECES },
-  // { viewValue: 'Custom', value: Unit.CUSTOM }, // TODO implement custom type
+  { viewValue: 'Custom', value: Unit.CUSTOM }, // TODO implement custom type
 ];
 
-export { unitMappings };
+const temperatureUnitMapping: UnitMapping<TemperatureUnit>[] = [
+  { viewValue: '°C', value: TemperatureUnit.CELSIUS },
+  { viewValue: 'F', value: TemperatureUnit.FAHRENHEIT },
+];
+
+export { unitMappings, temperatureUnitMapping };

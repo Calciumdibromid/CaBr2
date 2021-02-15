@@ -3,60 +3,92 @@
     <mat-card class="flex">
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input matInput formControlName="name"/>
+        <input matInput formControlName="name" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>CAS Nummer</mat-label>
-        <input matInput formControlName="cas"/>
+        <input matInput formControlName="cas" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Summenformel</mat-label>
-        <input matInput formControlName="molecularFormula"/>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Molare Masse</mat-label>
-        <input matInput formControlName="molaMass"/>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Schmelzpunkt</mat-label>
-        <input matInput formControlName="meltingPoint"/>
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Siedepunkt</mat-label>
-        <input matInput formControlName="boilingPoint"/>
+        <input matInput formControlName="molecularFormula" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Wassergefährdungsklasse</mat-label>
-        <input matInput formControlName="waterHazardClass"/>
+        <input matInput formControlName="waterHazardClass" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Signalwort</mat-label>
-        <input matInput formControlName="signalWord"/>
+        <input matInput formControlName="signalWord" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Lethale Dosis</mat-label>
-        <input matInput formControlName="lethalDose"/>
+        <input matInput formControlName="lethalDose" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>MAK</mat-label>
-        <input matInput formControlName="mak"/>
+        <input matInput formControlName="mak" />
       </mat-form-field>
+    </mat-card>
+
+    <mat-card>
+      <div>
+        <mat-form-field>
+          <mat-label>Molare Masse</mat-label>
+          <input matInput formControlName="molaMass" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Einheit</mat-label>
+          <mat-select [value]="0" [disabled]="true">
+            <mat-option [value]="0"> g/mol </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-label>Schmelzpunkt</mat-label>
+          <input matInput formControlName="meltingPoint" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Einheit</mat-label>
+          <mat-select [value]="temperatureUnit.CELSIUS" [disabled]="true">
+            <mat-option *ngFor="let unit of temperatureUnitMappings" [value]="unit.value">
+              {{ unit.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-label>Siedepunkt</mat-label>
+          <input matInput formControlName="boilingPoint" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Einheit</mat-label>
+          <mat-select [value]="temperatureUnit.CELSIUS" [disabled]="true">
+            <mat-option *ngFor="let unit of temperatureUnitMappings" [value]="unit.value">
+              {{ unit.viewValue }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
       <div formGroupName="amount">
         <mat-form-field>
           <mat-label>Menge</mat-label>
-          <input matInput formControlName="value">
+          <input matInput formControlName="value" />
           <mat-error *ngIf="this.form.get('amount')?.get('value')?.invalid">Keine Zahl</mat-error>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Einheit</mat-label>
           <mat-select formControlName="unit">
-            <mat-option
-                *ngFor="let option of unitMappings"
-                [value]="option.value"
-            >
+            <mat-option *ngFor="let option of unitMappings" [value]="option.value" [disabled]='option.value === unit.CUSTOM'>
               {{ option.viewValue }}
             </mat-option>
           </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf='customUnitVisible'>
+          <mat-label>Eigene Einheit</mat-label>
+          <input matInput />
         </mat-form-field>
       </div>
     </mat-card>
@@ -69,41 +101,36 @@
         <div *ngFor="let control of hPhrases.controls; let i = index">
           <div [formGroupName]="i">
             <mat-form-field>
-              <input matInput formControlName="hNumber"/>
+              <input matInput formControlName="hNumber" />
               <mat-error *ngIf="hPhrases.at(i).get('hNumber')?.invalid">Ungültige H-Nummer</mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input matInput formControlName="hPhrase"/>
+              <input matInput formControlName="hPhrase" />
               <button
-                  matSuffix
-                  mat-icon-button
-                  (click)="removePhrase(i, hPhrases)"
-                  (mouseenter)="hPhrases.at(i).get('hover')?.patchValue(true)"
-                  (mouseleave)="hPhrases.at(i).get('hover')?.patchValue(false)"
-                  matTooltip="P-Satz entfernen"
-                  matTooltipPosition="left"
+                matSuffix
+                mat-icon-button
+                (click)="removePhrase(i, hPhrases)"
+                (mouseenter)="hPhrases.at(i).get('hover')?.patchValue(true)"
+                (mouseleave)="hPhrases.at(i).get('hover')?.patchValue(false)"
+                matTooltip="P-Satz entfernen"
+                matTooltipPosition="left"
               >
                 <mat-icon *ngIf="!hPhrases.at(i).get('hover')?.value">remove_circle_outline</mat-icon>
-                <mat-icon color="primary" *ngIf="hPhrases.at(i).get('hover')?.value">remove_circle
-                </mat-icon>
+                <mat-icon color="primary" *ngIf="hPhrases.at(i).get('hover')?.value">remove_circle </mat-icon>
               </button>
             </mat-form-field>
           </div>
         </div>
         <a
-            mat-icon-button
-            (click)="addNewHPhrase()"
-            (mouseenter)="addHPhraseHover = true"
-            (mouseleave)="addHPhraseHover = false"
-            matTooltip="H-Satz hinzufügen"
-            matTooltipPosition="right"
+          mat-icon-button
+          (click)="addNewHPhrase()"
+          (mouseenter)="addHPhraseHover = true"
+          (mouseleave)="addHPhraseHover = false"
+          matTooltip="H-Satz hinzufügen"
+          matTooltipPosition="right"
         >
-          <mat-icon *ngIf="!addHPhraseHover">
-            add_circle_outline
-          </mat-icon>
-          <mat-icon color="primary" *ngIf="addHPhraseHover">
-            add_circle
-          </mat-icon>
+          <mat-icon *ngIf="!addHPhraseHover"> add_circle_outline </mat-icon>
+          <mat-icon color="primary" *ngIf="addHPhraseHover"> add_circle </mat-icon>
         </a>
       </mat-card>
 
@@ -114,48 +141,43 @@
         <div *ngFor="let control of pPhrases.controls; let i = index">
           <div [formGroupName]="i">
             <mat-form-field>
-              <input matInput formControlName="pNumber"/>
+              <input matInput formControlName="pNumber" />
               <mat-error *ngIf="pPhrases.at(i).get('pNumber')?.invalid">Ungültige P-Nummer</mat-error>
             </mat-form-field>
             <mat-form-field>
-              <input matInput formControlName="pPhrase"/>
+              <input matInput formControlName="pPhrase" />
               <button
-                  matSuffix
-                  mat-icon-button
-                  (click)="removePhrase(i, pPhrases)"
-                  (mouseenter)="pPhrases.at(i).get('hover')?.patchValue(true)"
-                  (mouseleave)="pPhrases.at(i).get('hover')?.patchValue(false)"
-                  matTooltip="P-Satz entfernen"
-                  matTooltipPosition="left"
+                matSuffix
+                mat-icon-button
+                (click)="removePhrase(i, pPhrases)"
+                (mouseenter)="pPhrases.at(i).get('hover')?.patchValue(true)"
+                (mouseleave)="pPhrases.at(i).get('hover')?.patchValue(false)"
+                matTooltip="P-Satz entfernen"
+                matTooltipPosition="left"
               >
                 <mat-icon *ngIf="!pPhrases.at(i).get('hover')?.value">remove_circle_outline</mat-icon>
-                <mat-icon color="primary" *ngIf="pPhrases.at(i).get('hover')?.value">remove_circle
-                </mat-icon>
+                <mat-icon color="primary" *ngIf="pPhrases.at(i).get('hover')?.value">remove_circle </mat-icon>
               </button>
             </mat-form-field>
           </div>
         </div>
         <a
-            mat-icon-button
-            (click)="addNewPPhrase()"
-            (mouseenter)="addPPhraseHover = true"
-            (mouseleave)="addPPhraseHover = false"
-            matTooltip="P-Satz hinzufügen"
-            matTooltipPosition="right"
+          mat-icon-button
+          (click)="addNewPPhrase()"
+          (mouseenter)="addPPhraseHover = true"
+          (mouseleave)="addPPhraseHover = false"
+          matTooltip="P-Satz hinzufügen"
+          matTooltipPosition="right"
         >
-          <mat-icon *ngIf="!addPPhraseHover">
-            add_circle_outline
-          </mat-icon>
-          <mat-icon color="primary" *ngIf="addPPhraseHover">
-            add_circle
-          </mat-icon>
+          <mat-icon *ngIf="!addPPhraseHover"> add_circle_outline </mat-icon>
+          <mat-icon color="primary" *ngIf="addPPhraseHover"> add_circle </mat-icon>
         </a>
       </mat-card>
     </div>
 
     <mat-card class="flex" formArrayName="symbols">
       <div *ngFor="let control of symbols.controls; let i = index">
-        <img [src]="sanitizeImage(control.get('value')?.value)" alt="{{control.get('value')?.value}}">
+        <img [src]="sanitizeImage(control.get('value')?.value)" alt="{{ control.get('value')?.value }}" />
       </div>
     </mat-card>
   </mat-dialog-content>
