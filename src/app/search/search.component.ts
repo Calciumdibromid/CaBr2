@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
 import { FormControl } from '@angular/forms';
+import { GlobalModel } from '../@core/models/global.model';
 import { MatDialog } from '@angular/material/dialog';
-import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { SearchArgument } from '../@core/services/search/search.model';
+import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { SearchService } from '../@core/services/search/search.service';
 import { SelectedSearchComponent } from './selected-search/selected-search.component';
-import { GlobalModel } from '../@core/models/global.model';
-import { SubstancesService } from '../@core/services/substances/substances.service';
 import { SubstanceData } from '../@core/services/substances/substances.model';
-import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
+import { SubstancesService } from '../@core/services/substances/substances.service';
 
 @Component({
   selector: 'app-search',
