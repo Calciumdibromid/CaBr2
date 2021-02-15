@@ -1,19 +1,18 @@
-import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 import { HeaderComponent } from './header/header.component';
-import { MenubarComponent } from './menubar/menubar.component';
-import { MatModules } from './modules/MatModules';
-import { SearchComponent } from './search/search.component';
+import { HttpClientModule } from '@angular/common/http';
 import { ListInputSpecifcationsComponent } from './list-input-specifcations/list-input-specifcations.component';
+import { MatModules } from './modules/MatModules';
+import { MenubarComponent } from './menubar/menubar.component';
+import { NgModule } from '@angular/core';
 import { PreviewComponent } from './preview/preview.component';
 import { PrintPreviewComponent } from './print-preview/print-preview.component';
-import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
+import { SearchComponent } from './search/search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
-
+import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
 
 @NgModule({
   declarations: [

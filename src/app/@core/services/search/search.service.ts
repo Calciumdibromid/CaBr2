@@ -1,6 +1,6 @@
+import { SearchArguments, SearchResult, SearchType, SearchTypeMapping } from './search.model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SearchArguments, SearchResult, SearchType, SearchTypeMapping } from './search.model';
 import { TauriService } from '../tauri/tauri.service';
 
 @Injectable({

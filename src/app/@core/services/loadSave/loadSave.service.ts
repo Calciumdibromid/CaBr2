@@ -1,6 +1,6 @@
+import { CaBr2Document } from './loadSave.model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CaBr2Document } from './loadSave.model';
 import { TauriService } from '../tauri/tauri.service';
 
 @Injectable({

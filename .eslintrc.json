@@ -52,6 +52,13 @@
             ]
           }
         ],
+        "sort-imports": ["error", {
+          "ignoreCase": true,
+          "ignoreDeclarationSort": false,
+          "ignoreMemberSort": false,
+          "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
+          "allowSeparatedGroups": true
+        }],
         "max-len": ["error", 120],
         "object-curly-spacing": ["error", "always"]
       }
