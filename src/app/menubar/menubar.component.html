@@ -39,8 +39,8 @@
       (click)='scroll(preview)'>
       <img class='svg-icon' src='assets/icons/Pfeil.svg'>
     </button>
-    <br />
-    <mat-slide-toggle (change)='onDarkModeSwitched($event)' color='primary' matTooltip='Auf dunkles Thema umschalten'>
+    <br/>
+    <mat-slide-toggle (change)="onDarkModeSwitched($event)" [checked]="config.global.darkTheme" color="primary" matTooltip="Auf dunkles Thema umschalten">
     </mat-slide-toggle>
   </mat-sidenav>
   <mat-sidenav-content class='smooth-scroll'>

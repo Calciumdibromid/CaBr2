@@ -1,18 +1,18 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { descriptions } from '../../assets/descriptions.json';
-
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
+import { ConfigModel } from '../@core/models/config.model';
+import { descriptions } from '../../assets/descriptions.json';
 import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import logger from '../@core/utils/logger';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
+
 @Component({
   selector: 'app-menubar',
   templateUrl: './menubar.component.html',
   styleUrls: ['./menubar.component.scss'],
-  providers: [GlobalModel],
 })
 export class MenubarComponent implements OnInit {
   @Output()
@@ -22,6 +22,7 @@ export class MenubarComponent implements OnInit {
 
   constructor(
     public globals: GlobalModel,
+    public config: ConfigModel,
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
   ) { }

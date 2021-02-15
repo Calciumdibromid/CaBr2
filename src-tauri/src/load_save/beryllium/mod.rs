@@ -19,8 +19,7 @@ pub struct Beryllium;
 impl Loader for Beryllium {
   fn load_document(&self, filename: PathBuf) -> Result<CaBr2Document> {
     lazy_static! {
-      static ref BEGINNING_OF_TIME: chrono::DateTime<chrono::Utc> =
-        chrono::Utc.ymd(1970, 1, 1).and_hms(0, 0, 0);
+      static ref BEGINNING_OF_TIME: chrono::DateTime<chrono::Utc> = chrono::Utc.ymd(1970, 1, 1).and_hms(0, 0, 0);
     }
 
     let file = File::open(filename)?;
@@ -93,9 +92,8 @@ impl Loader for Beryllium {
               source: Source {
                 provider: substance.source_provider.unwrap_or_default(),
                 url: substance.source_url.unwrap_or_default(),
-                last_updated: match chrono::DateTime::parse_from_rfc2822(
-                  &substance.source_fetched.unwrap_or_default(),
-                ) {
+                last_updated: match chrono::DateTime::parse_from_rfc2822(&substance.source_fetched.unwrap_or_default())
+                {
                   Ok(datetime) => datetime.into(),
                   Err(_) => *BEGINNING_OF_TIME,
                 },
