@@ -22,10 +22,6 @@
         <input matInput formControlName="signalWord" />
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Lethale Dosis</mat-label>
-        <input matInput formControlName="lethalDose" />
-      </mat-form-field>
-      <mat-form-field>
         <mat-label>MAK</mat-label>
         <input matInput formControlName="mak" />
       </mat-form-field>
@@ -40,7 +36,19 @@
         <mat-form-field>
           <mat-label>Einheit</mat-label>
           <mat-select [value]="0" [disabled]="true">
-            <mat-option [value]="0"> g/mol </mat-option>
+            <mat-option [value]="0">g/mol</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-label>Lethale Dosis</mat-label>
+          <input matInput formControlName="lethalDose" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Einheit</mat-label>
+          <mat-select [value]="0" [disabled]="true">
+            <mat-option [value]="0">mg/kg</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
