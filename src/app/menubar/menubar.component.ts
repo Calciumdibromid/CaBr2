@@ -76,11 +76,11 @@ export class MenubarComponent implements OnInit {
   loadFile(): void {
     this.tauriService
       .open({
-        filter: '*.cb2', // TODO get filetypes from backend
+        filter: 'cb2', // TODO get filetypes from backend
         multiple: false,
       })
       .subscribe((path) => {
-        this.loadSaveService.loadDocument(path as string).subscribe(
+        this.loadSaveService.loadDocument((path as string).trim()).subscribe(
           (res) => this.documentToModel(res),
           (err) => logger.error(err),
         );
@@ -90,10 +90,10 @@ export class MenubarComponent implements OnInit {
   saveFile(): void {
     this.tauriService
       .save({
-        filter: '*.cb2',
+        filter: 'cb2',
       })
       .subscribe((path) => {
-        this.loadSaveService.saveDocument('cb2', path as string, this.modelToDocument()).subscribe(
+        this.loadSaveService.saveDocument('cb2', (path as string).trim(), this.modelToDocument()).subscribe(
           (res) => logger.debug(res),
           (err) => logger.error(err),
         );
@@ -103,10 +103,10 @@ export class MenubarComponent implements OnInit {
   exportPDF(): void {
     this.tauriService
       .save({
-        filter: '*.pdf',
+        filter: 'pdf',
       })
       .subscribe((path) => {
-        this.loadSaveService.saveDocument('pdf', path as string, this.modelToDocument()).subscribe(
+        this.loadSaveService.saveDocument('pdf', (path as string).trim(), this.modelToDocument()).subscribe(
           (res) => logger.debug(res),
           (err) => logger.error(err),
         );

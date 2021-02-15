@@ -44,9 +44,10 @@ pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Docume
       return Err(LoadSaveError::FileExists(filename.to_string_lossy().into()));
     }
   }
+  log::debug!("file_name: {:?}", file.file_name());
 
   if let Some(saver) = REGISTERED_SAVERS.lock().unwrap().get(file_type.as_str()) {
-    return saver.save_document(filename, document);
+    return saver.save_document(file, document);
   }
 
   Err(LoadSaveError::UnknownFileType)
