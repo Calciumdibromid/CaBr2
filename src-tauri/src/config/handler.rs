@@ -47,6 +47,7 @@ pub fn save_config(config: JsonConfig) -> Result<()> {
 }
 
 pub fn get_hazard_symbols() -> Result<GHSSymbols> {
+  // symbols from: https://unece.org/transportdangerous-goods/ghs-pictograms
   let symbol_folder = get_program_path().with_file_name("ghs_symbols");
   log::debug!("loading ghs symbols from: {:?}", symbol_folder);
 
