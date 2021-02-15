@@ -210,6 +210,10 @@
         <img [src]="sanitizeImage(control.get('value')?.value)" alt="{{ control.get('value')?.value }}" />
       </div>
     </mat-card>
+
+    <div class='padder'>
+      <!--      mat-card dont like margin-bottom at the end-->
+    </div>
   </mat-dialog-content>
   <div mat-dialog-actions>
     <button mat-button (click)="close()">Abbrechen</button>
