@@ -20,15 +20,29 @@ lazy_static! {
 
 pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Document) -> Result<()> {
   log::debug!("type: {}", file_type);
-  log::debug!("file: {:?}", filename);
-  log::debug!("doc: {:#?}", document);
+  log::debug!("filename: {:?}", filename);
+  log::trace!("doc: {:#?}", document);
 
-  // make sure right extention is set in filename
-  let mut file = filename;
-  if !file.ends_with(&file_type) {
-    file
-      //.extend_one(['.'].iter())
-      .extend_one(file_type.as_str())
+  let mut filename = filename;
+  let mut filename_changed = false;
+  if let Some(ext) = filename.extension() {
+    if ext.to_str().unwrap() != file_type {
+      let mut name = filename.file_name().unwrap().to_owned();
+      name.push(".");
+      name.push(&file_type);
+      filename = filename.with_file_name(&name);
+      filename_changed = true;
+    }
+  } else {
+    filename.set_extension(&file_type);
+    filename_changed = true;
+  }
+
+  if filename_changed {
+    log::debug!("filename changed: {:?}", filename);
+    if filename.exists() {
+      return Err(LoadSaveError::FileExists(filename.to_string_lossy().into()));
+    }
   }
   log::debug!("file_name: {:?}", file.file_name());
 
