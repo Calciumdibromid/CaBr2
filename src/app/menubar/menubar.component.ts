@@ -1,8 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { descriptions } from '../../assets/descriptions.json';
 
-import { GlobalModel } from '../@core/models/global.model';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
+import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import logger from '../@core/utils/logger';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
