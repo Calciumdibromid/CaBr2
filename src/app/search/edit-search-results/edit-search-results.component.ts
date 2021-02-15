@@ -36,20 +36,22 @@ export class EditSearchResultsComponent implements OnInit {
 
   customUnitVisible = false;
 
+  // TODO move that to some global thingy
+  symbolKeys: string[] = [];
+
   constructor(
     public dialogRef: MatDialogRef<EditSearchResultsComponent>,
-    private globals: GlobalModel,
+    public globals: GlobalModel,
     @Inject(MAT_DIALOG_DATA) public data: { index: number },
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
   ) {
     this.substanceData = this.globals.substanceData[this.data.index];
+    this.symbolKeys = Array.from(this.globals.ghsSymbols.keys());
     this.form = this.initControls();
   }
 
   ngOnInit(): void {
-    this.form = this.initControls();
-
     this.amount.get('unit')?.valueChanges.subscribe((value: Unit) => {
       this.customUnitVisible = value === Unit.CUSTOM;
     });
@@ -73,7 +75,7 @@ export class EditSearchResultsComponent implements OnInit {
       ),
       signalWord: this.modifiedOrOriginal(this.substanceData.signalWord) ?? '',
       symbols: this.formBuilder.array(
-        this.modifiedOrOriginal(this.substanceData.symbols).map((symbol) => this.initSymbols(symbol)),
+        this.modifiedOrOriginal(this.substanceData.symbols),
       ),
       lethalDose: this.modifiedOrOriginal(this.substanceData.lethalDose) ?? '',
       mak: this.modifiedOrOriginal(this.substanceData.mak) ?? '',
@@ -116,8 +118,18 @@ export class EditSearchResultsComponent implements OnInit {
     });
   }
 
-  initSymbols(value: string): FormGroup {
-    return this.formBuilder.group({ value }) as FormGroup;
+  isSymbolActive(key: string): boolean {
+    // TODO return correct value
+    return true;
+  }
+
+  toggleSymbol(key: string): void {
+    // TODO see above
+    if (this.isSymbolActive(key)) {
+      // this.symbols.removeAt(index);
+    } else {
+      // this.symbols.push(this.formBuilder.control(Array.from(this.globals.ghsSymbols.keys())[index]));
+    }
   }
 
   sanitizeImage(id: string): SafeResourceUrl | undefined {
@@ -176,7 +188,7 @@ export class EditSearchResultsComponent implements OnInit {
         this.substanceData.pPhrases,
       ),
       signalWord: this.evaluateForm('signalWord', this.substanceData.signalWord, (value) => value?.length === 0),
-      symbols: this.evaluateFormArray(this.symbols, (value) => value.get('value')?.value, this.substanceData.symbols),
+      symbols: this.evaluateFormArray(this.symbols, (value) => value?.value, this.substanceData.symbols),
       lethalDose: this.evaluateForm('lethalDose', this.substanceData.lethalDose, (value) => value?.length === 0),
       mak: this.evaluateForm('mak', this.substanceData.mak, (value) => value?.length === 0),
       amount: this.evaluateFormGroup(

@@ -8,6 +8,25 @@
   grid-template-columns: auto auto auto;
 }
 
+.symbols-grid {
+  display: grid;
+  grid-template-columns: max-content max-content max-content;
+  gap: 20px;
+}
+
+.center {
+  display: grid;
+  place-content: center;
+}
+
+.grayscale {
+  filter: grayscale(100%);
+
+  &:hover {
+    filter: grayscale(0%);
+  }
+}
+
 .flex {
   display: inline-flex;
   flex-direction: row;

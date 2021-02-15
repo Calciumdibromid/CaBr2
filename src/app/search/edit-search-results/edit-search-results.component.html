@@ -95,12 +95,16 @@
         <mat-form-field>
           <mat-label>Einheit</mat-label>
           <mat-select formControlName="unit">
-            <mat-option *ngFor="let option of unitMappings" [value]="option.value" [disabled]='option.value === unit.CUSTOM'>
+            <mat-option
+              *ngFor="let option of unitMappings"
+              [value]="option.value"
+              [disabled]="option.value === unit.CUSTOM"
+            >
               {{ option.viewValue }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field *ngIf='customUnitVisible'>
+        <mat-form-field *ngIf="customUnitVisible">
           <mat-label>Eigene Einheit</mat-label>
           <input matInput />
         </mat-form-field>
@@ -112,13 +116,13 @@
         <mat-card-header>
           <mat-card-title>H-Sätze</mat-card-title>
         </mat-card-header>
-        <div class='flex' *ngFor="let control of hPhrases.controls; let i = index">
+        <div class="flex" *ngFor="let control of hPhrases.controls; let i = index">
           <div [formGroupName]="i">
             <mat-form-field>
               <input matInput formControlName="hNumber" />
               <mat-error *ngIf="hPhrases.at(i).get('hNumber')?.invalid">Ungültige H-Nummer</mat-error>
             </mat-form-field>
-            <mat-form-field class='phrases-form-field'>
+            <mat-form-field class="phrases-form-field">
               <textarea
                 matInput
                 formControlName="hPhrase"
@@ -160,13 +164,13 @@
         <mat-card-header>
           <mat-card-title>P-Sätze</mat-card-title>
         </mat-card-header>
-        <div class='flex' *ngFor="let control of pPhrases.controls; let i = index">
+        <div class="flex" *ngFor="let control of pPhrases.controls; let i = index">
           <div [formGroupName]="i">
             <mat-form-field>
               <input matInput formControlName="pNumber" />
               <mat-error *ngIf="pPhrases.at(i).get('pNumber')?.invalid">Ungültige P-Nummer</mat-error>
             </mat-form-field>
-            <mat-form-field class='phrases-form-field'>
+            <mat-form-field class="phrases-form-field">
               <textarea
                 matInput
                 formControlName="pPhrase"
@@ -205,13 +209,21 @@
       </mat-card>
     </div>
 
-    <mat-card class="flex" formArrayName="symbols">
-      <div *ngFor="let control of symbols.controls; let i = index">
-        <img [src]="sanitizeImage(control.get('value')?.value)" alt="{{ control.get('value')?.value }}" />
+    <mat-card class="center" formArrayName="symbols">
+      <p>Zum entfernen oder hinzufügen auf das Symbol klicken</p>
+      <p>Grau: nicht gewählt / Farbig: Gewählt</p>
+      <div class="symbols-grid">
+        <img
+          *ngFor="let key of symbolKeys"
+          [ngClass]="isSymbolActive(key) ? '' : 'grayscale'"
+          (click)="toggleSymbol(key)"
+          [src]="sanitizeImage(key)"
+          alt="{{ globals.ghsSymbols.get(key) }}"
+        />
       </div>
     </mat-card>
 
-    <div class='padder'>
+    <div class="padder">
       <!--      mat-card dont like margin-bottom at the end-->
     </div>
   </mat-dialog-content>
