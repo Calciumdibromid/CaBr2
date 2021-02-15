@@ -23,12 +23,9 @@ pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Docume
   log::debug!("filename: {:?}", filename);
   log::debug!("doc: {:#?}", document);
 
+  // make sure right extention is set in filename
   let mut filename = filename;
-  if let Some(ext) = filename.extension() {
-    if ext.to_str().unwrap() != file_type.as_str() {
-      filename.set_extension(&file_type);
-    }
-  }
+  filename.set_extension(&file_type);
 
   if let Some(saver) = REGISTERED_SAVERS.lock().unwrap().get(file_type.as_str()) {
     return saver.save_document(filename, document);
