@@ -38,3 +38,8 @@ no-server = [ "tauri/no-server" ]
 [[bin]]
 name = "cabr2"
 path = "src/main.rs"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
