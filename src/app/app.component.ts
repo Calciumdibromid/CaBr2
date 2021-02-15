@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
     );
 
     this.configService.getHazardSymbols().subscribe(
-      (symbols) => this.global.ghsSymbols = symbols,
+      (symbols) => this.global.setGHSSymbols(symbols),
       (err) => logger.error(err),
     );
   }

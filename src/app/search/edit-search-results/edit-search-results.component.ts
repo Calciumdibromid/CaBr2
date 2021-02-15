@@ -1,8 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { GlobalModel } from '../../@core/models/global.model';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   Data,
   SubstanceData,
@@ -11,6 +8,10 @@ import {
   Unit,
   unitMappings,
 } from '../../@core/services/substances/substances.model';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { GlobalModel } from '../../@core/models/global.model';
+
 
 @Component({
   selector: 'app-edit-search-results',
@@ -119,9 +120,13 @@ export class EditSearchResultsComponent implements OnInit {
     return this.formBuilder.group({ value }) as FormGroup;
   }
 
-  sanitizeImage(id: string): SafeResourceUrl {
-    // TODO get image from image cache
-    return this.sanitizer.bypassSecurityTrustResourceUrl('');
+  sanitizeImage(id: string): SafeResourceUrl | undefined {
+    const img = this.globals.ghsSymbols.get(id);
+    if (img) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(img);
+    }
+
+    return undefined;
   }
 
   addNewHPhrase(): void {
