@@ -1,8 +1,9 @@
-import { DOCUMENT } from '@angular/common';
 import { Component, HostBinding, Inject, OnInit, Renderer2 } from '@angular/core';
 import { name, version } from '../../package.json';
 import { ConfigModel } from './@core/models/config.model';
 import { ConfigService } from './@core/services/config/config.service';
+import { DOCUMENT } from '@angular/common';
+import { GlobalModel } from './@core/models/global.model';
 import logger from './@core/utils/logger';
 
 @Component({
@@ -18,6 +19,7 @@ export class AppComponent implements OnInit {
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
     private config: ConfigModel,
+    private global: GlobalModel,
     private configService: ConfigService,
   ) {
   }
@@ -28,6 +30,11 @@ export class AppComponent implements OnInit {
         this.config.setConfig(config);
         this.switchMode(this.config.global.darkTheme);
       },
+      (err) => logger.error(err),
+    );
+
+    this.configService.getHazardSymbols().subscribe(
+      (symbols) => this.global.ghsSymbols = symbols,
       (err) => logger.error(err),
     );
   }

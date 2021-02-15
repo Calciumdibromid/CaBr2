@@ -14,4 +14,8 @@ pub enum Cmd {
     callback: String,
     error: String,
   },
+  GetHazardSymbols {
+    callback: String,
+    error: String,
+  },
 }

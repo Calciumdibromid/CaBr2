@@ -42,6 +42,17 @@ impl Plugin for Config {
               error,
             );
           }
+          Cmd::GetHazardSymbols { callback, error } => {
+            tauri::execute_promise(
+              webview,
+              move || match handler::get_hazard_symbols() {
+                Ok(res) => Ok(res),
+                Err(e) => Err(e.into()),
+              },
+              callback,
+              error,
+            );
+          }
         }
         // dispatch of async request should always succeed
         Ok(true)

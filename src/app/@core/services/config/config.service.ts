@@ -1,6 +1,7 @@
+import { ConfigModel } from '../../models/config.model';
+import { GHSSymbols } from '../../models/global.model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ConfigModel } from '../../models/config.model';
 import { TauriService } from '../tauri/tauri.service';
 
 @Injectable({
@@ -22,6 +23,12 @@ export class ConfigService {
     return this.tauriService.promisified({
       cmd: 'saveConfig',
       config,
+    });
+  }
+
+  getHazardSymbols(): Observable<GHSSymbols> {
+    return this.tauriService.promisified({
+      cmd: 'getHazardSymbols',
     });
   }
 }

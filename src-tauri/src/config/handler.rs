@@ -1,4 +1,5 @@
 use std::{
+  collections::HashMap,
   env,
   fs::OpenOptions,
   io::{Read, Write},
@@ -7,7 +8,7 @@ use std::{
 
 use super::{
   error::Result,
-  types::{JsonConfig, TomlConfig},
+  types::{GHSSymbols, JsonConfig, TomlConfig},
 };
 
 pub fn get_config() -> Result<JsonConfig> {
@@ -45,7 +46,43 @@ pub fn save_config(config: JsonConfig) -> Result<()> {
   Ok(())
 }
 
+pub fn get_hazard_symbols() -> Result<GHSSymbols> {
+  let symbol_folder = get_program_path().with_file_name("ghs_symbols");
+  log::debug!("loading ghs symbols from: {:?}", symbol_folder);
+
+  let mut symbols = HashMap::new();
+  let mut buf = Vec::new();
+
+  for filename in symbol_folder
+    .read_dir()?
+    .filter(|p| p.is_ok())
+    .map(|p| p.unwrap().path())
+    .filter(|p| p.is_file())
+  {
+    buf.clear();
+    let mut file = OpenOptions::new().read(true).open(&filename)?;
+    file.read_to_end(&mut buf)?;
+
+    symbols.insert(
+      filename
+        .file_name()
+        .unwrap()
+        .to_string_lossy()
+        .trim_end_matches(".png")
+        .into(),
+      format!("data:image/image/png;base64,{}", base64::encode(&buf)),
+    );
+  }
+
+  Ok(symbols)
+}
+
 #[inline]
 fn get_config_path() -> PathBuf {
-  PathBuf::from(env::args().next().unwrap()).with_file_name("config.toml")
+  get_program_path().with_file_name("config.toml")
+}
+
+#[inline]
+fn get_program_path() -> PathBuf {
+  PathBuf::from(env::args().next().unwrap())
 }

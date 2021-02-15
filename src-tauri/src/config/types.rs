@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use serde::{Deserialize, Serialize};
 
 /* #region JSON types */
@@ -66,5 +68,11 @@ impl std::convert::From<JsonGlobal> for TomlGlobal {
     }
   }
 }
+
+/* #endregion */
+
+/* #region other types */
+
+pub type GHSSymbols = HashMap<String, String>;
 
 /* #endregion */
