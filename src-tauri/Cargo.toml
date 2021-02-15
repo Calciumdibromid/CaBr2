@@ -25,6 +25,8 @@ roxmltree = "0.14.0"
 lazy_static = "1.4.0"
 base64 = "0.13.0"
 quick-xml = { version = "0.21.0", features = [ "serialize" ] }
+directories-next = "2.0.0"
+toml = { version = "0.5.8", features = [ "preserve_order" ] }
 
 [target."cfg(windows)".build-dependencies]
 winres = "0.1"

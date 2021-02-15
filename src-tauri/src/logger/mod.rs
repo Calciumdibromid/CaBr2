@@ -44,12 +44,7 @@ impl Logger {
       .level_for("ureq", LevelFilter::Warn)
       .level_for("rustls", LevelFilter::Warn)
       .chain(std::io::stdout())
-      .chain(
-        fs::OpenOptions::new()
-          .create(true)
-          .write(true)
-          .open(&log_file)?,
-      )
+      .chain(fs::OpenOptions::new().create(true).write(true).open(&log_file)?)
       .apply()?;
     log::info!("log file: {}", log_file);
     Ok(())

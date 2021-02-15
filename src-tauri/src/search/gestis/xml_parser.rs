@@ -167,11 +167,7 @@ pub fn parse_response(json: &GestisResponse) -> Result<ParsedData> {
 
 pub fn get_xml(json: &GestisResponse, chapter: &str, subchapter: &str) -> Result<String> {
   if let Some(subchapters) = json.chapters.iter().find(|c| c.number == chapter) {
-    if let Some(sub) = subchapters
-      .subchapters
-      .iter()
-      .find(|s| s.number == subchapter)
-    {
+    if let Some(sub) = subchapters.subchapters.iter().find(|s| s.number == subchapter) {
       return Ok(format!("<div>\n{}</div>\n", sub.text.as_ref().unwrap()));
     }
   }
@@ -190,12 +186,7 @@ fn tables(node: &Node, class: &str) -> Vec<Vec<Vec<NodeId>>> {
     .map(|n| {
       n.children()
         .filter(|c| c.has_tag_name("tr"))
-        .map(|n| {
-          n.children()
-            .filter(|n| n.has_tag_name("td"))
-            .map(|n| n.id())
-            .collect()
-        })
+        .map(|n| n.children().filter(|n| n.has_tag_name("td")).map(|n| n.id()).collect())
         .collect()
     })
     .collect()
@@ -374,10 +365,7 @@ fn get_h_p_signal_symbols(json: &GestisResponse) -> HPSignalSymbolsResult {
     let mut row_iter = table.into_iter();
 
     if let Some(row) = row_iter.next() {
-      let mut data_iter = row
-        .into_iter()
-        .map(|id| doc.get_node(id).unwrap())
-        .peekable();
+      let mut data_iter = row.into_iter().map(|id| doc.get_node(id).unwrap()).peekable();
 
       if let Some(data) = data_iter.peek() {
         if let Some(inner) = data.first_element_child() {
@@ -399,11 +387,7 @@ fn get_h_p_signal_symbols(json: &GestisResponse) -> HPSignalSymbolsResult {
                 .map(|n| {
                   let data = n.unwrap();
                   // only alt text is needed as identifier
-                  data
-                    .attribute("alt")
-                    .unwrap()
-                    .trim_end_matches("-neu")
-                    .into()
+                  data.attribute("alt").unwrap().trim_end_matches("-neu").into()
                 })
                 .collect::<Vec<String>>(),
             );
@@ -416,15 +400,7 @@ fn get_h_p_signal_symbols(json: &GestisResponse) -> HPSignalSymbolsResult {
             if let Some(data) = table_iter.next() {
               if let Some(inner) = data.first_element_child() {
                 if inner.has_tag_name("b") && inner.text() == Some("Signalwort:") {
-                  signal_word = Ok(
-                    table_iter
-                      .next()
-                      .unwrap()
-                      .text()
-                      .unwrap()
-                      .trim_matches('"')
-                      .to_string(),
-                  );
+                  signal_word = Ok(table_iter.next().unwrap().text().unwrap().trim_matches('"').to_string());
                 }
               }
             }
@@ -450,10 +426,7 @@ fn get_lethal_dose(json: &GestisResponse) -> Result<Option<String>> {
     let mut row_iter = table.into_iter();
 
     if let Some(row) = row_iter.next() {
-      let mut data_iter = row
-        .into_iter()
-        .map(|id| doc.get_node(id).unwrap())
-        .peekable();
+      let mut data_iter = row.into_iter().map(|id| doc.get_node(id).unwrap()).peekable();
 
       if let Some(data) = data_iter.peek() {
         if let Some(inner) = data.first_element_child() {

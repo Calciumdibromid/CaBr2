@@ -27,4 +27,8 @@ export class GlobalModel {
 
   disposal: string[] = [];
 
+  ghsSymbols: GHSSymbols = new Map();
+
 }
+
+export type GHSSymbols = Map<string, string>;
