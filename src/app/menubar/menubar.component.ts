@@ -24,7 +24,7 @@ export class MenubarComponent implements OnInit {
     public globals: GlobalModel,
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.globals.header.documentTitle = 'Betriebsanweisungen nach EG Nr. 1272/2008';
@@ -79,7 +79,7 @@ export class MenubarComponent implements OnInit {
         multiple: false,
       })
       .subscribe((path) => {
-        this.loadSaveService.loadDocument(path as string).subscribe(
+        this.loadSaveService.loadDocument((path as string).trim()).subscribe(
           (res) => this.documentToModel(res),
           (err) => logger.error(err),
         );
@@ -92,7 +92,7 @@ export class MenubarComponent implements OnInit {
         filter: 'cb2',
       })
       .subscribe((path) => {
-        this.loadSaveService.saveDocument('cb2', path as string, this.modelToDocument()).subscribe(
+        this.loadSaveService.saveDocument('cb2', (path as string).trim(), this.modelToDocument()).subscribe(
           (res) => logger.debug(res),
           (err) => logger.error(err),
         );
@@ -105,7 +105,7 @@ export class MenubarComponent implements OnInit {
         filter: 'pdf',
       })
       .subscribe((path) => {
-        this.loadSaveService.saveDocument('pdf', path as string, this.modelToDocument()).subscribe(
+        this.loadSaveService.saveDocument('pdf', (path as string).trim(), this.modelToDocument()).subscribe(
           (res) => logger.debug(res),
           (err) => logger.error(err),
         );
