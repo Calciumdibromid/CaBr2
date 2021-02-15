@@ -1,6 +1,6 @@
 <form [formGroup]="form" (submit)="onSubmit()">
   <mat-dialog-content class="grid">
-    <mat-card class="flex">
+    <mat-card class="mini-grid">
       <mat-form-field>
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" />
@@ -20,10 +20,6 @@
       <mat-form-field>
         <mat-label>Signalwort</mat-label>
         <input matInput formControlName="signalWord" />
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>MAK</mat-label>
-        <input matInput formControlName="mak" />
       </mat-form-field>
     </mat-card>
 
@@ -52,6 +48,16 @@
           </mat-select>
         </mat-form-field>
       </div>
+      <mat-form-field>
+        <mat-label>MAK</mat-label>
+        <input matInput formControlName="mak" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Einheit</mat-label>
+        <mat-select [value]="0" [disabled]="true">
+          <mat-option [value]="0">ppm</mat-option>
+        </mat-select>
+      </mat-form-field>
       <div>
         <mat-form-field>
           <mat-label>Schmelzpunkt</mat-label>
@@ -106,14 +112,20 @@
         <mat-card-header>
           <mat-card-title>H-Sätze</mat-card-title>
         </mat-card-header>
-        <div *ngFor="let control of hPhrases.controls; let i = index">
+        <div class='flex' *ngFor="let control of hPhrases.controls; let i = index">
           <div [formGroupName]="i">
             <mat-form-field>
               <input matInput formControlName="hNumber" />
               <mat-error *ngIf="hPhrases.at(i).get('hNumber')?.invalid">Ungültige H-Nummer</mat-error>
             </mat-form-field>
-            <mat-form-field>
-              <input matInput formControlName="hPhrase" />
+            <mat-form-field class='phrases-form-field'>
+              <textarea
+                matInput
+                formControlName="hPhrase"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"
+              ></textarea>
               <button
                 matSuffix
                 mat-icon-button
@@ -129,31 +141,39 @@
             </mat-form-field>
           </div>
         </div>
-        <a
-          mat-icon-button
-          (click)="addNewHPhrase()"
-          (mouseenter)="addHPhraseHover = true"
-          (mouseleave)="addHPhraseHover = false"
-          matTooltip="H-Satz hinzufügen"
-          matTooltipPosition="right"
-        >
-          <mat-icon *ngIf="!addHPhraseHover"> add_circle_outline </mat-icon>
-          <mat-icon color="primary" *ngIf="addHPhraseHover"> add_circle </mat-icon>
-        </a>
+        <div>
+          <a
+            mat-icon-button
+            (click)="addNewHPhrase()"
+            (mouseenter)="addHPhraseHover = true"
+            (mouseleave)="addHPhraseHover = false"
+            matTooltip="H-Satz hinzufügen"
+            matTooltipPosition="right"
+          >
+            <mat-icon *ngIf="!addHPhraseHover"> add_circle_outline </mat-icon>
+            <mat-icon color="primary" *ngIf="addHPhraseHover"> add_circle </mat-icon>
+          </a>
+        </div>
       </mat-card>
 
       <mat-card formArrayName="pPhrases">
         <mat-card-header>
           <mat-card-title>P-Sätze</mat-card-title>
         </mat-card-header>
-        <div *ngFor="let control of pPhrases.controls; let i = index">
+        <div class='flex' *ngFor="let control of pPhrases.controls; let i = index">
           <div [formGroupName]="i">
             <mat-form-field>
               <input matInput formControlName="pNumber" />
               <mat-error *ngIf="pPhrases.at(i).get('pNumber')?.invalid">Ungültige P-Nummer</mat-error>
             </mat-form-field>
-            <mat-form-field>
-              <input matInput formControlName="pPhrase" />
+            <mat-form-field class='phrases-form-field'>
+              <textarea
+                matInput
+                formControlName="pPhrase"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"
+              ></textarea>
               <button
                 matSuffix
                 mat-icon-button
@@ -169,17 +189,19 @@
             </mat-form-field>
           </div>
         </div>
-        <a
-          mat-icon-button
-          (click)="addNewPPhrase()"
-          (mouseenter)="addPPhraseHover = true"
-          (mouseleave)="addPPhraseHover = false"
-          matTooltip="P-Satz hinzufügen"
-          matTooltipPosition="right"
-        >
-          <mat-icon *ngIf="!addPPhraseHover"> add_circle_outline </mat-icon>
-          <mat-icon color="primary" *ngIf="addPPhraseHover"> add_circle </mat-icon>
-        </a>
+        <div>
+          <a
+            mat-icon-button
+            (click)="addNewPPhrase()"
+            (mouseenter)="addPPhraseHover = true"
+            (mouseleave)="addPPhraseHover = false"
+            matTooltip="P-Satz hinzufügen"
+            matTooltipPosition="right"
+          >
+            <mat-icon *ngIf="!addPPhraseHover"> add_circle_outline </mat-icon>
+            <mat-icon color="primary" *ngIf="addPPhraseHover"> add_circle </mat-icon>
+          </a>
+        </div>
       </mat-card>
     </div>
 

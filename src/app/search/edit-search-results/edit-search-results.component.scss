@@ -3,6 +3,11 @@
   grid-template-columns: 690px;
 }
 
+.mini-grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
 .flex {
   display: inline-flex;
   flex-direction: row;
@@ -15,3 +20,6 @@ mat-form-field {
   padding-right: 2px;
 }
 
+.phrases-form-field {
+  width: 420px;
+}
