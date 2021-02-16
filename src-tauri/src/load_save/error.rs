@@ -11,6 +11,8 @@ pub enum LoadSaveError {
   #[error("file already exists: '{0}'")]
   FileExists(String),
 
+  #[error("PDF creation failed: {0}")]
+  PdfError(#[from] wkhtmltopdf::Error),
   #[error("parsing json failed: '{0}'")]
   JsonError(#[from] serde_json::Error),
   #[error("io error: '{0}'")]
