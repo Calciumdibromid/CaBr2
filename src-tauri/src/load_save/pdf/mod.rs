@@ -26,23 +26,23 @@ impl Saver for PDF {
     let title = document.header.document_title.clone();
     match render_doc(document) {
       Err(e) => Err(LoadSaveError::RenderError(e.to_string())),
-      Ok(html) => {
+      Ok((page1, page2)) => {
         let channels = PDF_THREAD_CHANNEL.lock().unwrap();
 
-        channels
-          .0
-          .send((html, title))
-          .expect("sending data to pdf thread failed");
+          channels
+            .0
+            .send((htmls, title))
+            .expect("sending data to pdf thread failed");
 
-        let pdf: Vec<u8> = channels.1.recv().expect("receiving data from pdf thread failed")?;
+          let pdf: Vec<u8> = channels.1.recv().expect("receiving data from pdf thread failed")?;
 
-        let file = OpenOptions::new()
-          .create(true)
-          .write(true)
-          .truncate(true)
-          .open(filename)?;
-        let mut writer = BufWriter::new(file);
-        writer.write_all(&pdf)?;
+          let file = OpenOptions::new()
+            .create(true)
+            .write(true)
+            .truncate(true)
+            .open(filename)?;
+          let mut writer = BufWriter::new(file);
+          writer.write_all(&pdf)?;
 
         Ok(())
       }
@@ -50,12 +50,17 @@ impl Saver for PDF {
   }
 }
 
-const HTML_TEST: &str = r#"<html><head>Title</head><body><div>foo</div></body></html>"#;
+const HTML_TEST: &str = r#""#;
 
 /// render_doc get CaBr2Document and return html (dummy at the moment)
-fn render_doc(_document: CaBr2Document) -> Result<String> {
+fn render_doc(document: CaBr2Document) -> Result<(String, String)> {
+  fn html(placeholder: &str) -> String {
+    format!("<html><body>foo {}</body></html>", placeholder)
+  }
+
   log::warn!("dummy values");
-  return Ok(HTML_TEST.to_string());
+
+  Ok((html("1"), html("2")))
 }
 
 fn init_pdf_application() -> (mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>) {
