@@ -35,6 +35,7 @@ quick-xml = { version = "0.21.0", features = [ "serialize" ] }
 directories-next = "2.0.0"
 toml = { version = "0.5.8", features = [ "preserve_order" ] }
 wkhtmltopdf = "0.3.0"
+handlebars = "3.5.2"
 
 [target."cfg(windows)".build-dependencies]
 winres = "0.1"

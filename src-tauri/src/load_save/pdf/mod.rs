@@ -6,6 +6,7 @@ use std::{
   thread,
 };
 
+use handlebars::Handlebars;
 use lazy_static::lazy_static;
 use wkhtmltopdf::{Orientation, PageSize, PdfApplication, Size};
 
@@ -25,24 +26,24 @@ impl Saver for PDF {
 
     let title = document.header.document_title.clone();
     match render_doc(document) {
-      Err(e) => Err(LoadSaveError::RenderError(e.to_string())),
+      Err(e) => Err(e),
       Ok((page1, page2)) => {
         let channels = PDF_THREAD_CHANNEL.lock().unwrap();
 
-          channels
-            .0
-            .send((htmls, title))
-            .expect("sending data to pdf thread failed");
+        channels
+          .0
+          .send((page1, title))
+          .expect("sending data to pdf thread failed");
 
-          let pdf: Vec<u8> = channels.1.recv().expect("receiving data from pdf thread failed")?;
+        let pdf: Vec<u8> = channels.1.recv().expect("receiving data from pdf thread failed")?;
 
-          let file = OpenOptions::new()
-            .create(true)
-            .write(true)
-            .truncate(true)
-            .open(filename)?;
-          let mut writer = BufWriter::new(file);
-          writer.write_all(&pdf)?;
+        let file = OpenOptions::new()
+          .create(true)
+          .write(true)
+          .truncate(true)
+          .open(filename)?;
+        let mut writer = BufWriter::new(file);
+        writer.write_all(&pdf)?;
 
         Ok(())
       }
@@ -50,17 +51,33 @@ impl Saver for PDF {
   }
 }
 
-const HTML_TEST: &str = r#""#;
-
 /// render_doc get CaBr2Document and return html (dummy at the moment)
 fn render_doc(document: CaBr2Document) -> Result<(String, String)> {
-  fn html(placeholder: &str) -> String {
-    format!("<html><body>foo {}</body></html>", placeholder)
+  lazy_static! {
+    static ref REG: Arc<Mutex<Option<Handlebars<'static>>>> = Arc::new(Mutex::new(None));
+  }
+
+  let mut reg = REG.lock().unwrap();
+
+  if reg.is_none() {
+    *reg = Some(init_handlebars()?);
   }
 
   log::warn!("dummy values");
 
-  Ok((html("1"), html("2")))
+  Ok((
+    reg.as_ref().unwrap().render("dummy", &serde_json::json!({"page": 1}))?,
+    reg.as_ref().unwrap().render("dummy", &serde_json::json!({"page": 2}))?,
+  ))
+}
+
+#[inline]
+fn init_handlebars() -> Result<Handlebars<'static>> {
+  let mut reg = Handlebars::new();
+
+  reg.register_template_string("dummy", "<html><body><h1>Dummy HTML</h1>page: {{page}}</body></html>")?;
+
+  Ok(reg)
 }
 
 fn init_pdf_application() -> (mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>) {
