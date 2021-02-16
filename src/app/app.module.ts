@@ -7,7 +7,7 @@ import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './header/header.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ListInputSpecifcationsComponent } from './list-input-specifcations/list-input-specifcations.component';
-import { MatModules } from './modules/MatModules';
+import { MatModules } from './@core/modules/MatModules';
 import { MenubarComponent } from './menubar/menubar.component';
 import { NgModule } from '@angular/core';
 import { PreviewComponent } from './preview/preview.component';
@@ -15,6 +15,8 @@ import { PrintPreviewComponent } from './print-preview/print-preview.component';
 import { SearchComponent } from './search/search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
+import { AlertsnackbarComponent } from './alertsnackbar/alertsnackbar.component';
+import { AlertModule } from './@core/modules/alert.module';
 
 
 @NgModule({
@@ -36,6 +38,7 @@ import { SelectedSearchComponent } from './search/selected-search/selected-searc
     BrowserAnimationsModule,
     HttpClientModule,
     MatModules,
+    AlertModule,
   ],
   providers: [
     GlobalModel,
