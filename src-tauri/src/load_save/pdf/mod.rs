@@ -1,12 +1,13 @@
 use std::{
-  io::Read,
+  fs::OpenOptions,
+  io::{BufWriter, Read, Write},
   path::PathBuf,
   sync::{mpsc, Arc, Mutex},
   thread,
 };
 
 use lazy_static::lazy_static;
-use wkhtmltopdf::{Orientation, PdfApplication, Size};
+use wkhtmltopdf::{Orientation, PageSize, PdfApplication, Size};
 
 use super::{
   error::{LoadSaveError, Result},
@@ -33,9 +34,15 @@ impl Saver for PDF {
           .send((html, title))
           .expect("sending data to pdf thread failed");
 
-        let pdf = channels.1.recv().expect("receiving data from pdf thread failed");
+        let pdf: Vec<u8> = channels.1.recv().expect("receiving data from pdf thread failed")?;
 
-        log::debug!("{:?}", pdf);
+        let file = OpenOptions::new()
+          .create(true)
+          .write(true)
+          .truncate(true)
+          .open(filename)?;
+        let mut writer = BufWriter::new(file);
+        writer.write_all(&pdf)?;
 
         Ok(())
       }
@@ -54,6 +61,8 @@ fn render_doc(_document: CaBr2Document) -> Result<String> {
 fn init_pdf_application() -> (mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>) {
   let (tauri_tx, pdf_rx) = mpsc::sync_channel(0);
   let (pdf_tx, tauri_rx) = mpsc::sync_channel(0);
+
+  /* #region  pdf thread */
 
   thread::spawn(move || {
     log::debug!("[pdf_thread]: initializing pdf application");
@@ -80,7 +89,8 @@ fn init_pdf_application() -> (mpsc::SyncSender<(String, String)>, mpsc::Receiver
 
       let result = match pdf_app
         .builder()
-        .orientation(Orientation::Landscape)
+        .page_size(PageSize::A4)
+        .orientation(Orientation::Portrait)
         .margin(Size::Millimeters(50))
         .title(&title)
         .build_from_html(&html)
@@ -97,6 +107,8 @@ fn init_pdf_application() -> (mpsc::SyncSender<(String, String)>, mpsc::Receiver
       log::trace!("[pdf_thread]: finished");
     }
   });
+
+  /* #endregion */
 
   (tauri_tx, tauri_rx)
 }
