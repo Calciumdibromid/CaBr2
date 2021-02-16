@@ -1,16 +1,23 @@
 [package]
 name = "cabr2"
 version = "0.1.0"
-description = "A Tauri App"
+description = 'Generate "experiment wise safety sheets" in compliance to European law.'
 authors = [
   "Epsilon_02 <epsilon_02@mailbox.org>",
-  "crapStone <crapstone01@gmail.com>"
+  "crapStone <crapstone01@gmail.com>",
+  "6543 <6543@obermui.de>"
 ]
 license = "GPLv3+"
 repository = "https://github.com/th-rosenheim/CaBr2"
 default-run = "cabr2"
 edition = "2018"
 build = "src/build.rs"
+
+[package.metadata.bundle]
+name = "Calciumdibromid"
+identifier = "de.cabr2"
+icon = [ "32x32.png", "128x128.png", "128x128@2x.png" ]
+category = "Education"
 
 [dependencies]
 serde_json = "1.0"
@@ -38,3 +45,8 @@ no-server = [ "tauri/no-server" ]
 [[bin]]
 name = "cabr2"
 path = "src/main.rs"
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
