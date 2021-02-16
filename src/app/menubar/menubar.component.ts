@@ -20,12 +20,27 @@ export class MenubarComponent implements OnInit {
 
   descriptions = descriptions;
 
+  private loadFilter: string[] = [];
+  private saveFilter: string[] = [];
+
   constructor(
     public globals: GlobalModel,
     public config: ConfigModel,
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
-  ) {}
+  ) {
+    this.loadSaveService.getAvailableDocumentTypes().subscribe(
+      (types) => {
+        this.loadFilter = types.load;
+        this.saveFilter = types.save;
+
+        // fix to set cb2 type as default
+        this.loadFilter.splice(this.loadFilter.indexOf('cb2'), 1);
+        this.loadFilter.unshift('cb2');
+      },
+      (err) => logger.error(err),
+    );
+  }
 
   ngOnInit(): void {
     this.globals.header.documentTitle = 'Betriebsanweisungen nach EG Nr. 1272/2008';
@@ -76,7 +91,7 @@ export class MenubarComponent implements OnInit {
   loadFile(): void {
     this.tauriService
       .open({
-        filter: 'cb2', // TODO get filetypes from backend
+        filter: this.loadFilter.join(';'),
         multiple: false,
       })
       .subscribe((path) => {
@@ -87,13 +102,18 @@ export class MenubarComponent implements OnInit {
       });
   }
 
-  saveFile(): void {
+  saveFile(type: string): void {
+    // check for development, should never occur in production
+    if (this.saveFilter.indexOf(type) < 0) {
+      throw Error('unsupported file type');
+    }
+
     this.tauriService
       .save({
-        filter: 'cb2',
+        filter: type,
       })
       .subscribe((path) => {
-        this.loadSaveService.saveDocument('cb2', path as string, this.modelToDocument()).subscribe(
+        this.loadSaveService.saveDocument(type, path as string, this.modelToDocument()).subscribe(
           (res) => logger.debug(res),
           (err) => logger.error(err),
         );

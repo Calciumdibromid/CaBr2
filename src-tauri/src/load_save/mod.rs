@@ -66,6 +66,20 @@ impl Plugin for LoadSave {
               error,
             );
           }
+          Cmd::GetAvailableDocumentTypes {
+            callback,
+            error,
+          } => {
+            tauri::execute_promise(
+              webview,
+              move || match handler::get_available_document_types() {
+                Ok(res) => Ok(res),
+                Err(e) => Err(e.into()),
+              },
+              callback,
+              error,
+            );
+          }
         }
         // dispatch of async request should always succeed
         Ok(true)
