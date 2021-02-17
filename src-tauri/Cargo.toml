@@ -18,6 +18,7 @@ name = "Calciumdibromid"
 identifier = "de.cabr2"
 icon = [ "32x32.png", "128x128.png", "128x128@2x.png" ]
 category = "Education"
+resources = [ "ghs_symbols/*.png" ]
 
 [dependencies]
 serde_json = "1.0"
@@ -34,6 +35,9 @@ base64 = "0.13.0"
 quick-xml = { version = "0.21.0", features = [ "serialize" ] }
 directories-next = "2.0.0"
 toml = { version = "0.5.8", features = [ "preserve_order" ] }
+wkhtmltopdf = "0.3.0"
+handlebars = "3.5.2"
+lopdf = { version = "0.26.0", features = [ "nom_parser", "chrono_time" ], default-features = false }
 
 [target."cfg(windows)".build-dependencies]
 winres = "0.1"

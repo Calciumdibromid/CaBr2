@@ -1,0 +1,95 @@
+<html>
+<head>
+  <meta charset='UTF-8'>
+  <meta name='viewport'
+        content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'>
+  <meta http-equiv='X-UA-Compatible' content='ie=edge'>
+  <style>{{stylesheet}}</style>
+</head>
+<body>
+<table class='print'>
+  <!-- header -->
+  <tr>
+    <th colspan='8'>{{document.header.documentTitle}}</th>
+  </tr>
+  <tr>
+    <th colspan='8'>{{document.header.organisation}}</th>
+  </tr>
+  <tr>
+    <th colspan='8'>{{document.header.labCourse}}</th>
+  </tr>
+  <tr>
+    <td colspan='3'>
+      Name(n)<br />
+      {{document.header.name}}
+    </td>
+    <td colspan='2'>
+      Platz<br />
+      {{document.header.place}}
+    </td>
+    <td colspan='3'>
+      Assistent/in<br />
+      {{document.header.assistant}}
+    </td>
+  </tr>
+  <tr>
+    <td colspan='8'>
+      Herzustellendes Präparat:<br />
+      <b>{{document.header.preparation}}</b>
+    </td>
+  </tr>
+
+  <!-- ingredients -->
+  <tr>
+    <td colspan='2'>
+      eingesetzte Stoffe und Produkte
+    </td>
+    <td>
+      MG<br />
+      [g/mol]
+    </td>
+    <td>
+      Sdp.<br />
+      Smp.
+    </td>
+    <td>
+      GHS-Symbole
+    </td>
+    <td>
+      Nummern der H/P-Sätze
+    </td>
+    <td>
+      MAK<br />
+      LD50<br />
+      WGK
+    </td>
+    <td>
+      für Ansatz benötigt
+    </td>
+  </tr>
+
+  <tr>
+    {{#each document.substanceData}}
+    <td class='min-width-5cm' colspan='2'>{{name}}</td>
+    <td class='min-width-2cm'>{{molar_mass}}</td>
+    <td class='min-width-2cm'>{{boiling_point}}<br/>{{melting_point}}</td>
+    <td>TODO</td> {{! ghs symbols}}
+    <td>TODO</td> {{! h-/p-phrases}}
+    <td>{{mak}}<br/>{{lethal_dose}}<br/>{{water_hazard_class}}</td>
+    <td>{{amount}}</td>
+    {{/each}}
+  </tr>
+
+  <!-- h and p -->
+  <tr>
+    <td class='center' colspan='8'>
+      Wortlaut der wesentlichen oben genannten H- und P-Sätze:
+    </td>
+  </tr>
+  <tr>
+    <td colspan='4' class='full-height top'>TODO</td> {{! h-phrases}}
+    <td colspan='4' class='full-height top'>TODO</td> {{! p-phrases}}
+  </tr>
+</table>
+</body>
+</html>

@@ -7,7 +7,7 @@ use log::LevelFilter;
 use serde_json::{to_string_pretty, Value};
 use tauri::plugin::Plugin;
 
-use crate::config::{read_config, TomlConfig};
+use crate::config::{read_config, TomlConfig, TMP_DIR};
 use cmd::Cmd;
 pub use cmd::LogLevel;
 
@@ -20,11 +20,8 @@ impl Logger {
   }
 
   fn setup_logger() -> Result<(), fern::InitError> {
-    let log_file = format!(
-      // TODO cross platform solution
-      "/tmp/cabr2_{}.log",
-      chrono::Local::now().format("%F_%H.%M.%S")
-    );
+    let mut log_file = TMP_DIR.clone();
+    log_file.push(format!("cabr2_{}.log", chrono::Local::now().format("%F_%H.%M.%S")));
 
     let config = read_config()
       .unwrap_or_else(|e| {
@@ -51,7 +48,7 @@ impl Logger {
       .chain(std::io::stdout())
       .chain(fs::OpenOptions::new().create(true).write(true).open(&log_file)?)
       .apply()?;
-    log::info!("log file: {}", log_file);
+    log::info!("log file: {:?}", log_file);
     Ok(())
   }
 
