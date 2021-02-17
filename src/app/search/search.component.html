@@ -3,7 +3,7 @@
     <!-- TODO make this to one way databinding -->
     <app-selected-search (triggerSearch)="openDialog()" class="width-100"></app-selected-search>
   </div>
-  <button class="button" mat-flat-button color="primary" (click)="openDialog()">Suchen</button>
+  <button class="button unselectable" mat-flat-button color="primary" (click)="openDialog()">Suchen</button>
   <mat-divider class="divider"></mat-divider>
   <mat-selection-list [multiple]="false">
     <mat-list-item *ngFor="let result of globals.searchResults">
