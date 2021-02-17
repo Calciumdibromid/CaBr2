@@ -55,7 +55,7 @@ export class EditSearchResultsComponent implements OnInit {
 
   ngOnInit(): void {
     this.amount.get('unit')?.valueChanges.subscribe((value: Unit) => {
-      this.customUnitVisible = value === Unit.CUSTOM;
+      this.customUnitVisible = (value === Unit.CUSTOM);
     });
   }
 

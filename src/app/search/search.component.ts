@@ -61,8 +61,9 @@ export class SearchComponent implements OnInit {
         .substanceInfo(this.globals.searchResults[this.globals.searchResults.length - 1].zvgNumber)
         .subscribe((value) => {
           this.globals.substanceData.push(value);
-          console.log(this.globals.substanceData);
         });
+
+      // this hack is needed to update the table view
       this.dataSource.data = this.dataSource.data;
     });
   }
@@ -70,7 +71,7 @@ export class SearchComponent implements OnInit {
   openResultDialog(data: SearchResult): void {
     const index = this.globals.searchResults.indexOf(data);
 
-    const dialogRef = this.dialog.open(EditSearchResultsComponent, {
+    this.dialog.open(EditSearchResultsComponent, {
       data: { index },
       maxWidth: 1500,
       minWidth: 800,
@@ -86,6 +87,8 @@ export class SearchComponent implements OnInit {
     const index = this.globals.searchResults.indexOf(data);
     this.globals.substanceData.splice(index, 1);
     this.dataSource.data.splice(index, 1);
+
+    // this hack is needed to update the table view
     this.dataSource.data = this.dataSource.data;
   }
 }
