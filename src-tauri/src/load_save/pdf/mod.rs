@@ -96,6 +96,7 @@ fn render_doc(document: &CaBr2Document) -> Result<Vec<String>> {
 fn init_handlebars() -> Result<(String, Handlebars<'static>)> {
   let mut reg = Handlebars::new();
   let program_path = PathBuf::from(env::args().next().unwrap());
+  // TODO make path os independent
   let mut program_path = program_path.parent().unwrap().to_path_buf();
   program_path.push("templates");
   program_path.push("file");
