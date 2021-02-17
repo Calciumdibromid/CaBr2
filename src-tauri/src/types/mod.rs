@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct SubstanceData {
   pub name: Data<String>,
-  pub alternative_names: Data<Vec<String>>,
+  pub alternative_names: Vec<String>,
   pub cas: Data<Option<String>>,
   pub molecular_formula: Data<String>,
   pub molar_mass: Data<Option<String>>,
@@ -23,6 +23,7 @@ pub struct SubstanceData {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct Data<T> {
   #[serde(skip_serializing_if = "Option::is_none")]
   modified_data: Option<T>,
@@ -39,7 +40,7 @@ impl<T> Data<T> {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-#[serde(rename = "camelCase")]
+#[serde(rename_all = "camelCase")]
 pub struct Source {
   pub provider: String,
   pub url: String,
@@ -48,12 +49,12 @@ pub struct Source {
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Amount {
-  pub amount: String,
+  pub value: String,
   pub unit: Unit,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-#[serde(rename = "camelCase")]
+#[serde(rename_all = "camelCase")]
 pub enum Unit {
   Litre,
   Milliliter,

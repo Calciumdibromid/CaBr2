@@ -199,7 +199,7 @@ fn tables(node: &Node, class: &str) -> Vec<Vec<Vec<NodeId>>> {
 fn get_cas(_json: &GestisResponse) -> Result<String> {
   // TODO implement function
   log::error!("not implemented: 'get_cas()'");
-  Err(SearchError::MissingInfo("cas".into()))
+  Ok("TODO".into())
 }
 
 fn get_molecular_formula(json: &GestisResponse) -> Result<String> {

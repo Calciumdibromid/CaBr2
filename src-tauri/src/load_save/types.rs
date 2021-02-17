@@ -35,3 +35,9 @@ pub struct Header {
   pub assistant: String,
   pub preparation: String,
 }
+
+#[derive(Debug, Serialize)]
+pub struct DocumentTypes {
+  pub load: Vec<String>,
+  pub save: Vec<String>,
+}
