@@ -73,7 +73,7 @@ pub fn get_substance_data(agent: Agent, zvg_number: String) -> Result<SubstanceD
 
   let res_data = SubstanceData {
     name: Data::new(json.name.clone()),
-    alternative_names: Data::new(json.aliases.into_iter().map(|a| a.name).collect()),
+    alternative_names: json.aliases.into_iter().map(|a| a.name).collect(),
     cas: Data::new(Some(data.cas)),
     molecular_formula: Data::new(data.molecular_formula),
     molar_mass: Data::new(data.molar_mass),

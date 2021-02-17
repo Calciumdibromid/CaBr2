@@ -48,7 +48,7 @@ impl Loader for Beryllium {
             .into_iter()
             .map(|mut substance| SubstanceData {
               name: Data::new(substance.names[0].clone()),
-              alternative_names: Data::new(substance.names.split_off(1)),
+              alternative_names: substance.names.split_off(1),
               cas: Data::new(substance.cas),
               molecular_formula: Data::new(substance.chemical_formula),
               molar_mass: Data::new(substance.molecular_weight),
