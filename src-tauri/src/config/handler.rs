@@ -1,6 +1,5 @@
 use std::{
   collections::HashMap,
-  env,
   fs::{create_dir_all, OpenOptions},
   io::{Read, Write},
   path::PathBuf,
@@ -9,7 +8,7 @@ use std::{
 use super::{
   error::Result,
   types::{GHSSymbols, JsonConfig, TomlConfig},
-  PROJECT_DIRS,
+  DATA_DIR, PROJECT_DIRS,
 };
 
 pub fn get_config() -> Result<JsonConfig> {
@@ -57,7 +56,8 @@ pub fn write_config(config: TomlConfig) -> Result<()> {
 
 pub fn get_hazard_symbols() -> Result<GHSSymbols> {
   // symbols from: https://unece.org/transportdangerous-goods/ghs-pictograms
-  let symbol_folder = PathBuf::from(env::args().next().unwrap()).with_file_name("ghs_symbols");
+  let mut symbol_folder = DATA_DIR.clone();
+  symbol_folder.push("ghs_symbols");
   log::trace!("loading ghs symbols from: {:?}", symbol_folder);
 
   let mut symbols = HashMap::new();
