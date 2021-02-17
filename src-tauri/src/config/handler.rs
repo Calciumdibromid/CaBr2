@@ -12,15 +12,19 @@ use super::{
 };
 
 pub fn get_config() -> Result<JsonConfig> {
+  Ok(read_config()?.into())
+}
+
+pub fn read_config() -> Result<TomlConfig> {
   let config_path = get_config_path();
-  log::debug!("loading config from: {:?}", config_path);
+  log::trace!("reading config from: {:?}", config_path);
 
   let mut file = match OpenOptions::new().read(true).open(config_path) {
     Ok(file) => file,
     Err(e) => match e.kind() {
       std::io::ErrorKind::NotFound => {
         save_config(TomlConfig::default().into())?;
-        return get_config();
+        return read_config();
       }
       _ => return Err(e.into()),
     },
@@ -28,12 +32,16 @@ pub fn get_config() -> Result<JsonConfig> {
   let mut buf = String::new();
   file.read_to_string(&mut buf)?;
 
-  Ok(toml::from_str::<TomlConfig>(&buf)?.into())
+  Ok(toml::from_str::<TomlConfig>(&buf)?)
 }
 
 pub fn save_config(config: JsonConfig) -> Result<()> {
+  write_config(config.into())
+}
+
+pub fn write_config(config: TomlConfig) -> Result<()> {
   let config_path = get_config_path();
-  log::debug!("saving config to: {:?}", config_path);
+  log::trace!("writing config to: {:?}", config_path);
 
   let mut file = OpenOptions::new()
     .create(true)
@@ -41,7 +49,7 @@ pub fn save_config(config: JsonConfig) -> Result<()> {
     .truncate(true)
     .open(config_path)?;
 
-  file.write_all(toml::to_string_pretty::<TomlConfig>(&config.into())?.as_bytes())?;
+  file.write_all(toml::to_string_pretty(&config)?.as_bytes())?;
 
   Ok(())
 }
@@ -49,7 +57,7 @@ pub fn save_config(config: JsonConfig) -> Result<()> {
 pub fn get_hazard_symbols() -> Result<GHSSymbols> {
   // symbols from: https://unece.org/transportdangerous-goods/ghs-pictograms
   let symbol_folder = get_program_path().with_file_name("ghs_symbols");
-  log::debug!("loading ghs symbols from: {:?}", symbol_folder);
+  log::trace!("loading ghs symbols from: {:?}", symbol_folder);
 
   let mut symbols = HashMap::new();
   let mut buf = Vec::new();

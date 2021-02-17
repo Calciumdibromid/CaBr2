@@ -6,15 +6,8 @@ mod logger;
 mod search;
 mod types;
 
-use logger::Logger;
-
 fn main() {
-  #[cfg(debug_assertions)]
-  let logger = Logger::new(true);
-  #[cfg(not(debug_assertions))]
-  // TODO: set log_level to Info
-  let logger = Logger::new(false);
-
+  let logger = logger::Logger::new();
   let config = config::Config;
   let load_save = load_save::LoadSave::new();
   let search = search::Gestis::new();

@@ -8,7 +8,7 @@ use lazy_static::lazy_static;
 
 use super::{
   error::{LoadSaveError, Result},
-  types::{CaBr2Document, Loader, Saver},
+  types::{CaBr2Document, DocumentTypes, Loader, Saver},
 };
 
 lazy_static! {
@@ -63,4 +63,21 @@ pub fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
   }
 
   Err(LoadSaveError::UnknownFileType)
+}
+
+pub fn get_available_document_types() -> Result<DocumentTypes> {
+  Ok(DocumentTypes {
+    load: REGISTERED_LOADERS
+      .lock()
+      .expect("couldn't get lock for REGISTERED_LOADERS")
+      .keys()
+      .map(|s| s.to_string())
+      .collect(),
+    save: REGISTERED_SAVERS
+      .lock()
+      .expect("couldn't get lock for REGISTERED_SAVERS")
+      .keys()
+      .map(|s| s.to_string())
+      .collect(),
+  })
 }
