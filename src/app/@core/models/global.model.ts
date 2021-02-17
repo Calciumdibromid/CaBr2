@@ -33,7 +33,6 @@ export class GlobalModel {
     // newSymbols is just an object
     this.ghsSymbols = new Map(Object.entries(newSymbols));
   }
-
 }
 
 export type GHSSymbols = Map<string, string>;

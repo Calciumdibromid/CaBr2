@@ -12,10 +12,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgModule } from '@angular/core';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-
 
 const modules = [
   ScrollingModule,
@@ -34,11 +34,11 @@ const modules = [
   MatSidenavModule,
   MatSlideToggleModule,
   MatTooltipModule,
+  MatTableModule,
 ];
 
 @NgModule({
   imports: modules,
   exports: modules,
 })
-export class MatModules {
-}
+export class MatModules {}

@@ -9,9 +9,9 @@
 }
 
 .symbols-grid {
-  display: grid;
-  grid-template-columns: max-content max-content max-content;
-  gap: 20px;
+  display: inline-grid;
+  grid-template-columns: 200px 200px 200px;
+  gap: 15px;
 }
 
 .center {
@@ -20,7 +20,7 @@
 }
 
 .symbol {
-  max-width: 100%;
+  max-width: 70%;
   height: auto;
 }
 

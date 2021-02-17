@@ -1,4 +1,4 @@
-<form [formGroup]="form" (submit)="onSubmit()">
+<form [formGroup]="form" (submit)="onSubmit()" class="center">
   <mat-dialog-content class="grid">
     <mat-card class="mini-grid">
       <mat-form-field>
@@ -140,7 +140,7 @@
                 matTooltipPosition="left"
               >
                 <mat-icon *ngIf="!hPhrases.at(i).get('hover')?.value">remove_circle_outline</mat-icon>
-                <mat-icon color="primary" *ngIf="hPhrases.at(i).get('hover')?.value">remove_circle </mat-icon>
+                <mat-icon color="primary" *ngIf="hPhrases.at(i).get('hover')?.value">remove_circle</mat-icon>
               </button>
             </mat-form-field>
           </div>
@@ -154,8 +154,8 @@
             matTooltip="H-Satz hinzufügen"
             matTooltipPosition="right"
           >
-            <mat-icon *ngIf="!addHPhraseHover"> add_circle_outline </mat-icon>
-            <mat-icon color="primary" *ngIf="addHPhraseHover"> add_circle </mat-icon>
+            <mat-icon *ngIf="!addHPhraseHover"> add_circle_outline</mat-icon>
+            <mat-icon color="primary" *ngIf="addHPhraseHover"> add_circle</mat-icon>
           </a>
         </div>
       </mat-card>
@@ -188,7 +188,7 @@
                 matTooltipPosition="left"
               >
                 <mat-icon *ngIf="!pPhrases.at(i).get('hover')?.value">remove_circle_outline</mat-icon>
-                <mat-icon color="primary" *ngIf="pPhrases.at(i).get('hover')?.value">remove_circle </mat-icon>
+                <mat-icon color="primary" *ngIf="pPhrases.at(i).get('hover')?.value">remove_circle</mat-icon>
               </button>
             </mat-form-field>
           </div>
@@ -202,8 +202,8 @@
             matTooltip="P-Satz hinzufügen"
             matTooltipPosition="right"
           >
-            <mat-icon *ngIf="!addPPhraseHover"> add_circle_outline </mat-icon>
-            <mat-icon color="primary" *ngIf="addPPhraseHover"> add_circle </mat-icon>
+            <mat-icon *ngIf="!addPPhraseHover"> add_circle_outline</mat-icon>
+            <mat-icon color="primary" *ngIf="addPPhraseHover"> add_circle</mat-icon>
           </a>
         </div>
       </mat-card>
@@ -212,15 +212,17 @@
     <mat-card class="center" formArrayName="symbols">
       <p>Zum entfernen oder hinzufügen auf das Symbol klicken</p>
       <p>Grau: nicht gewählt / Farbig: Gewählt</p>
-      <div class="symbols-grid">
-        <img
-          class="symbol"
-          *ngFor="let key of symbolKeys"
-          [ngClass]="isSymbolActive(key) ? '' : 'grayscale'"
-          (click)="toggleSymbol(key)"
-          [src]="sanitizeImage(key)"
-          alt="{{ key }}"
-        />
+      <div class="center">
+        <div class="symbols-grid">
+          <img
+            class="symbol"
+            *ngFor="let key of symbolKeys"
+            [ngClass]="isSymbolActive(key) ? '' : 'grayscale'"
+            (click)="toggleSymbol(key)"
+            [src]="sanitizeImage(key)"
+            alt="{{ key }}"
+          />
+        </div>
       </div>
     </mat-card>
 

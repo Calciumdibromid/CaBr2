@@ -1,6 +1,11 @@
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, Inject, OnInit } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { GlobalModel } from '../../@core/models/global.model';
+
 import {
+  Amount,
   Data,
   SubstanceData,
   TemperatureUnit,
@@ -8,9 +13,6 @@ import {
   Unit,
   unitMappings,
 } from '../../@core/services/substances/substances.model';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GlobalModel } from '../../@core/models/global.model';
 
 
 @Component({
@@ -58,7 +60,8 @@ export class EditSearchResultsComponent implements OnInit {
   }
 
   initControls(): FormGroup {
-    const amount = this.modifiedOrOriginal(this.substanceData.amount) ?? { value: '', unit: Unit.GRAM };
+    const amount =
+      this.modifiedOrOriginal<Amount | undefined>(this.substanceData.amount) ?? { value: '', unit: Unit.GRAM };
     return this.formBuilder.group({
       name: this.modifiedOrOriginal(this.substanceData.name),
       cas: this.modifiedOrOriginal(this.substanceData.cas) ?? '',
@@ -68,10 +71,12 @@ export class EditSearchResultsComponent implements OnInit {
       boilingPoint: this.modifiedOrOriginal(this.substanceData.boilingPoint) ?? '',
       waterHazardClass: this.modifiedOrOriginal(this.substanceData.waterHazardClass) ?? '',
       hPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal(this.substanceData.hPhrases).map((hPhrase) => this.initHPhrases(hPhrase)),
+        this.modifiedOrOriginal<[string, string][]>(this.substanceData.hPhrases)
+          .map((hPhrase) => this.initHPhrases(hPhrase)),
       ),
       pPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal(this.substanceData.pPhrases).map((pPhrase) => this.initPPhrases(pPhrase)),
+        this.modifiedOrOriginal<[string, string][]>(this.substanceData.pPhrases)
+          .map((pPhrase) => this.initPPhrases(pPhrase)),
       ),
       signalWord: this.modifiedOrOriginal(this.substanceData.signalWord) ?? '',
       symbols: this.formBuilder.array(this.modifiedOrOriginal(this.substanceData.symbols)),

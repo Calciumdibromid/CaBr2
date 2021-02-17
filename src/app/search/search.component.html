@@ -6,12 +6,39 @@
   <button class="button" mat-flat-button color="primary" (click)="openDialog()">Suchen</button>
   <mat-divider class="divider"></mat-divider>
   <div class="margin-bottom"></div>
-  <mat-selection-list [multiple]="false">
-    <mat-list-option
-        matTooltip="Zum bearbeiten Klicken"
-        *ngFor="let result of globals.searchResults; let i = index"
-        (click)="openResultDialog(i)">
-      {{result.name}}
-    </mat-list-option>
-  </mat-selection-list>
+
+  <div class="mat-elevation-z8">
+    <mat-table [dataSource]="dataSource">
+      <ng-container matColumnDef="name" [sticky]="true">
+        <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.name }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="cas" [sticky]="true">
+        <mat-header-cell *matHeaderCellDef> CAS</mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{ element.casNumber }} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions" [sticky]="true">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <div class="right">
+            <a href="#" mat-raised-button color="primary" disabled> Provider </a>
+            <button
+              mat-icon-button
+              (click)="removeSubstance(element, $event)"
+              matTooltip="Substanz entfernen"
+              matTooltipPosition="left"
+            >
+              <span class="material-icons"> delete </span>
+            </button>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+
+      <mat-row class="mat-option" *matRowDef="let row; columns: displayedColumns" (click)="openResultDialog(row)"></mat-row>
+    </mat-table>
+  </div>
 </mat-card>
