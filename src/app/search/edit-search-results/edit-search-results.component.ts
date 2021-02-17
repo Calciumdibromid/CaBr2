@@ -1,4 +1,4 @@
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, Inject, OnInit } from '@angular/core';
 import {
   Data,
@@ -74,9 +74,7 @@ export class EditSearchResultsComponent implements OnInit {
         this.modifiedOrOriginal(this.substanceData.pPhrases).map((pPhrase) => this.initPPhrases(pPhrase)),
       ),
       signalWord: this.modifiedOrOriginal(this.substanceData.signalWord) ?? '',
-      symbols: this.formBuilder.array(
-        this.modifiedOrOriginal(this.substanceData.symbols),
-      ),
+      symbols: this.formBuilder.array(this.modifiedOrOriginal(this.substanceData.symbols)),
       lethalDose: this.modifiedOrOriginal(this.substanceData.lethalDose) ?? '',
       mak: this.modifiedOrOriginal(this.substanceData.mak) ?? '',
       amount: this.formBuilder.group({
@@ -119,21 +117,31 @@ export class EditSearchResultsComponent implements OnInit {
   }
 
   isSymbolActive(key: string): boolean {
-    // TODO return correct value
-    return true;
+    for (const element of this.symbols.controls) {
+      if (element.value === key) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   toggleSymbol(key: string): void {
-    // TODO see above
+    this.symbols.markAllAsTouched();
     if (this.isSymbolActive(key)) {
-      // this.symbols.removeAt(index);
+      this.symbols.controls.forEach((element, i) => {
+        if (element.value === key) {
+          this.symbols.removeAt(i);
+          return;
+        }
+      });
     } else {
-      // this.symbols.push(this.formBuilder.control(Array.from(this.globals.ghsSymbols.keys())[index]));
+      this.symbols.push(this.formBuilder.control(key));
     }
   }
 
-  sanitizeImage(id: string): SafeResourceUrl | undefined {
-    const img = this.globals.ghsSymbols.get(id);
+  sanitizeImage(key: string): SafeResourceUrl | undefined {
+    const img = this.globals.ghsSymbols.get(key);
     if (img) {
       return this.sanitizer.bypassSecurityTrustResourceUrl(img);
     }
@@ -188,7 +196,7 @@ export class EditSearchResultsComponent implements OnInit {
         this.substanceData.pPhrases,
       ),
       signalWord: this.evaluateForm('signalWord', this.substanceData.signalWord, (value) => value?.length === 0),
-      symbols: this.evaluateFormArray(this.symbols, (value) => value?.value, this.substanceData.symbols),
+      symbols: this.evaluateFormArray(this.symbols, (symbol) => symbol?.value, this.substanceData.symbols),
       lethalDose: this.evaluateForm('lethalDose', this.substanceData.lethalDose, (value) => value?.length === 0),
       mak: this.evaluateForm('mak', this.substanceData.mak, (value) => value?.length === 0),
       amount: this.evaluateFormGroup(
