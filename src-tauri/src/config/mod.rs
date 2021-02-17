@@ -6,6 +6,8 @@ mod types;
 use tauri::{self, plugin::Plugin};
 
 use cmd::Cmd;
+pub use handler::{read_config, write_config};
+pub use types::TomlConfig;
 
 pub struct Config;
 

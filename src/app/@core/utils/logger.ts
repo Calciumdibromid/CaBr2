@@ -8,34 +8,34 @@ export enum LogLevel {
   ERROR = 'ERROR',
 }
 
-const log = (level: LogLevel, msg: unknown): void  => {
+const log = (level: LogLevel, ...messages: unknown[]): void => {
   invoke({
     cmd: 'log',
     level,
-    message: msg,
+    messages,
   });
 };
 
 export { log };
 
 export default class logger {
-  static trace(msg: unknown): void {
-    log(LogLevel.TRACE, msg);
+  static trace(...messages: unknown[]): void {
+    log(LogLevel.TRACE, ...messages);
   }
 
-  static debug(msg: unknown): void {
-    log(LogLevel.DEBUG, msg);
+  static debug(...messages: unknown[]): void {
+    log(LogLevel.DEBUG, ...messages);
   }
 
-  static info(msg: unknown): void {
-    log(LogLevel.INFO, msg);
+  static info(...messages: unknown[]): void {
+    log(LogLevel.INFO, ...messages);
   }
 
-  static warning(msg: unknown): void {
-    log(LogLevel.WARNING, msg);
+  static warning(...messages: unknown[]): void {
+    log(LogLevel.WARNING, ...messages);
   }
 
-  static error(msg: unknown): void {
-    log(LogLevel.ERROR, msg);
+  static error(...messages: unknown[]): void {
+    log(LogLevel.ERROR, ...messages);
   }
 }
