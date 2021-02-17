@@ -3,11 +3,21 @@ mod error;
 mod handler;
 mod types;
 
+use std::{env, path::PathBuf};
+
+use directories_next::ProjectDirs;
+use lazy_static::lazy_static;
 use tauri::{self, plugin::Plugin};
 
 use cmd::Cmd;
 pub use handler::{read_config, write_config};
 pub use types::TomlConfig;
+
+lazy_static! {
+  pub static ref PROJECT_DIRS: ProjectDirs = ProjectDirs::from("de", "Calciumdibromid", "CaBr2").unwrap();
+  pub static ref DATA_DIR: PathBuf = get_program_data_dir();
+  pub static ref TMP_DIR: PathBuf = env::temp_dir().to_path_buf();
+}
 
 pub struct Config;
 
@@ -61,4 +71,15 @@ impl Plugin for Config {
       }
     }
   }
+}
+
+fn get_program_data_dir() -> PathBuf {
+  #[cfg(target_os = "linux")]
+  return PathBuf::from("/usr/lib/cabr2/");
+
+  #[cfg(target_os = "macos")]
+  unimplemented!();
+
+  #[cfg(target_os = "windows")]
+  return PathBuf::from(env::args().next().unwrap()).parent().unwrap().to_path_buf();
 }
