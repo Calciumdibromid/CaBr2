@@ -20,4 +20,8 @@ pub enum Cmd {
     callback: String,
     error: String,
   },
+  GetAvailableDocumentTypes {
+    callback: String,
+    error: String,
+  },
 }
