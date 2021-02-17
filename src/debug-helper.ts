@@ -12,6 +12,7 @@ const debugMain = () => {
   // testSubstanceData();
   // testLoadBeryllium();
 
+  logger.warning(42, 'test print:', { test: 42, name: 'penis', nested: { i: 21 } });
   logger.warning('======== end of frontend debugging calls ========');
 };
 
