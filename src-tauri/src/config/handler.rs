@@ -1,7 +1,7 @@
 use std::{
   collections::HashMap,
   env,
-  fs::OpenOptions,
+  fs::{create_dir_all, OpenOptions},
   io::{Read, Write},
   path::PathBuf,
 };
@@ -9,6 +9,7 @@ use std::{
 use super::{
   error::Result,
   types::{GHSSymbols, JsonConfig, TomlConfig},
+  PROJECT_DIRS,
 };
 
 pub fn get_config() -> Result<JsonConfig> {
@@ -56,7 +57,7 @@ pub fn write_config(config: TomlConfig) -> Result<()> {
 
 pub fn get_hazard_symbols() -> Result<GHSSymbols> {
   // symbols from: https://unece.org/transportdangerous-goods/ghs-pictograms
-  let symbol_folder = get_program_path().with_file_name("ghs_symbols");
+  let symbol_folder = PathBuf::from(env::args().next().unwrap()).with_file_name("ghs_symbols");
   log::trace!("loading ghs symbols from: {:?}", symbol_folder);
 
   let mut symbols = HashMap::new();
@@ -88,10 +89,13 @@ pub fn get_hazard_symbols() -> Result<GHSSymbols> {
 
 #[inline]
 fn get_config_path() -> PathBuf {
-  get_program_path().with_file_name("config.toml")
-}
+  let mut conf_dir = PROJECT_DIRS.config_dir().to_path_buf();
 
-#[inline]
-fn get_program_path() -> PathBuf {
-  PathBuf::from(env::args().next().unwrap())
+  if !conf_dir.exists() {
+    create_dir_all(&conf_dir).unwrap();
+  }
+
+  conf_dir.push("config.toml");
+
+  conf_dir
 }
