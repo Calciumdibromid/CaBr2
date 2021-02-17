@@ -8,34 +8,60 @@ export enum LogLevel {
   ERROR = 'ERROR',
 }
 
-const log = (level: LogLevel, msg: unknown): void  => {
+/**
+ * @deprecated
+ * Do not use this function directly, use the logger class that is provided in this file.
+ * Access to this function will be removed in a future version.
+ */
+const log = (level: LogLevel, ...messages: any[]): void => {
   invoke({
     cmd: 'log',
     level,
-    message: msg,
+    messages,
   });
 };
 
 export { log };
 
+/**
+ * This class provides methods that call the logging functions in the backend.
+ * It is supposed to be used if you want to log something into the log file,
+ * for development purposes use the methods of `console.*`.
+ */
 export default class logger {
-  static trace(msg: unknown): void {
-    log(LogLevel.TRACE, msg);
+
+  /**
+   * Logs all arguments space separated with the level `TRACE`.
+   */
+  static trace(...messages: any[]): void {
+    log(LogLevel.TRACE, ...messages);
   }
 
-  static debug(msg: unknown): void {
-    log(LogLevel.DEBUG, msg);
+  /**
+   * Logs all arguments space separated with the level `DEBUG`.
+   */
+  static debug(...messages: any[]): void {
+    log(LogLevel.DEBUG, ...messages);
   }
 
-  static info(msg: unknown): void {
-    log(LogLevel.INFO, msg);
+  /**
+   * Logs all arguments space separated with the level `INFO`.
+   */
+  static info(...messages: any[]): void {
+    log(LogLevel.INFO, ...messages);
   }
 
-  static warning(msg: unknown): void {
-    log(LogLevel.WARNING, msg);
+  /**
+   * Logs all arguments space separated with the level `WARNING`.
+   */
+  static warning(...messages: any[]): void {
+    log(LogLevel.WARNING, ...messages);
   }
 
-  static error(msg: unknown): void {
-    log(LogLevel.ERROR, msg);
+  /**
+   * Logs all arguments space separated with the level `ERROR`.
+   */
+  static error(...messages: any[]): void {
+    log(LogLevel.ERROR, ...messages);
   }
 }
