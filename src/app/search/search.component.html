@@ -1,7 +1,7 @@
 <mat-card class="onepager-mat-card">
   <div class="flex">
     <!-- TODO make this to one way databinding -->
-    <app-selected-search class="width-100"></app-selected-search>
+    <app-selected-search (triggerSearch)="openDialog()" class="width-100"></app-selected-search>
   </div>
   <button class="button" mat-flat-button color="primary" (click)="openDialog()">Suchen</button>
   <mat-divider class="divider"></mat-divider>

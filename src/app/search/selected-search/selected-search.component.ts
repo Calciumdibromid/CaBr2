@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 import { debounceTime } from 'rxjs/operators';
@@ -12,6 +12,8 @@ import { SearchService } from '../../@core/services/search/search.service';
   styleUrls: ['./selected-search.component.scss'],
 })
 export class SelectedSearchComponent implements OnInit {
+  @Output()
+  triggerSearch = new EventEmitter();
 
   searchOptions: SearchTypeMapping[] = this.searchService.searchTypeMappings;
 
@@ -66,6 +68,15 @@ export class SelectedSearchComponent implements OnInit {
 
   isDisabled(option: string): boolean {
     return this.selections.controls.filter(value => value.get('searchOption')?.value === option).length > 0;
+  }
+
+  onEnter(event: any): boolean {
+    event.preventDefault();
+    this.suggestionResults.forEach((value, key) => {
+      value.splice(0, value.length);
+    });
+    this.triggerSearch.emit();
+    return false;
   }
 
   // TODO handle change in searchTypeSelection
