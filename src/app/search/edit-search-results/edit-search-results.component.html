@@ -219,7 +219,7 @@
           [ngClass]="isSymbolActive(key) ? '' : 'grayscale'"
           (click)="toggleSymbol(key)"
           [src]="sanitizeImage(key)"
-          alt="{{ globals.ghsSymbols.get(key) }}"
+          alt="{{ key }}"
         />
       </div>
     </mat-card>
