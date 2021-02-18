@@ -90,16 +90,26 @@ pub fn get_hazard_symbols() -> Result<GHSSymbols> {
 #[cfg(not(debug_assertions))]
 #[inline]
 fn get_config_path() -> PathBuf {
-  use super::PROJECT_DIRS;
-  let mut conf_dir = PROJECT_DIRS.config_dir().to_path_buf();
+  #[cfg(not(feature = "portable"))]
+  {
+    use super::PROJECT_DIRS;
+    let mut conf_dir = PROJECT_DIRS.config_dir().to_path_buf();
 
-  if !conf_dir.exists() {
-    std::fs::create_dir_all(&conf_dir).unwrap();
+    if !conf_dir.exists() {
+      std::fs::create_dir_all(&conf_dir).unwrap();
+    }
+
+    conf_dir.push("config.toml");
+
+    conf_dir
   }
 
-  conf_dir.push("config.toml");
-
-  conf_dir
+  #[cfg(feature = "portable")]
+  {
+    let mut cfg_path = PathBuf::from(std::env::args().next().unwrap());
+    cfg_path.push("config.toml");
+    cfg_path
+  }
 }
 
 #[cfg(debug_assertions)]
