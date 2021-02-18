@@ -1,5 +1,5 @@
 <form [formGroup]="form" (submit)="onSubmit()" class="center">
-  <mat-dialog-content class="grid">
+  <mat-dialog-content class="grid unselectable">
     <mat-card class="mini-grid">
       <mat-form-field>
         <mat-label>Name</mat-label>
@@ -215,7 +215,7 @@
       <div class="center">
         <div class="symbols-grid">
           <img
-            class="symbol"
+            class="symbol undragable"
             *ngFor="let key of symbolKeys"
             [ngClass]="isSymbolActive(key) ? '' : 'grayscale'"
             (click)="toggleSymbol(key)"
