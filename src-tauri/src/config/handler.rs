@@ -1,6 +1,6 @@
 use std::{
   collections::HashMap,
-  fs::{create_dir_all, OpenOptions},
+  fs::OpenOptions,
   io::{Read, Write},
   path::PathBuf,
 };
@@ -8,7 +8,7 @@ use std::{
 use super::{
   error::Result,
   types::{GHSSymbols, JsonConfig, TomlConfig},
-  DATA_DIR, PROJECT_DIRS,
+  DATA_DIR,
 };
 
 pub fn get_config() -> Result<JsonConfig> {
@@ -87,15 +87,25 @@ pub fn get_hazard_symbols() -> Result<GHSSymbols> {
   Ok(symbols)
 }
 
+#[cfg(not(debug_assertions))]
 #[inline]
 fn get_config_path() -> PathBuf {
+  use super::PROJECT_DIRS;
   let mut conf_dir = PROJECT_DIRS.config_dir().to_path_buf();
 
   if !conf_dir.exists() {
-    create_dir_all(&conf_dir).unwrap();
+    std::fs::create_dir_all(&conf_dir).unwrap();
   }
 
   conf_dir.push("config.toml");
 
   conf_dir
+}
+
+#[cfg(debug_assertions)]
+#[inline]
+fn get_config_path() -> PathBuf {
+  let config_path = PathBuf::from(std::env::args().next().unwrap());
+  // src-tauri/target
+  config_path.parent().unwrap().with_file_name("config.toml")
 }

@@ -74,12 +74,24 @@ impl Plugin for Config {
 }
 
 fn get_program_data_dir() -> PathBuf {
-  #[cfg(target_os = "linux")]
-  return PathBuf::from("/usr/lib/cabr2/");
+  #[cfg(not(debug_assertions))]
+  {
+    #[cfg(target_os = "linux")]
+    return PathBuf::from("/usr/lib/cabr2/");
 
-  #[cfg(target_os = "macos")]
-  unimplemented!();
+    #[cfg(target_os = "macos")]
+    unimplemented!();
 
-  #[cfg(target_os = "windows")]
-  return PathBuf::from(env::args().next().unwrap()).parent().unwrap().to_path_buf();
+    #[cfg(target_os = "windows")]
+    return PathBuf::from(env::args().next().unwrap())
+      .parent()
+      .unwrap()
+      .to_path_buf();
+  }
+
+  #[cfg(debug_assertions)]
+  let mut program_path = PathBuf::from(env::args().next().unwrap()).parent().unwrap().to_path_buf();
+  // git repo root
+  program_path.push("../../../");
+  program_path.canonicalize().unwrap()
 }
