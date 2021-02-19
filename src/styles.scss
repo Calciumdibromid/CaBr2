@@ -22,19 +22,19 @@ $ang-CaBr2-warn: mat-palette($mat-red);
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
 $ang-CaBr2-theme: mat-light-theme((
-        color: (
-                primary: $ang-CaBr2-primary,
-                accent: $ang-CaBr2-accent,
-                warn: $ang-CaBr2-warn,
-        )
+  color: (
+    primary: $ang-CaBr2-primary,
+    accent: $ang-CaBr2-accent,
+    warn: $ang-CaBr2-warn,
+  )
 ));
 
 $ang-CaBr2-theme-dark: mat-dark-theme((
-        color: (
-                primary: $ang-CaBr2-primary,
-                accent: $ang-CaBr2-accent,
-                warn: $ang-CaBr2-warn,
-        )
+  color: (
+    primary: $ang-CaBr2-primary,
+    accent: $ang-CaBr2-accent,
+    warn: $ang-CaBr2-warn,
+  )
 ));
 
 // Include theme styles for core and each component used in your app.
@@ -74,4 +74,14 @@ body {
   mat-sidenav-content > div:not(.print) {
     display: none;
   }
+}
+
+.unselectable {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.undragable {
+  -webkit-user-drag: none;
 }

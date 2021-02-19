@@ -18,4 +18,7 @@ execute `yarn tauri-start` to get the aplication window.
 
 You need the tauri-builder. Get it  via `cargo install -f tauri-bundler`.
 
+To convert the html template to a pdf file you need to install `wkhtmltopdf`.
+`wkhtmltox` (that can be downloaded from [here](https://wkhtmltopdf.org/downloads.html)) is needed to build the app.
+
 Just execute `yarn build && yarn tauri build` afterwards.
