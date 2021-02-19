@@ -1,5 +1,5 @@
 <mat-sidenav-container>
-  <mat-sidenav class='fixed' mode='side' opened disableClose>
+  <mat-sidenav class='fixed unselectable' mode='side' opened disableClose>
     <button class='hamburger' mat-icon-button [matMenuTriggerFor]='menu'>
       <span class='material-icons' style='margin: -80%'>menu</span>
     </button>
@@ -43,7 +43,7 @@
     <mat-slide-toggle (change)="onDarkModeSwitched($event)" [checked]="config.global.darkTheme" color="primary" matTooltip="Auf dunkles Thema umschalten">
     </mat-slide-toggle>
   </mat-sidenav>
-  <mat-sidenav-content class='smooth-scroll'>
+  <mat-sidenav-content class='smooth-scroll unselectable'>
     <div #headerTarget>
       <app-header></app-header>
     </div>
