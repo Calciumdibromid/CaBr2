@@ -9,7 +9,7 @@ on:
 
 jobs:
   backend:
-    runs-on: ubuntu-20.04
+    runs-on: self-hosted
     steps:
       - uses: actions-rs/toolchain@v1
         with:
