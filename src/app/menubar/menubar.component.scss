@@ -1,3 +1,5 @@
+@import '~@angular/material/theming';
+
 .fixed {
   position: fixed;
   padding-left: 8px;
@@ -15,9 +17,11 @@
   width: 50px;
   height: 50px;
 
-  :hover {
-    width: 55px;
-    height: 55px;
+  @include mat-elevation-transition;
+  @include mat-elevation(1);
+
+  &:hover {
+    @include mat-elevation(5);
   }
 }
 
