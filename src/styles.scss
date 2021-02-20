@@ -42,10 +42,36 @@ $ang-CaBr2-theme-dark: mat-dark-theme((
 // that you are using.
 .theme-dark {
   @include angular-material-theme($ang-CaBr2-theme-dark);
+  .mat-snack-bar-container {
+    &.alert-info {
+      background: cornflowerblue;
+    }
+
+    &.alert-success {
+      background: greenyellow;
+    }
+
+    &.alert-error {
+      background: red;
+    }
+  }
 }
 
 .theme-light {
   @include angular-material-theme($ang-CaBr2-theme);
+  .mat-snack-bar-container {
+    &.alert-info {
+      background: cornflowerblue;
+    }
+
+    &.alert-success {
+      background: greenyellow;
+    }
+
+    &.alert-error {
+      background: red;
+    }
+  }
 }
 
 /* You can add global styles to this file, and also import other style files */

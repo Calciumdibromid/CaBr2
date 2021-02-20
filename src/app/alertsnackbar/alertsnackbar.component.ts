@@ -82,9 +82,8 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
 
     const alertTypeClass = {
       [AlertType.Success]: 'alert-success',
-      [AlertType.Error]: 'alert-danger',
+      [AlertType.Error]: 'alert-error',
       [AlertType.Info]: 'alert-info',
-      [AlertType.Warning]: 'alert-warning',
     };
 
     classes.push(alertTypeClass[alert.type]);
@@ -98,13 +97,13 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
 
   openSnackBar() {
     this.snackBar.openFromComponent(AlertComponent, {
-      duration: 500,
+      duration: 3000,
       horizontalPosition: 'right',
       verticalPosition: 'top',
       data: {
         alerts: this.alerts,
       },
-      panelClass: this.cssClass(this.alerts[0])
+      panelClass: this.cssClass(this.alerts[0]),
     });
   }
 }
@@ -132,9 +131,8 @@ export class AlertComponent {
 
     const alertTypeClass = {
       [AlertType.Success]: 'alert alert-success',
-      [AlertType.Error]: 'alert alert-danger',
+      [AlertType.Error]: 'alert alert-error',
       [AlertType.Info]: 'alert alert-info',
-      [AlertType.Warning]: 'alert alert-warning',
     };
 
     classes.push(alertTypeClass[alert.type]);
