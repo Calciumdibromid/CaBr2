@@ -26,7 +26,7 @@ $ang-CaBr2-theme: mat-light-theme((
     primary: $ang-CaBr2-primary,
     accent: $ang-CaBr2-accent,
     warn: $ang-CaBr2-warn,
-  )
+  ),
 ));
 
 $ang-CaBr2-theme-dark: mat-dark-theme((
@@ -34,7 +34,7 @@ $ang-CaBr2-theme-dark: mat-dark-theme((
     primary: $ang-CaBr2-primary,
     accent: $ang-CaBr2-accent,
     warn: $ang-CaBr2-warn,
-  )
+  ),
 ));
 
 // Include theme styles for core and each component used in your app.
@@ -42,10 +42,16 @@ $ang-CaBr2-theme-dark: mat-dark-theme((
 // that you are using.
 .theme-dark {
   @include angular-material-theme($ang-CaBr2-theme-dark);
+  mat-dialog-container {
+    background: #303030 !important;
+  }
 }
 
 .theme-light {
   @include angular-material-theme($ang-CaBr2-theme);
+  mat-dialog-container {
+    background: #fafafa !important;
+  }
 }
 
 /* You can add global styles to this file, and also import other style files */
