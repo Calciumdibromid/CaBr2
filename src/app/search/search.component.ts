@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
 import { FormControl } from '@angular/forms';
 import { GlobalModel } from '../@core/models/global.model';
@@ -6,10 +6,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 
-import { Data, SubstanceData } from '../@core/services/substances/substances.model';
 import { SearchArgument, SearchResult } from '../@core/services/search/search.model';
 import { SearchService } from '../@core/services/search/search.service';
 import { SelectedSearchComponent } from './selected-search/selected-search.component';
+import { SubstanceData } from '../@core/services/substances/substances.model';
 import { SubstancesService } from '../@core/services/substances/substances.service';
 
 @Component({
