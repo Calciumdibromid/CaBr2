@@ -1,7 +1,7 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-#[derive(Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub enum LogLevel {
   TRACE,
   DEBUG,
@@ -13,5 +13,5 @@ pub enum LogLevel {
 #[derive(Deserialize)]
 #[serde(tag = "cmd", rename_all = "camelCase")]
 pub enum Cmd {
-  Log { level: LogLevel, message: Option<Value> },
+  Log { level: LogLevel, messages: Vec<Value> },
 }

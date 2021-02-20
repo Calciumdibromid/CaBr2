@@ -9,3 +9,8 @@ export interface CaBr2Document {
   inCaseOfDanger: string[];
   disposal: string[];
 }
+
+export interface DocumentTypes {
+  load: string[];
+  save: string[];
+}

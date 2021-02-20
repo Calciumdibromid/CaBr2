@@ -1,4 +1,4 @@
-import { CaBr2Document } from './loadSave.model';
+import { CaBr2Document, DocumentTypes } from './loadSave.model';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TauriService } from '../tauri/tauri.service';
@@ -29,6 +29,12 @@ export class LoadSaveService {
     return this.tauriService.promisified({
       cmd: 'loadDocument',
       filename,
+    });
+  }
+
+  getAvailableDocumentTypes(): Observable<DocumentTypes> {
+    return this.tauriService.promisified({
+      cmd: 'getAvailableDocumentTypes',
     });
   }
 }

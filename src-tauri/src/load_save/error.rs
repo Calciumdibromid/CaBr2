@@ -11,6 +11,15 @@ pub enum LoadSaveError {
   #[error("file already exists: '{0}'")]
   FileExists(String),
 
+  #[error("merging of pdfs failed: '{0}'")]
+  PdfMergeError(String),
+
+  #[error("creating template failed: '{0}'")]
+  TemplateError(#[from] handlebars::TemplateFileError),
+  #[error("rendering document failed: '{0}'")]
+  RenderError(#[from] handlebars::RenderError),
+  #[error("PDF creation failed: {0}")]
+  PdfError(#[from] wkhtmltopdf::Error),
   #[error("parsing json failed: '{0}'")]
   JsonError(#[from] serde_json::Error),
   #[error("io error: '{0}'")]

@@ -1,0 +1,49 @@
+.grid {
+  display: grid;
+  grid-template-columns: 690px;
+}
+
+.mini-grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.symbols-grid {
+  display: inline-grid;
+  grid-template-columns: 200px 200px 200px;
+  gap: 15px;
+}
+
+.center {
+  display: grid;
+  place-content: center;
+}
+
+.symbol {
+  max-width: 70%;
+  height: auto;
+}
+
+.grayscale {
+  filter: grayscale(100%);
+}
+
+.flex {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+mat-form-field {
+  padding-left: 8px;
+  padding-right: 2px;
+}
+
+.phrases-form-field {
+  width: 420px;
+}
+
+.padder {
+  height: 10px;
+}

@@ -1,4 +1,4 @@
-<div [formGroup]="form" class="border-margin-padding-rounded">
+<mat-card [formGroup]="form" class="onepager-mat-card">
   <h5 class="mat-h5">{{title}}</h5>
   <div formArrayName="elements">
     <div *ngFor="let element of controlElements.controls; let i = index">
@@ -38,4 +38,4 @@
     <mat-icon *ngIf="!addHover">add_circle_outline</mat-icon>
     <mat-icon color="primary" *ngIf="addHover">add_circle</mat-icon>
   </button>
-</div>
+</mat-card>

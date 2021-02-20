@@ -1,12 +1,12 @@
 <mat-sidenav-container>
-  <mat-sidenav class='fixed' mode='side' opened disableClose>
+  <mat-sidenav class='fixed unselectable' mode='side' opened disableClose>
     <button class='hamburger' mat-icon-button [matMenuTriggerFor]='menu'>
       <span class='material-icons' style='margin: -80%'>menu</span>
     </button>
     <mat-menu #menu='matMenu'>
       <button mat-menu-item>Neue Betriebsanweisung</button>
       <button mat-menu-item (click)='loadFile()'>Bestehende Betriebsanweisung öffnen</button>
-      <button mat-menu-item (click)='saveFile()'>Betriebsanweisung speichern</button>
+      <button mat-menu-item (click)='saveFile("cb2")'>Betriebsanweisung speichern</button>
       <button mat-menu-item (click)='exportPDF()'>Als PDF exportieren</button>
     </mat-menu>
     <br />
@@ -43,7 +43,7 @@
     <mat-slide-toggle (change)="onDarkModeSwitched($event)" [checked]="config.global.darkTheme" color="primary" matTooltip="Auf dunkles Thema umschalten">
     </mat-slide-toggle>
   </mat-sidenav>
-  <mat-sidenav-content class='smooth-scroll'>
+  <mat-sidenav-content class='smooth-scroll unselectable'>
     <div #headerTarget>
       <app-header></app-header>
     </div>

@@ -3,6 +3,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { ConfigModel } from './@core/models/config.model';
+import { EditSearchResultsComponent } from './search/edit-search-results/edit-search-results.component';
 import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './header/header.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,10 +15,10 @@ import { PreviewComponent } from './preview/preview.component';
 import { PrintPreviewComponent } from './print-preview/print-preview.component';
 import { SearchComponent } from './search/search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
+
 import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
 import { AlertsnackbarComponent } from './alertsnackbar/alertsnackbar.component';
 import { AlertModule } from './@core/modules/alert.module';
-
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { AlertModule } from './@core/modules/alert.module';
     PrintPreviewComponent,
     SelectedSearchComponent,
     SearchDialogComponent,
+    EditSearchResultsComponent,
   ],
   imports: [
     BrowserModule,
