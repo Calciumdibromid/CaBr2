@@ -14,7 +14,7 @@ import {
   unitMappings,
 } from '../../@core/services/substances/substances.model';
 
-
+// TODO "rewrite" this component with observable
 @Component({
   selector: 'app-edit-search-results',
   templateUrl: './edit-search-results.component.html',
@@ -48,20 +48,22 @@ export class EditSearchResultsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
   ) {
-    this.substanceData = this.globals.substanceData[this.data.index];
+    this.substanceData = this.globals.substanceDataSubject.getValue()[this.data.index];
     this.symbolKeys = Array.from(this.globals.ghsSymbols.keys());
     this.form = this.initControls();
   }
 
   ngOnInit(): void {
     this.amount.get('unit')?.valueChanges.subscribe((value: Unit) => {
-      this.customUnitVisible = (value === Unit.CUSTOM);
+      this.customUnitVisible = value === Unit.CUSTOM;
     });
   }
 
   initControls(): FormGroup {
-    const amount =
-      this.modifiedOrOriginal<Amount | undefined>(this.substanceData.amount) ?? { value: '', unit: Unit.GRAM };
+    const amount = this.modifiedOrOriginal<Amount | undefined>(this.substanceData.amount) ?? {
+      value: '',
+      unit: Unit.GRAM,
+    };
     return this.formBuilder.group({
       name: this.modifiedOrOriginal(this.substanceData.name),
       cas: this.modifiedOrOriginal(this.substanceData.cas) ?? '',
@@ -71,12 +73,14 @@ export class EditSearchResultsComponent implements OnInit {
       boilingPoint: this.modifiedOrOriginal(this.substanceData.boilingPoint) ?? '',
       waterHazardClass: this.modifiedOrOriginal(this.substanceData.waterHazardClass) ?? '',
       hPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal<[string, string][]>(this.substanceData.hPhrases)
-          .map((hPhrase) => this.initHPhrases(hPhrase)),
+        this.modifiedOrOriginal<[string, string][]>(this.substanceData.hPhrases).map((hPhrase) =>
+          this.initHPhrases(hPhrase),
+        ),
       ),
       pPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal<[string, string][]>(this.substanceData.pPhrases)
-          .map((pPhrase) => this.initPPhrases(pPhrase)),
+        this.modifiedOrOriginal<[string, string][]>(this.substanceData.pPhrases).map((pPhrase) =>
+          this.initPPhrases(pPhrase),
+        ),
       ),
       signalWord: this.modifiedOrOriginal(this.substanceData.signalWord) ?? '',
       symbols: this.formBuilder.array(this.modifiedOrOriginal(this.substanceData.symbols)),
@@ -216,6 +220,9 @@ export class EditSearchResultsComponent implements OnInit {
     if (!this.form.invalid) {
       this.close();
       this.globals.substanceData[this.data.index] = newData;
+
+      // TODO this is a little hack, rewrite this logic with observables
+      this.globals.substanceDataSubject.next(this.globals.substanceData);
       this.substanceData = newData;
     } else {
       console.log(`error: ${this.form.errors}`);

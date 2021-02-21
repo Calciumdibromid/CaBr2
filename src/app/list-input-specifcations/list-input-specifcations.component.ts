@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -7,12 +8,14 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./list-input-specifcations.component.scss']
 })
 export class ListInputSpecifcationsComponent implements OnInit {
-
-  @Input()
-  elements: string[] = [];
+  @Output()
+  elementEmitter = new EventEmitter<string[]>();
 
   @Input()
   title = '';
+
+  @Input()
+  elements!: string[] | null;
 
   form: FormGroup;
 
@@ -26,7 +29,7 @@ export class ListInputSpecifcationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      elements: this.formBuilder.array(this.elements.map(value => this.initForm(value)))
+      elements: this.formBuilder.array(this.elements?.map(value => this.initForm(value)) ?? [])
     });
   }
 
@@ -35,18 +38,30 @@ export class ListInputSpecifcationsComponent implements OnInit {
   }
 
   initForm(value: string): FormGroup {
-    return this.formBuilder.group({
+    const form = this.formBuilder.group({
       value,
       hover: false
     });
+
+    form.get('value')?.valueChanges.subscribe(() => this.emitChange());
+
+    return form;
   }
 
   addElement(): void {
     this.controlElements.push(this.initForm(''));
+    this.emitChange();
   }
 
   removeElement(index: number): void {
-    this.elements.splice(index, 1);
+    this.elements?.splice(index, 1);
     this.controlElements.removeAt(index);
+    this.emitChange();
+  }
+
+  private emitChange(): void {
+    this.elementEmitter.emit(
+      this.controlElements.controls.map((control) => control.get('value')?.value),
+    );
   }
 }

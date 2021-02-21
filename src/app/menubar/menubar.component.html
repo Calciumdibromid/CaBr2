@@ -53,17 +53,24 @@
     <div #securitythings>
       <app-list-input-specifcations
         [title]='descriptions.humanAndEnvironmentDanger'
-        [elements]='globals.humanAndEnvironmentDanger'
+        [elements]='globals.humanAndEnvironmentDangerObservable | async'
+        (elementEmitter)='globals.humanAndEnvironmentDangerSubject.next($event)'
       ></app-list-input-specifcations>
       <app-list-input-specifcations
         [title]='descriptions.rulesOfConduct'
-        [elements]='globals.rulesOfConduct'></app-list-input-specifcations>
+        [elements]='globals.rulesOfConductObservable | async'
+        (elementEmitter)='globals.rulesOfConductSubject.next($event)'
+      ></app-list-input-specifcations>
       <app-list-input-specifcations
         [title]='descriptions.inCaseOfDanger'
-        [elements]='globals.inCaseOfDanger'></app-list-input-specifcations>
+        [elements]='globals.inCaseOfDangerObservable | async'
+        (elementEmitter)='globals.inCaseOfDangerSubject.next($event)'
+      ></app-list-input-specifcations>
       <app-list-input-specifcations
         [title]='descriptions.disposal'
-        [elements]='globals.disposal'></app-list-input-specifcations>
+        [elements]='globals.disposalObservable | async'
+        (elementEmitter)='globals.disposalSubject.next($event)'
+      ></app-list-input-specifcations>
     </div>
     <div #preview>
       <app-preview></app-preview>

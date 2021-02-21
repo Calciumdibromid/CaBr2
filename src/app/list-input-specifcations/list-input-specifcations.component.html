@@ -1,26 +1,26 @@
 <mat-card [formGroup]="form" class="onepager-mat-card">
-  <h5 class="mat-h5">{{title}}</h5>
+  <h5 class="mat-h5">{{ title }}</h5>
   <div formArrayName="elements">
     <div *ngFor="let element of controlElements.controls; let i = index">
       <div [formGroupName]="i">
         <mat-form-field class="width-100">
           <textarea
-              formControlName="value"
-              [(ngModel)]="elements[i]"
-              matInput
-              cdkTextareaAutosize
-              cdkAutosizeMinRows="1"
-              cdkAutosizeMaxRows="5"
+            formControlName="value"
+            matInput
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
           >
           </textarea>
           <button
-              matSuffix
-              mat-icon-button
-              (mouseenter)="controlElements.at(i).get('hover')?.patchValue(true)"
-              (mouseleave)="controlElements.at(i).get('hover')?.patchValue(false)"
-              (click)="removeElement(i)"
-              matTooltip="Eintrag entfernen"
-              matTooltipPosition="left">
+            matSuffix
+            mat-icon-button
+            (mouseenter)="controlElements.at(i).get('hover')?.patchValue(true)"
+            (mouseleave)="controlElements.at(i).get('hover')?.patchValue(false)"
+            (click)="removeElement(i)"
+            matTooltip="Eintrag entfernen"
+            matTooltipPosition="left"
+          >
             <mat-icon *ngIf="!controlElements.at(i).get('hover')?.value">remove_circle_outline</mat-icon>
             <mat-icon color="primary" *ngIf="controlElements.at(i).get('hover')?.value">remove_circle</mat-icon>
           </button>
@@ -29,12 +29,13 @@
     </div>
   </div>
   <button
-      mat-icon-button
-      (mouseenter)="addHover = true"
-      (mouseleave)="addHover = false"
-      (click)="addElement()"
-      matTooltip="Eintrag hinzufügen"
-      matTooltipPosition="right">
+    mat-icon-button
+    (mouseenter)="addHover = true"
+    (mouseleave)="addHover = false"
+    (click)="addElement()"
+    matTooltip="Eintrag hinzufügen"
+    matTooltipPosition="right"
+  >
     <mat-icon *ngIf="!addHover">add_circle_outline</mat-icon>
     <mat-icon color="primary" *ngIf="addHover">add_circle</mat-icon>
   </button>

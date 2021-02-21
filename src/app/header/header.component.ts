@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { GlobalModel } from '../@core/models/global.model';
+import { Header } from '../@core/interfaces/Header';
 
 @Component({
   selector: 'app-header',
@@ -7,6 +8,7 @@ import { GlobalModel } from '../@core/models/global.model';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
+  header!: Header;
 
   constructor(
     public globals: GlobalModel,
@@ -14,5 +16,6 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.globals.headerObservable.subscribe(data => this.header = data);
   }
 }
