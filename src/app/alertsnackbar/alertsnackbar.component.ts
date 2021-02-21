@@ -38,6 +38,7 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
 
       // auto close alert if required
       if (alert.autoClose) {
+        // TODO cleanup
         setTimeout(() => this.removeAlert(alert), 3000);
       }
 
