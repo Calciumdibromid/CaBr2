@@ -45,12 +45,38 @@ $ang-CaBr2-theme-dark: mat-dark-theme((
   mat-dialog-container {
     background: #303030 !important;
   }
+  .mat-snack-bar-container {
+    &.alert-info {
+      background: cornflowerblue;
+    }
+
+    &.alert-success {
+      background: greenyellow;
+    }
+
+    &.alert-error {
+      background: red;
+    }
+  }
 }
 
 .theme-light {
   @include angular-material-theme($ang-CaBr2-theme);
   mat-dialog-container {
     background: #fafafa !important;
+  }
+  .mat-snack-bar-container {
+    &.alert-info {
+      background: cornflowerblue;
+    }
+
+    &.alert-success {
+      background: greenyellow;
+    }
+
+    &.alert-error {
+      background: red;
+    }
   }
 }
 
