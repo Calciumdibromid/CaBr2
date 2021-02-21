@@ -9,7 +9,7 @@ on:
 
 jobs:
   backend:
-    runs-on: self-hosted
+    runs-on: ubuntu-20.04
     container: a6543/cabr2_ci:latest
     steps:
       - name: Checkout Project
