@@ -18,7 +18,6 @@ pub fn get_config() -> Result<JsonConfig> {
 pub fn read_config() -> Result<TomlConfig> {
   let config_path = get_config_path();
   log::trace!("reading config from: {:?}", config_path);
-  println!("reading config from: {:?}", config_path);
 
   let mut file = match OpenOptions::new().read(true).open(config_path) {
     Ok(file) => file,
