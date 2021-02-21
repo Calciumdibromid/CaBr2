@@ -1,11 +1,10 @@
-import { BehaviorSubject, Observable } from 'rxjs';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-list-input-specifcations',
   templateUrl: './list-input-specifcations.component.html',
-  styleUrls: ['./list-input-specifcations.component.scss']
+  styleUrls: ['./list-input-specifcations.component.scss'],
 })
 export class ListInputSpecifcationsComponent implements OnInit {
   @Output()
@@ -21,15 +20,13 @@ export class ListInputSpecifcationsComponent implements OnInit {
 
   addHover = false;
 
-  constructor(
-    private formBuilder: FormBuilder,
-  ) {
+  constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({});
   }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
-      elements: this.formBuilder.array(this.elements?.map(value => this.initForm(value)) ?? [])
+      elements: this.formBuilder.array(this.elements?.map((value) => this.initForm(value)) ?? []),
     });
   }
 
@@ -40,7 +37,7 @@ export class ListInputSpecifcationsComponent implements OnInit {
   initForm(value: string): FormGroup {
     const form = this.formBuilder.group({
       value,
-      hover: false
+      hover: false,
     });
 
     form.get('value')?.valueChanges.subscribe(() => this.emitChange());
@@ -60,8 +57,6 @@ export class ListInputSpecifcationsComponent implements OnInit {
   }
 
   private emitChange(): void {
-    this.elementEmitter.emit(
-      this.controlElements.controls.map((control) => control.get('value')?.value),
-    );
+    this.elementEmitter.emit(this.controlElements.controls.map((control) => control.get('value')?.value));
   }
 }

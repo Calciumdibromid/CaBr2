@@ -30,6 +30,8 @@ export class GlobalModel {
 
   ghsSymbols: GHSSymbols = new Map();
 
+  // new shit
+
   headerSubject = new BehaviorSubject<Header>(
     {
       assistant: '',

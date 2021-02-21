@@ -5,6 +5,7 @@ import { GlobalModel } from '../@core/models/global.model';
 import { Header } from '../@core/interfaces/Header';
 import { map } from 'rxjs/operators';
 
+// TODO ViewSubstanceData and move
 interface SimpleSubstanceData {
   name: string;
   cas?: string;

@@ -93,6 +93,7 @@ export class SearchComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
+    // TODO move tap thing to subscribe
     this.globals.substanceDataObservable
       .pipe(
         tap((value) => {
