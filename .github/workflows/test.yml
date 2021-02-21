@@ -10,8 +10,11 @@ on:
 jobs:
   backend:
     runs-on: self-hosted
+    container: a6543/cabr2_ci:latest
     steps:
-      - uses: Calciumdibromid/ci@master
+      - name: Checkout Project
+        uses: actions/checkout@v1
+
       - name: Rust Linting
         run: |
           ls -la /usr/local/bin/
