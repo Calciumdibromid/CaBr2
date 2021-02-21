@@ -30,7 +30,7 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
     this.alertSubscription = this.alertService.onAlert(this.id).subscribe((alert) => {
       // clear alerts when an empty alert is received
       if (!alert.message) {
-        return;
+        throw Error('Empty alert message');
       }
 
       // add alert to array
