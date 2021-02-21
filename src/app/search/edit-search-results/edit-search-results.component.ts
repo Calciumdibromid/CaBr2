@@ -1,5 +1,5 @@
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, ElementRef, Inject, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GlobalModel } from '../../@core/models/global.model';
@@ -50,6 +50,7 @@ export class EditSearchResultsComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: SubstanceData,
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
+    private elementRef: ElementRef,
   ) {
     this.substanceData = data;
     this.symbolKeys = Array.from(this.globals.ghsSymbols.keys());
@@ -68,7 +69,7 @@ export class EditSearchResultsComponent implements OnInit {
       unit: Unit.GRAM,
     };
     return this.formBuilder.group({
-      name: this.modifiedOrOriginal(this.substanceData.name),
+      name: [this.modifiedOrOriginal(this.substanceData.name), Validators.required],
       cas: this.modifiedOrOriginal(this.substanceData.cas) ?? '',
       molecularFormula: this.modifiedOrOriginal(this.substanceData.molecularFormula),
       molarMass: this.modifiedOrOriginal(this.substanceData.molarMass) ?? '',
@@ -227,6 +228,7 @@ export class EditSearchResultsComponent implements OnInit {
       this.substanceData = newData;
       this.close(this.substanceData);
     } else {
+      this.form.markAllAsTouched();
       console.log(`error: ${this.form.errors}`);
     }
   }
