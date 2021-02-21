@@ -14,7 +14,7 @@ jobs:
       - uses: Calciumdibromid/ci@master
       - name: Rust Linting
         run: |
-          env
+          ls -la /usr/local/bin/
           cd ./src-tauri
           cargo clippy
       - name: Rust Tests
