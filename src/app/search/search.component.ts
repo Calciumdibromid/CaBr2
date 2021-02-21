@@ -30,7 +30,6 @@ export class SearchComponent implements OnInit {
   displayedColumns = ['name', 'cas', 'actions'];
 
   dataSource!: MatTableDataSource<SubstanceData>;
-  foo!: SubstanceData[];
 
   constructor(
     private searchService: SearchService,
@@ -40,10 +39,8 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // TODO get specificationjson from backend as synchron callback
     this.globals.substanceDataObservable.subscribe((data) => {
       this.dataSource = new MatTableDataSource(data);
-      // this.foo = data;
     });
   }
 
@@ -62,9 +59,8 @@ export class SearchComponent implements OnInit {
     dialogRef.afterClosed().subscribe(() => {
       this.substanceService
         .substanceInfo(this.globals.searchResults[this.globals.searchResults.length - 1].zvgNumber)
-        .subscribe(value => {
-          const data = this.globals.substanceDataSubject.getValue();
-          data.push(value);
+        .subscribe((value) => {
+          const data = [...this.globals.substanceDataSubject.getValue(), value];
           this.dataSource.connect().next(data);
           this.globals.substanceDataSubject.next(data);
         });
@@ -76,16 +72,21 @@ export class SearchComponent implements OnInit {
 
     this.dialog
       .open(EditSearchResultsComponent, {
-        data: { index },
+        data,
         maxWidth: 1500,
         minWidth: 800,
         maxHeight: 900,
         minHeight: 300,
       })
       .afterClosed()
-      .subscribe(() => {
-        // this hack is needed to update the table view
-        this.dataSource.data = this.dataSource.data;
+      .subscribe((substanceData: SubstanceData) => {
+        if (substanceData) {
+          const tempData = this.globals.substanceDataSubject.getValue();
+          if (tempData.some((value) => substanceData, index)) {
+            tempData[index] = substanceData;
+            this.globals.substanceDataSubject.next(tempData);
+          }
+        }
       });
   }
 

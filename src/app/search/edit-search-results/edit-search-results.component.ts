@@ -13,6 +13,7 @@ import {
   Unit,
   unitMappings,
 } from '../../@core/services/substances/substances.model';
+import { Subscription } from 'rxjs';
 
 // TODO "rewrite" this component with observable
 @Component({
@@ -41,20 +42,22 @@ export class EditSearchResultsComponent implements OnInit {
   // TODO move that to some global thingy
   symbolKeys: string[] = [];
 
+  customSubscription?: Subscription;
+
   constructor(
     public dialogRef: MatDialogRef<EditSearchResultsComponent>,
     public globals: GlobalModel,
-    @Inject(MAT_DIALOG_DATA) public data: { index: number },
+    @Inject(MAT_DIALOG_DATA) public data: SubstanceData,
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
   ) {
-    this.substanceData = this.globals.substanceDataSubject.getValue()[this.data.index];
+    this.substanceData = data;
     this.symbolKeys = Array.from(this.globals.ghsSymbols.keys());
     this.form = this.initControls();
   }
 
   ngOnInit(): void {
-    this.amount.get('unit')?.valueChanges.subscribe((value: Unit) => {
+    this.customSubscription = this.amount.get('unit')?.valueChanges.subscribe((value: Unit) => {
       this.customUnitVisible = value === Unit.CUSTOM;
     });
   }
@@ -171,9 +174,12 @@ export class EditSearchResultsComponent implements OnInit {
     formArray.markAllAsTouched();
   }
 
-  close(): void {
-    this.form = this.initControls();
-    this.dialogRef.close();
+  close(data?: SubstanceData): void {
+    this.customSubscription?.unsubscribe();
+    if (data === undefined) {
+      this.form = this.initControls();
+    }
+    this.dialogRef.close(data);
   }
 
   onSubmit(): void {
@@ -218,12 +224,8 @@ export class EditSearchResultsComponent implements OnInit {
     };
 
     if (!this.form.invalid) {
-      this.close();
-      this.globals.substanceData[this.data.index] = newData;
-
-      // TODO this is a little hack, rewrite this logic with observables
-      this.globals.substanceDataSubject.next(this.globals.substanceData);
       this.substanceData = newData;
+      this.close(this.substanceData);
     } else {
       console.log(`error: ${this.form.errors}`);
     }
