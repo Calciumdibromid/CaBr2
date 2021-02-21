@@ -46,6 +46,7 @@ winres = "0.1"
 embedded-server = [ "tauri/embedded-server" ]
 no-server = [ "tauri/no-server" ]
 portable = [ ]
+default = [ "portable" ]
 
 [[bin]]
 name = "cabr2"
