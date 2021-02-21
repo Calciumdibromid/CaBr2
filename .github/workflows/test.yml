@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@v1
+      - name: Set Rust Toolchain
+        run: rustup default stable
 
       - name: Rust Linting
         run: |
