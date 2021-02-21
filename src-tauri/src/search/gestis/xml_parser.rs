@@ -26,6 +26,7 @@ lazy_static! {
     ("water_hazard_class", ("1100", "1106")),
     ("h_p_signal_symbols", ("1100", "1303")),
     ("lethal_dose", ("0500", "0501")),
+    ("cas", ("0100", "0100")),
   ]
   .iter()
   .cloned()
@@ -196,10 +197,8 @@ fn tables(node: &Node, class: &str) -> Vec<Vec<Vec<NodeId>>> {
 
 /* #region  extractors */
 
-fn get_cas(_json: &GestisResponse) -> Result<String> {
-  // TODO implement function
-  log::error!("not implemented: 'get_cas()'");
-  Ok("TODO".into())
+fn get_cas(json: &GestisResponse) -> Result<String> {
+  get_mp_bp(json, "casnr", "CAS Nr:")
 }
 
 fn get_molecular_formula(json: &GestisResponse) -> Result<String> {
