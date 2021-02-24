@@ -36,7 +36,7 @@ quick-xml = { version = "0.22.0", features = [ "serialize" ] }
 directories-next = "2.0.0"
 toml = { version = "0.5.8", features = [ "preserve_order" ] }
 wkhtmltopdf = "0.3.0"
-handlebars = "3.5.2"
+handlebars = "3.5.3"
 lopdf = { version = "0.26.0", features = [ "nom_parser", "chrono_time" ], default-features = false }
 
 [target."cfg(windows)".build-dependencies]
