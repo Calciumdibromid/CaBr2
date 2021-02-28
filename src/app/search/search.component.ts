@@ -77,25 +77,23 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  openResultDialog(data: SubstanceData): void {
-    const index = this.globals.substanceDataSubject.getValue().indexOf(data);
-
+  openResultDialog(origData: SubstanceData): void {
     this.dialog
       .open(EditSearchResultsComponent, {
-        data,
+        data: origData,
         maxWidth: 1500,
         minWidth: 800,
         maxHeight: 900,
         minHeight: 300,
       })
       .afterClosed()
-      .subscribe((substanceData: SubstanceData) => {
+      .subscribe((substanceData?: SubstanceData) => {
+        // substanceData is only filled if editing was successful
         if (substanceData) {
-          const tempData = this.globals.substanceDataSubject.getValue();
-          if (tempData.some((value) => substanceData, index)) {
-            tempData[index] = substanceData;
-            this.globals.substanceDataSubject.next(tempData);
-          }
+          const newData = this.globals.substanceDataSubject.getValue();
+          const index = newData.indexOf(origData);
+          newData[index] = substanceData;
+          this.globals.substanceDataSubject.next(newData);
         }
       });
   }
@@ -104,15 +102,10 @@ export class SearchComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    // TODO move tap thing to subscribe
     this.globals.substanceDataObservable
-      .pipe(
-        tap((value) => {
-          const index = value.indexOf(data);
-          value.splice(index, 1);
-        }),
-      )
       .subscribe((value) => {
+        const index = value.indexOf(data);
+        value.splice(index, 1);
         this.dataSource.connect().next(value);
       });
   }

@@ -67,6 +67,12 @@ export class MenubarComponent implements OnInit {
       // eslint-disable-next-line max-len
       'Nach Augenkontakt: Mit Wasser spülen. Falls vorhanden nach Möglichkeit Kontaktlinsen entfernen und weiter spülen. Sofort Augenarzt hinzuziehen.',
     ]);
+
+    this.globals.substanceDataSubject.next([]);
+  }
+
+  newDocument(): void {
+    this.ngOnInit();
   }
 
   scroll(el: HTMLElement): void {

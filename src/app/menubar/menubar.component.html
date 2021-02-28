@@ -1,49 +1,42 @@
 <mat-sidenav-container>
-  <mat-sidenav class='fixed unselectable' mode='side' opened disableClose>
-    <button class='hamburger' mat-icon-button [matMenuTriggerFor]='menu'>
-      <span class='material-icons' style='margin: -80%'>menu</span>
+  <mat-sidenav class="fixed unselectable" mode="side" opened disableClose>
+    <button class="hamburger" mat-icon-button [matMenuTriggerFor]="menu">
+      <span class="material-icons" style="margin: -80%">menu</span>
     </button>
-    <mat-menu #menu='matMenu'>
-      <button mat-menu-item>Neue Betriebsanweisung</button>
-      <button mat-menu-item (click)='loadFile()'>Bestehende Betriebsanweisung öffnen</button>
-      <button mat-menu-item (click)='saveFile("cb2")'>Betriebsanweisung speichern</button>
-      <button mat-menu-item (click)='exportPDF()'>Als PDF exportieren</button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="newDocument()">Neue Betriebsanweisung</button>
+      <button mat-menu-item (click)="loadFile()">Bestehende Betriebsanweisung öffnen</button>
+      <button mat-menu-item (click)="saveFile('cb2')">Betriebsanweisung speichern</button>
+      <button mat-menu-item (click)="exportPDF()">Als PDF exportieren</button>
     </mat-menu>
     <br />
-    <button
-      class='icon'
-      mat-icon-button
-      (click)='scroll(headerTarget)'>
+    <button class="icon" mat-icon-button (click)="scroll(headerTarget)">
       <mat-icon>
-        <img class='svg' src='assets/icons/Kolben.svg'>
+        <img class="svg" src="assets/icons/Kolben.svg" />
       </mat-icon>
     </button>
     <br />
-    <button
-      class='icon'
-      mat-icon-button
-      (click)='scroll(search)'>
-      <img class='svg-icon' src='assets/icons/Lupe.svg'>
+    <button class="icon" mat-icon-button (click)="scroll(search)">
+      <img class="svg-icon" src="assets/icons/Lupe.svg" />
     </button>
     <br />
-    <button
-      class='icon'
-      mat-icon-button
-      (click)='scroll(securitythings)'>
-      <img class='svg-icon' src='assets/icons/Puzzel.svg'>
+    <button class="icon" mat-icon-button (click)="scroll(securitythings)">
+      <img class="svg-icon" src="assets/icons/Puzzel.svg" />
     </button>
     <br />
-    <button
-      class='icon'
-      mat-icon-button
-      (click)='scroll(preview)'>
-      <img class='svg-icon' src='assets/icons/Pfeil.svg'>
+    <button class="icon" mat-icon-button (click)="scroll(preview)">
+      <img class="svg-icon" src="assets/icons/Pfeil.svg" />
     </button>
-    <br/>
-    <mat-slide-toggle (change)="onDarkModeSwitched($event)" [checked]="config.global.darkTheme" color="primary" matTooltip="Auf dunkles Thema umschalten">
+    <br />
+    <mat-slide-toggle
+      (change)="onDarkModeSwitched($event)"
+      [checked]="config.global.darkTheme"
+      color="primary"
+      matTooltip="Auf dunkles Thema umschalten"
+    >
     </mat-slide-toggle>
   </mat-sidenav>
-  <mat-sidenav-content class='smooth-scroll unselectable'>
+  <mat-sidenav-content class="smooth-scroll unselectable">
     <div #headerTarget>
       <app-header></app-header>
     </div>
@@ -52,29 +45,29 @@
     </div>
     <div #securitythings>
       <app-list-input-specifcations
-        [title]='descriptions.humanAndEnvironmentDanger'
-        [elements]='globals.humanAndEnvironmentDangerObservable | async'
-        (elementEmitter)='globals.humanAndEnvironmentDangerSubject.next($event)'
+        [title]="descriptions.humanAndEnvironmentDanger"
+        [elements]="globals.humanAndEnvironmentDangerObservable | async"
+        (elementEmitter)="globals.humanAndEnvironmentDangerSubject.next($event)"
       ></app-list-input-specifcations>
       <app-list-input-specifcations
-        [title]='descriptions.rulesOfConduct'
-        [elements]='globals.rulesOfConductObservable | async'
-        (elementEmitter)='globals.rulesOfConductSubject.next($event)'
+        [title]="descriptions.rulesOfConduct"
+        [elements]="globals.rulesOfConductObservable | async"
+        (elementEmitter)="globals.rulesOfConductSubject.next($event)"
       ></app-list-input-specifcations>
       <app-list-input-specifcations
-        [title]='descriptions.inCaseOfDanger'
-        [elements]='globals.inCaseOfDangerObservable | async'
-        (elementEmitter)='globals.inCaseOfDangerSubject.next($event)'
+        [title]="descriptions.inCaseOfDanger"
+        [elements]="globals.inCaseOfDangerObservable | async"
+        (elementEmitter)="globals.inCaseOfDangerSubject.next($event)"
       ></app-list-input-specifcations>
       <app-list-input-specifcations
-        [title]='descriptions.disposal'
-        [elements]='globals.disposalObservable | async'
-        (elementEmitter)='globals.disposalSubject.next($event)'
+        [title]="descriptions.disposal"
+        [elements]="globals.disposalObservable | async"
+        (elementEmitter)="globals.disposalSubject.next($event)"
       ></app-list-input-specifcations>
     </div>
     <div #preview>
       <app-preview></app-preview>
     </div>
-    <app-print-preview class='print'></app-print-preview>
+    <app-print-preview class="print"></app-print-preview>
   </mat-sidenav-content>
 </mat-sidenav-container>
