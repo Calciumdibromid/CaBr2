@@ -106,7 +106,10 @@ fn get_config_path() -> PathBuf {
 
   #[cfg(feature = "portable")]
   {
-    let mut cfg_path = PathBuf::from(std::env::args().next().unwrap());
+    let mut cfg_path = PathBuf::from(std::env::args().next().unwrap())
+      .parent()
+      .unwrap()
+      .to_path_buf();
     cfg_path.push("config.toml");
     cfg_path
   }
