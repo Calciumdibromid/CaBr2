@@ -9,9 +9,9 @@ import { ConfigModel } from './@core/models/config.model';
 import { EditSearchResultsComponent } from './search/edit-search-results/edit-search-results.component';
 import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './header/header.component';
-import { ListInputSpecifcationsComponent } from './list-input-specifcations/list-input-specifcations.component';
-import { MatModules } from './@core/modules/MatModules';
+import { MatModules } from './@core/modules/mat.modules';
 import { MenubarComponent } from './menubar/menubar.component';
+import { ModifiableStringListComponent } from './modifiable-string-list/modifiable-string-list.component';
 import { PreviewComponent } from './preview/preview.component';
 import { PrintPreviewComponent } from './print-preview/print-preview.component';
 import { SearchComponent } from './search/search.component';
@@ -24,7 +24,7 @@ import { SelectedSearchComponent } from './search/selected-search/selected-searc
     HeaderComponent,
     MenubarComponent,
     SearchComponent,
-    ListInputSpecifcationsComponent,
+    ModifiableStringListComponent,
     PreviewComponent,
     PrintPreviewComponent,
     SelectedSearchComponent,

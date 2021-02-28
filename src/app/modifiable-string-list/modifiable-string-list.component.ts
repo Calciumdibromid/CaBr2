@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-list-input-specifcations',
-  templateUrl: './list-input-specifcations.component.html',
-  styleUrls: ['./list-input-specifcations.component.scss'],
+  selector: 'app-modifiable-string-list',
+  templateUrl: './modifiable-string-list.component.html',
+  styleUrls: ['./modifiable-string-list.component.scss'],
 })
-export class ListInputSpecifcationsComponent implements OnInit {
+export class ModifiableStringListComponent implements OnInit {
   @Output()
   elementEmitter = new EventEmitter<string[]>();
 
@@ -14,7 +15,7 @@ export class ListInputSpecifcationsComponent implements OnInit {
   title = '';
 
   @Input()
-  elements!: string[] | null;
+  elements!: Observable<string[]>;
 
   form: FormGroup;
 
@@ -25,9 +26,9 @@ export class ListInputSpecifcationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      elements: this.formBuilder.array(this.elements?.map((value) => this.initForm(value)) ?? []),
-    });
+    this.elements.subscribe((elements) => this.form = this.formBuilder.group({
+      elements: this.formBuilder.array(elements.map((value) => this.initForm(value)) ?? []),
+    }));
   }
 
   get controlElements(): FormArray {
@@ -35,14 +36,10 @@ export class ListInputSpecifcationsComponent implements OnInit {
   }
 
   initForm(value: string): FormGroup {
-    const form = this.formBuilder.group({
+    return this.formBuilder.group({
       value,
       hover: false,
     });
-
-    form.get('value')?.valueChanges.subscribe(() => this.emitChange());
-
-    return form;
   }
 
   addElement(): void {
@@ -51,12 +48,11 @@ export class ListInputSpecifcationsComponent implements OnInit {
   }
 
   removeElement(index: number): void {
-    this.elements?.splice(index, 1);
     this.controlElements.removeAt(index);
     this.emitChange();
   }
 
-  private emitChange(): void {
+  emitChange(): void {
     this.elementEmitter.emit(this.controlElements.controls.map((control) => control.get('value')?.value));
   }
 }
