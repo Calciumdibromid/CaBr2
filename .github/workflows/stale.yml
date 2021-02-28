@@ -19,3 +19,5 @@ jobs:
         close-pr-message: 'No activity for 35 days detected, so it got closed.'
         days-before-stale: 30
         days-before-close: 5
+        exempt-pr-labels: 'reviewed'
+        exempt-issue-labels: 'reviewed'
