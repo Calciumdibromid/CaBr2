@@ -1,4 +1,4 @@
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Inject, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -13,7 +13,7 @@ import {
   Unit,
   unitMappings,
 } from '../../@core/services/substances/substances.model';
-
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-search-results',
@@ -22,7 +22,6 @@ import {
 })
 export class EditSearchResultsComponent implements OnInit {
   form: FormGroup;
-  substanceData: SubstanceData;
 
   addHPhraseHover = false;
 
@@ -39,49 +38,56 @@ export class EditSearchResultsComponent implements OnInit {
   customUnitVisible = false;
 
   // TODO move that to some global thingy
-  symbolKeys: string[] = [];
+  symbolKeys!: string[];
+
+  customSubscription?: Subscription;
+
+  abort = false;
 
   constructor(
     public dialogRef: MatDialogRef<EditSearchResultsComponent>,
     public globals: GlobalModel,
-    @Inject(MAT_DIALOG_DATA) public data: { index: number },
+    @Inject(MAT_DIALOG_DATA) public data: SubstanceData,
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
   ) {
-    this.substanceData = this.globals.substanceData[this.data.index];
-    this.symbolKeys = Array.from(this.globals.ghsSymbols.keys());
     this.form = this.initControls();
   }
 
   ngOnInit(): void {
-    this.amount.get('unit')?.valueChanges.subscribe((value: Unit) => {
-      this.customUnitVisible = (value === Unit.CUSTOM);
+    this.symbolKeys = Array.from(this.globals.ghsSymbols.keys());
+    this.customSubscription = this.amount.get('unit')?.valueChanges.subscribe((value: Unit) => {
+      this.customUnitVisible = value === Unit.CUSTOM;
     });
   }
 
   initControls(): FormGroup {
-    const amount =
-      this.modifiedOrOriginal<Amount | undefined>(this.substanceData.amount) ?? { value: '', unit: Unit.GRAM };
+    const amount = this.modifiedOrOriginal<Amount | undefined>(this.data.amount) ?? {
+      value: '',
+      unit: Unit.GRAM,
+    };
     return this.formBuilder.group({
-      name: this.modifiedOrOriginal(this.substanceData.name),
-      cas: this.modifiedOrOriginal(this.substanceData.cas) ?? '',
-      molecularFormula: this.modifiedOrOriginal(this.substanceData.molecularFormula),
-      molarMass: this.modifiedOrOriginal(this.substanceData.molarMass) ?? '',
-      meltingPoint: this.modifiedOrOriginal(this.substanceData.meltingPoint) ?? '',
-      boilingPoint: this.modifiedOrOriginal(this.substanceData.boilingPoint) ?? '',
-      waterHazardClass: this.modifiedOrOriginal(this.substanceData.waterHazardClass) ?? '',
+      name: [this.modifiedOrOriginal(this.data.name), Validators.required],
+      cas: this.modifiedOrOriginal(this.data.cas) ?? '',
+      molecularFormula: this.modifiedOrOriginal(this.data.molecularFormula),
+      molarMass: this.modifiedOrOriginal(this.data.molarMass) ?? '',
+      meltingPoint: this.modifiedOrOriginal(this.data.meltingPoint) ?? '',
+      boilingPoint: this.modifiedOrOriginal(this.data.boilingPoint) ?? '',
+      waterHazardClass: this.modifiedOrOriginal(this.data.waterHazardClass) ?? '',
       hPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal<[string, string][]>(this.substanceData.hPhrases)
-          .map((hPhrase) => this.initHPhrases(hPhrase)),
+        this.modifiedOrOriginal<[string, string][]>(this.data.hPhrases).map((hPhrase) =>
+          this.initHPhrases(hPhrase),
+        ),
       ),
       pPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal<[string, string][]>(this.substanceData.pPhrases)
-          .map((pPhrase) => this.initPPhrases(pPhrase)),
+        this.modifiedOrOriginal<[string, string][]>(this.data.pPhrases).map((pPhrase) =>
+          this.initPPhrases(pPhrase),
+        ),
       ),
-      signalWord: this.modifiedOrOriginal(this.substanceData.signalWord) ?? '',
-      symbols: this.formBuilder.array(this.modifiedOrOriginal(this.substanceData.symbols)),
-      lethalDose: this.modifiedOrOriginal(this.substanceData.lethalDose) ?? '',
-      mak: this.modifiedOrOriginal(this.substanceData.mak) ?? '',
+      signalWord: this.modifiedOrOriginal(this.data.signalWord) ?? '',
+      symbols: this.formBuilder.array(this.modifiedOrOriginal(this.data.symbols)),
+      lethalDose: this.modifiedOrOriginal(this.data.lethalDose) ?? '',
+      mak: this.modifiedOrOriginal(this.data.mak) ?? '',
       amount: this.formBuilder.group({
         value: [amount.value, Validators.pattern('^\\d[\\d,\\.]*$')],
         unit: amount.unit,
@@ -168,58 +174,64 @@ export class EditSearchResultsComponent implements OnInit {
   }
 
   close(): void {
-    this.form = this.initControls();
-    this.dialogRef.close();
+    this.abort = true;
   }
 
   onSubmit(): void {
-    const newData: SubstanceData = {
-      ...this.substanceData,
-      name: this.evaluateForm('name', this.substanceData.name, (value) => value.length === 0),
-      cas: this.evaluateForm('cas', this.substanceData.cas, (value) => value?.length === 0),
-      molecularFormula: this.evaluateForm(
-        'molecularFormula',
-        this.substanceData.molecularFormula,
-        (value) => value.length === 0,
-      ),
-      molarMass: this.evaluateForm('molarMass', this.substanceData.molarMass, (value) => value?.length === 0),
-      meltingPoint: this.evaluateForm('meltingPoint', this.substanceData.meltingPoint, (value) => value?.length === 0),
-      boilingPoint: this.evaluateForm('boilingPoint', this.substanceData.boilingPoint, (value) => value?.length === 0),
-      waterHazardClass: this.evaluateForm(
-        'waterHazardClass',
-        this.substanceData.waterHazardClass,
-        (value) => value?.length === 0,
-      ),
-      hPhrases: this.evaluateFormArray(
-        this.hPhrases,
-        (value) => [value.get('hNumber')?.value, value.get('hPhrase')?.value],
-        this.substanceData.hPhrases,
-      ),
-      pPhrases: this.evaluateFormArray(
-        this.pPhrases,
-        (value) => [value.get('pNumber')?.value, value.get('pPhrase')?.value],
-        this.substanceData.pPhrases,
-      ),
-      signalWord: this.evaluateForm('signalWord', this.substanceData.signalWord, (value) => value?.length === 0),
-      symbols: this.evaluateFormArray(this.symbols, (symbol) => symbol?.value, this.substanceData.symbols),
-      lethalDose: this.evaluateForm('lethalDose', this.substanceData.lethalDose, (value) => value?.length === 0),
-      mak: this.evaluateForm('mak', this.substanceData.mak, (value) => value?.length === 0),
-      amount: this.evaluateFormGroup(
-        this.amount,
-        (obj) => ({ value: obj.get('value')?.value, unit: obj.get('unit')?.value }),
-        (newObj, oldObj) => newObj?.value !== oldObj.modifiedData?.value,
-        (obj) => obj?.value.length === 0,
-        this.substanceData.amount,
-      ),
-    };
+    let returnData;
 
-    if (!this.form.invalid) {
-      this.close();
-      this.globals.substanceData[this.data.index] = newData;
-      this.substanceData = newData;
-    } else {
-      console.log(`error: ${this.form.errors}`);
+    if (!this.abort) {
+      const newData: SubstanceData = {
+        ...this.data,
+        name: this.evaluateForm('name', this.data.name, (value) => value.length === 0),
+        cas: this.evaluateForm('cas', this.data.cas, (value) => value?.length === 0),
+        molecularFormula: this.evaluateForm(
+          'molecularFormula',
+          this.data.molecularFormula,
+          (value) => value.length === 0,
+        ),
+        molarMass: this.evaluateForm('molarMass', this.data.molarMass, (value) => value?.length === 0),
+        meltingPoint: this.evaluateForm('meltingPoint', this.data.meltingPoint, (value) => value?.length === 0),
+        boilingPoint: this.evaluateForm('boilingPoint', this.data.boilingPoint, (value) => value?.length === 0),
+        waterHazardClass: this.evaluateForm(
+          'waterHazardClass',
+          this.data.waterHazardClass,
+          (value) => value?.length === 0,
+        ),
+        hPhrases: this.evaluateFormArray(
+          this.hPhrases,
+          (value) => [value.get('hNumber')?.value, value.get('hPhrase')?.value],
+          this.data.hPhrases,
+        ),
+        pPhrases: this.evaluateFormArray(
+          this.pPhrases,
+          (value) => [value.get('pNumber')?.value, value.get('pPhrase')?.value],
+          this.data.pPhrases,
+        ),
+        signalWord: this.evaluateForm('signalWord', this.data.signalWord, (value) => value?.length === 0),
+        symbols: this.evaluateFormArray(this.symbols, (symbol) => symbol?.value, this.data.symbols),
+        lethalDose: this.evaluateForm('lethalDose', this.data.lethalDose, (value) => value?.length === 0),
+        mak: this.evaluateForm('mak', this.data.mak, (value) => value?.length === 0),
+        amount: this.evaluateFormGroup(
+          this.amount,
+          (obj) => ({ value: obj.get('value')?.value, unit: obj.get('unit')?.value }),
+          (newObj, oldObj) => newObj?.value !== oldObj.modifiedData?.value,
+          (obj) => obj?.value.length === 0,
+          this.data.amount,
+        ),
+      };
+
+      if (!this.form.invalid) {
+        returnData = newData;
+      } else {
+        this.form.markAllAsTouched();
+        console.log(`error: ${this.form.errors}`);
+        return;
+      }
     }
+
+    this.customSubscription?.unsubscribe();
+    this.dialogRef.close(returnData);
   }
 
   private evaluateForm<T>(
@@ -279,6 +291,7 @@ export class EditSearchResultsComponent implements OnInit {
     return currentData;
   }
 
+  // TODO move to SubstanceData class
   private modifiedOrOriginal<T>(obj: Data<T>): T {
     return obj.modifiedData ?? obj.originalData;
   }

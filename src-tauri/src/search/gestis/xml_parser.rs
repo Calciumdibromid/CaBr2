@@ -26,7 +26,7 @@ lazy_static! {
     ("water_hazard_class", ("1100", "1106")),
     ("h_p_signal_symbols", ("1100", "1303")),
     ("lethal_dose", ("0500", "0501")),
-    ("cas", ("0100", "0100")),
+    ("cas_number", ("0100", "0100")),
   ]
   .iter()
   .cloned()
@@ -60,7 +60,7 @@ pub fn parse_response(json: &GestisResponse) -> Result<ParsedData> {
       Ok(inner) => inner,
       Err(e) => {
         // should never occur
-        log::debug!("[cas] error: {:#?}", e);
+        log::debug!("[cas_number] error: {:#?}", e);
         return Err(e);
       }
     },
@@ -198,7 +198,27 @@ fn tables(node: &Node, class: &str) -> Vec<Vec<Vec<NodeId>>> {
 /* #region  extractors */
 
 fn get_cas(json: &GestisResponse) -> Result<String> {
-  get_mp_bp(json, "casnr", "CAS Nr:")
+  let (chapter, subchapter) = CHAPTER_MAPPING.get("cas_number").unwrap();
+  let xml = get_xml(json, chapter, subchapter)?;
+  let doc = Document::parse(&xml)?;
+
+  for table in tables(&doc.root().first_child().unwrap(), "block")
+    .into_iter()
+    // each table has only one row ¯\_(ツ)_/¯
+    .flatten()
+  {
+    if table.len() < 2 {
+      continue;
+    }
+    let data = doc.get_node(table[1]).unwrap();
+    if let Some(cas) = data.first_element_child() {
+      if cas.has_tag_name("casnr") {
+        return Ok(cas.text().unwrap().into());
+      }
+    }
+  }
+
+  Err(SearchError::MissingInfo("cas number".into()))
 }
 
 fn get_molecular_formula(json: &GestisResponse) -> Result<String> {

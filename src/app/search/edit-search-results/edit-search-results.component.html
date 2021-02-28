@@ -4,6 +4,7 @@
       <mat-form-field>
         <mat-label>Name</mat-label>
         <input matInput formControlName="name" />
+        <mat-error *ngIf="this.form.get('name')?.get('value')?.invalid">Name benötigt</mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>CAS Nummer</mat-label>

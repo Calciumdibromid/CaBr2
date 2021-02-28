@@ -1,4 +1,6 @@
+import { combineLatest, Observable } from 'rxjs';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { map, switchMap } from 'rxjs/operators';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { ConfigModel } from '../@core/models/config.model';
 import { descriptions } from '../../assets/descriptions.json';
@@ -7,7 +9,6 @@ import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import logger from '../@core/utils/logger';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
-
 
 @Component({
   selector: 'app-menubar',
@@ -43,49 +44,68 @@ export class MenubarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.globals.header.documentTitle = 'Betriebsanweisungen nach EG Nr. 1272/2008';
-    this.globals.header.organisation = 'für chemische Laboratorien des Campus Burghausen';
-    this.globals.header.labCourse = 'Praktikum Anorganische Chemie';
+    this.globals.headerSubject.next({
+      assistant: '',
+      documentTitle: 'Betriebsanweisungen nach EG Nr. 1272/2008',
+      labCourse: 'Praktikum Anorganische Chemie',
+      name: '',
+      organisation: 'für chemische Laboratorien des Campus Burghausen',
+      place: '',
+      preparation: '',
+    });
 
-    this.globals.humanAndEnvironmentDanger = [
+    this.globals.humanAndEnvironmentDangerSubject.next([
       'Bei anhaltender Augenreizung ärztlichen Rat einholen. Funkenerzeugung und elektrische Aufladung vermeiden.',
-    ];
+    ]);
 
-    this.globals.rulesOfConduct = ['Hautschutz und Schutzkleidung mit Schutzbrille tragen.'];
+    this.globals.rulesOfConductSubject.next(['Hautschutz und Schutzkleidung mit Schutzbrille tragen.']);
 
-    this.globals.inCaseOfDanger = [
+    this.globals.inCaseOfDangerSubject.next([
       'Nach Einatmen: An die frische Luft bringen. Sofort Arzt hinzuziehen.',
       'Nach Hautkontakt: Sofort mit Wasser abwaschen. Kontaminierte Kleidung entfernen. Sofort Arzt hinzuziehen.',
       'Nach Verschlucken: Mund mit Wasser spülen, Wasser trinken lassen. Kein Erbrechen auslösen. Nur bei Bewusstsein!',
       // eslint-disable-next-line max-len
       'Nach Augenkontakt: Mit Wasser spülen. Falls vorhanden nach Möglichkeit Kontaktlinsen entfernen und weiter spülen. Sofort Augenarzt hinzuziehen.',
-    ];
+    ]);
 
-    this.globals.disposal = [];
+    this.globals.substanceDataSubject.next([]);
+  }
+
+  newDocument(): void {
+    this.ngOnInit();
   }
 
   scroll(el: HTMLElement): void {
     el.scrollIntoView({ behavior: 'smooth' });
   }
 
-  modelToDocument(): CaBr2Document {
-    return {
-      header: this.globals.header,
-      substanceData: this.globals.substanceData,
-      disposal: this.globals.disposal,
-      humanAndEnvironmentDanger: this.globals.humanAndEnvironmentDanger,
-      inCaseOfDanger: this.globals.inCaseOfDanger,
-      rulesOfConduct: this.globals.rulesOfConduct,
-    };
+  modelToDocument(): Observable<CaBr2Document> {
+    return combineLatest([
+      this.globals.headerObservable,
+      this.globals.substanceDataObservable,
+      this.globals.disposalObservable,
+      this.globals.humanAndEnvironmentDangerObservable,
+      this.globals.inCaseOfDangerObservable,
+      this.globals.rulesOfConductObservable,
+    ]).pipe(
+      map((value) => ({
+        header: value[0],
+        substanceData: value[1],
+        disposal: value[2],
+        humanAndEnvironmentDanger: value[3],
+        inCaseOfDanger: value[4],
+        rulesOfConduct: value[5],
+      })),
+    );
   }
 
   documentToModel(doc: CaBr2Document): void {
-    this.globals.header = doc.header;
-    this.globals.substanceData = doc.substanceData;
-    this.globals.disposal = doc.disposal;
-    this.globals.humanAndEnvironmentDanger = doc.humanAndEnvironmentDanger;
-    this.globals.inCaseOfDanger = doc.inCaseOfDanger;
-    this.globals.rulesOfConduct = doc.rulesOfConduct;
+    this.globals.headerSubject.next(doc.header);
+    this.globals.substanceDataSubject.next(doc.substanceData);
+    this.globals.disposalSubject.next(doc.disposal);
+    this.globals.humanAndEnvironmentDangerSubject.next(doc.humanAndEnvironmentDanger);
+    this.globals.inCaseOfDangerSubject.next(doc.inCaseOfDanger);
+    this.globals.rulesOfConductSubject.next(doc.rulesOfConduct);
   }
 
   loadFile(): void {
@@ -108,29 +128,27 @@ export class MenubarComponent implements OnInit {
       throw Error('unsupported file type');
     }
 
-    this.tauriService
-      .save({
-        filter: type,
-      })
-      .subscribe((path) => {
-        this.loadSaveService.saveDocument(type, path as string, this.modelToDocument()).subscribe(
-          (res) => logger.debug(res),
-          (err) => logger.error(err),
-        );
-      });
+    combineLatest([
+      this.tauriService.save({ filter: type }),
+      this.modelToDocument()
+    ]).pipe(
+      switchMap(value => this.loadSaveService.saveDocument(type, value[0] as string, value[1]))
+    ).subscribe(
+      (res) => logger.debug(res),
+      (err) => logger.error(err),
+    );
   }
 
   exportPDF(): void {
-    this.tauriService
-      .save({
-        filter: 'pdf',
-      })
-      .subscribe((path) => {
-        this.loadSaveService.saveDocument('pdf', path as string, this.modelToDocument()).subscribe(
-          (res) => logger.debug(res),
-          (err) => logger.error(err),
-        );
-      });
+    combineLatest([
+      this.tauriService.save({ filter: 'pdf' }),
+      this.modelToDocument(),
+    ]).pipe(
+      switchMap(value => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1]))
+    ).subscribe(
+      (res) => logger.debug(res),
+      (err) => logger.error(err),
+    );
   }
 
   onDarkModeSwitched({ checked }: MatSlideToggleChange): void {
