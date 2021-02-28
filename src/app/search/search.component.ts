@@ -1,16 +1,17 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { switchMap, tap } from 'rxjs/operators';
-import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
 import { FormControl } from '@angular/forms';
-import { GlobalModel } from '../@core/models/global.model';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
+import { tap } from 'rxjs/operators';
 
+import { Data, SubstanceData } from '../@core/services/substances/substances.model';
+import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
+import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
+import { GlobalModel } from '../@core/models/global.model';
+import logger from '../@core/utils/logger';
 import { SearchArgument } from '../@core/services/search/search.model';
-import { SearchService } from '../@core/services/search/search.service';
 import { SelectedSearchComponent } from './selected-search/selected-search.component';
-import { SubstanceData } from '../@core/services/substances/substances.model';
 import { SubstancesService } from '../@core/services/substances/substances.service';
 
 @Component({
@@ -32,11 +33,11 @@ export class SearchComponent implements OnInit {
   dataSource!: MatTableDataSource<SubstanceData>;
 
   constructor(
-    private searchService: SearchService,
     private substanceService: SubstancesService,
+    private alterService: AlertService,
     private dialog: MatDialog,
     public globals: GlobalModel,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.globals.substanceDataObservable.subscribe((data) => {
@@ -60,6 +61,15 @@ export class SearchComponent implements OnInit {
       this.substanceService
         .substanceInfo(this.globals.searchResults[this.globals.searchResults.length - 1].zvgNumber)
         .subscribe((value) => {
+          const cas = this.modifiedOrOriginal(value.cas);
+          if (
+            cas && this.globals.substanceDataSubject.getValue().some(s => cas === this.modifiedOrOriginal(s.cas))
+          ) {
+            // TODO i18n
+            this.alterService.error('Substanz mit selber CAS Nummer existiert bereits');
+            logger.warning('substance with same cas number already present:', cas);
+            return;
+          }
           const data = [...this.globals.substanceDataSubject.getValue(), value];
           this.dataSource.connect().next(data);
           this.globals.substanceDataSubject.next(data);
@@ -105,5 +115,10 @@ export class SearchComponent implements OnInit {
       .subscribe((value) => {
         this.dataSource.connect().next(value);
       });
+  }
+
+  // TODO move to SubstanceData class
+  private modifiedOrOriginal<T>(obj: Data<T>): T {
+    return obj.modifiedData ?? obj.originalData;
   }
 }

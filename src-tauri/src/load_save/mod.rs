@@ -66,10 +66,7 @@ impl Plugin for LoadSave {
               error,
             );
           }
-          Cmd::GetAvailableDocumentTypes {
-            callback,
-            error,
-          } => {
+          Cmd::GetAvailableDocumentTypes { callback, error } => {
             tauri::execute_promise(
               webview,
               move || match handler::get_available_document_types() {
