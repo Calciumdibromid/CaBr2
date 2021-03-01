@@ -28,6 +28,7 @@ export class SearchDialogComponent implements OnInit {
       exact: this.exactSearch,
     });
 
+    this.searchResults = [];
     this.subscription.subscribe((response) => {
       this.searchResults = response;
     });
@@ -37,19 +38,14 @@ export class SearchDialogComponent implements OnInit {
     this.selected = selected;
   }
 
-  submit(): void {
-    if (this.selected) {
-      this.data.results.push(this.selected);
-      this.dialogRef.close();
+  close(abort: boolean): void {
+    if (abort) {
+      this.selected = undefined;
     }
-  }
-
-  close(): void {
-    this.dialogRef.close();
+    this.dialogRef.close(this.selected);
   }
 
   toggleExactSearch(): void {
-    this.searchResults = [];
     this.ngOnInit();
   }
 }

@@ -82,7 +82,6 @@ export class SelectedSearchComponent implements OnInit {
   // TODO handle change in searchTypeSelection
 
   onSubmit(): SearchArgument[] {
-    console.log('submit');
     return this.selections.controls.map<SearchArgument>(control => ({
       searchType: control.get('searchOption')?.value,
       pattern: control.get('userInput')?.value,

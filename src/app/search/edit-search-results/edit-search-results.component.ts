@@ -225,7 +225,6 @@ export class EditSearchResultsComponent implements OnInit {
         returnData = newData;
       } else {
         this.form.markAllAsTouched();
-        console.log(`error: ${this.form.errors}`);
         return;
       }
     }
