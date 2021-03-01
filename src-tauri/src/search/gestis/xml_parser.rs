@@ -6,18 +6,6 @@ use roxmltree::{Document, Node, NodeId};
 use super::error::{Result, SearchError};
 use super::types::{GestisResponse, ParsedData};
 
-// maybe needed for later
-// pub const PARTS: [(&str, &str, &str); 8] = [
-//   ("0400", "0400", "sf"),
-//   ("0600", "0602", "smp"),
-//   ("0600", "0603", "sdp"),
-//   ("0500", "0501", "ld50"),
-//   ("1100", "1303", "h_p_signal_symbols"),
-//   ("1100", "1106", "wgk"),
-//   ("1100", "1201", "mak1"),
-//   ("1100", "1203", "mak2"),
-// ];
-
 lazy_static! {
   pub static ref CHAPTER_MAPPING: HashMap<&'static str, (&'static str, &'static str)> = [
     ("melting_point", ("0600", "0602")),
@@ -27,6 +15,8 @@ lazy_static! {
     ("h_p_signal_symbols", ("1100", "1303")),
     ("lethal_dose", ("0500", "0501")),
     ("cas_number", ("0100", "0100")),
+    ("mak1", ("1100", "1201")),
+    ("mak2", ("1100", "1203")),
   ]
   .iter()
   .cloned()
@@ -55,6 +45,23 @@ pub fn parse_response(json: &GestisResponse) -> Result<ParsedData> {
     }
   };
 
+  let molecular_formula_molar_mass_error;
+  let (molecular_formula, molar_mass) = match get_molecular_formula_molar_mass(json) {
+    Ok(inner) => {
+      molecular_formula_molar_mass_error = None;
+      inner
+    }
+    Err(e) => {
+      molecular_formula_molar_mass_error = Some(e);
+      (
+        // this error type should not be used like this but here it is
+        // only a sentinel value that is ignored further down anyways
+        Err(SearchError::Empty),
+        Err(SearchError::Empty),
+      )
+    }
+  };
+
   Ok(ParsedData {
     cas: match get_cas(json) {
       Ok(inner) => inner,
@@ -64,17 +71,24 @@ pub fn parse_response(json: &GestisResponse) -> Result<ParsedData> {
         return Err(e);
       }
     },
-    molecular_formula: match get_molecular_formula(json) {
+    molecular_formula: match molecular_formula {
       Ok(inner) => inner,
-      Err(e) => {
+      Err(mut e) => {
+        if molecular_formula_molar_mass_error.is_some() {
+          e = molecular_formula_molar_mass_error.unwrap();
+        }
         // should never occur
         log::debug!("[molecular_formula] error: {:#?}", e);
         return Err(e);
       }
     },
-    molar_mass: match get_molar_mass(json) {
+    molar_mass: match molar_mass {
       Ok(inner) => Some(inner),
       Err(e) => {
+        let e = match &molecular_formula_molar_mass_error {
+          Some(e_new) => e_new,
+          None => &e,
+        };
         log::debug!("[molar_mass] error: {:#?}", e);
         None
       }
@@ -221,12 +235,12 @@ fn get_cas(json: &GestisResponse) -> Result<String> {
   Err(SearchError::MissingInfo("cas number".into()))
 }
 
-fn get_molecular_formula(json: &GestisResponse) -> Result<String> {
+fn get_molecular_formula_molar_mass(json: &GestisResponse) -> Result<(Result<String>, Result<String>)> {
   let (chapter, subchapter) = CHAPTER_MAPPING.get("molecular_formula").unwrap();
   let xml = get_xml(json, chapter, subchapter)?;
   let doc = Document::parse(&xml)?;
 
-  let mut tables = tables(&doc.root().first_child().unwrap(), "block")
+  let mut id_tables = tables(&doc.root().first_child().unwrap(), "block")
     // tables
     .into_iter()
     // rows
@@ -238,24 +252,31 @@ fn get_molecular_formula(json: &GestisResponse) -> Result<String> {
 
   // kill empty tables at beginning
   loop {
-    let data_id = tables.next().unwrap();
+    let data_id = id_tables.next().unwrap();
     data = doc.get_node(data_id).unwrap();
     if data.children().count() > 0 {
       break;
     }
   }
 
+  let mut molecular_formula = Err(SearchError::MissingInfo("molecular formula".into()));
   if let Some(mf) = data.children().find(|c| c.has_tag_name("summenformel")) {
-    return Ok(mf.first_child().unwrap().text().unwrap().into());
+    molecular_formula = Ok(mf.first_child().unwrap().text().unwrap().into());
   }
 
-  Err(SearchError::MissingInfo("molecular formula".into()))
-}
+  let mut molar_mass = Err(SearchError::MissingInfo("molar mass".into()));
+  let new_table = tables(
+    &doc.get_node(id_tables.skip(2).next().unwrap()).unwrap(),
+    "feldmitlabel",
+  )
+  .into_iter()
+  .flatten()
+  .flatten();
+  if let Some(text) = doc.get_node(new_table.skip(1).next().unwrap()).unwrap().text() {
+    molar_mass = Ok(text.trim().into())
+  }
 
-fn get_molar_mass(_json: &GestisResponse) -> Result<String> {
-  // TODO implement function
-  log::error!("not implemented: 'get_molar_mass()'");
-  Err(SearchError::MissingInfo("molar mass".into()))
+  Ok((molecular_formula, molar_mass))
 }
 
 fn get_melting_point(json: &GestisResponse) -> Result<String> {
