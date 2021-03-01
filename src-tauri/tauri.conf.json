@@ -13,7 +13,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.tauri.dev",
+      "identifier": "de.cabr2",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -24,7 +24,7 @@
       "resources": [],
       "externalBin": [],
       "copyright": "",
-      "category": "DeveloperTool",
+      "category": "Education",
       "shortDescription": "",
       "longDescription": "",
       "deb": {
@@ -39,7 +39,10 @@
       "exceptionDomain": ""
     },
     "allowlist": {
-      "all": true
+      "all": false,
+      "event": true,
+      "openDialog": true,
+      "saveDialog": true
     },
     "window": {
       "title": "Calciumdibromid",
