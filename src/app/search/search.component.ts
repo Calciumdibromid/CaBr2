@@ -57,23 +57,26 @@ export class SearchComponent implements OnInit {
       minHeight: 300,
     });
 
-    dialogRef.afterClosed().subscribe(() => {
-      this.substanceService
-        .substanceInfo(this.globals.searchResults[this.globals.searchResults.length - 1].zvgNumber)
-        .subscribe((value) => {
-          const cas = this.modifiedOrOriginal(value.cas);
-          if (
-            cas && this.globals.substanceDataSubject.getValue().some(s => cas === this.modifiedOrOriginal(s.cas))
-          ) {
-            // TODO i18n
-            this.alterService.error('Substanz mit selber CAS Nummer existiert bereits');
-            logger.warning('substance with same cas number already present:', cas);
-            return;
-          }
-          const data = [...this.globals.substanceDataSubject.getValue(), value];
-          this.dataSource.connect().next(data);
-          this.globals.substanceDataSubject.next(data);
-        });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.substanceService
+          .substanceInfo(result.zvgNumber)
+          .subscribe((value) => {
+            const cas = this.modifiedOrOriginal(value.cas);
+            if (
+              cas && this.globals.substanceDataSubject.getValue().some(s => cas === this.modifiedOrOriginal(s.cas))
+            ) {
+              // TODO i18n
+              this.alterService.error('Substanz mit selber CAS Nummer existiert bereits');
+              logger.warning('substance with same cas number already present:', cas);
+              return;
+            }
+            const data = [...this.globals.substanceDataSubject.getValue(), value];
+            this.dataSource.connect().next(data);
+            this.globals.substanceDataSubject.next(data);
+
+          });
+      }
     });
   }
 
