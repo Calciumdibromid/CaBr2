@@ -71,6 +71,14 @@ impl Plugin for Config {
       }
     }
   }
+
+  fn created(&self, _: &mut tauri::Webview<'_>) {
+    log::trace!("plugin created");
+  }
+
+  fn ready(&self, _: &mut tauri::Webview<'_>) {
+    log::trace!("plugin ready");
+  }
 }
 
 fn get_program_data_dir() -> PathBuf {
@@ -79,27 +87,40 @@ fn get_program_data_dir() -> PathBuf {
     #[cfg(not(feature = "portable"))]
     {
       #[cfg(target_os = "linux")]
-      return PathBuf::from("/usr/lib/cabr2/");
+      {
+        log::trace!("data path: linux");
+        return PathBuf::from("/usr/lib/cabr2/");
+      }
 
       #[cfg(target_os = "macos")]
-      unimplemented!();
+      {
+        log::trace!("data path: macos");
+        unimplemented!();
+      }
 
       #[cfg(target_os = "windows")]
+      {
+        log::trace!("data path: windows");
+        return PathBuf::from(env::args().next().unwrap())
+          .parent()
+          .unwrap()
+          .to_path_buf();
+      }
+    }
+
+    #[cfg(feature = "portable")]
+    {
+      log::trace!("data path: portable");
       return PathBuf::from(env::args().next().unwrap())
         .parent()
         .unwrap()
         .to_path_buf();
     }
-
-    #[cfg(feature = "portable")]
-    return PathBuf::from(env::args().next().unwrap())
-      .parent()
-      .unwrap()
-      .to_path_buf();
   }
 
   #[cfg(debug_assertions)]
   {
+    log::trace!("data path: debug");
     let mut program_path = PathBuf::from(env::args().next().unwrap())
       .parent()
       .unwrap()
