@@ -83,4 +83,12 @@ impl Plugin for LoadSave {
       }
     }
   }
+
+  fn created(&self, _: &mut tauri::Webview<'_>) {
+    log::trace!("plugin created");
+  }
+
+  fn ready(&self, _: &mut tauri::Webview<'_>) {
+    log::trace!("plugin ready");
+  }
 }

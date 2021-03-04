@@ -12,11 +12,14 @@ fn main() {
   let load_save = load_save::LoadSave::new();
   let search = search::Gestis::new();
 
+  log::debug!("initializing tauri application...");
+
   tauri::AppBuilder::new()
     .plugin(config)
     .plugin(load_save)
     .plugin(logger)
     .plugin(search)
+    .setup(|_, s| log::debug!("tauri setup complete ({})", s))
     .build()
     .run();
 }

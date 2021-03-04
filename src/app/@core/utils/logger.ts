@@ -8,60 +8,65 @@ export enum LogLevel {
   ERROR = 'ERROR',
 }
 
-/**
- * @deprecated
- * Do not use this function directly, use the logger class that is provided in this file.
- * Access to this function will be removed in a future version.
- */
-const log = (level: LogLevel, ...messages: any[]): void => {
+const log = (level: LogLevel, path: string, ...messages: any[]): void => {
   invoke({
     cmd: 'log',
     level,
+    path,
     messages,
   });
 };
-
-export { log };
 
 /**
  * This class provides methods that call the logging functions in the backend.
  * It is supposed to be used if you want to log something into the log file,
  * for development purposes use the methods of `console.*`.
  */
-export default class logger {
+export default class Logger {
+
+  path: string;
+
+  /**
+   * Creates new logger instance for a specified path or purpose.
+   *
+   * @param path filepath or other identifier to find source of log.
+   */
+  constructor(path: string) {
+    this.path = path;
+  }
 
   /**
    * Logs all arguments space separated with the level `TRACE`.
    */
-  static trace(...messages: any[]): void {
-    log(LogLevel.TRACE, ...messages);
+  trace(...messages: any[]): void {
+    log(LogLevel.TRACE, this.path, ...messages);
   }
 
   /**
    * Logs all arguments space separated with the level `DEBUG`.
    */
-  static debug(...messages: any[]): void {
-    log(LogLevel.DEBUG, ...messages);
+  debug(...messages: any[]): void {
+    log(LogLevel.DEBUG, this.path, ...messages);
   }
 
   /**
    * Logs all arguments space separated with the level `INFO`.
    */
-  static info(...messages: any[]): void {
-    log(LogLevel.INFO, ...messages);
+  info(...messages: any[]): void {
+    log(LogLevel.INFO, this.path, ...messages);
   }
 
   /**
    * Logs all arguments space separated with the level `WARNING`.
    */
-  static warning(...messages: any[]): void {
-    log(LogLevel.WARNING, ...messages);
+  warning(...messages: any[]): void {
+    log(LogLevel.WARNING, this.path, ...messages);
   }
 
   /**
    * Logs all arguments space separated with the level `ERROR`.
    */
-  static error(...messages: any[]): void {
-    log(LogLevel.ERROR, ...messages);
+  error(...messages: any[]): void {
+    log(LogLevel.ERROR, this.path, ...messages);
   }
 }
