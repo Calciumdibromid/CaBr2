@@ -46,6 +46,10 @@ export enum Unit {
   MILLIGRAM = 'MILLIGRAM',
   MICROGRAM = 'MICROGRAM',
   PIECES = 'PIECES',
+  SOLUTIONRELATIVE = 'SOLUTIONRELATIVE',
+  SOLUTIONMOL = 'SOLUTIONMOL',
+  SOLUTIONMILLIMOL = 'SOLUTIONMILLIMOL',
+  SOLUTIONMICROMOL = 'SOLUTIONMICROMOL',
   CUSTOM = 'CUSTOM', // needs String
 }
 
@@ -59,15 +63,32 @@ export interface UnitMapping<T> {
   value: T;
 }
 
-const unitMappings: UnitMapping<Unit>[] = [
-  { viewValue: 'l (Liter)', value: Unit.LITRE },
-  { viewValue: 'ml (Milliliter)', value: Unit.MILLILITER },
-  { viewValue: 'µl (Mikroliter)', value: Unit.MICROLITRE },
-  { viewValue: 'g (Gramm)', value: Unit.GRAM },
-  { viewValue: 'mg (Milligramm)', value: Unit.MILLIGRAM },
-  { viewValue: 'µg (Mikrogramm)', value: Unit.MICROGRAM },
-  { viewValue: 'Stück', value: Unit.PIECES },
-  { viewValue: 'Custom', value: Unit.CUSTOM }, // TODO implement custom type
+export interface GroupMapping<T> {
+  viewValue: string;
+  unitMappings: UnitMapping<T>[];
+}
+
+const unitMappings: GroupMapping<Unit>[] = [
+  {
+    viewValue: 'Reine Substanz', unitMappings: [
+      { viewValue: 'l (Liter)', value: Unit.LITRE },
+      { viewValue: 'ml (Milliliter)', value: Unit.MILLILITER },
+      { viewValue: 'µl (Mikroliter)', value: Unit.MICROLITRE },
+      { viewValue: 'g (Gramm)', value: Unit.GRAM },
+      { viewValue: 'mg (Milligramm)', value: Unit.MILLIGRAM },
+      { viewValue: 'µg (Mikrogramm)', value: Unit.MICROGRAM },
+      { viewValue: 'Stück', value: Unit.PIECES },
+      { viewValue: 'Custom', value: Unit.CUSTOM }, // TODO implement custom type
+    ]
+  },
+  {
+    viewValue: 'Lösung', unitMappings: [
+      { viewValue: '% (v/v)', value: Unit.SOLUTIONRELATIVE },
+      { viewValue: 'mol/l', value: Unit.SOLUTIONMOL },
+      { viewValue: 'mmol/l', value: Unit.SOLUTIONMILLIMOL },
+      { viewValue: 'µmol/l', value: Unit.SOLUTIONMICROMOL },
+    ]
+  }
 ];
 
 const temperatureUnitMapping: UnitMapping<TemperatureUnit>[] = [

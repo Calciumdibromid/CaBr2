@@ -46,10 +46,10 @@ pub struct Product {
 #[derive(Debug, Deserialize)]
 pub struct Templates {
   #[serde(rename = "template")]
-  templates: Vec<Template>,
+  pub templates: Vec<Template>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, PartialEq)]
 #[serde(rename_all = "kebab-case")]
 pub enum TemplateCategory {
   Danger,
@@ -81,7 +81,7 @@ pub struct Substance {
   #[serde(rename = "name")]
   pub names: Vec<String>,
   pub molecular_weight: Option<String>, // double
-  pub chemical_formula: String,
+  pub chemical_formula: Option<String>,
   pub density: Option<String>, // double
   pub melting_point: Option<MeltingPoint>,
   pub boiling_point: Option<String>,
