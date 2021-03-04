@@ -141,10 +141,10 @@ export class MenubarComponent implements OnInit {
     ).subscribe(
       (res) => logger.debug(res),
       (err) => {
-        logger.error(err)
+        logger.error(err);
         // fix for an error that occurs only in windows
         if (err === 'Could not initialize COM.') {
-          logger.debug('ty windows -.- | attempting fix')
+          logger.debug('ty windows -.- | attempting fix');
           this.loadFile();
           this.exportPDF();
         }
@@ -162,10 +162,10 @@ export class MenubarComponent implements OnInit {
     ).subscribe(
       (res) => logger.debug(res),
       (err) => {
-        logger.error(err)
+        logger.error(err);
         // fix for an error that occurs only in windows
         if (err === 'Could not initialize COM.') {
-          logger.debug('ty windows -.- | attempting fix')
+          logger.debug('ty windows -.- | attempting fix');
           this.loadFile();
           this.exportPDF();
         }
