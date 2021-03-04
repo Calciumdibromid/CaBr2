@@ -146,7 +146,7 @@ export class MenubarComponent implements OnInit {
         if (err === 'Could not initialize COM.') {
           logger.debug('ty windows -.- | attempting fix');
           this.loadFile();
-          this.exportPDF();
+          this.saveFile(type);
         }
       },
     );
