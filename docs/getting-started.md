@@ -90,12 +90,6 @@ Die Daten, die wir bekommen, werden in diesem Format gesendet:
 
 Wenn du bei der Weiterentwicklung des Projekts mithelfen möchtest, akzeptiere bitte die aufgeführte Einverständniserklärung.
 
-> richtig machen!!!!!!!!:
----
-Einverstanden | Nicht einverstanden
-
----
-
 <!--
 TODOs
 - x exakte suche erklären
@@ -106,5 +100,5 @@ TODOs
 - 
 -
 - x daten sammeln erklären 
-- Einverständniserklärung
+- Einverständniserklärung Buttons
 -->
