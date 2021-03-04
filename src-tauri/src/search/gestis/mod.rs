@@ -86,4 +86,12 @@ impl Plugin for Gestis {
       }
     }
   }
+
+  fn created(&self, _: &mut tauri::Webview<'_>) {
+    log::trace!("plugin created");
+  }
+
+  fn ready(&self, _: &mut tauri::Webview<'_>) {
+    log::trace!("plugin ready");
+  }
 }

@@ -6,9 +6,11 @@ import { ConfigModel } from '../@core/models/config.model';
 import { descriptions } from '../../assets/descriptions.json';
 import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
-import logger from '../@core/utils/logger';
+import Logger from '../@core/utils/logger';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
+
+const logger = new Logger('menubar');
 
 @Component({
   selector: 'app-menubar',
@@ -109,6 +111,7 @@ export class MenubarComponent implements OnInit {
   }
 
   loadFile(): void {
+    logger.trace('loadFile');
     this.tauriService
       .open({
         filter: this.loadFilter.join(';'),
@@ -123,6 +126,8 @@ export class MenubarComponent implements OnInit {
   }
 
   saveFile(type: string): void {
+    logger.trace(`saveFile(${type})`);
+
     // check for development, should never occur in production
     if (this.saveFilter.indexOf(type) < 0) {
       throw Error('unsupported file type');
@@ -135,11 +140,20 @@ export class MenubarComponent implements OnInit {
       switchMap(value => this.loadSaveService.saveDocument(type, value[0] as string, value[1]))
     ).subscribe(
       (res) => logger.debug(res),
-      (err) => logger.error(err),
+      (err) => {
+        logger.error(err);
+        // fix for an error that occurs only in windows
+        if (err === 'Could not initialize COM.') {
+          logger.debug('ty windows -.- | attempting fix');
+          this.loadFile();
+          this.saveFile(type);
+        }
+      },
     );
   }
 
   exportPDF(): void {
+    logger.trace('exportPDF()');
     combineLatest([
       this.tauriService.save({ filter: 'pdf' }),
       this.modelToDocument(),
@@ -147,7 +161,15 @@ export class MenubarComponent implements OnInit {
       switchMap(value => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1]))
     ).subscribe(
       (res) => logger.debug(res),
-      (err) => logger.error(err),
+      (err) => {
+        logger.error(err);
+        // fix for an error that occurs only in windows
+        if (err === 'Could not initialize COM.') {
+          logger.debug('ty windows -.- | attempting fix');
+          this.loadFile();
+          this.exportPDF();
+        }
+      },
     );
   }
 

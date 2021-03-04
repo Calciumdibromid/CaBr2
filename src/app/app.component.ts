@@ -4,7 +4,9 @@ import { ConfigModel } from './@core/models/config.model';
 import { ConfigService } from './@core/services/config/config.service';
 import { DOCUMENT } from '@angular/common';
 import { GlobalModel } from './@core/models/global.model';
-import logger from './@core/utils/logger';
+import Logger from './@core/utils/logger';
+
+const logger = new Logger('main');
 
 @Component({
   selector: 'app-root',

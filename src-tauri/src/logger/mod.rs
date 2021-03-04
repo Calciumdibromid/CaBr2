@@ -52,7 +52,7 @@ impl Logger {
     Ok(())
   }
 
-  fn handle(&self, level: LogLevel, messages: Vec<Value>) -> Result<(), String> {
+  fn handle(&self, level: LogLevel, path: String, messages: Vec<Value>) -> Result<(), String> {
     let mut formatted_messages = Vec::with_capacity(messages.len());
     for message in messages {
       match message {
@@ -66,11 +66,11 @@ impl Logger {
 
     let print_message = formatted_messages.join(" ");
     match level {
-      LogLevel::TRACE => log::trace!("{}", print_message),
-      LogLevel::DEBUG => log::debug!("{}", print_message),
-      LogLevel::INFO => log::info!("{}", print_message),
-      LogLevel::WARNING => log::warn!("{}", print_message),
-      LogLevel::ERROR => log::error!("{}", print_message),
+      LogLevel::TRACE => log::trace!("[{}] {}", path, print_message),
+      LogLevel::DEBUG => log::debug!("[{}] {}", path, print_message),
+      LogLevel::INFO => log::info!("[{}] {}", path, print_message),
+      LogLevel::WARNING => log::warn!("[{}] {}", path, print_message),
+      LogLevel::ERROR => log::error!("[{}] {}", path, print_message),
     }
 
     Ok(())
@@ -92,11 +92,19 @@ impl Plugin for Logger {
       Err(e) => Err(e.to_string()),
       Ok(command) => {
         match command {
-          Cmd::Log { level, messages } => self.handle(level, messages)?,
+          Cmd::Log { level, path, messages } => self.handle(level, path, messages)?,
         }
         Ok(true)
       }
     }
+  }
+
+  fn created(&self, _: &mut tauri::Webview<'_>) {
+    log::trace!("plugin created");
+  }
+
+  fn ready(&self, _: &mut tauri::Webview<'_>) {
+    log::trace!("plugin ready");
   }
 }
 

@@ -3,16 +3,17 @@ import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
-import { tap } from 'rxjs/operators';
 
 import { Data, SubstanceData } from '../@core/services/substances/substances.model';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
 import { GlobalModel } from '../@core/models/global.model';
-import logger from '../@core/utils/logger';
+import Logger from '../@core/utils/logger';
 import { SearchArgument } from '../@core/services/search/search.model';
 import { SelectedSearchComponent } from './selected-search/selected-search.component';
 import { SubstancesService } from '../@core/services/substances/substances.service';
+
+const logger = new Logger('search');
 
 @Component({
   selector: 'app-search',
