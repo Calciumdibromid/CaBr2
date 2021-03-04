@@ -96,13 +96,15 @@
         <mat-form-field>
           <mat-label>Einheit</mat-label>
           <mat-select formControlName="unit">
-            <mat-option
-              *ngFor="let option of unitMappings"
-              [value]="option.value"
-              [disabled]="option.value === unit.CUSTOM"
-            >
-              {{ option.viewValue }}
-            </mat-option>
+            <mat-optgroup *ngFor="let group of unitMappings" [label]="group.viewValue">
+              <mat-option
+                *ngFor="let option of group.unitMappings"
+                [value]="option.value"
+                [disabled]="option.value === unit.CUSTOM"
+              >
+                {{ option.viewValue }}
+              </mat-option>
+            </mat-optgroup>
           </mat-select>
         </mat-form-field>
         <mat-form-field *ngIf="customUnitVisible">

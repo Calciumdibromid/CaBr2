@@ -16,7 +16,7 @@ pub use types::TomlConfig;
 lazy_static! {
   pub static ref PROJECT_DIRS: ProjectDirs = ProjectDirs::from("de", "Calciumdibromid", "CaBr2").unwrap();
   pub static ref DATA_DIR: PathBuf = get_program_data_dir();
-  pub static ref TMP_DIR: PathBuf = env::temp_dir().to_path_buf();
+  pub static ref TMP_DIR: PathBuf = env::temp_dir();
 }
 
 pub struct Config;
