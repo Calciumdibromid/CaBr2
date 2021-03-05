@@ -18,9 +18,9 @@ jobs:
         run: rustup default stable
 
       - name: Rust Linting
-        run: ./contrib/for-each-cargo-dir clippy
+        run: ./contrib/for-each-cargo clippy
       - name: Rust Tests
-        run: ./contrib/for-each-cargo-dir test
+        run: ./contrib/for-each-cargo test
 
   frontend:
     runs-on: ubuntu-20.04
