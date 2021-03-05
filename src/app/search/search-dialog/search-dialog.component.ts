@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SearchArgument, SearchResult } from '../../@core/services/search/search.model';
+import { AlertService } from 'src/app/@core/services/alertsnackbar/altersnackbar.service';
 import Logger from 'src/app/@core/utils/logger';
 import { Observable } from 'rxjs';
 import { SearchService } from '../../@core/services/search/search.service';
