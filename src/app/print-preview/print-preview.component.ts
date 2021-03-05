@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { descriptions } from '../../assets/descriptions.json';
 import { GlobalModel } from '../@core/models/global.model';
+
+import { strings } from '../../assets/strings.json';
 
 @Component({
   selector: 'app-print-preview',
@@ -9,7 +10,7 @@ import { GlobalModel } from '../@core/models/global.model';
 })
 export class PrintPreviewComponent implements OnInit {
 
-  descriptions = descriptions;
+  strings = strings;
 
   constructor(
     public globals: GlobalModel,

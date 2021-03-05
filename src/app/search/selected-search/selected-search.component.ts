@@ -10,6 +10,8 @@ import { SearchService } from '../../@core/services/search/search.service';
 
 const logger = new Logger('selected-search');
 
+import { strings } from '../../../assets/strings.json';
+
 @Component({
   selector: 'app-selected-search',
   templateUrl: './selected-search.component.html',
@@ -18,6 +20,8 @@ const logger = new Logger('selected-search');
 export class SelectedSearchComponent implements OnInit {
   @Output()
   triggerSearch = new EventEmitter();
+
+  strings = strings;
 
   searchOptions: SearchTypeMapping[] = this.searchService.searchTypeMappings;
 

@@ -2,7 +2,7 @@
 <mat-divider class="divider"></mat-divider>
 <section>
   <mat-checkbox [(ngModel)]="exactSearch" (ngModelChange)="toggleExactSearch()">
-    <p class="unselectable undragable">Exakte Suche</p>
+    <p class="unselectable undragable">{{strings.search.exact}}</p>
   </mat-checkbox>
 </section>
 <div *ngIf="searchFinished; else loading">
@@ -24,6 +24,6 @@
 </ng-template>
 <mat-divider class="divider"></mat-divider>
 <div mat-dialog-actions>
-  <button mat-button (click)="close(true)">Abbrechen</button>
-  <button mat-button (click)="close(false)">Ok</button>
+  <button mat-button (click)="close(true)">{{strings.search.cancle}}</button>
+  <button mat-button (click)="close(false)">{{strings.search.ok}}</button>
 </div>

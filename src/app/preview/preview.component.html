@@ -14,21 +14,21 @@
       </tr>
       <tr>
         <td colspan="3">
-          Name(n)<br />
+          {{strings.header.name}}<br />
           {{ header.name }}
         </td>
         <td colspan="2">
-          Platz<br />
+          {{strings.header.place}}<br />
           {{ header.place }}
         </td>
         <td colspan="3">
-          Assistent/in<br />
+          {{strings.header.assistant}}<br />
           {{ header.assistant }}
         </td>
       </tr>
       <tr>
         <td colspan="8">
-          Herzustellendes Präparat:<br />
+          {{strings.header.preparation}}<br />
           <b>{{ header.preparation }}</b>
         </td>
       </tr>
@@ -75,7 +75,7 @@
     <table class="print unselectable">
       <tr>
         <td colspan="2" class="top height-5cm9">
-          <b>{{ descriptions.humanAndEnvironmentDanger }}</b>
+          <b>{{ strings.descriptions.humanAndEnvironmentDanger }}</b>
           <ul *ngFor="let entry of globals.humanAndEnvironmentDangerObservable | async">
             <li *ngIf="entry">
               {{ entry }}
@@ -85,7 +85,7 @@
       </tr>
       <tr>
         <td colspan="2" class="top height-5cm9">
-          <b>{{ descriptions.rulesOfConduct }}</b>
+          <b>{{ strings.descriptions.rulesOfConduct }}</b>
           <ul *ngFor="let entry of globals.rulesOfConductObservable | async">
             <li *ngIf="entry">
               {{ entry }}
@@ -95,7 +95,7 @@
       </tr>
       <tr>
         <td colspan="2" class="top height-5cm9">
-          <b>{{ descriptions.inCaseOfDanger }}</b>
+          <b>{{ strings.descriptions.inCaseOfDanger }}</b>
           <ul *ngFor="let entry of globals.inCaseOfDangerObservable | async">
             <li *ngIf="entry">
               {{ entry }}
@@ -105,7 +105,7 @@
       </tr>
       <tr>
         <td colspan="2" class="top height-5cm9">
-          <b>{{ descriptions.disposal }}</b>
+          <b>{{ strings.descriptions.disposal }}</b>
           <ul *ngFor="let entry of globals.disposalObservable | async">
             <li *ngIf="entry">
               {{ entry }}
@@ -115,10 +115,10 @@
       </tr>
       <tr>
         <td class="top height-2cm">
-          {{ descriptions.signStudent }}
+          {{ strings.descriptions.signStudent }}
         </td>
         <td class="top height-2cm">
-          {{ descriptions.signAssistant }}
+          {{ strings.descriptions.signAssistant }}
         </td>
       </tr>
     </table>

@@ -4,7 +4,6 @@ import { map, switchMap } from 'rxjs/operators';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { ConfigModel } from '../@core/models/config.model';
-import { descriptions } from '../../assets/descriptions.json';
 import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import Logger from '../@core/utils/logger';
@@ -12,6 +11,8 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
 const logger = new Logger('menubar');
+
+import { strings } from '../../assets/strings.json';
 
 @Component({
   selector: 'app-menubar',
@@ -22,7 +23,7 @@ export class MenubarComponent implements OnInit {
   @Output()
   readonly darkModeSwitched = new EventEmitter<boolean>();
 
-  descriptions = descriptions;
+  strings = strings;
 
   private loadFilter: string[] = [];
   private saveFilter: string[] = [];
