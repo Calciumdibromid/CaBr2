@@ -56,6 +56,7 @@ export class SearchComponent implements OnInit {
       minWidth: 800,
       maxHeight: 900,
       minHeight: 300,
+      panelClass: ['unselectable', 'undragable'],
     });
 
     dialogRef.afterClosed().subscribe((result) => {
