@@ -1,0 +1,26 @@
+[package]
+name = "cabr2_load_save"
+version = "0.0.0"
+authors = [
+  "crapStone <crapstone01@gmail.com>",
+  "6543 <6543@obermui.de>",
+]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+cabr2_config = { path = "../cabr2_config/" }
+cabr2_types = { path = "../cabr2_types/" }
+chrono = "0.4.19"
+handlebars = "3.5.3"
+lazy_static = "1.4.0"
+log = "0.4.14"
+lopdf = "0.26.0"
+quick-xml = { version = "0.22.0", features = ["serialize"] }
+regex = "1.4.3"
+serde = { version = "1.0.123", features = ["derive"] }
+serde_json = "1.0.64"
+tauri = { version = "0.11.1", default-features = false }
+thiserror = "1.0.24"
+wkhtmltopdf = "0.3.0"

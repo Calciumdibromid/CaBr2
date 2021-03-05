@@ -1,3 +1,5 @@
+#![allow(clippy::new_without_default)]
+
 mod cmd;
 
 use std::fs;
@@ -7,9 +9,10 @@ use log::LevelFilter;
 use serde_json::{to_string_pretty, Value};
 use tauri::plugin::Plugin;
 
-use crate::config::{read_config, TomlConfig, TMP_DIR};
+use cabr2_config::{read_config, TomlConfig, TMP_DIR};
+use cabr2_types::logging::LogLevel;
+
 use cmd::Cmd;
-pub use cmd::LogLevel;
 
 pub struct Logger;
 
@@ -42,7 +45,11 @@ impl Logger {
         ))
       })
       .level(convert_level(config.all))
-      .level_for("cabr2", convert_level(config.cabr2))
+      .level_for("cabr2", convert_level(config.cabr2.clone()))
+      .level_for("cabr2_config", convert_level(config.cabr2.clone()))
+      .level_for("cabr2_load_save", convert_level(config.cabr2.clone()))
+      .level_for("cabr2_logger", convert_level(config.cabr2.clone()))
+      .level_for("cabr2_search", convert_level(config.cabr2))
       .level_for("ureq", convert_level(config.ureq))
       .level_for("rustls", convert_level(config.rustls))
       .chain(std::io::stdout())
@@ -105,17 +112,5 @@ impl Plugin for Logger {
 
   fn ready(&self, _: &mut tauri::Webview<'_>) {
     log::trace!("plugin ready");
-  }
-}
-
-impl std::convert::From<LogLevel> for LevelFilter {
-  fn from(level: LogLevel) -> Self {
-    match level {
-      LogLevel::TRACE => LevelFilter::Trace,
-      LogLevel::DEBUG => LevelFilter::Debug,
-      LogLevel::INFO => LevelFilter::Info,
-      LogLevel::WARNING => LevelFilter::Warn,
-      LogLevel::ERROR => LevelFilter::Error,
-    }
   }
 }

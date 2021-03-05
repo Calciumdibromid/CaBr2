@@ -2,8 +2,9 @@ use std::path::PathBuf;
 
 use serde::{Deserialize, Serialize};
 
+use cabr2_types::SubstanceData;
+
 use super::error::Result;
-use crate::types::SubstanceData;
 
 pub trait Loader {
   fn load_document(&self, filename: PathBuf) -> Result<CaBr2Document>;

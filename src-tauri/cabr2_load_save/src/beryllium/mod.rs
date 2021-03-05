@@ -7,7 +7,7 @@ use lazy_static::lazy_static;
 use quick_xml::de::from_reader;
 use regex::Regex;
 
-use crate::types::{Amount, Data, Source, SubstanceData, Unit};
+use cabr2_types::{Amount, Data, Source, SubstanceData, Unit};
 
 use super::{
   error::{LoadSaveError, Result},
