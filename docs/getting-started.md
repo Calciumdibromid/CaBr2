@@ -90,9 +90,3 @@ Die Daten, die wir bekommen, werden in diesem Format gesendet:
 > Der Quellcode des Servers ist hier zu finden: <https://to.do>.
 
 Wenn du bei der Weiterentwicklung des Projekts mithelfen möchtest, akzeptiere bitte die aufgeführte Einverständniserklärung.
-
-<!--
-TODOs
-- was man alles verändern kann
-- Einverständniserklärung Buttons
--->
