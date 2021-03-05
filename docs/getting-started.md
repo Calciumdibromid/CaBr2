@@ -1,6 +1,6 @@
 # Calciumdibromid - Getting Started
 
-<img src="assets/Logo_CaBr2.svg" alt="" width="350">  <!--Icon-->
+<img src="assets/Logo_CaBr2.svg" alt="CaBr2 Logo" width="350">  <!--Icon-->
 
 CaBr<sub>2</sub> ist ein Programm zur Erstellung von Betriebsanweisungen für Laboreinheiten nach EG Nr. 1272/2008.
 
@@ -55,13 +55,14 @@ Auf der Betriebsanweisung gibt es die Spalte **Für Ansatz benötigt**.
 Im Fenster, welches sich nach Anklicken der zu bearbeitenden Chemikalie öffnet, kann diese individuell ausgefüllt werden.
 
 <img src="assets/screenshots_for_md/editor.png" alt="" width="550">
+<!--neues Bild mit Molarer Masse usw. dabei?-->
 
 ---
 
 ## Weitere Informationen
 Genauere Informationen und Erklärungen zu CaBr<sub>2</sub> sind auf GitHub oder unter www.cabr2.de zu finden.
 
-Dort sind unter dem Abschnitt [Anleitung](https://www.cabr2/anleitung) exakte Erklärungen zu jedem Thema aufgeführt.
+Dort sind unter dem Abschnitt [Anleitung](https://cabr2/anleitung) exakte Erklärungen zu jedem Thema aufgeführt.
 
 ---
 
@@ -75,7 +76,7 @@ Um dies machbar zu machen, würden wir gerne im Hintergrund diese Stoffe zu uns 
 
 Die Daten, die wir bekommen, werden in diesem Format gesendet:
 
-```json
+```js
 {
     "gestisId": "000815",  // ID des Stoffes in der Gestis Datenbank
     "parts": [
@@ -92,13 +93,6 @@ Wenn du bei der Weiterentwicklung des Projekts mithelfen möchtest, akzeptiere b
 
 <!--
 TODOs
-- x exakte suche erklären
-- x filter hinzufügen
-- x wie stoffbearbeiten funktioniert
 - was man alles verändern kann
-- x Summenformel???? 
-- 
--
-- x daten sammeln erklären 
 - Einverständniserklärung Buttons
 -->
