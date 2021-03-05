@@ -35,7 +35,7 @@ export class SearchComponent implements OnInit {
 
   constructor(
     private substanceService: SubstancesService,
-    private alterService: AlertService,
+    private alertService: AlertService,
     private dialog: MatDialog,
     public globals: GlobalModel,
   ) { }
@@ -68,7 +68,7 @@ export class SearchComponent implements OnInit {
               cas && this.globals.substanceDataSubject.getValue().some(s => cas === this.modifiedOrOriginal(s.cas))
             ) {
               // TODO i18n
-              this.alterService.error('Substanz mit selber CAS Nummer existiert bereits');
+              this.alertService.error('Substanz mit selber CAS Nummer existiert bereits!');
               logger.warning('substance with same cas number already present:', cas);
               return;
             }
@@ -76,6 +76,10 @@ export class SearchComponent implements OnInit {
             this.dataSource.connect().next(data);
             this.globals.substanceDataSubject.next(data);
 
+          },
+          (err) => {
+            logger.error('could not get substance information:', err);
+            this.alertService.error('Laden der Daten der Substanz fehlgeschlagen!');
           });
       }
     });
@@ -99,6 +103,10 @@ export class SearchComponent implements OnInit {
           newData[index] = substanceData;
           this.globals.substanceDataSubject.next(newData);
         }
+      },
+      (err) => {
+        logger.error('editing substance failed:', err);
+        this.alertService.error('Bearbeiten der Substanz fehlgeschlagen!');
       });
   }
 

@@ -1,8 +1,12 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { SearchArgument, SearchResult } from '../../@core/services/search/search.model';
+import Logger from 'src/app/@core/utils/logger';
 import { Observable } from 'rxjs';
 import { SearchService } from '../../@core/services/search/search.service';
+import { AlertService } from 'src/app/@core/services/alertsnackbar/altersnackbar.service';
+
+const logger = new Logger('search-dialog');
 
 @Component({
   selector: 'app-search-dialog',
@@ -19,6 +23,7 @@ export class SearchDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<SearchDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { arguments: SearchArgument[]; results: SearchResult[] },
     private searchService: SearchService,
+    private alertService: AlertService,
   ) {
   }
 
@@ -31,6 +36,10 @@ export class SearchDialogComponent implements OnInit {
     this.searchResults = [];
     this.subscription.subscribe((response) => {
       this.searchResults = response;
+    },
+    (err) => {
+      logger.error('loading search results failed:', err);
+      this.alertService.error('Laden der Suchergebnisse fehlgeschlagen!');
     });
   }
 
