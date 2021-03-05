@@ -8,8 +8,10 @@ mod error;
 mod handler;
 mod types;
 
-mod beryllium;
 mod cabr2;
+#[cfg(feature = "beryllium")]
+mod beryllium;
+#[cfg(feature = "pdf")]
 mod pdf;
 
 use cmd::Cmd;
@@ -20,10 +22,12 @@ impl LoadSave {
   pub fn new() -> LoadSave {
     let mut loaders = handler::REGISTERED_LOADERS.lock().unwrap();
     loaders.insert("cb2", Box::new(cabr2::CaBr2));
+    #[cfg(feature = "beryllium")]
     loaders.insert("be", Box::new(beryllium::Beryllium));
 
     let mut savers = handler::REGISTERED_SAVERS.lock().unwrap();
     savers.insert("cb2", Box::new(cabr2::CaBr2));
+    #[cfg(feature = "pdf")]
     savers.insert("pdf", Box::new(pdf::PDF));
 
     LoadSave

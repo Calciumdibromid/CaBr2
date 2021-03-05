@@ -1,5 +1,7 @@
 mod types;
 
+#[cfg(feature = "beryllium")]
+{
 use std::{fs::File, io::BufReader, path::PathBuf};
 
 use chrono::TimeZone;
@@ -158,4 +160,5 @@ fn get_templates_with_category(doc: &BerylliumDocument, category: TemplateCatego
     .filter(|t| t.category == category)
     .map(|t| t.content.clone())
     .collect()
+}
 }
