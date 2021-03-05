@@ -5,7 +5,6 @@ pub enum LoadSaveError {
   #[error("unknown file type")]
   UnknownFileType,
 
-  #[cfg(feature = "berillium")]
   #[error("failed to load file: '{0}'")]
   DeserializeError(String),
 
