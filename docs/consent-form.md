@@ -1,0 +1,3 @@
+Bei CaBr<sub>2</sub> handelt es sich um ein Open-Source-Projekt und daher basiert die Verwendung der generierten Betriebsanweisungen auf Eigenverantwortung.
+
+Weder das Programm, noch die Entwickler sind für den Inhalt verantwortlich und können für unkorrekte oder unvollständige Informationen zur Rechenschaft gezogen werden.
