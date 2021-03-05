@@ -1,10 +1,10 @@
 use ureq::Agent;
 
-use crate::types::Source;
+use cabr2_types::{Data, Source, SubstanceData};
 
 use super::{
   error::{Result, SearchError},
-  types::{Data, GestisResponse, SearchArguments, SearchResponse, SearchType, SubstanceData},
+  types::{GestisResponse, SearchArguments, SearchResponse, SearchType},
   xml_parser,
 };
 
