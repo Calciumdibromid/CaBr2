@@ -97,8 +97,8 @@ pub fn get_substance_data(agent: Agent, zvg_number: String) -> Result<SubstanceD
       None => Vec::new(),
     }),
     source: Source {
-      provider: "gestis".into(),
-      url: "".into(),
+      provider: "GESTIS".into(),
+      url,
       last_updated: chrono::Utc::now(),
     },
   };
