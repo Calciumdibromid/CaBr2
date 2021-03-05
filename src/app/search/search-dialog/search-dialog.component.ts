@@ -11,6 +11,7 @@ import { SearchService } from '../../@core/services/search/search.service';
 })
 export class SearchDialogComponent implements OnInit {
   searchResults: SearchResult[] = [];
+  searchFinished = false;
   exactSearch = false;
   subscription: Observable<SearchResult[]> | undefined;
   selected: SearchResult | undefined;
@@ -29,8 +30,10 @@ export class SearchDialogComponent implements OnInit {
     });
 
     this.searchResults = [];
+    this.searchFinished = false;
     this.subscription.subscribe((response) => {
       this.searchResults = response;
+      this.searchFinished = true;
     });
   }
 

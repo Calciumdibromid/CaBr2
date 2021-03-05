@@ -1,21 +1,24 @@
 <h2>Suchergebnisse</h2>
 <mat-divider class="divider"></mat-divider>
 <section>
-  <mat-checkbox [(ngModel)]="exactSearch" (ngModelChange)="toggleExactSearch()">
-    Exakte Suche
-  </mat-checkbox>
+  <mat-checkbox [(ngModel)]="exactSearch" (ngModelChange)="toggleExactSearch()"> Exakte Suche </mat-checkbox>
 </section>
-<div *ngIf="searchResults.length != 0; else loading">
-  <mat-selection-list [multiple]="false" dense>
-    <cdk-virtual-scroll-viewport itemSize="50" class="viewport">
-      <mat-list-option *cdkVirtualFor="let result of searchResults" (click)="setSelected(result)">
-        {{result.casNumber}} {{ result.name }}
-      </mat-list-option>
-    </cdk-virtual-scroll-viewport>
-  </mat-selection-list>
+<div *ngIf="searchFinished; else loading">
+  <div *ngIf="searchResults.length > 0; else empty">
+    <mat-selection-list [multiple]="false" dense>
+      <cdk-virtual-scroll-viewport itemSize="50" class="viewport">
+        <mat-list-option *cdkVirtualFor="let result of searchResults" (click)="setSelected(result)">
+          {{ result.casNumber }} {{ result.name }}
+        </mat-list-option>
+      </cdk-virtual-scroll-viewport>
+    </mat-selection-list>
+  </div>
 </div>
 <ng-template #loading>
   <mat-spinner></mat-spinner>
+</ng-template>
+<ng-template #empty>
+  <p class="viewport empty"><b>Keine Ergebnisse</b></p>
 </ng-template>
 <mat-divider class="divider"></mat-divider>
 <div mat-dialog-actions>
