@@ -4,6 +4,9 @@ import { Subscription } from 'rxjs';
 
 import { Alert, AlertType } from '../@core/services/alertsnackbar/altersnackbar.model';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
+import Logger from '../@core/utils/logger';
+
+const logger = new Logger('alertsnackbar');
 
 @Component({
   selector: 'app-alertsnackbar',
@@ -23,7 +26,7 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
   constructor(
     private alertService: AlertService,
     private snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit() {
     // subscribe to new alert notifications
@@ -43,7 +46,8 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
       }
 
       this.openSnackBar();
-    });
+    },
+      (err) => logger.error('showing snackbar failed:', err));
   }
 
   ngOnDestroy() {

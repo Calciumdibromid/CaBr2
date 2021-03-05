@@ -1,3 +1,5 @@
+pub mod logging;
+
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 

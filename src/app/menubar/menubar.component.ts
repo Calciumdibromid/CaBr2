@@ -1,6 +1,7 @@
 import { combineLatest, Observable } from 'rxjs';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { map, switchMap } from 'rxjs/operators';
+import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { ConfigModel } from '../@core/models/config.model';
 import { descriptions } from '../../assets/descriptions.json';
@@ -31,6 +32,7 @@ export class MenubarComponent implements OnInit {
     public config: ConfigModel,
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
+    private alertService: AlertService,
   ) {
     this.loadSaveService.getAvailableDocumentTypes().subscribe(
       (types) => {
@@ -41,7 +43,10 @@ export class MenubarComponent implements OnInit {
         this.loadFilter.splice(this.loadFilter.indexOf('cb2'), 1);
         this.loadFilter.unshift('cb2');
       },
-      (err) => logger.error(err),
+      (err) => {
+        logger.error('could not get document types:', err);
+        this.alertService.error('Laden der verfügbaren Dokumentarten fehlgeschlagen!');
+      },
     );
   }
 
@@ -120,9 +125,13 @@ export class MenubarComponent implements OnInit {
       .subscribe((path) => {
         this.loadSaveService.loadDocument(path as string).subscribe(
           (res) => this.documentToModel(res),
-          (err) => logger.error(err),
+          (err) => {
+            logger.error('saving file failed:', err);
+            this.alertService.error('Speichern der Datei fehlgeschlagen!');
+          },
         );
-      });
+      },
+        (err) => logger.trace('open dialog returned error:', err));
   }
 
   saveFile(type: string): void {
@@ -139,7 +148,10 @@ export class MenubarComponent implements OnInit {
     ]).pipe(
       switchMap(value => this.loadSaveService.saveDocument(type, value[0] as string, value[1]))
     ).subscribe(
-      (res) => logger.debug(res),
+      (res) => {
+        logger.debug(res);
+        this.alertService.success('Datei erfolgreich gespeichert');
+      },
       (err) => {
         logger.error(err);
         // fix for an error that occurs only in windows
@@ -147,7 +159,9 @@ export class MenubarComponent implements OnInit {
           logger.debug('ty windows -.- | attempting fix');
           this.loadFile();
           this.saveFile(type);
+          return;
         }
+        this.alertService.error('Speichern der Datei fehlgeschlagen!');
       },
     );
   }
@@ -160,7 +174,10 @@ export class MenubarComponent implements OnInit {
     ]).pipe(
       switchMap(value => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1]))
     ).subscribe(
-      (res) => logger.debug(res),
+      (res) => {
+        logger.debug(res);
+        this.alertService.success('PDF erfolgreich exportiert');
+      },
       (err) => {
         logger.error(err);
         // fix for an error that occurs only in windows
@@ -168,7 +185,9 @@ export class MenubarComponent implements OnInit {
           logger.debug('ty windows -.- | attempting fix');
           this.loadFile();
           this.exportPDF();
+          return;
         }
+        this.alertService.error('Exportieren der PDF fehlgeschlagen!');
       },
     );
   }

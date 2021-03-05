@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 
-use crate::logger::LogLevel;
+use cabr2_types::logging::LogLevel;
 
 /* #region JSON types */
 
