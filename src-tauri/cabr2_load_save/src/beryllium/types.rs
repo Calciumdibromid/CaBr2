@@ -1,5 +1,6 @@
 use serde::Deserialize;
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct BerylliumDocument {
@@ -12,6 +13,7 @@ pub struct BerylliumDocument {
   pub substances: Vec<Substance>,
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 pub struct General {
   pub title: String,
@@ -28,6 +30,7 @@ pub struct General {
   pub signatur_right: String,
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 pub struct Personal {
   pub name: String,
@@ -36,6 +39,7 @@ pub struct Personal {
   pub assistant: String,
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct Product {
@@ -43,12 +47,14 @@ pub struct Product {
   pub chemical_formula: String,
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 pub struct Templates {
   #[serde(rename = "template")]
   pub templates: Vec<Template>,
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize, PartialEq)]
 #[serde(rename_all = "kebab-case")]
 pub enum TemplateCategory {
@@ -58,6 +64,7 @@ pub enum TemplateCategory {
   Dumping,
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 pub struct Template {
   pub category: TemplateCategory,
@@ -65,6 +72,7 @@ pub struct Template {
   pub content: String,
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct Options {
@@ -75,6 +83,7 @@ pub struct Options {
   pub hide_phrases: Option<Vec<String>>,
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "kebab-case")]
 pub struct Substance {
@@ -119,6 +128,7 @@ pub struct Substance {
   pub source_changed: Option<String>,
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 pub struct MeltingPoint {
   pub decomposition: Option<bool>,
@@ -126,6 +136,7 @@ pub struct MeltingPoint {
   pub value: String,
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 pub struct MAK {
   pub ppm: Option<bool>,
@@ -133,6 +144,7 @@ pub struct MAK {
   pub value: String,
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 pub struct LD50 {
   pub exposuretype: Option<String>,
@@ -142,6 +154,7 @@ pub struct LD50 {
   pub value: String, // double
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 pub struct SettingUp {
   pub volumina: Option<bool>,
@@ -150,6 +163,7 @@ pub struct SettingUp {
   pub value: String, // double
 }
 
+#[cfg(feature = "beryllium")]
 #[derive(Debug, Deserialize)]
 pub struct Concentration {
   pub relative: Option<bool>,

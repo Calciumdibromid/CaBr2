@@ -25,6 +25,7 @@ pub struct PDF;
 type PDFThreadChannels = Arc<Mutex<(mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>)>>;
 
 impl Saver for PDF {
+  #[cfg(feature = "pdf")]
   fn save_document(&self, filename: PathBuf, document: CaBr2Document) -> Result<()> {
     lazy_static! {
       static ref PDF_THREAD_CHANNEL: PDFThreadChannels = Arc::new(Mutex::new(init_pdf_application()));
@@ -62,9 +63,16 @@ impl Saver for PDF {
       }
     }
   }
+
+  #[cfg(not(feature = "pdf"))]
+  fn save_document(&self, filename: PathBuf, document: CaBr2Document) -> Result<()> {
+    log::error!("compiled without pdf feature");
+    Err(LoadSaveError::UnknownFileType)
+  }
 }
 
 /// render_doc get CaBr2Document and return html (dummy at the moment)
+#[cfg(feature = "pdf")]
 fn render_doc(document: &CaBr2Document) -> Result<Vec<String>> {
   #[derive(Debug, Serialize)]
   struct Context<'a> {
@@ -93,6 +101,7 @@ fn render_doc(document: &CaBr2Document) -> Result<Vec<String>> {
   ])
 }
 
+#[cfg(feature = "pdf")]
 #[inline]
 fn init_handlebars() -> Result<(String, Handlebars<'static>)> {
   let mut reg = Handlebars::new();
@@ -118,8 +127,10 @@ fn init_handlebars() -> Result<(String, Handlebars<'static>)> {
   Ok((buf, reg))
 }
 
+#[cfg(feature = "pdf")]
 type PDFChannels = (mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>);
 
+#[cfg(feature = "pdf")]
 fn init_pdf_application() -> PDFChannels {
   let (tauri_tx, pdf_rx) = mpsc::sync_channel(0);
   let (pdf_tx, tauri_rx) = mpsc::sync_channel(0);

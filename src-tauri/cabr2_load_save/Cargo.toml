@@ -13,18 +13,18 @@ edition = "2018"
 cabr2_config = { path = "../cabr2_config/" }
 cabr2_types = { path = "../cabr2_types/" }
 chrono = "0.4.19"
-handlebars = "3.5.3"
+handlebars = {version = "3.5.3",  optional = true}
 lazy_static = "1.4.0"
 log = "0.4.14"
-lopdf = "0.26.0"
-quick-xml = { version = "0.22.0", features = ["serialize"] }
+lopdf = {version = "0.26.0",  optional = true}
+quick-xml = { version = "0.22.0", features = ["serialize"], optional = true}
 regex = "1.4.3"
 serde = { version = "1.0.123", features = ["derive"] }
 serde_json = "1.0.64"
 tauri = { version = "0.11.1", default-features = false }
 thiserror = "1.0.24"
-wkhtmltopdf = "0.3.0"
+wkhtmltopdf = {version = "0.3.0", optional = true}
 
 [features]
-beryllium = []
+beryllium = ["quick-xml"]
 pdf = ["lopdf", "wkhtmltopdf", "handlebars"]

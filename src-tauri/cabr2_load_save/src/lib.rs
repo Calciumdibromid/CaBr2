@@ -8,9 +8,9 @@ mod error;
 mod handler;
 mod types;
 
-mod cabr2;
 #[cfg(feature = "beryllium")]
 mod beryllium;
+mod cabr2;
 #[cfg(feature = "pdf")]
 mod pdf;
 

@@ -1,7 +1,5 @@
 mod types;
 
-#[cfg(feature = "beryllium")]
-{
 use std::{fs::File, io::BufReader, path::PathBuf};
 
 use chrono::TimeZone;
@@ -20,6 +18,7 @@ use types::{BerylliumDocument, TemplateCategory};
 pub struct Beryllium;
 
 impl Loader for Beryllium {
+  #[cfg(feature = "beryllium")]
   fn load_document(&self, filename: PathBuf) -> Result<CaBr2Document> {
     lazy_static! {
       static ref BEGINNING_OF_TIME: chrono::DateTime<chrono::Utc> = chrono::Utc.ymd(1970, 1, 1).and_hms(0, 0, 0);
@@ -150,8 +149,15 @@ impl Loader for Beryllium {
       Err(e) => Err(LoadSaveError::DeserializeError(e.to_string())),
     }
   }
+
+  #[cfg(not(feature = "beryllium"))]
+  fn load_document(&self, _filename: PathBuf, _document: CaBr2Document) -> Result<CaBr2Document> {
+    log::error!("compiled without beryllium feature");
+    Err(LoadSaveError::UnknownFileType)
+  }
 }
 
+#[cfg(feature = "beryllium")]
 fn get_templates_with_category(doc: &BerylliumDocument, category: TemplateCategory) -> Vec<String> {
   doc
     .templates
@@ -160,5 +166,4 @@ fn get_templates_with_category(doc: &BerylliumDocument, category: TemplateCatego
     .filter(|t| t.category == category)
     .map(|t| t.content.clone())
     .collect()
-}
 }

@@ -7,6 +7,7 @@ use crate::error::{LoadSaveError, Result};
 /// this code is basically the example from the
 /// [lopdf repo](https://github.com/J-F-Liu/lopdf/blob/master/examples/merge.rs)
 /// with minor changes to make it work as library.
+#[cfg(feature = "pdf")]
 pub fn merge_pdfs(documents: Vec<Document>) -> Result<Document> {
   // Define a starting max_id (will be used as start index for object_ids)
   let mut max_id = 1;
