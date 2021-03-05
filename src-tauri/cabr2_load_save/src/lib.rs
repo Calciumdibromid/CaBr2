@@ -1,3 +1,6 @@
+#![allow(clippy::new_without_default)]
+#![allow(clippy::unnecessary_unwrap)]
+
 use tauri::plugin::Plugin;
 
 mod cmd;

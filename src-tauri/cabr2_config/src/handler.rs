@@ -92,6 +92,7 @@ pub fn get_hazard_symbols() -> Result<GHSSymbols> {
 fn get_config_path() -> PathBuf {
   #[cfg(not(feature = "portable"))]
   {
+    log::trace!("config path: user config folder");
     use super::PROJECT_DIRS;
     let mut conf_dir = PROJECT_DIRS.config_dir().to_path_buf();
 
@@ -106,6 +107,7 @@ fn get_config_path() -> PathBuf {
 
   #[cfg(feature = "portable")]
   {
+    log::trace!("config path: portable");
     let mut cfg_path = PathBuf::from(std::env::args().next().unwrap())
       .parent()
       .unwrap()
@@ -118,6 +120,7 @@ fn get_config_path() -> PathBuf {
 #[cfg(debug_assertions)]
 #[inline]
 fn get_config_path() -> PathBuf {
+  log::trace!("config path: debug");
   let config_path = PathBuf::from(std::env::args().next().unwrap());
   // src-tauri/target
   config_path.parent().unwrap().with_file_name("config.toml")
