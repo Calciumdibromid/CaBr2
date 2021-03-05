@@ -4,7 +4,6 @@ import { SearchArgument, SearchResult } from '../../@core/services/search/search
 import Logger from 'src/app/@core/utils/logger';
 import { Observable } from 'rxjs';
 import { SearchService } from '../../@core/services/search/search.service';
-import { AlertService } from 'src/app/@core/services/alertsnackbar/altersnackbar.service';
 
 const logger = new Logger('search-dialog');
 
