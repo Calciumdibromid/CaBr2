@@ -1,7 +1,9 @@
 <h2>Suchergebnisse</h2>
 <mat-divider class="divider"></mat-divider>
 <section>
-  <mat-checkbox [(ngModel)]="exactSearch" (ngModelChange)="toggleExactSearch()"> Exakte Suche </mat-checkbox>
+  <mat-checkbox [(ngModel)]="exactSearch" (ngModelChange)="toggleExactSearch()">
+    <p class="unselectable undragable">Exakte Suche</p>
+  </mat-checkbox>
 </section>
 <div *ngIf="searchFinished; else loading">
   <div *ngIf="searchResults.length > 0; else empty">

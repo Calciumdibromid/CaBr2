@@ -1,3 +1,6 @@
+@import '~@angular/material/theming';
+@import '../../../styles';
+
 .viewport {
   max-width: 1000px;
   min-width: 600px;
@@ -6,6 +9,6 @@
 }
 
 .empty {
-  color: red;
+  color: mat-color($ang-CaBr2-warn);
   margin-top: 20px;
 }
