@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use lopdf::{Document, Object, ObjectId};
 
-use crate::load_save::error::{LoadSaveError, Result};
+use crate::error::{LoadSaveError, Result};
 
 /// this code is basically the example from the
 /// [lopdf repo](https://github.com/J-F-Liu/lopdf/blob/master/examples/merge.rs)
