@@ -1,7 +1,7 @@
 # CaBr2
 
-[![License: GPL3+](https://img.shields.io/badge/License-GPL3+-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
-[![test](https://github.com/Calciumdibromid/CaBr2/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/Calciumdibromid/CaBr2/actions/workflows/test.yml)
+[![License: GPL3+](https://img.shields.io/badge/License-GPL3+-blue.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![test](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2FCalciumdibromid%2FCaBr2%2Fbadge&style=flat-square)](https://github.com/Calciumdibromid/CaBr2/actions/workflows/test.yml)
 
 Generate "experiment wise safety sheets" in compliance to European law.
 
