@@ -4,7 +4,11 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
 import { SearchArgument, SearchType, SearchTypeMapping } from '../../@core/services/search/search.model';
+import { AlertService } from 'src/app/@core/services/alertsnackbar/altersnackbar.service';
+import Logger from '../../@core/utils/logger';
 import { SearchService } from '../../@core/services/search/search.service';
+
+const logger = new Logger('selected-search');
 
 @Component({
   selector: 'app-selected-search',
@@ -34,6 +38,7 @@ export class SelectedSearchComponent implements OnInit {
 
   constructor(
     private searchService: SearchService,
+    private alertService: AlertService,
     private formBuilder: FormBuilder
   ) {
   }
@@ -100,6 +105,10 @@ export class SelectedSearchComponent implements OnInit {
               selectionGroup.get('searchOption')?.value,
               response
             );
+          },
+          (err) => {
+            logger.error('loading search suggestions failed:', err);
+            this.alertService.error('Laden der Suchvorschläge fehlgeschlagen!');
           });
       });
   }
