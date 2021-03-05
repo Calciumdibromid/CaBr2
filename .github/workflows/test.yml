@@ -18,14 +18,9 @@ jobs:
         run: rustup default stable
 
       - name: Rust Linting
-        run: |
-          ls -la /usr/local/bin/
-          cd ./src-tauri
-          cargo clippy
+        run: ./contrib/for-each-cargo-dir clippy
       - name: Rust Tests
-        run: |
-          cd ./src-tauri
-          cargo test
+        run: ./contrib/for-each-cargo-dir test
 
   frontend:
     runs-on: ubuntu-20.04

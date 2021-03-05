@@ -1,0 +1,10 @@
+#!/bin/bash
+
+rust_root="$(dirname "$0")/../src-tauri"
+
+find "$rust_root" -name Cargo.toml | while read line; do
+  cd "$(dirname "$line")"
+  echo "context: $(pwd)"
+  cargo $1 $2 $3 $4 $5 || exit 1
+done
+
