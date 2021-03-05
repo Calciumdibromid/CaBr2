@@ -27,10 +27,17 @@
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let element">
           <div class="right">
-            <a href="#" mat-raised-button color="primary" disabled> Provider </a>
+            <button
+              mat-raised-button
+              color="primary"
+              [disabled]="userUrlAvailable(element.source)"
+              (click)="openSource($event, element.source)"
+            >
+              {{ element.source.provider }}
+          </button>
             <button
               mat-icon-button
-              (click)="removeSubstance(element, $event)"
+              (click)="removeSubstance($event, element)"
               matTooltip="Substanz entfernen"
               matTooltipPosition="left"
             >

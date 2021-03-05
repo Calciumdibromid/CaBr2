@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 
-import { Data, SubstanceData } from '../@core/services/substances/substances.model';
+import { Data, Source, SubstanceData } from '../@core/services/substances/substances.model';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
 import { GlobalModel } from '../@core/models/global.model';
@@ -12,8 +12,11 @@ import Logger from '../@core/utils/logger';
 import { SearchArgument } from '../@core/services/search/search.model';
 import { SelectedSearchComponent } from './selected-search/selected-search.component';
 import { SubstancesService } from '../@core/services/substances/substances.service';
+import { TauriService } from '../@core/services/tauri/tauri.service';
 
 const logger = new Logger('search');
+
+const GESTIS_URL_RE = new RegExp('https:\\/\\/gestis-api\\.dguv\\.de\\/api\\/article\\/(de|en)\\/(\\d{6})');
 
 @Component({
   selector: 'app-search',
@@ -35,6 +38,7 @@ export class SearchComponent implements OnInit {
 
   constructor(
     private substanceService: SubstancesService,
+    private tauriService: TauriService,
     private alertService: AlertService,
     private dialog: MatDialog,
     public globals: GlobalModel,
@@ -111,7 +115,7 @@ export class SearchComponent implements OnInit {
       });
   }
 
-  removeSubstance(data: SubstanceData, event: MouseEvent): void {
+  removeSubstance(event: MouseEvent, data: SubstanceData): void {
     event.preventDefault();
     event.stopPropagation();
 
@@ -121,6 +125,19 @@ export class SearchComponent implements OnInit {
         value.splice(index, 1);
         this.dataSource.connect().next(value);
       });
+  }
+
+  userUrlAvailable(source: Source): boolean {
+    return !GESTIS_URL_RE.test(source.url);
+  }
+
+  openSource(event: MouseEvent, source: Source): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const matches = source.url.match(GESTIS_URL_RE);
+    if (matches) {
+      this.tauriService.openUrl(`https://gestis.dguv.de/data?name=${matches[2]}&lang=${matches[1]}`);
+    }
   }
 
   // TODO move to SubstanceData class
