@@ -1,6 +1,7 @@
 #!/bin/bash
 
-rust_root="$(dirname "$0")/../src-tauri"
+cd "$(dirname "$0")/../src-tauri"
+rust_root="$(pwd)"
 echo "rust_root=$rust_root"
 
 find "$rust_root" -name Cargo.toml | while read line; do
