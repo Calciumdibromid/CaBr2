@@ -63,5 +63,9 @@ pub enum Unit {
   Milligram,
   Microgram,
   Pieces,
+  SolutionRelative,
+  SolutionMol,
+  SolutionMillimol,
+  SolutionMicromol,
   Custom(String),
 }

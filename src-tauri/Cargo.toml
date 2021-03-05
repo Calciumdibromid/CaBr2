@@ -38,6 +38,7 @@ toml = { version = "0.5.8", features = [ "preserve_order" ] }
 wkhtmltopdf = "0.3.0"
 handlebars = "3.5.3"
 lopdf = { version = "0.26.0", features = [ "nom_parser", "chrono_time" ], default-features = false }
+regex = "1.4.3"
 
 [target."cfg(windows)".build-dependencies]
 winres = "0.1"
