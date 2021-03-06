@@ -10,14 +10,14 @@
   <div class="mat-elevation-z8 margin-top">
     <mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="name" [sticky]="true">
-        <mat-header-cell *matHeaderCellDef> Name</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{ strings.substance.name }}</mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.name.modifiedData ? element.name.modifiedData : element.name.originalData }}
         </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="cas" [sticky]="true">
-        <mat-header-cell *matHeaderCellDef> CAS</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef> {{ strings.substance.casNr }}</mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.cas.modifiedData ? element.cas.modifiedData : element.cas.originalData }}
         </mat-cell>
