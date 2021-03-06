@@ -18,14 +18,14 @@ Die Daten zum Befüllen der Betriebsanweisung beziehen sich auf mehrere Quellen,
 
 CaBr<sub>2</sub> ermöglicht es, auf mehreren Weisen nach Stoffdaten für die verwendeten Stoffen zu suchen.
 
-### **Suche**
+### Suche
 
 Die Suche kann mit verschiedenen Filtern eingegrenzt oder definiert werden.
 
 Falls beispielsweise explizit nur nach der Summenformel gesucht werden soll, kann in der "Suchen"- Spalte statt Stoffname Summenformel ausgewählt werden.
 Mit Hilfe des Pluses darunter können zudem weitere Filter ausgewählt werden. Mehrere Filter können zusammen verwendet werden.
 
-<img src="assets/screenshots_for_md/filterselections_for_search.png" alt="" height="280">
+<img src="assets/screenshots_for_md/filterselections_for_search.png" alt="filter" height="280">
 
 > Wichtige Information zur Summenformel !!!
 > - Gestis akzeptiert nur eine bestimmte Summenformel
@@ -34,11 +34,11 @@ Mit Hilfe des Pluses darunter können zudem weitere Filter ausgewählt werden. M
 >
 >   --> CH<sub>3</sub>COOH wird nur als C<sub>2</sub>H<sub>4</sub>O<sub>2</sub> akzeptiert
 
-### **Exakte Suche**
+### Exakte Suche
 
 Wenn mit einem Filter nach einer Chemikalie gesucht wird, die in vielen Verbindungen vorkommt, kann mit Hilfe der exakten Suche direkt nach der Grundchemikalie gesucht werden.
 
-<img src="assets/screenshots_for_md/search_1.png" alt="" height="280"> <img src="assets/screenshots_for_md/search_2.png" alt="" height="280">
+<img src="assets/screenshots_for_md/search_1.png" alt="normal search" height="280"> <img src="assets/screenshots_for_md/search_2.png" alt="specified search" height="280">
 
 ---
 
@@ -48,12 +48,12 @@ Die ausgewählten Chemikalien werden unter der Suche aufgelistet.
 
 Um diese im Nachhinein bearbeiten zu können, kann mit der Maus die gewünschte Chemikalie ausgewählt und angeklickt werden.
 
-### **Mengenangabe hinzufügen**
+### Mengenangabe hinzufügen
 
 Auf der Betriebsanweisung gibt es die Spalte _Für Ansatz benötigt_.
 Im Fenster, welches sich nach Anklicken der zu bearbeitenden Chemikalie öffnet, kann diese individuell ausgefüllt werden.
 
-<img src="assets/screenshots_for_md/editor.png" alt="" width="550">
+<img src="assets/screenshots_for_md/editor.png" alt="editor" width="550">
 <!--neues Bild mit Molarer Masse usw. dabei?-->
 
 ---
