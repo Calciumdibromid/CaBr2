@@ -19,7 +19,7 @@
             (mouseenter)="controlElements.at(i).get('hover')?.patchValue(true)"
             (mouseleave)="controlElements.at(i).get('hover')?.patchValue(false)"
             (click)="removeElement(i)"
-            matTooltip="Eintrag entfernen"
+            [matTooltip]="strings.base.removeElement"
             matTooltipPosition="left"
           >
             <mat-icon *ngIf="!controlElements.at(i).get('hover')?.value">remove_circle_outline</mat-icon>
@@ -34,7 +34,7 @@
     (mouseenter)="addHover = true"
     (mouseleave)="addHover = false"
     (click)="addElement()"
-    matTooltip="Eintrag hinzufügen"
+    [matTooltip]="strings.base.addElement"
     matTooltipPosition="right"
   >
     <mat-icon *ngIf="!addHover">add_circle_outline</mat-icon>

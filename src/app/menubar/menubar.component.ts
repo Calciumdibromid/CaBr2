@@ -4,7 +4,6 @@ import { map, switchMap } from 'rxjs/operators';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { ConfigModel } from '../@core/models/config.model';
-import { descriptions } from '../../assets/descriptions.json';
 import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import Logger from '../@core/utils/logger';
@@ -12,6 +11,9 @@ import { ManualComponent } from '../manual/manual.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
+
+import { docsTemplate } from '../../assets/docsTemplate.json';
+import { strings } from '../../assets/strings.json';
 
 const logger = new Logger('menubar');
 
@@ -24,7 +26,7 @@ export class MenubarComponent implements OnInit {
   @Output()
   readonly darkModeSwitched = new EventEmitter<boolean>();
 
-  descriptions = descriptions;
+  strings = strings;
 
   private loadFilter: string[] = [];
   private saveFilter: string[] = [];
@@ -48,35 +50,27 @@ export class MenubarComponent implements OnInit {
       },
       (err) => {
         logger.error('could not get document types:', err);
-        this.alertService.error('Laden der verfügbaren Dokumentarten fehlgeschlagen!');
+        this.alertService.error(strings.error.getAvailableDocumentTypes);
       },
     );
   }
 
   ngOnInit(): void {
     this.globals.headerSubject.next({
-      assistant: '',
-      documentTitle: 'Betriebsanweisungen nach EG Nr. 1272/2008',
-      labCourse: 'Praktikum Anorganische Chemie',
-      name: '',
-      organisation: 'für chemische Laboratorien des Campus Burghausen',
-      place: '',
-      preparation: '',
+      assistant: docsTemplate.assistant,
+      documentTitle: docsTemplate.documentTitle,
+      labCourse: docsTemplate.labCourse,
+      name: docsTemplate.name,
+      organisation: docsTemplate.organisation,
+      place: docsTemplate.place,
+      preparation: docsTemplate.preparation,
     });
 
-    this.globals.humanAndEnvironmentDangerSubject.next([
-      'Bei anhaltender Augenreizung ärztlichen Rat einholen. Funkenerzeugung und elektrische Aufladung vermeiden.',
-    ]);
+    this.globals.humanAndEnvironmentDangerSubject.next(docsTemplate.humanAndEnvironmentDangerSubject);
 
-    this.globals.rulesOfConductSubject.next(['Hautschutz und Schutzkleidung mit Schutzbrille tragen.']);
+    this.globals.rulesOfConductSubject.next(docsTemplate.rulesOfConductSubject);
 
-    this.globals.inCaseOfDangerSubject.next([
-      'Nach Einatmen: An die frische Luft bringen. Sofort Arzt hinzuziehen.',
-      'Nach Hautkontakt: Sofort mit Wasser abwaschen. Kontaminierte Kleidung entfernen. Sofort Arzt hinzuziehen.',
-      'Nach Verschlucken: Mund mit Wasser spülen, Wasser trinken lassen. Kein Erbrechen auslösen. Nur bei Bewusstsein!',
-      // eslint-disable-next-line max-len
-      'Nach Augenkontakt: Mit Wasser spülen. Falls vorhanden nach Möglichkeit Kontaktlinsen entfernen und weiter spülen. Sofort Augenarzt hinzuziehen.',
-    ]);
+    this.globals.inCaseOfDangerSubject.next(docsTemplate.inCaseOfDangerSubject);
 
     this.globals.substanceDataSubject.next([]);
   }
@@ -130,8 +124,8 @@ export class MenubarComponent implements OnInit {
           this.loadSaveService.loadDocument(path as string).subscribe(
             (res) => this.documentToModel(res),
             (err) => {
-              logger.error('saving file failed:', err);
-              this.alertService.error('Speichern der Datei fehlgeschlagen!');
+              logger.error('loading file failed:', err);
+              this.alertService.error(strings.error.loadFile);
             },
           );
         },
@@ -152,7 +146,7 @@ export class MenubarComponent implements OnInit {
       .subscribe(
         (res) => {
           logger.debug(res);
-          this.alertService.success('Datei erfolgreich gespeichert');
+          this.alertService.success(strings.sucess.saveFile);
         },
         (err) => {
           logger.error(err);
@@ -163,7 +157,7 @@ export class MenubarComponent implements OnInit {
             this.saveFile(type);
             return;
           }
-          this.alertService.error('Speichern der Datei fehlgeschlagen!');
+          this.alertService.error(strings.error.saveFile);
         },
       );
   }
@@ -175,7 +169,7 @@ export class MenubarComponent implements OnInit {
       .subscribe(
         (res) => {
           logger.debug(res);
-          this.alertService.success('PDF erfolgreich exportiert');
+          this.alertService.success(strings.sucess.exportPDF);
         },
         (err) => {
           logger.error(err);
@@ -186,7 +180,7 @@ export class MenubarComponent implements OnInit {
             this.exportPDF();
             return;
           }
-          this.alertService.error('Exportieren der PDF fehlgeschlagen!');
+          this.alertService.error(strings.error.exportPDF);
         },
       );
   }

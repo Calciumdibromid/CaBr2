@@ -4,10 +4,10 @@
       <img src="assets/icons/menu.svg" />
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="newDocument()">Neue Betriebsanweisung</button>
-      <button mat-menu-item (click)="loadFile()">Bestehende Betriebsanweisung öffnen</button>
-      <button mat-menu-item (click)="saveFile('cb2')">Betriebsanweisung speichern</button>
-      <button mat-menu-item (click)="exportPDF()">Als PDF exportieren</button>
+      <button mat-menu-item (click)="newDocument()">{{strings.menu.newDocument}}</button>
+      <button mat-menu-item (click)="loadFile()">{{strings.menu.loadFile}}</button>
+      <button mat-menu-item (click)="saveFile('cb2')">{{strings.menu.saveFile}}</button>
+      <button mat-menu-item (click)="exportPDF()">{{strings.menu.exportPDF}}</button>
       <mat-divider></mat-divider>
       <button mat-menu-item (click)='openManualDialog()'>Anleitung</button>
     </mat-menu>
@@ -33,7 +33,7 @@
       (change)="onDarkModeSwitched($event)"
       [checked]="config.global.darkTheme"
       color="primary"
-      matTooltip="Auf dunkles Thema umschalten"
+      [matTooltip]="strings.menu.darkModeSwitchInfo"
     >
     </mat-slide-toggle>
   </mat-sidenav>
@@ -46,22 +46,22 @@
     </div>
     <div #securitythings>
       <app-modifiable-string-list
-        [title]="descriptions.humanAndEnvironmentDanger"
+        [title]="strings.descriptions.humanAndEnvironmentDanger"
         [elements]="globals.humanAndEnvironmentDangerObservable"
         (elementEmitter)="globals.humanAndEnvironmentDangerSubject.next($event)"
       ></app-modifiable-string-list>
       <app-modifiable-string-list
-        [title]="descriptions.rulesOfConduct"
+        [title]="strings.descriptions.rulesOfConduct"
         [elements]="globals.rulesOfConductObservable"
         (elementEmitter)="globals.rulesOfConductSubject.next($event)"
       ></app-modifiable-string-list>
       <app-modifiable-string-list
-        [title]="descriptions.inCaseOfDanger"
+        [title]="strings.descriptions.inCaseOfDanger"
         [elements]="globals.inCaseOfDangerObservable"
         (elementEmitter)="globals.inCaseOfDangerSubject.next($event)"
       ></app-modifiable-string-list>
       <app-modifiable-string-list
-        [title]="descriptions.disposal"
+        [title]="strings.descriptions.disposal"
         [elements]="globals.disposalObservable"
         (elementEmitter)="globals.disposalSubject.next($event)"
       ></app-modifiable-string-list>
