@@ -5,7 +5,8 @@
       "removeElement": "Eintrag entfernen",
       "print": "Print",
       "cancle": "Abbrechen",
-      "ok": "Ok"
+      "ok": "Ok",
+      "save": "Speichern"
     },
     "menu": {
       "newDocument": "Neue Betriebsanweisung",
@@ -32,7 +33,33 @@
       "addOption": "Suchoption hinzufügen",
       "resultHeader": "Suchergebnisse",
       "noResult": "Keine Ergebnisse"
-
+    },
+    "substance": {
+      "name": "Name",
+      "needName": "Name benötigt",
+      "casNr": "CAS Nummer",
+      "molecularFormula": "Summenformel",
+      "waterHazardClass": "Wassergefährdungsklasse",
+      "signalWord": "Signalwort",
+      "molarMass": "Molare Masse",
+      "unit": "Einheit",
+      "lethalDose": "Lethale Dosis",
+      "mak": "MAK",
+      "meltingPoint": "Schmelzpunkt",
+      "boilingPoint": "Siedepunkt",
+      "amount": "Menge",
+      "noNumber": "Keine Zahl",
+      "ownUnit": "Eigene Einheit",
+      "hPhrases": "H-Sätze",
+      "noHPhrase": "Ungültige H-Nummer",
+      "rmHPhrase": "P-Satz entfernen",
+      "addHPhrase": "H-Satz hinzufügen",
+      "pPhrases": "P-Sätze",
+      "noPPhrase": "Ungültige P-Nummer",
+      "rmPPhrase": "P-Satz entfernen",
+      "addPPhrase": "P-Satz hinzufügen",
+      "ghsSymbolsAddRmInfo": "Zum entfernen oder hinzufügen auf das Symbol klicken",
+      "ghsSymbolsColorInfo": "Grau: nicht gewählt / Farbig: Gewählt"
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Gefahren für Mensch und Umwelt, die von den Ausgangsmaterialien bzw. dem(n) Produkt ausgehen, soweit sie nicht durch genannte Angaben abgedeckt sind (z.B. krebserregend, fruchtschädigend, hautresorptiv):",
