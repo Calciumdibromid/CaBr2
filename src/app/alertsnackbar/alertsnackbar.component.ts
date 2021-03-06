@@ -32,19 +32,10 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
         this.alerts.push(alert);
 
         if (!this.snackBarVisible) {
-          this.snackBarVisible = true;
-          this.openSnackBar()
-            ?.afterDismissed()
-            .subscribe(
-              () => {
-                this.snackBarVisible = false;
-                this.openSnackBar();
-              },
-              (err) => logger.error('snackbar dismissing failed:', err),
-            );
+          this.showSnackbar();
         }
       },
-      (err) => logger.error('showing snackbar failed:', err),
+      (err) => logger.error('creating snackbar failed:', err),
     );
   }
 
@@ -65,6 +56,7 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
   openSnackBar(): MatSnackBarRef<TextOnlySnackBar> | undefined {
     const alert = this.alerts.shift();
     if (alert) {
+      this.snackBarVisible = true;
       return this.snackBar.open(alert.message, '', {
         duration: 3000,
         horizontalPosition: 'right',
@@ -73,5 +65,17 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
       });
     }
     return;
+  }
+
+  private showSnackbar(): void {
+    this.openSnackBar()
+      ?.afterDismissed()
+      .subscribe(
+        () => {
+          this.snackBarVisible = false;
+          this.showSnackbar();
+        },
+        (err) => logger.error('snackbar dismissing failed:', err),
+      );
   }
 }
