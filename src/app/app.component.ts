@@ -1,5 +1,6 @@
 import { Component, HostBinding, Inject, OnInit, Renderer2 } from '@angular/core';
 import { name, version } from '../../package.json';
+import { AlertService } from './@core/services/alertsnackbar/altersnackbar.service';
 import { ConfigModel } from './@core/models/config.model';
 import { ConfigService } from './@core/services/config/config.service';
 import { DOCUMENT } from '@angular/common';
@@ -23,6 +24,7 @@ export class AppComponent implements OnInit {
     private config: ConfigModel,
     private global: GlobalModel,
     private configService: ConfigService,
+    private alertService: AlertService,
   ) {
   }
 
@@ -32,12 +34,18 @@ export class AppComponent implements OnInit {
         this.config.setConfig(config);
         this.switchMode(this.config.global.darkTheme);
       },
-      (err) => logger.error(err),
+      (err) => {
+        logger.error('loading config failed:', err);
+        this.alertService.error('Laden der Konfigurationsdatei fehlgeschlagen!');
+      },
     );
 
     this.configService.getHazardSymbols().subscribe(
       (symbols) => this.global.setGHSSymbols(symbols),
-      (err) => logger.error(err),
+      (err) => {
+        logger.error('loading ghs-symbols failed:', err);
+        this.alertService.error('Laden der Gefahrensymbole fehlgeschlagen!');
+      },
     );
   }
 
@@ -56,7 +64,10 @@ export class AppComponent implements OnInit {
     this.switchMode(isDarkMode);
     this.configService.saveConfig(this.config).subscribe(
       () => logger.info('config saved'),
-      (err) => logger.error(err),
+      (err) => {
+        logger.error('saving config failed:', err);
+        this.alertService.error('Speichern der Konfigurationsdatei fehlgeschlagen!');
+      },
     );
   }
 }

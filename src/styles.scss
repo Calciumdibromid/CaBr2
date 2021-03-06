@@ -55,7 +55,7 @@ $ang-CaBr2-theme-dark: mat-dark-theme((
     }
 
     &.alert-error {
-      background: red;
+      background: mat-color($ang-CaBr2-warn);
     }
   }
 }
@@ -75,7 +75,7 @@ $ang-CaBr2-theme-dark: mat-dark-theme((
     }
 
     &.alert-error {
-      background: red;
+      background: mat-color($ang-CaBr2-warn);
     }
   }
 }

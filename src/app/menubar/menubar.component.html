@@ -1,7 +1,7 @@
-<mat-sidenav-container>
+<mat-sidenav-container autosize>
   <mat-sidenav class="fixed unselectable" mode="side" opened disableClose>
-    <button class="hamburger" mat-icon-button [matMenuTriggerFor]="menu">
-      <span class="material-icons" style="margin: -80%">menu</span>
+    <button class="hamburger icon" mat-icon-button [matMenuTriggerFor]="menu">
+      <img src="assets/icons/menu.svg" />
     </button>
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="newDocument()">Neue Betriebsanweisung</button>
@@ -11,24 +11,23 @@
     </mat-menu>
     <br />
     <button class="icon" mat-icon-button (click)="scroll(headerTarget)">
-      <mat-icon>
-        <img class="svg" src="assets/icons/Kolben.svg" />
-      </mat-icon>
+      <img class="svg" src="assets/icons/flask.svg" />
     </button>
     <br />
     <button class="icon" mat-icon-button (click)="scroll(search)">
-      <img class="svg-icon" src="assets/icons/Lupe.svg" />
+      <img class="svg" src="assets/icons/magnifier.svg" />
     </button>
     <br />
     <button class="icon" mat-icon-button (click)="scroll(securitythings)">
-      <img class="svg-icon" src="assets/icons/Puzzel.svg" />
+      <img class="svg" src="assets/icons/puzzle.svg" />
     </button>
     <br />
     <button class="icon" mat-icon-button (click)="scroll(preview)">
-      <img class="svg-icon" src="assets/icons/Pfeil.svg" />
+      <img class="svg" src="assets/icons/arrow.svg" />
     </button>
     <br />
     <mat-slide-toggle
+      class="toggle"
       (change)="onDarkModeSwitched($event)"
       [checked]="config.global.darkTheme"
       color="primary"

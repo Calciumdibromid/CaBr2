@@ -1,7 +1,5 @@
 use serde::{Deserialize, Serialize};
 
-pub use crate::types::{Data, SubstanceData};
-
 #[derive(Debug)]
 pub struct ParsedData {
   pub cas: String,

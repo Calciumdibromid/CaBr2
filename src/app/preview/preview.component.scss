@@ -1,3 +1,5 @@
+@import '../../styles';
+
 .flex {
     width: 100%;
     display: flex;
@@ -60,4 +62,10 @@ tr {
             max-height: 5.9cm;
         }
     }
+}
+
+.preview-text {
+  display: flex;
+  justify-content: center;
+  color: mat-color($ang-CaBr2-primary);
 }

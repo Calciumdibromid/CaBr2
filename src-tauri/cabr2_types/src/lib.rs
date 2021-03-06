@@ -1,3 +1,5 @@
+pub mod logging;
+
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
@@ -63,5 +65,9 @@ pub enum Unit {
   Milligram,
   Microgram,
   Pieces,
+  SolutionRelative,
+  SolutionMol,
+  SolutionMillimol,
+  SolutionMicromol,
   Custom(String),
 }

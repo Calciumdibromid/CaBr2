@@ -8,7 +8,7 @@ authors = [
   "6543 <6543@obermui.de>"
 ]
 license = "GPLv3+"
-repository = "https://github.com/th-rosenheim/CaBr2"
+repository = "https://github.com/Calciumdibromid/CaBr2/"
 default-run = "cabr2"
 edition = "2018"
 build = "src/build.rs"
@@ -21,23 +21,18 @@ category = "Education"
 resources = [ "ghs_symbols/*.png" ]
 
 [dependencies]
-serde_json = "1.0"
-serde = { version = "1.0", features = [ "derive" ] }
-tauri = { version = "0.11", features = [ "event", "notification", "open-dialog", "save-dialog" ] }
-thiserror = "1.0.24"
-ureq = { version = "1.5.4", features = [ "tls", "json" ] }
+cabr2_config = { path = "./cabr2_config/" }
+cabr2_load_save = { path = "./cabr2_load_save/" }
+cabr2_logger = { path = "./cabr2_logger/" }
+cabr2_search = { path = "./cabr2_search/" }
 log = "0.4.14"
-fern = "0.6.0"
-chrono = { version = "0.4.19", features = [ "serde" ] }
-roxmltree = "0.14.0"
-lazy_static = "1.4.0"
-base64 = "0.13.0"
-quick-xml = { version = "0.22.0", features = [ "serialize" ] }
-directories-next = "2.0.0"
-toml = { version = "0.5.8", features = [ "preserve_order" ] }
-wkhtmltopdf = "0.3.0"
-handlebars = "3.5.3"
-lopdf = { version = "0.26.0", features = [ "nom_parser", "chrono_time" ], default-features = false }
+tauri = { version = "0.11", features = [
+  "event",
+  "notification",
+  "open-dialog",
+  "open",
+  "save-dialog"
+] }
 
 [target."cfg(windows)".build-dependencies]
 winres = "0.1"
@@ -45,12 +40,21 @@ winres = "0.1"
 [features]
 embedded-server = [ "tauri/embedded-server" ]
 no-server = [ "tauri/no-server" ]
-portable = [ ]
+portable = [ "cabr2_config/portable" ]
 default = [ "portable" ]
 
 [[bin]]
 name = "cabr2"
 path = "src/main.rs"
+
+[workspace]
+members = [
+  "cabr2_types",
+  "cabr2_config",
+  "cabr2_load_save",
+  "cabr2_logger",
+  "cabr2_search"
+]
 
 [profile.release]
 panic = "abort"

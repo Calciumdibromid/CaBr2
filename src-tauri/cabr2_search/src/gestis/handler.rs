@@ -1,10 +1,10 @@
 use ureq::Agent;
 
-use crate::types::Source;
+use cabr2_types::{Data, Source, SubstanceData};
 
 use super::{
   error::{Result, SearchError},
-  types::{Data, GestisResponse, SearchArguments, SearchResponse, SearchType, SubstanceData},
+  types::{GestisResponse, SearchArguments, SearchResponse, SearchType},
   xml_parser,
 };
 
@@ -97,8 +97,8 @@ pub fn get_substance_data(agent: Agent, zvg_number: String) -> Result<SubstanceD
       None => Vec::new(),
     }),
     source: Source {
-      provider: "gestis".into(),
-      url: "".into(),
+      provider: "GESTIS".into(),
+      url,
       last_updated: chrono::Utc::now(),
     },
   };
