@@ -7,6 +7,8 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./manual.component.scss'],
 })
 export class ManualComponent implements OnInit {
+  typescriptstuff = 'foo';
+
   constructor(public dialogRef: MatDialogRef<ManualComponent>) {}
 
   ngOnInit(): void {}
