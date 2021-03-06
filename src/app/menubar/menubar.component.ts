@@ -10,8 +10,8 @@ import Logger from '../@core/utils/logger';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
-import { strings } from '../../assets/strings.json';
 import { docsTemplate } from '../../assets/docsTemplate.json';
+import { strings } from '../../assets/strings.json';
 
 const logger = new Logger('menubar');
 
