@@ -13,7 +13,6 @@ import { MatModules } from './@core/modules/mat.modules';
 import { MenubarComponent } from './menubar/menubar.component';
 import { ModifiableStringListComponent } from './modifiable-string-list/modifiable-string-list.component';
 import { PreviewComponent } from './preview/preview.component';
-import { PrintPreviewComponent } from './print-preview/print-preview.component';
 import { SearchComponent } from './search/search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
@@ -26,7 +25,6 @@ import { SelectedSearchComponent } from './search/selected-search/selected-searc
     SearchComponent,
     ModifiableStringListComponent,
     PreviewComponent,
-    PrintPreviewComponent,
     SelectedSearchComponent,
     SearchDialogComponent,
     EditSearchResultsComponent,
