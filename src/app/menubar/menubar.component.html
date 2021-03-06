@@ -8,6 +8,8 @@
       <button mat-menu-item (click)="loadFile()">Bestehende Betriebsanweisung öffnen</button>
       <button mat-menu-item (click)="saveFile('cb2')">Betriebsanweisung speichern</button>
       <button mat-menu-item (click)="exportPDF()">Als PDF exportieren</button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)='openManualDialog()'>Anleitung</button>
     </mat-menu>
     <br />
     <button class="icon" mat-icon-button (click)="scroll(headerTarget)">

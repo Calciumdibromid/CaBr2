@@ -17,6 +17,7 @@ import { PrintPreviewComponent } from './print-preview/print-preview.component';
 import { SearchComponent } from './search/search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
+import { ManualComponent } from './manual/manual.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { SelectedSearchComponent } from './search/selected-search/selected-searc
     SelectedSearchComponent,
     SearchDialogComponent,
     EditSearchResultsComponent,
+    ManualComponent,
   ],
   imports: [
     BrowserModule,

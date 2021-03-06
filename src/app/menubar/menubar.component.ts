@@ -8,6 +8,8 @@ import { descriptions } from '../../assets/descriptions.json';
 import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import Logger from '../@core/utils/logger';
+import { ManualComponent } from '../manual/manual.component';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
@@ -33,6 +35,7 @@ export class MenubarComponent implements OnInit {
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
     private alertService: AlertService,
+    private dialog: MatDialog,
   ) {
     this.loadSaveService.getAvailableDocumentTypes().subscribe(
       (types) => {
@@ -122,16 +125,18 @@ export class MenubarComponent implements OnInit {
         filter: this.loadFilter.join(';'),
         multiple: false,
       })
-      .subscribe((path) => {
-        this.loadSaveService.loadDocument(path as string).subscribe(
-          (res) => this.documentToModel(res),
-          (err) => {
-            logger.error('saving file failed:', err);
-            this.alertService.error('Speichern der Datei fehlgeschlagen!');
-          },
-        );
-      },
-        (err) => logger.trace('open dialog returned error:', err));
+      .subscribe(
+        (path) => {
+          this.loadSaveService.loadDocument(path as string).subscribe(
+            (res) => this.documentToModel(res),
+            (err) => {
+              logger.error('saving file failed:', err);
+              this.alertService.error('Speichern der Datei fehlgeschlagen!');
+            },
+          );
+        },
+        (err) => logger.trace('open dialog returned error:', err),
+      );
   }
 
   saveFile(type: string): void {
@@ -142,54 +147,52 @@ export class MenubarComponent implements OnInit {
       throw Error('unsupported file type');
     }
 
-    combineLatest([
-      this.tauriService.save({ filter: type }),
-      this.modelToDocument()
-    ]).pipe(
-      switchMap(value => this.loadSaveService.saveDocument(type, value[0] as string, value[1]))
-    ).subscribe(
-      (res) => {
-        logger.debug(res);
-        this.alertService.success('Datei erfolgreich gespeichert');
-      },
-      (err) => {
-        logger.error(err);
-        // fix for an error that occurs only in windows
-        if (err === 'Could not initialize COM.') {
-          logger.debug('ty windows -.- | attempting fix');
-          this.loadFile();
-          this.saveFile(type);
-          return;
-        }
-        this.alertService.error('Speichern der Datei fehlgeschlagen!');
-      },
-    );
+    combineLatest([this.tauriService.save({ filter: type }), this.modelToDocument()])
+      .pipe(switchMap((value) => this.loadSaveService.saveDocument(type, value[0] as string, value[1])))
+      .subscribe(
+        (res) => {
+          logger.debug(res);
+          this.alertService.success('Datei erfolgreich gespeichert');
+        },
+        (err) => {
+          logger.error(err);
+          // fix for an error that occurs only in windows
+          if (err === 'Could not initialize COM.') {
+            logger.debug('ty windows -.- | attempting fix');
+            this.loadFile();
+            this.saveFile(type);
+            return;
+          }
+          this.alertService.error('Speichern der Datei fehlgeschlagen!');
+        },
+      );
   }
 
   exportPDF(): void {
     logger.trace('exportPDF()');
-    combineLatest([
-      this.tauriService.save({ filter: 'pdf' }),
-      this.modelToDocument(),
-    ]).pipe(
-      switchMap(value => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1]))
-    ).subscribe(
-      (res) => {
-        logger.debug(res);
-        this.alertService.success('PDF erfolgreich exportiert');
-      },
-      (err) => {
-        logger.error(err);
-        // fix for an error that occurs only in windows
-        if (err === 'Could not initialize COM.') {
-          logger.debug('ty windows -.- | attempting fix');
-          this.loadFile();
-          this.exportPDF();
-          return;
-        }
-        this.alertService.error('Exportieren der PDF fehlgeschlagen!');
-      },
-    );
+    combineLatest([this.tauriService.save({ filter: 'pdf' }), this.modelToDocument()])
+      .pipe(switchMap((value) => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1])))
+      .subscribe(
+        (res) => {
+          logger.debug(res);
+          this.alertService.success('PDF erfolgreich exportiert');
+        },
+        (err) => {
+          logger.error(err);
+          // fix for an error that occurs only in windows
+          if (err === 'Could not initialize COM.') {
+            logger.debug('ty windows -.- | attempting fix');
+            this.loadFile();
+            this.exportPDF();
+            return;
+          }
+          this.alertService.error('Exportieren der PDF fehlgeschlagen!');
+        },
+      );
+  }
+
+  openManualDialog(): void {
+    this.dialog.open(ManualComponent);
   }
 
   onDarkModeSwitched({ checked }: MatSlideToggleChange): void {
