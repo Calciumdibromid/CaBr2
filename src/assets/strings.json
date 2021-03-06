@@ -3,7 +3,9 @@
     "base": {
       "addElement": "Eintrag hinzufügen",
       "removeElement": "Eintrag entfernen",
-      "print": "Print"
+      "print": "Print",
+      "cancle": "Abbrechen",
+      "ok": "Ok"
     },
     "menu": {
       "newDocument": "Neue Betriebsanweisung",
@@ -23,11 +25,14 @@
     },
     "search": {
       "exact": "Exakte Suche",
-      "cancle": "Abbrechen",
-      "ok": "Ok",
       "option": "Suchoption:",
       "search": "Suche",
-      "rmSubstance": "Substanz entfernen"
+      "rmSubstance": "Substanz entfernen",
+      "rmOption": "Suchoption entfernen",
+      "addOption": "Suchoption hinzufügen",
+      "resultHeader": "Suchergebnisse",
+      "noResult": "Keine Ergebnisse"
+
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Gefahren für Mensch und Umwelt, die von den Ausgangsmaterialien bzw. dem(n) Produkt ausgehen, soweit sie nicht durch genannte Angaben abgedeckt sind (z.B. krebserregend, fruchtschädigend, hautresorptiv):",
