@@ -166,7 +166,7 @@ export class MenubarComponent implements OnInit {
       .subscribe(
         (res) => {
           logger.debug(res);
-          this.alertService.success(strings.sucess.exportPDF);
+          this.alertService.success(strings.success.exportPDF);
         },
         (err) => {
           logger.error(err);
