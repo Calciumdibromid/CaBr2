@@ -8,6 +8,8 @@ import { SearchService } from '../../@core/services/search/search.service';
 
 const logger = new Logger('search-dialog');
 
+import { strings } from '../../../assets/strings.json';
+
 @Component({
   selector: 'app-search-dialog',
   templateUrl: './search-dialog.component.html',
@@ -19,6 +21,8 @@ export class SearchDialogComponent implements OnInit {
   exactSearch = false;
   subscription: Observable<SearchResult[]> | undefined;
   selected: SearchResult | undefined;
+
+  strings = strings;
 
   constructor(
     public dialogRef: MatDialogRef<SearchDialogComponent>,
@@ -40,10 +44,10 @@ export class SearchDialogComponent implements OnInit {
       this.searchResults = response;
       this.searchFinished = true;
     },
-    (err) => {
-      logger.error('loading search results failed:', err);
-      this.alertService.error('Laden der Suchergebnisse fehlgeschlagen!');
-    });
+      (err) => {
+        logger.error('loading search results failed:', err);
+        this.alertService.error(strings.error.loadSearchResults);
+      });
   }
 
   setSelected(selected: SearchResult): void {

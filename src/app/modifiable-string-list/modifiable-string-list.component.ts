@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
+import { strings } from '../../assets/strings.json';
+
 @Component({
   selector: 'app-modifiable-string-list',
   templateUrl: './modifiable-string-list.component.html',
@@ -20,6 +22,8 @@ export class ModifiableStringListComponent implements OnInit {
   form: FormGroup;
 
   addHover = false;
+
+  strings = strings;
 
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({});

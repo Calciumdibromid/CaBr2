@@ -1,8 +1,8 @@
-<h2>Suchergebnisse</h2>
+<h2>{{ strings.search.resultsHeader }}</h2>
 <mat-divider class="divider"></mat-divider>
 <section>
   <mat-checkbox [(ngModel)]="exactSearch" (ngModelChange)="toggleExactSearch()">
-    <p class="unselectable undragable">Exakte Suche</p>
+    <p class="unselectable undragable">{{ strings.search.exact }}</p>
   </mat-checkbox>
 </section>
 <div *ngIf="searchFinished; else loading">
@@ -20,10 +20,10 @@
   <mat-spinner></mat-spinner>
 </ng-template>
 <ng-template #empty>
-  <p class="viewport empty"><b>Keine Ergebnisse</b></p>
+  <p class="viewport empty"><b>{{ strings.search.noResult }}</b></p>
 </ng-template>
 <mat-divider class="divider"></mat-divider>
 <div mat-dialog-actions>
-  <button mat-button (click)="close(true)">Abbrechen</button>
-  <button mat-button (click)="close(false)">Ok</button>
+  <button mat-button (click)="close(true)">{{ strings.base.cancel }}</button>
+  <button mat-button (click)="close(false)">{{ strings.base.ok }}</button>
 </div>

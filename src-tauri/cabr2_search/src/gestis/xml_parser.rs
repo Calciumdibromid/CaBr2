@@ -265,12 +265,14 @@ fn get_molecular_formula_molar_mass(json: &GestisResponse) -> Result<(Result<Str
   }
 
   let mut molar_mass = Err(SearchError::MissingInfo("molar mass".into()));
-  let mut new_table = tables(&doc.get_node(id_tables.nth(2).unwrap()).unwrap(), "feldmitlabel")
-    .into_iter()
-    .flatten()
-    .flatten();
-  if let Some(text) = doc.get_node(new_table.nth(1).unwrap()).unwrap().text() {
-    molar_mass = Ok(text.trim().into())
+  if let Some(new_table_id) = id_tables.nth(2) {
+    let mut new_table = tables(&doc.get_node(new_table_id).unwrap(), "feldmitlabel")
+      .into_iter()
+      .flatten()
+      .flatten();
+    if let Some(text) = doc.get_node(new_table.nth(1).unwrap()).unwrap().text() {
+      molar_mass = Ok(text.trim().into())
+    }
   }
 
   Ok((molecular_formula, molar_mass))

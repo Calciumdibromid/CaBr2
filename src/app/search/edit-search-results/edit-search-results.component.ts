@@ -15,6 +15,8 @@ import {
 } from '../../@core/services/substances/substances.model';
 import { Subscription } from 'rxjs';
 
+import { strings } from '../../../assets/strings.json';
+
 @Component({
   selector: 'app-edit-search-results',
   templateUrl: './edit-search-results.component.html',
@@ -22,6 +24,8 @@ import { Subscription } from 'rxjs';
 })
 export class EditSearchResultsComponent implements OnInit {
   form: FormGroup;
+
+  strings = strings;
 
   addHPhraseHover = false;
 
