@@ -9,6 +9,7 @@ import { ConfigModel } from './@core/models/config.model';
 import { EditSearchResultsComponent } from './search/edit-search-results/edit-search-results.component';
 import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './header/header.component';
+import { ManualComponent } from './manual/manual.component';
 import { MatModules } from './@core/modules/mat.modules';
 import { MenubarComponent } from './menubar/menubar.component';
 import { ModifiableStringListComponent } from './modifiable-string-list/modifiable-string-list.component';
@@ -28,6 +29,7 @@ import { SelectedSearchComponent } from './search/selected-search/selected-searc
     SelectedSearchComponent,
     SearchDialogComponent,
     EditSearchResultsComponent,
+    ManualComponent,
   ],
   imports: [
     BrowserModule,
