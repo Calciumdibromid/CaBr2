@@ -14,6 +14,8 @@ import { SelectedSearchComponent } from './selected-search/selected-search.compo
 import { SubstancesService } from '../@core/services/substances/substances.service';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
+import { strings } from '../../assets/strings.json';
+
 const logger = new Logger('search');
 
 const GESTIS_URL_RE = new RegExp('https:\\/\\/gestis-api\\.dguv\\.de\\/api\\/article\\/(de|en)\\/(\\d{6})');
@@ -29,6 +31,8 @@ export class SearchComponent implements OnInit {
 
   res: SearchArgument[] = [];
   control = new FormControl();
+
+  strings = strings;
 
   substanceData: SubstanceData[] = [];
 
@@ -72,9 +76,8 @@ export class SearchComponent implements OnInit {
             if (
               cas && this.globals.substanceDataSubject.getValue().some(s => cas === this.modifiedOrOriginal(s.cas))
             ) {
-              // TODO i18n
-              this.alertService.error('Substanz mit selber CAS Nummer existiert bereits!');
               logger.warning('substance with same cas number already present:', cas);
+              this.alertService.error(strings.error.substanceWithCASExist);
               return;
             }
             const data = [...this.globals.substanceDataSubject.getValue(), value];
@@ -82,10 +85,10 @@ export class SearchComponent implements OnInit {
             this.globals.substanceDataSubject.next(data);
 
           },
-          (err) => {
-            logger.error('could not get substance information:', err);
-            this.alertService.error('Laden der Daten der Substanz fehlgeschlagen!');
-          });
+            (err) => {
+              logger.error('could not get substance information:', err);
+              this.alertService.error(strings.error.substanceLoadData);
+            });
       }
     });
   }
@@ -109,10 +112,10 @@ export class SearchComponent implements OnInit {
           this.globals.substanceDataSubject.next(newData);
         }
       },
-      (err) => {
-        logger.error('editing substance failed:', err);
-        this.alertService.error('Bearbeiten der Substanz fehlgeschlagen!');
-      });
+        (err) => {
+          logger.error('editing substance failed:', err);
+          this.alertService.error(strings.error.editSubstance);
+        });
   }
 
   removeSubstance(event: MouseEvent, data: SubstanceData): void {

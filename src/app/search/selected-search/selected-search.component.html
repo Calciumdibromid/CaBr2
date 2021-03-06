@@ -3,7 +3,7 @@
     <div *ngFor="let control of selections.controls; let i = index">
       <div class="flex" [formGroupName]="i">
         <mat-form-field class="select">
-          <mat-label>Suchoption</mat-label>
+          <mat-label>{{ strings.search.option }}</mat-label>
           <mat-select formControlName="searchOption">
             <mat-option
                 *ngFor="let option of searchOptions"
@@ -15,7 +15,7 @@
           </mat-select>
         </mat-form-field>
         <mat-form-field class="width-100">
-          <mat-label>Suche</mat-label>
+          <mat-label>{{ strings.search.search }}</mat-label>
           <input
               matInput
               formControlName="userInput"
@@ -35,7 +35,7 @@
               (click)="removeSearchOption(i)"
               (mouseenter)="selections.at(i).get('hover')?.patchValue(true)"
               (mouseleave)="selections.at(i).get('hover')?.patchValue(false)"
-              matTooltip="Suchoption entfernen"
+              [matTooltip]="strings.search.removeOption"
               matTooltipPosition="left"
               [disabled]="selections.controls.length === 1"
           >
@@ -50,7 +50,7 @@
         (click)="addSearchOption()"
         (mouseenter)="addButtonHover = true"
         (mouseleave)="addButtonHover = false"
-        matTooltip="Suchoption hinzufügen"
+        [matTooltip]="strings.search.addOption"
         matTooltipPosition="right"
         [disabled]="selections.length >= 4"
     >

@@ -1,5 +1,5 @@
 <mat-card class="onepager-mat-card">
-  <h2 class="mat-h2 preview-text"><b>Dies is eine Vorschau. Die tatsächliche, generierte PDF kann minimale Unterschiede aufweisen!</b></h2>
+  <h2 class="mat-h2 preview-text"><b>{{ strings.preview.info }}</b></h2>
   <div class="flex">
     <table class="print unselectable">
       <!-- header -->
@@ -14,43 +14,34 @@
       </tr>
       <tr>
         <td colspan="3">
-          Name(n)<br />
+          {{ strings.header.name }}<br />
           {{ header.name }}
         </td>
         <td colspan="2">
-          Platz<br />
+          {{ strings.header.place }}<br />
           {{ header.place }}
         </td>
         <td colspan="3">
-          Assistent/in<br />
+          {{ strings.header.assistant }}<br />
           {{ header.assistant }}
         </td>
       </tr>
       <tr>
         <td colspan="8">
-          Herzustellendes Präparat:<br />
+          {{ strings.header.preparation }}<br />
           <b>{{ header.preparation }}</b>
         </td>
       </tr>
 
       <!-- ingredients -->
       <tr>
-        <td colspan="2">eingesetzte Stoffe und Produkt(e)</td>
-        <td>
-          MG<br />
-          [g/mol]
-        </td>
-        <td>
-          Sdp.<br />
-          Smp.
-        </td>
-        <td>GHS-Symbol(e)</td>
-        <td>Nummern der H/P-Sätze</td>
-        <td>
-          MAK, LD50<br />
-          WGK
-        </td>
-        <td>für Ansatz benötigt</td>
+        <td colspan="2">{{ strings.preview.tableSubstanceTitleHeader }}</td>
+        <td>{{ strings.preview.tableMolarMassHeader }}</td>
+        <td>{{ strings.preview.tableBoilingAndMeltingHeader }}</td>
+        <td>{{ strings.preview.tableGHSSymbolHeader }}</td>
+        <td>{{ strings.preview.tableHPPhrasesHeader }}</td>
+        <td>{{ strings.preview.tableMAKHeader }}</td>
+        <td>{{ strings.preview.tableAmountHeader }}</td>
       </tr>
 
       <tr *ngFor="let data of substanceData">
@@ -65,17 +56,17 @@
 
       <!-- h and p -->
       <tr>
-        <td class="center" colspan="8">Wortlaut der wesentlichen oben genannten H- und P-Sätze:</td>
+        <td class="center" colspan="8">{{ strings.preview.tableHPPhrasesTitle }}</td>
       </tr>
       <tr>
-        <td colspan="4" class="full-height top">asdf</td>
-        <td colspan="4" class="full-height top">asdf</td>
+        <td colspan="4" class="full-height top"> TODO </td>
+        <td colspan="4" class="full-height top"> TODO </td>
       </tr>
     </table>
     <table class="print unselectable">
       <tr>
         <td colspan="2" class="top height-5cm9">
-          <b>{{ descriptions.humanAndEnvironmentDanger }}</b>
+          <b>{{ strings.descriptions.humanAndEnvironmentDanger }}</b>
           <ul *ngFor="let entry of globals.humanAndEnvironmentDangerObservable | async">
             <li *ngIf="entry">
               {{ entry }}
@@ -85,7 +76,7 @@
       </tr>
       <tr>
         <td colspan="2" class="top height-5cm9">
-          <b>{{ descriptions.rulesOfConduct }}</b>
+          <b>{{ strings.descriptions.rulesOfConduct }}</b>
           <ul *ngFor="let entry of globals.rulesOfConductObservable | async">
             <li *ngIf="entry">
               {{ entry }}
@@ -95,7 +86,7 @@
       </tr>
       <tr>
         <td colspan="2" class="top height-5cm9">
-          <b>{{ descriptions.inCaseOfDanger }}</b>
+          <b>{{ strings.descriptions.inCaseOfDanger }}</b>
           <ul *ngFor="let entry of globals.inCaseOfDangerObservable | async">
             <li *ngIf="entry">
               {{ entry }}
@@ -105,7 +96,7 @@
       </tr>
       <tr>
         <td colspan="2" class="top height-5cm9">
-          <b>{{ descriptions.disposal }}</b>
+          <b>{{ strings.descriptions.disposal }}</b>
           <ul *ngFor="let entry of globals.disposalObservable | async">
             <li *ngIf="entry">
               {{ entry }}
@@ -115,15 +106,15 @@
       </tr>
       <tr>
         <td class="top height-2cm">
-          {{ descriptions.signStudent }}
+          {{ strings.descriptions.signatureFieldStudent }}
         </td>
         <td class="top height-2cm">
-          {{ descriptions.signAssistant }}
+          {{ strings.descriptions.signatureFieldAssistant }}
         </td>
       </tr>
     </table>
   </div>
 
   <!-- This is for testing purpose only by default the button is hidden -->
-  <button style="display: none" onclick="window.print()">Print</button>
+  <button style="display: none" onclick="window.print()">{{ strings.base.print }}</button>
 </mat-card>
