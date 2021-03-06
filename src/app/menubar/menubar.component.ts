@@ -10,9 +10,9 @@ import Logger from '../@core/utils/logger';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
-const logger = new Logger('menubar');
-
 import { strings } from '../../assets/strings.json';
+
+const logger = new Logger('menubar');
 
 @Component({
   selector: 'app-menubar',

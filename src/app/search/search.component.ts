@@ -14,6 +14,8 @@ import { SelectedSearchComponent } from './selected-search/selected-search.compo
 import { SubstancesService } from '../@core/services/substances/substances.service';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
+import { strings } from '../../assets/strings.json';
+
 const logger = new Logger('search');
 
 const GESTIS_URL_RE = new RegExp('https:\\/\\/gestis-api\\.dguv\\.de\\/api\\/article\\/(de|en)\\/(\\d{6})');
@@ -29,6 +31,8 @@ export class SearchComponent implements OnInit {
 
   res: SearchArgument[] = [];
   control = new FormControl();
+
+  strings = strings;
 
   substanceData: SubstanceData[] = [];
 
