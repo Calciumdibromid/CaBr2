@@ -4,6 +4,13 @@
             "addElement": "Eintrag hinzufügen",
             "removeElement": "Eintrag entfernen"
         },
+        "menu": {
+          "newDocument": "Neue Betriebsanweisung",
+          "loadFile": "Bestehende Betriebsanweisung öffnen",
+          "saveFile": "Betriebsanweisung speichern",
+          "exportPDF": "Als PDF exportieren",
+          "darkModeSwitchInfo": "Auf dunkles Thema umschalten"
+        },
         "header": {
             "docTitle": "Dokument Titel:",
             "organisation": "Organisation:",
