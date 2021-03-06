@@ -68,14 +68,17 @@ $ang-CaBr2-theme-dark: mat-dark-theme((
   .mat-snack-bar-container {
     &.alert-info {
       background: cornflowerblue;
+      color: black;
     }
 
     &.alert-success {
       background: greenyellow;
+      color: black;
     }
 
     &.alert-error {
       background: mat-color($ang-CaBr2-warn);
+      color: black;
     }
   }
 }
