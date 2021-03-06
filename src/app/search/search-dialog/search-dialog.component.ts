@@ -46,7 +46,7 @@ export class SearchDialogComponent implements OnInit {
     },
       (err) => {
         logger.error('loading search results failed:', err);
-        this.alertService.error(strings.error.loadSearchResult);
+        this.alertService.error(strings.error.loadSearchResults);
       });
   }
 

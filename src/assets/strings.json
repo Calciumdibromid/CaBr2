@@ -4,7 +4,7 @@
       "addElement": "Eintrag hinzufügen",
       "removeElement": "Eintrag entfernen",
       "print": "Print",
-      "cancle": "Abbrechen",
+      "cancel": "Abbrechen",
       "ok": "Ok",
       "save": "Speichern"
     },
@@ -27,17 +27,17 @@
     "search": {
       "exact": "Exakte Suche",
       "option": "Suchoption:",
-      "search": "Suche",
-      "rmSubstance": "Substanz entfernen",
-      "rmOption": "Suchoption entfernen",
+      "searchButton": "Suche",
+      "removeSubstance": "Substanz entfernen",
+      "removeOption": "Suchoption entfernen",
       "addOption": "Suchoption hinzufügen",
-      "resultHeader": "Suchergebnisse",
+      "resultsHeader": "Suchergebnisse",
       "noResult": "Keine Ergebnisse"
     },
     "substance": {
       "name": "Name",
-      "needName": "Name benötigt",
-      "casNr": "CAS Nummer",
+      "needsName": "Name benötigt",
+      "casNumber": "CAS Nummer",
       "molecularFormula": "Summenformel",
       "waterHazardClass": "Wassergefährdungsklasse",
       "signalWord": "Signalwort",
@@ -48,17 +48,17 @@
       "meltingPoint": "Schmelzpunkt",
       "boilingPoint": "Siedepunkt",
       "amount": "Menge",
-      "noNumber": "Keine Zahl",
-      "ownUnit": "Eigene Einheit",
+      "notANumber": "Keine Zahl",
+      "customUnit": "Eigene Einheit",
       "hPhrases": "H-Sätze",
       "noHPhrase": "Ungültige H-Nummer",
-      "rmHPhrase": "P-Satz entfernen",
+      "removeHPhrase": "P-Satz entfernen",
       "addHPhrase": "H-Satz hinzufügen",
       "pPhrases": "P-Sätze",
       "noPPhrase": "Ungültige P-Nummer",
-      "rmPPhrase": "P-Satz entfernen",
+      "removePPhrase": "P-Satz entfernen",
       "addPPhrase": "P-Satz hinzufügen",
-      "ghsSymbolsAddRmInfo": "Zum entfernen oder hinzufügen auf das Symbol klicken",
+      "ghsSymbolsAddOrRemoveInfo": "Zum entfernen oder hinzufügen auf das Symbol klicken",
       "ghsSymbolsColorInfo": "Grau: nicht gewählt / Farbig: Gewählt"
     },
     "descriptions": {
@@ -66,8 +66,8 @@
       "rulesOfConduct": "Schutzmaßnahmen und Verhaltensregeln:",
       "inCaseOfDanger": "Verhalten im Gefahrenfall, Erste-Hilfe-Maßnahmen (gegebenfalls Kopie der entsprechenden Literaturstelle beiheften):",
       "disposal": "Entsorgung:",
-      "signStudent": "Hiermit verpflichte ich mich, den Versuch gemäß den in dieser Betriebsanweisung aufgeführten Sicherheitsvorschriften durchzuführen.",
-      "signAssistant": "Präparat zur Synthese mit den auf der Vorderseite berechneten Chemikalienmengen freigegeben."
+      "signatureFieldStudent": "Hiermit verpflichte ich mich, den Versuch gemäß den in dieser Betriebsanweisung aufgeführten Sicherheitsvorschriften durchzuführen.",
+      "signatureFieldAssistant": "Präparat zur Synthese mit den auf der Vorderseite berechneten Chemikalienmengen freigegeben."
     },
     "preview": {
       "info": "Dies is eine Vorschau. Die tatsächliche, generierte PDF kann minimale Unterschiede aufweisen!",
@@ -81,14 +81,14 @@
       "tableHPPhrasesTitle": "Wortlaut der wesentlichen oben genannten H- und P-Sätze:"
     },
     "error": {
-      "substanceWithCASSExist": "Substanz mit selber CAS Nummer existiert bereits!",
+      "substanceWithCASExist": "Substanz mit selber CAS Nummer existiert bereits!",
       "substanceLoadData": "Laden der Daten der Substanz fehlgeschlagen!",
       "editSubstance": "Bearbeiten der Substanz fehlgeschlagen!",
       "configLoad": "Laden der Konfigurationsdatei fehlgeschlagen!",
       "configSave": "Speichern der Konfigurationsdatei fehlgeschlagen!",
       "getHazardSymbols": "Laden der Gefahrensymbole fehlgeschlagen!",
       "loadSearchSuggestions": "Laden der Suchvorschläge fehlgeschlagen!",
-      "loadSearchResult": "Laden der Suchergebnisse fehlgeschlagen!",
+      "loadSearchResults": "Laden der Suchergebnisse fehlgeschlagen!",
       "getAvailableDocumentTypes": "Laden der verfügbaren Dokumentarten fehlgeschlagen!",
       "loadFile": "Laden der Datei fehlgeschlagen!",
       "saveFile": "Speichern der Datei fehlgeschlagen!",

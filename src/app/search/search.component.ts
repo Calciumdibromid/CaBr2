@@ -77,7 +77,7 @@ export class SearchComponent implements OnInit {
               cas && this.globals.substanceDataSubject.getValue().some(s => cas === this.modifiedOrOriginal(s.cas))
             ) {
               logger.warning('substance with same cas number already present:', cas);
-              this.alertService.error(strings.error.substanceWithCASSExist);
+              this.alertService.error(strings.error.substanceWithCASExist);
               return;
             }
             const data = [...this.globals.substanceDataSubject.getValue(), value];

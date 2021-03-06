@@ -1,4 +1,4 @@
-<h2>{{ strings.search.resultHeader }}</h2>
+<h2>{{ strings.search.resultsHeader }}</h2>
 <mat-divider class="divider"></mat-divider>
 <section>
   <mat-checkbox [(ngModel)]="exactSearch" (ngModelChange)="toggleExactSearch()">
@@ -24,6 +24,6 @@
 </ng-template>
 <mat-divider class="divider"></mat-divider>
 <div mat-dialog-actions>
-  <button mat-button (click)="close(true)">{{ strings.base.cancle }}</button>
+  <button mat-button (click)="close(true)">{{ strings.base.cancel }}</button>
   <button mat-button (click)="close(false)">{{ strings.base.ok }}</button>
 </div>
