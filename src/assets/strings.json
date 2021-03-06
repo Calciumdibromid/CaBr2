@@ -2,7 +2,8 @@
     "strings": {
         "base": {
             "addElement": "Eintrag hinzufügen",
-            "removeElement": "Eintrag entfernen"
+            "removeElement": "Eintrag entfernen",
+            "print": "Print"
         },
         "menu": {
           "newDocument": "Neue Betriebsanweisung",
@@ -34,6 +35,17 @@
             "disposal": "Entsorgung:",
             "signStudent": "Hiermit verpflichte ich mich, den Versuch gemäß den in dieser Betriebsanweisung aufgeführten Sicherheitsvorschriften durchzuführen.",
             "signAssistant": "Präparat zur Synthese mit den auf der Vorderseite berechneten Chemikalienmengen freigegeben."
+        },
+        "preview": {
+          "info": "Dies is eine Vorschau. Die tatsächliche, generierte PDF kann minimale Unterschiede aufweisen!",
+          "tableSubstanceTitleHeader": "Eingesetzte Stoffe und Produkt(e)",
+          "tableMolarMassHeader":"MG\n[g/mol]",
+          "tableBoilingAndMeltingHeader":"Sdp.\nSmp.",
+          "tableGHSSymbolHeader":"GHS-Symbol(e)",
+          "tableHPPhrasesHeader":"Nummern der H/P-Sätze",
+          "tableMAKHeader":"MAK, LD50\nWGK",
+          "tableAmountHeader":"für Ansatz benötigt",
+          "tableHPPhrasesTitle":"Wortlaut der wesentlichen oben genannten H- und P-Sätze:"
         }
     }
 }

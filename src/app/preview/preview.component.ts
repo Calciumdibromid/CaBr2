@@ -4,6 +4,8 @@ import { GlobalModel } from '../@core/models/global.model';
 import { Header } from '../@core/interfaces/Header';
 import { map } from 'rxjs/operators';
 
+import { strings } from '../../assets/strings.json';
+
 // TODO ViewSubstanceData and move
 interface SimpleSubstanceData {
   name: string;
@@ -21,8 +23,6 @@ interface SimpleSubstanceData {
   mak?: string;
   amount?: Amount;
 }
-
-import { strings } from '../../assets/strings.json';
 
 @Component({
   selector: 'app-preview',
