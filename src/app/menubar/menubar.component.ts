@@ -146,7 +146,7 @@ export class MenubarComponent implements OnInit {
       .subscribe(
         (res) => {
           logger.debug(res);
-          this.alertService.success(strings.sucess.saveFile);
+          this.alertService.success(strings.success.saveFile);
         },
         (err) => {
           logger.error(err);
@@ -169,7 +169,7 @@ export class MenubarComponent implements OnInit {
       .subscribe(
         (res) => {
           logger.debug(res);
-          this.alertService.success(strings.sucess.exportPDF);
+          this.alertService.success(strings.success.exportPDF);
         },
         (err) => {
           logger.error(err);

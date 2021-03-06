@@ -94,7 +94,7 @@
       "saveFile": "Speichern der Datei fehlgeschlagen!",
       "exportPDF": "Exportieren der PDF fehlgeschlagen!"
     },
-    "sucess": {
+    "success": {
       "loadFile": "Datei erfolgreich geladen",
       "saveFile": "Datei erfolgreich gespeichert",
       "exportPDF": "PDF erfolgreich exportiert"
