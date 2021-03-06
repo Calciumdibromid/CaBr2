@@ -7,6 +7,8 @@ import { ConfigModel } from '../@core/models/config.model';
 import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import Logger from '../@core/utils/logger';
+import { ManualComponent } from '../manual/manual.component';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
@@ -35,6 +37,7 @@ export class MenubarComponent implements OnInit {
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
     private alertService: AlertService,
+    private dialog: MatDialog,
   ) {
     this.loadSaveService.getAvailableDocumentTypes().subscribe(
       (types) => {
@@ -180,6 +183,10 @@ export class MenubarComponent implements OnInit {
           this.alertService.error(strings.error.exportPDF);
         },
       );
+  }
+
+  openManualDialog(): void {
+    this.dialog.open(ManualComponent);
   }
 
   onDarkModeSwitched({ checked }: MatSlideToggleChange): void {
