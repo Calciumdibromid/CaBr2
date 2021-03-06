@@ -21,7 +21,7 @@ Die Daten, die wir bekommen, werden in diesem Format gesendet:
 > Disclaimer: Es wird bei der Übermittlung auch die eigene IP-Adresse übermittelt, aber diese wird nicht gespeichert.
 > Ohne die IP-Adresse ist eine Übermittlung über das Internt nicht möglich.
 >
-> Der Quellcode des Servers ist hier zu finden: <https://to.do>.
+> Der Quellcode des Servers ist hier zu finden: <https://github.com/Calciumdibromid/telefon>.
 
 <br>
 
