@@ -110,10 +110,10 @@ export class SelectedSearchComponent implements OnInit {
               response
             );
           },
-          (err) => {
-            logger.error('loading search suggestions failed:', err);
-            this.alertService.error('Laden der Suchvorschläge fehlgeschlagen!');
-          });
+            (err) => {
+              logger.error('loading search suggestions failed:', err);
+              this.alertService.error(strings.error.loadSearchSuggestions);
+            });
       });
   }
 }

@@ -7,6 +7,8 @@ import { DOCUMENT } from '@angular/common';
 import { GlobalModel } from './@core/models/global.model';
 import Logger from './@core/utils/logger';
 
+import { strings } from '../assets/strings.json';
+
 const logger = new Logger('main');
 
 @Component({
@@ -36,7 +38,7 @@ export class AppComponent implements OnInit {
       },
       (err) => {
         logger.error('loading config failed:', err);
-        this.alertService.error('Laden der Konfigurationsdatei fehlgeschlagen!');
+        this.alertService.error(strings.error.configLoad);
       },
     );
 
@@ -44,7 +46,7 @@ export class AppComponent implements OnInit {
       (symbols) => this.global.setGHSSymbols(symbols),
       (err) => {
         logger.error('loading ghs-symbols failed:', err);
-        this.alertService.error('Laden der Gefahrensymbole fehlgeschlagen!');
+        this.alertService.error(strings.error.getHazardSymbols);
       },
     );
   }
@@ -66,7 +68,7 @@ export class AppComponent implements OnInit {
       () => logger.info('config saved'),
       (err) => {
         logger.error('saving config failed:', err);
-        this.alertService.error('Speichern der Konfigurationsdatei fehlgeschlagen!');
+        this.alertService.error(strings.error.configSave);
       },
     );
   }

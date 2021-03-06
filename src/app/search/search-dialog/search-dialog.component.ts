@@ -44,10 +44,10 @@ export class SearchDialogComponent implements OnInit {
       this.searchResults = response;
       this.searchFinished = true;
     },
-    (err) => {
-      logger.error('loading search results failed:', err);
-      this.alertService.error('Laden der Suchergebnisse fehlgeschlagen!');
-    });
+      (err) => {
+        logger.error('loading search results failed:', err);
+        this.alertService.error(strings.error.loadSearchResult);
+      });
   }
 
   setSelected(selected: SearchResult): void {

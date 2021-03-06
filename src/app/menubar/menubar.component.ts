@@ -46,7 +46,7 @@ export class MenubarComponent implements OnInit {
       },
       (err) => {
         logger.error('could not get document types:', err);
-        this.alertService.error('Laden der verfügbaren Dokumentarten fehlgeschlagen!');
+        this.alertService.error(strings.error.getAvailableDocumentTypes);
       },
     );
   }
@@ -127,8 +127,8 @@ export class MenubarComponent implements OnInit {
         this.loadSaveService.loadDocument(path as string).subscribe(
           (res) => this.documentToModel(res),
           (err) => {
-            logger.error('saving file failed:', err);
-            this.alertService.error('Speichern der Datei fehlgeschlagen!');
+            logger.error('loading file failed:', err);
+            this.alertService.error(strings.error.loadFile);
           },
         );
       },
@@ -150,9 +150,7 @@ export class MenubarComponent implements OnInit {
       switchMap(value => this.loadSaveService.saveDocument(type, value[0] as string, value[1]))
     ).subscribe(
       (res) => {
-        logger.debug(res);
-        this.alertService.success('Datei erfolgreich gespeichert');
-      },
+        logger.debug(res);Exportieren der PDF fehlgeschlagen!
       (err) => {
         logger.error(err);
         // fix for an error that occurs only in windows
@@ -162,7 +160,7 @@ export class MenubarComponent implements OnInit {
           this.saveFile(type);
           return;
         }
-        this.alertService.error('Speichern der Datei fehlgeschlagen!');
+        this.alertService.error(strings.error.saveFile);
       },
     );
   }
@@ -177,7 +175,7 @@ export class MenubarComponent implements OnInit {
     ).subscribe(
       (res) => {
         logger.debug(res);
-        this.alertService.success('PDF erfolgreich exportiert');
+        this.alertService.success(strings.sucess.exportPDF);
       },
       (err) => {
         logger.error(err);
@@ -188,7 +186,7 @@ export class MenubarComponent implements OnInit {
           this.exportPDF();
           return;
         }
-        this.alertService.error('Exportieren der PDF fehlgeschlagen!');
+        this.alertService.error(strings.error.exportPDF);
       },
     );
   }

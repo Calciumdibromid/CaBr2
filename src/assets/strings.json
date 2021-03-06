@@ -79,6 +79,24 @@
       "tableMAKHeader": "MAK, LD50\nWGK",
       "tableAmountHeader": "für Ansatz benötigt",
       "tableHPPhrasesTitle": "Wortlaut der wesentlichen oben genannten H- und P-Sätze:"
+    },
+    "error": {
+      "substanceWithCASSExist": "Substanz mit selber CAS Nummer existiert bereits!",
+      "substanceLoadData": "Laden der Daten der Substanz fehlgeschlagen!",
+      "configLoad": "Laden der Konfigurationsdatei fehlgeschlagen!",
+      "configSave": "Speichern der Konfigurationsdatei fehlgeschlagen!",
+      "getHazardSymbols": "Laden der Gefahrensymbole fehlgeschlagen!",
+      "loadSearchSuggestions": "Laden der Suchvorschläge fehlgeschlagen!",
+      "loadSearchResult": "Laden der Suchergebnisse fehlgeschlagen!",
+      "getAvailableDocumentTypes": "Laden der verfügbaren Dokumentarten fehlgeschlagen!",
+      "loadFile": "Laden der Datei fehlgeschlagen!",
+      "saveFile": "Speichern der Datei fehlgeschlagen!",
+      "exportPDF": "Exportieren der PDF fehlgeschlagen!"
+    },
+    "sucess": {
+      "loadFile": "Datei erfolgreich geladen",
+      "saveFile": "Datei erfolgreich gespeichert",
+      "exportPDF": "PDF erfolgreich exportiert"
     }
   }
 }
