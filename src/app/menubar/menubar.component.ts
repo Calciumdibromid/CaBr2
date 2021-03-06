@@ -116,16 +116,18 @@ export class MenubarComponent implements OnInit {
         filter: this.loadFilter.join(';'),
         multiple: false,
       })
-      .subscribe((path) => {
-        this.loadSaveService.loadDocument(path as string).subscribe(
-          (res) => this.documentToModel(res),
-          (err) => {
-            logger.error('loading file failed:', err);
-            this.alertService.error(strings.error.loadFile);
-          },
-        );
-      },
-        (err) => logger.trace('open dialog returned error:', err));
+      .subscribe(
+        (path) => {
+          this.loadSaveService.loadDocument(path as string).subscribe(
+            (res) => this.documentToModel(res),
+            (err) => {
+              logger.error('loading file failed:', err);
+              this.alertService.error(strings.error.loadFile);
+            },
+          );
+        },
+        (err) => logger.trace('open dialog returned error:', err),
+      );
   }
 
   saveFile(type: string): void {
@@ -136,53 +138,48 @@ export class MenubarComponent implements OnInit {
       throw Error('unsupported file type');
     }
 
-    combineLatest([
-      this.tauriService.save({ filter: type }),
-      this.modelToDocument()
-    ]).pipe(
-      switchMap(value => this.loadSaveService.saveDocument(type, value[0] as string, value[1]))
-    ).subscribe(
-      (res) => {
-        logger.debug(res);
-      },
-      (err) => {
-        logger.error(err);
-        // fix for an error that occurs only in windows
-        if (err === 'Could not initialize COM.') {
-          logger.debug('ty windows -.- | attempting fix');
-          this.loadFile();
-          this.saveFile(type);
-          return;
-        }
-        this.alertService.error(strings.error.saveFile);
-      },
-    );
+    combineLatest([this.tauriService.save({ filter: type }), this.modelToDocument()])
+      .pipe(switchMap((value) => this.loadSaveService.saveDocument(type, value[0] as string, value[1])))
+      .subscribe(
+        (res) => {
+          logger.debug(res);
+          this.alertService.success(strings.success.saveFile);
+        },
+        (err) => {
+          logger.error(err);
+          // fix for an error that occurs only in windows
+          if (err === 'Could not initialize COM.') {
+            logger.debug('ty windows -.- | attempting fix');
+            this.loadFile();
+            this.saveFile(type);
+            return;
+          }
+          this.alertService.error(strings.error.saveFile);
+        },
+      );
   }
 
   exportPDF(): void {
     logger.trace('exportPDF()');
-    combineLatest([
-      this.tauriService.save({ filter: 'pdf' }),
-      this.modelToDocument(),
-    ]).pipe(
-      switchMap(value => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1]))
-    ).subscribe(
-      (res) => {
-        logger.debug(res);
-        this.alertService.success(strings.sucess.exportPDF);
-      },
-      (err) => {
-        logger.error(err);
-        // fix for an error that occurs only in windows
-        if (err === 'Could not initialize COM.') {
-          logger.debug('ty windows -.- | attempting fix');
-          this.loadFile();
-          this.exportPDF();
-          return;
-        }
-        this.alertService.error(strings.error.exportPDF);
-      },
-    );
+    combineLatest([this.tauriService.save({ filter: 'pdf' }), this.modelToDocument()])
+      .pipe(switchMap((value) => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1])))
+      .subscribe(
+        (res) => {
+          logger.debug(res);
+          this.alertService.success(strings.success.exportPDF);
+        },
+        (err) => {
+          logger.error(err);
+          // fix for an error that occurs only in windows
+          if (err === 'Could not initialize COM.') {
+            logger.debug('ty windows -.- | attempting fix');
+            this.loadFile();
+            this.exportPDF();
+            return;
+          }
+          this.alertService.error(strings.error.exportPDF);
+        },
+      );
   }
 
   onDarkModeSwitched({ checked }: MatSlideToggleChange): void {
