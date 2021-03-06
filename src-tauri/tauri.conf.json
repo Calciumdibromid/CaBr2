@@ -41,7 +41,9 @@
     "allowlist": {
       "all": false,
       "event": true,
+      "notification": true,
       "openDialog": true,
+      "open": true,
       "saveDialog": true
     },
     "window": {

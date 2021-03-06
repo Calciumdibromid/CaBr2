@@ -1,14 +1,17 @@
 import { combineLatest, Observable } from 'rxjs';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { map, switchMap } from 'rxjs/operators';
+import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { ConfigModel } from '../@core/models/config.model';
 import { descriptions } from '../../assets/descriptions.json';
 import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
-import logger from '../@core/utils/logger';
+import Logger from '../@core/utils/logger';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
+
+const logger = new Logger('menubar');
 
 @Component({
   selector: 'app-menubar',
@@ -29,6 +32,7 @@ export class MenubarComponent implements OnInit {
     public config: ConfigModel,
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
+    private alertService: AlertService,
   ) {
     this.loadSaveService.getAvailableDocumentTypes().subscribe(
       (types) => {
@@ -39,7 +43,10 @@ export class MenubarComponent implements OnInit {
         this.loadFilter.splice(this.loadFilter.indexOf('cb2'), 1);
         this.loadFilter.unshift('cb2');
       },
-      (err) => logger.error(err),
+      (err) => {
+        logger.error('could not get document types:', err);
+        this.alertService.error('Laden der verfügbaren Dokumentarten fehlgeschlagen!');
+      },
     );
   }
 
@@ -109,6 +116,7 @@ export class MenubarComponent implements OnInit {
   }
 
   loadFile(): void {
+    logger.trace('loadFile');
     this.tauriService
       .open({
         filter: this.loadFilter.join(';'),
@@ -117,12 +125,18 @@ export class MenubarComponent implements OnInit {
       .subscribe((path) => {
         this.loadSaveService.loadDocument(path as string).subscribe(
           (res) => this.documentToModel(res),
-          (err) => logger.error(err),
+          (err) => {
+            logger.error('saving file failed:', err);
+            this.alertService.error('Speichern der Datei fehlgeschlagen!');
+          },
         );
-      });
+      },
+        (err) => logger.trace('open dialog returned error:', err));
   }
 
   saveFile(type: string): void {
+    logger.trace(`saveFile(${type})`);
+
     // check for development, should never occur in production
     if (this.saveFilter.indexOf(type) < 0) {
       throw Error('unsupported file type');
@@ -134,20 +148,47 @@ export class MenubarComponent implements OnInit {
     ]).pipe(
       switchMap(value => this.loadSaveService.saveDocument(type, value[0] as string, value[1]))
     ).subscribe(
-      (res) => logger.debug(res),
-      (err) => logger.error(err),
+      (res) => {
+        logger.debug(res);
+        this.alertService.success('Datei erfolgreich gespeichert');
+      },
+      (err) => {
+        logger.error(err);
+        // fix for an error that occurs only in windows
+        if (err === 'Could not initialize COM.') {
+          logger.debug('ty windows -.- | attempting fix');
+          this.loadFile();
+          this.saveFile(type);
+          return;
+        }
+        this.alertService.error('Speichern der Datei fehlgeschlagen!');
+      },
     );
   }
 
   exportPDF(): void {
+    logger.trace('exportPDF()');
     combineLatest([
       this.tauriService.save({ filter: 'pdf' }),
       this.modelToDocument(),
     ]).pipe(
       switchMap(value => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1]))
     ).subscribe(
-      (res) => logger.debug(res),
-      (err) => logger.error(err),
+      (res) => {
+        logger.debug(res);
+        this.alertService.success('PDF erfolgreich exportiert');
+      },
+      (err) => {
+        logger.error(err);
+        // fix for an error that occurs only in windows
+        if (err === 'Could not initialize COM.') {
+          logger.debug('ty windows -.- | attempting fix');
+          this.loadFile();
+          this.exportPDF();
+          return;
+        }
+        this.alertService.error('Exportieren der PDF fehlgeschlagen!');
+      },
     );
   }
 

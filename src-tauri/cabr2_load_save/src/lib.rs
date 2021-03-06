@@ -1,3 +1,6 @@
+#![allow(clippy::new_without_default)]
+#![allow(clippy::unnecessary_unwrap)]
+
 use tauri::plugin::Plugin;
 
 mod cmd;
@@ -82,5 +85,13 @@ impl Plugin for LoadSave {
         Ok(true)
       }
     }
+  }
+
+  fn created(&self, _: &mut tauri::Webview<'_>) {
+    log::trace!("plugin created");
+  }
+
+  fn ready(&self, _: &mut tauri::Webview<'_>) {
+    log::trace!("plugin ready");
   }
 }

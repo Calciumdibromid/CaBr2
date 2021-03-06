@@ -3,13 +3,14 @@ import { Injectable } from '@angular/core';
 
 import * as dialog from 'tauri/api/dialog';
 import * as tauri from 'tauri/api/tauri';
+import { open as tauriOpen } from 'tauri/api/window';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TauriService {
 
-  constructor() {}
+  openUrl = tauriOpen;
 
   open(options?: dialog.OpenDialogOptions): Observable<string | string[]> {
     return from(

@@ -22,11 +22,12 @@ use super::{
 
 pub struct PDF;
 
+type PDFThreadChannels = Arc<Mutex<(mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>)>>;
+
 impl Saver for PDF {
   fn save_document(&self, filename: PathBuf, document: CaBr2Document) -> Result<()> {
     lazy_static! {
-      static ref PDF_THREAD_CHANNEL: Arc<Mutex<(mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>)>> =
-        Arc::new(Mutex::new(init_pdf_application()));
+      static ref PDF_THREAD_CHANNEL: PDFThreadChannels = Arc::new(Mutex::new(init_pdf_application()));
     }
 
     let title = document.header.document_title.clone();
@@ -117,7 +118,9 @@ fn init_handlebars() -> Result<(String, Handlebars<'static>)> {
   Ok((buf, reg))
 }
 
-fn init_pdf_application() -> (mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>) {
+type PDFChannels = (mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>);
+
+fn init_pdf_application() -> PDFChannels {
   let (tauri_tx, pdf_rx) = mpsc::sync_channel(0);
   let (pdf_tx, tauri_rx) = mpsc::sync_channel(0);
 
