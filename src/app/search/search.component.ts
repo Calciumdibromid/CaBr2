@@ -114,7 +114,7 @@ export class SearchComponent implements OnInit {
       },
         (err) => {
           logger.error('editing substance failed:', err);
-          this.alertService.error('Bearbeiten der Substanz fehlgeschlagen!');
+          this.alertService.error(strings.error.editSubstance);
         });
   }
 

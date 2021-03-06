@@ -83,6 +83,7 @@
     "error": {
       "substanceWithCASSExist": "Substanz mit selber CAS Nummer existiert bereits!",
       "substanceLoadData": "Laden der Daten der Substanz fehlgeschlagen!",
+      "editSubstance": "Bearbeiten der Substanz fehlgeschlagen!",
       "configLoad": "Laden der Konfigurationsdatei fehlgeschlagen!",
       "configSave": "Speichern der Konfigurationsdatei fehlgeschlagen!",
       "getHazardSymbols": "Laden der Gefahrensymbole fehlgeschlagen!",
