@@ -53,8 +53,7 @@ Um diese im Nachhinein bearbeiten zu können, kann mit der Maus die gewünschte 
 Auf der Betriebsanweisung gibt es die Spalte _Für Ansatz benötigt_.
 Im Fenster, welches sich nach Anklicken der zu bearbeitenden Chemikalie öffnet, kann diese individuell ausgefüllt werden.
 
-<img src="assets/screenshots_for_md/editor.png" alt="editor" width="550">
-<!--neues Bild mit Molarer Masse usw. dabei?-->
+<img src="assets/screenshots_for_md/editor2.png" alt="editor" width="550">
 
 ---
 
