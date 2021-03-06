@@ -7,7 +7,7 @@
         <mat-error *ngIf="this.form.get('name')?.get('value')?.invalid">{{ strings.substance.needsName }}</mat-error>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>{{ strings.substance.casNr }}</mat-label>
+        <mat-label>{{ strings.substance.casNumber }}</mat-label>
         <input matInput formControlName="cas" />
       </mat-form-field>
       <mat-form-field>
