@@ -2,9 +2,8 @@ import { Amount, SubstanceData, Unit } from '../@core/services/substances/substa
 import { Component, OnInit } from '@angular/core';
 import { GlobalModel } from '../@core/models/global.model';
 import { Header } from '../@core/interfaces/Header';
+import { i18n } from '../@core/services/i18n/i18n.service';
 import { map } from 'rxjs/operators';
-
-import { strings } from '../../assets/strings.json';
 
 // TODO ViewSubstanceData and move
 interface SimpleSubstanceData {
@@ -31,7 +30,7 @@ interface SimpleSubstanceData {
 })
 export class PreviewComponent implements OnInit {
 
-  strings = strings;
+  strings = i18n.getStrings('de');
 
   header!: Header;
 

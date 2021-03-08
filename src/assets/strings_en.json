@@ -1,0 +1,103 @@
+{
+  "strings": {
+    "base": {
+      "addElement": "Add Entry",
+      "removeElement": "Remove Entry",
+      "print": "Print",
+      "cancel": "Cancel",
+      "ok": "Ok",
+      "save": "Save"
+    },
+    "menu": {
+      "newDocument": "New Safety-Sheet",
+      "loadFile": "Open Safety-Sheet",
+      "saveFile": "Betriebsanweisung speichern",
+      "exportPDF": "Export as PDF",
+      "darkModeSwitchInfo": "Toggle light/dark theme"
+    },
+    "header": {
+      "docTitle": "Document title:",
+      "organisation": "Organization:",
+      "labCourse": "Lab/Course:",
+      "name": "Name:",
+      "place": "Place:",
+      "assistant": "Assistant:",
+      "preparation": "Herzustellendes Präparat:"
+    },
+    "search": {
+      "exact": "Exact Search",
+      "option": "Search options:",
+      "searchButton": "Search",
+      "removeSubstance": "Remove Substance",
+      "removeOption": "Remove search options",
+      "addOption": "Add search options",
+      "resultsHeader": "Search Results",
+      "noResult": "No results"
+    },
+    "substance": {
+      "name": "Name",
+      "needsName": "Name is required",
+      "casNumber": "CAS Number",
+      "molecularFormula": "Molecular formula",
+      "waterHazardClass": "Water hazard class",
+      "signalWord": "Signal word",
+      "molarMass": "Molar mass",
+      "unit": "Unit",
+      "lethalDose": "Lethal dose",
+      "mak": "MAK",
+      "meltingPoint": "Melting point",
+      "boilingPoint": "Boiling point",
+      "amount": "Quantity",
+      "notANumber": "Not a number",
+      "customUnit": "Custom Unit",
+      "hPhrases": "H-Phrases",
+      "noHPhrase": "Invalid H-Phrase",
+      "removeHPhrase": "remove H-Phrase",
+      "addHPhrase": "add H-Phrase",
+      "pPhrases": "P-Phrase",
+      "noPPhrase": "Invalid P-Phrase",
+      "removePPhrase": "remove P-Phrase",
+      "addPPhrase": "add P-Phrase",
+      "ghsSymbolsAddOrRemoveInfo": "Zum entfernen oder hinzufügen auf das Symbol klicken",
+      "ghsSymbolsColorInfo": "Grau: nicht gewählt / Farbig: Gewählt"
+    },
+    "descriptions": {
+      "humanAndEnvironmentDanger": "Gefahren für Mensch und Umwelt, die von den Ausgangsmaterialien bzw. dem(n) Produkt ausgehen, soweit sie nicht durch genannte Angaben abgedeckt sind (z.B. krebserregend, fruchtschädigend, hautresorptiv):",
+      "rulesOfConduct": "Schutzmaßnahmen und Verhaltensregeln:",
+      "inCaseOfDanger": "Verhalten im Gefahrenfall, Erste-Hilfe-Maßnahmen (gegebenfalls Kopie der entsprechenden Literaturstelle beiheften):",
+      "disposal": "Disposal:",
+      "signatureFieldStudent": "Hiermit verpflichte ich mich, den Versuch gemäß den in dieser Betriebsanweisung aufgeführten Sicherheitsvorschriften durchzuführen.",
+      "signatureFieldAssistant": "Präparat zur Synthese mit den auf der Vorderseite berechneten Chemikalienmengen freigegeben."
+    },
+    "preview": {
+      "info": "Dies is eine Vorschau. Die tatsächliche, generierte PDF kann minimale Unterschiede aufweisen!",
+      "tableSubstanceTitleHeader": "Eingesetzte Stoffe und Produkt(e)",
+      "tableMolarMassHeader": "MG\n[g/mol]",
+      "tableBoilingAndMeltingHeader": "Sdp.\nSmp.",
+      "tableGHSSymbolHeader": "GHS-Symbol(e)",
+      "tableHPPhrasesHeader": "Nummern der H/P-Sätze",
+      "tableMAKHeader": "MAK, LD50\nWGK",
+      "tableAmountHeader": "für Ansatz benötigt",
+      "tableHPPhrasesTitle": "Wortlaut der wesentlichen oben genannten H- und P-Sätze:"
+    },
+    "error": {
+      "substanceWithCASExist": "Substanz mit selber CAS Nummer existiert bereits!",
+      "substanceLoadData": "Laden der Daten der Substanz fehlgeschlagen!",
+      "editSubstance": "Bearbeiten der Substanz fehlgeschlagen!",
+      "configLoad": "Laden der Konfigurationsdatei fehlgeschlagen!",
+      "configSave": "Speichern der Konfigurationsdatei fehlgeschlagen!",
+      "getHazardSymbols": "Laden der Gefahrensymbole fehlgeschlagen!",
+      "loadSearchSuggestions": "Laden der Suchvorschläge fehlgeschlagen!",
+      "loadSearchResults": "Laden der Suchergebnisse fehlgeschlagen!",
+      "getAvailableDocumentTypes": "Laden der verfügbaren Dokumentarten fehlgeschlagen!",
+      "loadFile": "Failed loading file!",
+      "saveFile": "File Save Failed!",
+      "exportPDF": "Export PDF failed!"
+    },
+    "success": {
+      "loadFile": "File successfully loaded",
+      "saveFile": "File saved successfully",
+      "exportPDF": "PDF exported successfully"
+    }
+  }
+}
