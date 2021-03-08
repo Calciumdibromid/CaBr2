@@ -76,7 +76,7 @@ export class SearchComponent implements OnInit {
               cas && this.globals.substanceDataSubject.getValue().some(s => cas === this.modifiedOrOriginal(s.cas))
             ) {
               logger.warning('substance with same cas number already present:', cas);
-              this.alertService.error(strings.error.substanceWithCASExist);
+              this.alertService.error(this.strings.error.substanceWithCASExist);
               return;
             }
             const data = [...this.globals.substanceDataSubject.getValue(), value];
@@ -86,7 +86,7 @@ export class SearchComponent implements OnInit {
           },
             (err) => {
               logger.error('could not get substance information:', err);
-              this.alertService.error(strings.error.substanceLoadData);
+              this.alertService.error(this.strings.error.substanceLoadData);
             });
       }
     });
@@ -113,7 +113,7 @@ export class SearchComponent implements OnInit {
       },
         (err) => {
           logger.error('editing substance failed:', err);
-          this.alertService.error(strings.error.editSubstance);
+          this.alertService.error(this.strings.error.editSubstance);
         });
   }
 

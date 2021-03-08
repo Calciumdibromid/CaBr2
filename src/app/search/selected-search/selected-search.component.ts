@@ -111,7 +111,7 @@ export class SelectedSearchComponent implements OnInit {
           },
             (err) => {
               logger.error('loading search suggestions failed:', err);
-              this.alertService.error(strings.error.loadSearchSuggestions);
+              this.alertService.error(this.strings.error.loadSearchSuggestions);
             });
       });
   }

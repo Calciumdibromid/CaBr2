@@ -5,6 +5,7 @@ import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.serv
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { ConfigModel } from '../@core/models/config.model';
 import { GlobalModel } from '../@core/models/global.model';
+import { i18n } from '../@core/services/i18n/i18n.service';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import Logger from '../@core/utils/logger';
 import { ManualComponent } from '../manual/manual.component';
@@ -13,7 +14,6 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
 import { docsTemplate } from '../../assets/docsTemplate.json';
-import { strings } from '../../assets/strings.json';
 
 const logger = new Logger('menubar');
 
@@ -26,7 +26,7 @@ export class MenubarComponent implements OnInit {
   @Output()
   readonly darkModeSwitched = new EventEmitter<boolean>();
 
-  strings = strings;
+  strings = i18n.getStrings('de');
 
   private loadFilter: string[] = [];
   private saveFilter: string[] = [];
@@ -50,7 +50,7 @@ export class MenubarComponent implements OnInit {
       },
       (err) => {
         logger.error('could not get document types:', err);
-        this.alertService.error(strings.error.getAvailableDocumentTypes);
+        this.alertService.error(this.strings.error.getAvailableDocumentTypes);
       },
     );
   }
@@ -125,7 +125,7 @@ export class MenubarComponent implements OnInit {
             (res) => this.documentToModel(res),
             (err) => {
               logger.error('loading file failed:', err);
-              this.alertService.error(strings.error.loadFile);
+              this.alertService.error(this.strings.error.loadFile);
             },
           );
         },
@@ -146,7 +146,7 @@ export class MenubarComponent implements OnInit {
       .subscribe(
         (res) => {
           logger.debug(res);
-          this.alertService.success(strings.success.saveFile);
+          this.alertService.success(this.strings.success.saveFile);
         },
         (err) => {
           logger.error(err);
@@ -157,7 +157,7 @@ export class MenubarComponent implements OnInit {
             this.saveFile(type);
             return;
           }
-          this.alertService.error(strings.error.saveFile);
+          this.alertService.error(this.strings.error.saveFile);
         },
       );
   }
@@ -169,7 +169,7 @@ export class MenubarComponent implements OnInit {
       .subscribe(
         (res) => {
           logger.debug(res);
-          this.alertService.success(strings.success.exportPDF);
+          this.alertService.success(this.strings.success.exportPDF);
         },
         (err) => {
           logger.error(err);
@@ -180,7 +180,7 @@ export class MenubarComponent implements OnInit {
             this.exportPDF();
             return;
           }
-          this.alertService.error(strings.error.exportPDF);
+          this.alertService.error(this.strings.error.exportPDF);
         },
       );
   }
