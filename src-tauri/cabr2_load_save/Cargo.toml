@@ -19,7 +19,7 @@ log = "0.4.14"
 lopdf = "0.26.0"
 quick-xml = { version = "0.22.0", features = ["serialize"] }
 regex = "1.4.3"
-serde = { version = "1.0.123", features = ["derive"] }
+serde = { version = "1.0.124", features = ["derive"] }
 serde_json = "1.0.64"
 tauri = { version = "0.11.1", default-features = false }
 thiserror = "1.0.24"
