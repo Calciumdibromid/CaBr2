@@ -8,13 +8,12 @@ import { Data, Source, SubstanceData } from '../@core/services/substances/substa
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
 import { GlobalModel } from '../@core/models/global.model';
+import { i18n } from '../@core/services/i18n/i18n.service';
 import Logger from '../@core/utils/logger';
 import { SearchArgument } from '../@core/services/search/search.model';
 import { SelectedSearchComponent } from './selected-search/selected-search.component';
 import { SubstancesService } from '../@core/services/substances/substances.service';
 import { TauriService } from '../@core/services/tauri/tauri.service';
-
-import { strings } from '../../assets/strings.json';
 
 const logger = new Logger('search');
 
@@ -32,7 +31,7 @@ export class SearchComponent implements OnInit {
   res: SearchArgument[] = [];
   control = new FormControl();
 
-  strings = strings;
+  strings = i18n.getStrings('de');
 
   substanceData: SubstanceData[] = [];
 

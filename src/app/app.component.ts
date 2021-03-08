@@ -5,9 +5,8 @@ import { ConfigModel } from './@core/models/config.model';
 import { ConfigService } from './@core/services/config/config.service';
 import { DOCUMENT } from '@angular/common';
 import { GlobalModel } from './@core/models/global.model';
+import { i18n } from './@core/services/i18n/i18n.service';
 import Logger from './@core/utils/logger';
-
-import { strings } from '../assets/strings.json';
 
 const logger = new Logger('main');
 
@@ -19,6 +18,7 @@ const logger = new Logger('main');
 export class AppComponent implements OnInit {
   name = name;
   version = version;
+  strings = i18n.getStrings('de');
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
       },
       (err) => {
         logger.error('loading config failed:', err);
-        this.alertService.error(strings.error.configLoad);
+        this.alertService.error(this.strings.error.configLoad);
       },
     );
 
@@ -46,7 +46,7 @@ export class AppComponent implements OnInit {
       (symbols) => this.global.setGHSSymbols(symbols),
       (err) => {
         logger.error('loading ghs-symbols failed:', err);
-        this.alertService.error(strings.error.getHazardSymbols);
+        this.alertService.error(this.strings.error.getHazardSymbols);
       },
     );
   }
@@ -68,7 +68,7 @@ export class AppComponent implements OnInit {
       () => logger.info('config saved'),
       (err) => {
         logger.error('saving config failed:', err);
-        this.alertService.error(strings.error.configSave);
+        this.alertService.error(this.strings.error.configSave);
       },
     );
   }

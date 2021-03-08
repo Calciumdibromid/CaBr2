@@ -3,6 +3,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { GlobalModel } from '../../@core/models/global.model';
+import { i18n } from '../../@core/services/i18n/i18n.service';
 
 import {
   Amount,
@@ -15,8 +16,6 @@ import {
 } from '../../@core/services/substances/substances.model';
 import { Subscription } from 'rxjs';
 
-import { strings } from '../../../assets/strings.json';
-
 @Component({
   selector: 'app-edit-search-results',
   templateUrl: './edit-search-results.component.html',
@@ -25,7 +24,7 @@ import { strings } from '../../../assets/strings.json';
 export class EditSearchResultsComponent implements OnInit {
   form: FormGroup;
 
-  strings = strings;
+  strings = i18n.getStrings('de');
 
   addHPhraseHover = false;
 

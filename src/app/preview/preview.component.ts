@@ -30,7 +30,7 @@ interface SimpleSubstanceData {
 })
 export class PreviewComponent implements OnInit {
 
-  strings = i18n.getStrings('de');
+  strings = i18n.getStrings('en');
 
   header!: Header;
 

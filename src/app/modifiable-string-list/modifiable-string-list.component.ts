@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { i18n } from '../@core/services/i18n/i18n.service';
 import { Observable } from 'rxjs';
-
-import { strings } from '../../assets/strings.json';
 
 @Component({
   selector: 'app-modifiable-string-list',
@@ -23,7 +22,7 @@ export class ModifiableStringListComponent implements OnInit {
 
   addHover = false;
 
-  strings = strings;
+  strings = i18n.getStrings('de');
 
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({});

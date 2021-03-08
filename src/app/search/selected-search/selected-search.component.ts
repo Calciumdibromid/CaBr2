@@ -5,12 +5,11 @@ import { debounceTime } from 'rxjs/operators';
 
 import { SearchArgument, SearchType, SearchTypeMapping } from '../../@core/services/search/search.model';
 import { AlertService } from 'src/app/@core/services/alertsnackbar/altersnackbar.service';
+import { i18n } from '../../@core/services/i18n/i18n.service';
 import Logger from '../../@core/utils/logger';
 import { SearchService } from '../../@core/services/search/search.service';
 
 const logger = new Logger('selected-search');
-
-import { strings } from '../../../assets/strings.json';
 
 @Component({
   selector: 'app-selected-search',
@@ -21,7 +20,7 @@ export class SelectedSearchComponent implements OnInit {
   @Output()
   triggerSearch = new EventEmitter();
 
-  strings = strings;
+  strings = i18n.getStrings('de');
 
   searchOptions: SearchTypeMapping[] = this.searchService.searchTypeMappings;
 
