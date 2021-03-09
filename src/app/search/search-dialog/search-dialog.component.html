@@ -20,7 +20,9 @@
   <mat-spinner></mat-spinner>
 </ng-template>
 <ng-template #empty>
-  <p class="viewport empty"><b>{{ strings.search.noResult }}</b></p>
+  <p class="viewport empty">
+    <b>{{ searchFailed ? strings.search.error : strings.search.noResult }}</b>
+  </p>
 </ng-template>
 <mat-divider class="divider"></mat-divider>
 <div mat-dialog-actions>

@@ -32,7 +32,8 @@
       "removeOption": "Suchoption entfernen",
       "addOption": "Suchoption hinzufügen",
       "resultsHeader": "Suchergebnisse",
-      "noResult": "Keine Ergebnisse"
+      "noResult": "Keine Ergebnisse",
+      "error": "Fehler beim Anfragen der Daten"
     },
     "substance": {
       "name": "Name",
