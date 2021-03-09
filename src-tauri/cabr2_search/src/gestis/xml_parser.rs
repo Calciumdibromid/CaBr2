@@ -508,3 +508,28 @@ fn get_mak(_json: &GestisResponse) -> Result<String> {
 }
 
 /* #endregion */
+
+#[cfg(test)]
+mod tests {
+  use std::{fs::File, io::BufReader};
+
+  use crate::gestis::types::GestisResponse;
+
+  use super::parse_response;
+
+  fn load_substance_json(path: &str) -> GestisResponse {
+    let file = File::open(path).unwrap();
+    let reader = BufReader::new(file);
+    serde_json::from_reader(reader).unwrap()
+  }
+
+  #[test]
+  fn test_parsing_cobaltdinitrat() {
+    parse_response(&load_substance_json("assets/cobaltdinitrat.json")).unwrap();
+  }
+
+  #[test]
+  fn test_parsing_calcium() {
+    parse_response(&load_substance_json("assets/calcium.json")).unwrap();
+  }
+}
