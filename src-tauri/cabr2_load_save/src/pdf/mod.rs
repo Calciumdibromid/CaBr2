@@ -1,7 +1,6 @@
 mod merge;
 
 use std::{
-  env,
   fs::OpenOptions,
   io::{BufReader, Read},
   path::PathBuf,
@@ -14,6 +13,8 @@ use lazy_static::lazy_static;
 use lopdf::Document;
 use serde::Serialize;
 use wkhtmltopdf::{Orientation, PageSize, PdfApplication, Size};
+
+use cabr2_config::DATA_DIR;
 
 use super::{
   error::{LoadSaveError, Result},
@@ -64,6 +65,8 @@ impl Saver for PDF {
   }
 }
 
+const PDF_TEMPLATE_PAGES: [&str; 2] = ["first", "second"];
+
 /// render_doc get CaBr2Document and return html (dummy at the moment)
 fn render_doc(document: &CaBr2Document) -> Result<Vec<String>> {
   #[derive(Debug, Serialize)]
@@ -88,30 +91,30 @@ fn render_doc(document: &CaBr2Document) -> Result<Vec<String>> {
     document,
   };
   Ok(vec![
-    reg.1.render("first", &context)?,
-    reg.1.render("second", &context)?,
+    reg.1.render(PDF_TEMPLATE_PAGES[0], &context)?,
+    reg.1.render(PDF_TEMPLATE_PAGES[1], &context)?,
   ])
 }
 
 #[inline]
 fn init_handlebars() -> Result<(String, Handlebars<'static>)> {
   let mut reg = Handlebars::new();
-  let program_path = PathBuf::from(env::args().next().unwrap());
-  // TODO make path os independent
-  let mut program_path = program_path.parent().unwrap().to_path_buf();
-  program_path.push("templates");
-  program_path.push("file");
+  let mut template_path = DATA_DIR.clone();
+  template_path.push("templates");
 
-  for name in ["first", "second"].iter() {
-    let filename = program_path.with_file_name(name).with_extension("html");
-    log::debug!("template path: {:?}", filename);
+  for name in PDF_TEMPLATE_PAGES.iter() {
+    let mut filename = template_path.clone();
+    filename.push(name);
+    let filename = filename.with_extension("html");
+
+    log::trace!("template path: {:?}", filename);
     reg.register_template_file(name, filename)?;
   }
 
   let mut buf = String::new();
   let file = OpenOptions::new()
     .read(true)
-    .open(program_path.with_file_name("styles").with_extension("css"))?;
+    .open(template_path.with_file_name("styles").with_extension("css"))?;
   let mut reader = BufReader::new(file);
   reader.read_to_string(&mut buf)?;
 
