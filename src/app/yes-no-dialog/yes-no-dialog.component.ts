@@ -3,6 +3,12 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { strings } from '../../assets/strings.json';
 
+export interface YesNoDialogData {
+  iconName?: string;
+  title: string;
+  content: string;
+}
+
 @Component({
   selector: 'app-yes-no-dialog',
   templateUrl: './yes-no-dialog.component.html',
@@ -21,7 +27,8 @@ export class YesNoDialogComponent implements OnInit {
    *    iconName: 'exampleIcon',
    *    title: 'Example title',
    *    content: 'Example content'
-   *  }
+   *  },
+   *  autofocus: false  // default is true
    * });
    * ```
    *
@@ -30,7 +37,7 @@ export class YesNoDialogComponent implements OnInit {
    */
   constructor(
     public dialogRef: MatDialogRef<YesNoDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { iconName: string; title: string; content: string },
+    @Inject(MAT_DIALOG_DATA) public data: YesNoDialogData,
   ) {}
 
   ngOnInit(): void {}
