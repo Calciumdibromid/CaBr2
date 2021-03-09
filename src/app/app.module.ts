@@ -17,6 +17,7 @@ import { PreviewComponent } from './preview/preview.component';
 import { SearchComponent } from './search/search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
+import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { SelectedSearchComponent } from './search/selected-search/selected-searc
     SearchDialogComponent,
     EditSearchResultsComponent,
     ManualComponent,
+    YesNoDialogComponent,
   ],
   imports: [
     BrowserModule,
