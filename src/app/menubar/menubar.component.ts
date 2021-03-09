@@ -1,6 +1,6 @@
 import { combineLatest, Observable } from 'rxjs';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { map, switchMap } from 'rxjs/operators';
+import { first, map, switchMap } from 'rxjs/operators';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { ConfigModel } from '../@core/models/config.model';
@@ -119,6 +119,7 @@ export class MenubarComponent implements OnInit {
         filter: this.loadFilter.join(';'),
         multiple: false,
       })
+      .pipe(first())
       .subscribe(
         (path) => {
           this.loadSaveService.loadDocument(path as string).subscribe(
@@ -142,7 +143,10 @@ export class MenubarComponent implements OnInit {
     }
 
     combineLatest([this.tauriService.save({ filter: type }), this.modelToDocument()])
-      .pipe(switchMap((value) => this.loadSaveService.saveDocument(type, value[0] as string, value[1])))
+      .pipe(
+        switchMap((value) => this.loadSaveService.saveDocument(type, value[0] as string, value[1])),
+        first(),
+      )
       .subscribe(
         (res) => {
           logger.debug(res);
@@ -165,7 +169,10 @@ export class MenubarComponent implements OnInit {
   exportPDF(): void {
     logger.trace('exportPDF()');
     combineLatest([this.tauriService.save({ filter: 'pdf' }), this.modelToDocument()])
-      .pipe(switchMap((value) => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1])))
+      .pipe(
+        switchMap((value) => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1])),
+        first(),
+        )
       .subscribe(
         (res) => {
           logger.debug(res);
