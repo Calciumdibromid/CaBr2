@@ -65,6 +65,8 @@ impl Saver for PDF {
   }
 }
 
+const PDF_TEMPLATE_PAGES: [&str; 2] = ["first", "second"];
+
 /// render_doc get CaBr2Document and return html (dummy at the moment)
 fn render_doc(document: &CaBr2Document) -> Result<Vec<String>> {
   #[derive(Debug, Serialize)]
@@ -89,8 +91,8 @@ fn render_doc(document: &CaBr2Document) -> Result<Vec<String>> {
     document,
   };
   Ok(vec![
-    reg.1.render("first", &context)?,
-    reg.1.render("second", &context)?,
+    reg.1.render(PDF_TEMPLATE_PAGES[0], &context)?,
+    reg.1.render(PDF_TEMPLATE_PAGES[1], &context)?,
   ])
 }
 
@@ -99,10 +101,12 @@ fn init_handlebars() -> Result<(String, Handlebars<'static>)> {
   let mut reg = Handlebars::new();
   let mut template_path = DATA_DIR.clone();
   template_path.push("templates");
-  template_path.push("file");
 
-  for name in ["first", "second"].iter() {
-    let filename = template_path.with_file_name(name).with_extension("html");
+  for name in PDF_TEMPLATE_PAGES.iter() {
+    let mut filename = template_path.clone();
+    filename.push(name);
+    let filename = filename.with_extension("html");
+
     log::trace!("template path: {:?}", filename);
     reg.register_template_file(name, filename)?;
   }
