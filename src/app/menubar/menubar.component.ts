@@ -14,7 +14,6 @@ import { TauriService } from '../@core/services/tauri/tauri.service';
 
 import { docsTemplate } from '../../assets/docsTemplate.json';
 import { strings } from '../../assets/strings.json';
-import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
 const logger = new Logger('menubar');
 
