@@ -15,6 +15,6 @@ cabr2_types = { path = "../cabr2_types/" }
 chrono = "0.4.19"
 fern = "0.6.0"
 log = "0.4.14"
-serde = { version = "1.0.123", features = ["derive"] }
+serde = { version = "1.0.124", features = ["derive"] }
 serde_json = "1.0.64"
 tauri = { version = "0.11.1", default-features = false }
