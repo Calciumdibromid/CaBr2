@@ -1,9 +1,10 @@
-import { Amount, SubstanceData, Unit } from '../@core/services/substances/substances.model';
 import { Component, OnInit } from '@angular/core';
+import { map } from 'rxjs/operators';
+
+import { Amount, SubstanceData, Unit } from '../@core/services/substances/substances.model';
 import { GlobalModel } from '../@core/models/global.model';
 import { Header } from '../@core/interfaces/Header';
-import { i18n } from '../@core/services/i18n/i18n.service';
-import { map } from 'rxjs/operators';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 
 // TODO ViewSubstanceData and move
 interface SimpleSubstanceData {
@@ -30,13 +31,15 @@ interface SimpleSubstanceData {
 })
 export class PreviewComponent implements OnInit {
 
-  strings = i18n.getStrings('en');
+  strings!: LocalizedStrings;
 
   header!: Header;
 
   substanceData!: SimpleSubstanceData[];
 
-  constructor(public globals: GlobalModel) {}
+  constructor(public globals: GlobalModel) {
+    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+  }
 
   ngOnInit(): void {
     this.globals.headerObservable.subscribe((value) => (this.header = value));

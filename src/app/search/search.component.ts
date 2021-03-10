@@ -2,18 +2,19 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 
 import { Data, Source, SubstanceData } from '../@core/services/substances/substances.model';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
-import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
 import { GlobalModel } from '../@core/models/global.model';
-import { i18n } from '../@core/services/i18n/i18n.service';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 import Logger from '../@core/utils/logger';
 import { SearchArgument } from '../@core/services/search/search.model';
-import { SelectedSearchComponent } from './selected-search/selected-search.component';
 import { SubstancesService } from '../@core/services/substances/substances.service';
 import { TauriService } from '../@core/services/tauri/tauri.service';
+
+import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
+import { SearchDialogComponent } from './search-dialog/search-dialog.component';
+import { SelectedSearchComponent } from './selected-search/selected-search.component';
 
 const logger = new Logger('search');
 
@@ -31,7 +32,7 @@ export class SearchComponent implements OnInit {
   res: SearchArgument[] = [];
   control = new FormControl();
 
-  strings = i18n.getStrings('de');
+  strings!: LocalizedStrings;
 
   substanceData: SubstanceData[] = [];
 
@@ -45,7 +46,9 @@ export class SearchComponent implements OnInit {
     private alertService: AlertService,
     private dialog: MatDialog,
     public globals: GlobalModel,
-  ) { }
+  ) {
+    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+  }
 
   ngOnInit(): void {
     this.globals.substanceDataObservable.subscribe((data) => {

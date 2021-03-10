@@ -1,11 +1,12 @@
 import { Component, HostBinding, Inject, OnInit, Renderer2 } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+
+import { I18nService, LocalizedStrings } from './@core/services/i18n/i18n.service';
 import { name, version } from '../../package.json';
 import { AlertService } from './@core/services/alertsnackbar/altersnackbar.service';
 import { ConfigModel } from './@core/models/config.model';
 import { ConfigService } from './@core/services/config/config.service';
-import { DOCUMENT } from '@angular/common';
 import { GlobalModel } from './@core/models/global.model';
-import { i18n } from './@core/services/i18n/i18n.service';
 import Logger from './@core/utils/logger';
 
 const logger = new Logger('main');
@@ -18,22 +19,36 @@ const logger = new Logger('main');
 export class AppComponent implements OnInit {
   name = name;
   version = version;
-  strings = i18n.getStrings('de');
+  strings!: LocalizedStrings;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
+
     private config: ConfigModel,
     private global: GlobalModel,
     private configService: ConfigService,
     private alertService: AlertService,
+    private i18nService: I18nService,
   ) {
+    this.global.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+    this.i18nService.getAvailableLanguages().subscribe(
+      (languages) => logger.debug('available localizations:', languages),
+      (err) => logger.error('getting available localizations failed:', err),
+    );
   }
 
   ngOnInit(): void {
     this.configService.getConfig().subscribe(
       (config) => {
         this.config.setConfig(config);
+        this.i18nService.getLocalizedStrings(config.global.language).subscribe(
+          (strings) => this.global.localizedStringsSubject.next(strings),
+          (err) => {
+            logger.error(err);
+            this.alertService.error(this.strings.error.localeLoading);
+          }
+        );
         this.switchMode(this.config.global.darkTheme);
       },
       (err) => {

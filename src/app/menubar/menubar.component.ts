@@ -1,19 +1,19 @@
 import { combineLatest, Observable } from 'rxjs';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { first, map, switchMap } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { ConfigModel } from '../@core/models/config.model';
+import { docsTemplate } from '../../assets/docsTemplate.json';
 import { GlobalModel } from '../@core/models/global.model';
-import { i18n } from '../@core/services/i18n/i18n.service';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 import Logger from '../@core/utils/logger';
 import { ManualComponent } from '../manual/manual.component';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { TauriService } from '../@core/services/tauri/tauri.service';
-
-import { docsTemplate } from '../../assets/docsTemplate.json';
 
 const logger = new Logger('menubar');
 
@@ -26,11 +26,10 @@ export class MenubarComponent implements OnInit {
   @Output()
   readonly darkModeSwitched = new EventEmitter<boolean>();
 
-  strings = i18n.getStrings('de');
+  strings!: LocalizedStrings;
 
   private loadFilter: string[] = [];
   private saveFilter: string[] = [];
-
   constructor(
     public globals: GlobalModel,
     public config: ConfigModel,
@@ -39,6 +38,8 @@ export class MenubarComponent implements OnInit {
     private alertService: AlertService,
     private dialog: MatDialog,
   ) {
+    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+
     this.loadSaveService.getAvailableDocumentTypes().subscribe(
       (types) => {
         this.loadFilter = types.load;
@@ -172,7 +173,7 @@ export class MenubarComponent implements OnInit {
       .pipe(
         switchMap((value) => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1])),
         first(),
-        )
+      )
       .subscribe(
         (res) => {
           logger.debug(res);
