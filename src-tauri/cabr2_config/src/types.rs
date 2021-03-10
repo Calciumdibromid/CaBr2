@@ -86,7 +86,7 @@ impl std::default::Default for TomlConfig {
     TomlConfig {
       global: TomlGlobal {
         dark_theme: false,
-        language: "en_us".into(),
+        language: "de_de".into(),
       },
       logging: TomlLogging {
         all: Some(LogLevel::DEBUG),
@@ -142,6 +142,7 @@ impl std::convert::From<JsonLogging> for TomlLogging {
 
 pub type GHSSymbols = HashMap<String, String>;
 
+// the next two structs work with the same file, but parse different parts of it
 #[derive(Debug, Deserialize, Serialize)]
 pub struct LocalizedStringsHeader {
   name: String,

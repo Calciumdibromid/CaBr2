@@ -32,6 +32,7 @@ export class AppComponent implements OnInit {
     private i18nService: I18nService,
   ) {
     this.global.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+    // this is for testing only
     this.i18nService.getAvailableLanguages().subscribe(
       (languages) => logger.debug('available localizations:', languages),
       (err) => logger.error('getting available localizations failed:', err),

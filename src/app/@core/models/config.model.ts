@@ -5,7 +5,7 @@ import { LogLevel } from '../utils/logger';
 export class ConfigModel {
   global: Global = {
     darkTheme: false,
-    language: 'en_us',
+    language: 'de_de',
   };
 
   // config should be read before saving so this should be ok
