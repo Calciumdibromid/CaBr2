@@ -78,7 +78,7 @@
       "tableMolarMassHeader": "MW\n[g/mol]",
       "tableBoilingAndMeltingHeader": "BP\nMP",
       "tableGHSSymbolHeader": "GHS hazard pictograms",
-      "tableHPPhrasesHeader": "H/P-phrases\n(numbers only)",
+      "tableHPPhrasesHeader": "H/P-phrases\n(numbers)",
       "tableMAKHeader": "TLV, LD50,\nWHC",
       "tableAmountHeader": "Amount used",
       "tableHPPhrasesTitle": "Text of essential H/P phrases:"
