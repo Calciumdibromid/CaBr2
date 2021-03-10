@@ -144,7 +144,6 @@ pub type GHSSymbols = HashMap<String, String>;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct LocalizedStringsHeader {
-  version: u8,
   name: String,
   locale: String,
 }

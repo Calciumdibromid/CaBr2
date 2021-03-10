@@ -47,7 +47,6 @@ export class I18nService {
 }
 
 export interface LocalizedStringsHeader {
-  version: number;
   name: string;
   locale: string;
 }
