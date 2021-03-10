@@ -28,7 +28,6 @@ export class I18nService {
   }
 
   getLocalizedStrings(language: string): Observable<LocalizedStrings> {
-    logger.error('get strings', language);
     return new Observable((sub) => {
       this.tauriService.promisified<LocalizedStrings>({
         cmd: 'getLocalizedStrings',
