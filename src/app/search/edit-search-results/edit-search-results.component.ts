@@ -2,7 +2,7 @@ import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '
 import { Component, Inject, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GlobalModel } from '../../@core/models/global.model';
+import { Subscription } from 'rxjs';
 
 import {
   Amount,
@@ -13,9 +13,8 @@ import {
   Unit,
   unitMappings,
 } from '../../@core/services/substances/substances.model';
-import { Subscription } from 'rxjs';
-
-import { strings } from '../../../assets/strings.json';
+import { GlobalModel } from '../../@core/models/global.model';
+import { LocalizedStrings } from '../../@core/services/i18n/i18n.service';
 
 @Component({
   selector: 'app-edit-search-results',
@@ -25,7 +24,7 @@ import { strings } from '../../../assets/strings.json';
 export class EditSearchResultsComponent implements OnInit {
   form: FormGroup;
 
-  strings = strings;
+  strings!: LocalizedStrings;
 
   addHPhraseHover = false;
 
@@ -55,6 +54,8 @@ export class EditSearchResultsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
   ) {
+    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+
     this.form = this.initControls();
   }
 

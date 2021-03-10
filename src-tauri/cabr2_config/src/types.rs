@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
+use serde_json::Value;
 
 use cabr2_types::logging::LogLevel;
 
@@ -25,12 +26,14 @@ impl std::convert::From<TomlConfig> for JsonConfig {
 #[serde(rename_all = "camelCase")]
 pub struct JsonGlobal {
   pub dark_theme: bool,
+  pub language: String,
 }
 
 impl std::convert::From<TomlGlobal> for JsonGlobal {
   fn from(config: TomlGlobal) -> Self {
     JsonGlobal {
       dark_theme: config.dark_theme,
+      language: config.language,
     }
   }
 }
@@ -81,7 +84,10 @@ impl std::convert::From<JsonConfig> for TomlConfig {
 impl std::default::Default for TomlConfig {
   fn default() -> Self {
     TomlConfig {
-      global: TomlGlobal { dark_theme: false },
+      global: TomlGlobal {
+        dark_theme: false,
+        language: "de_de".into(),
+      },
       logging: TomlLogging {
         all: Some(LogLevel::DEBUG),
         cabr2: Some(LogLevel::DEBUG),
@@ -95,12 +101,14 @@ impl std::default::Default for TomlConfig {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct TomlGlobal {
   pub dark_theme: bool,
+  pub language: String,
 }
 
 impl std::convert::From<JsonGlobal> for TomlGlobal {
   fn from(config: JsonGlobal) -> Self {
     TomlGlobal {
       dark_theme: config.dark_theme,
+      language: config.language,
     }
   }
 }
@@ -133,5 +141,17 @@ impl std::convert::From<JsonLogging> for TomlLogging {
 /* #region other types */
 
 pub type GHSSymbols = HashMap<String, String>;
+
+// the next two structs work with the same file, but parse different parts of it
+#[derive(Debug, Deserialize, Serialize)]
+pub struct LocalizedStringsHeader {
+  name: String,
+  locale: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct LocalizedStrings {
+  pub strings: Value,
+}
 
 /* #endregion */

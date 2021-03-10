@@ -5,12 +5,12 @@ import { debounceTime } from 'rxjs/operators';
 
 import { SearchArgument, SearchType, SearchTypeMapping } from '../../@core/services/search/search.model';
 import { AlertService } from 'src/app/@core/services/alertsnackbar/altersnackbar.service';
+import { GlobalModel } from 'src/app/@core/models/global.model';
+import { LocalizedStrings } from '../../@core/services/i18n/i18n.service';
 import Logger from '../../@core/utils/logger';
 import { SearchService } from '../../@core/services/search/search.service';
 
 const logger = new Logger('selected-search');
-
-import { strings } from '../../../assets/strings.json';
 
 @Component({
   selector: 'app-selected-search',
@@ -21,7 +21,7 @@ export class SelectedSearchComponent implements OnInit {
   @Output()
   triggerSearch = new EventEmitter();
 
-  strings = strings;
+  strings!: LocalizedStrings;
 
   searchOptions: SearchTypeMapping[] = this.searchService.searchTypeMappings;
 
@@ -41,10 +41,12 @@ export class SelectedSearchComponent implements OnInit {
   addButtonHover = false;
 
   constructor(
+    private globals: GlobalModel,
     private searchService: SearchService,
     private alertService: AlertService,
     private formBuilder: FormBuilder
   ) {
+    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
   }
 
   ngOnInit(): void {
@@ -112,7 +114,7 @@ export class SelectedSearchComponent implements OnInit {
           },
             (err) => {
               logger.error('loading search suggestions failed:', err);
-              this.alertService.error(strings.error.loadSearchSuggestions);
+              this.alertService.error(this.strings.error.loadSearchSuggestions);
             });
       });
   }

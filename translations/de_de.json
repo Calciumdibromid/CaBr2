@@ -1,4 +1,6 @@
 {
+  "name": "Deutsch",
+  "locale": "de_de",
   "strings": {
     "base": {
       "addElement": "Eintrag hinzufügen",
@@ -53,7 +55,7 @@
       "customUnit": "Eigene Einheit",
       "hPhrases": "H-Sätze",
       "noHPhrase": "Ungültige H-Nummer",
-      "removeHPhrase": "P-Satz entfernen",
+      "removeHPhrase": "H-Satz entfernen",
       "addHPhrase": "H-Satz hinzufügen",
       "pPhrases": "P-Sätze",
       "noPPhrase": "Ungültige P-Nummer",
@@ -93,7 +95,8 @@
       "getAvailableDocumentTypes": "Laden der verfügbaren Dokumentarten fehlgeschlagen!",
       "loadFile": "Laden der Datei fehlgeschlagen!",
       "saveFile": "Speichern der Datei fehlgeschlagen!",
-      "exportPDF": "Exportieren der PDF fehlgeschlagen!"
+      "exportPDF": "Exportieren der PDF fehlgeschlagen!",
+      "localeLoading": "Laden der Sprache fehlgeschlagen!"
     },
     "success": {
       "loadFile": "Datei erfolgreich geladen",

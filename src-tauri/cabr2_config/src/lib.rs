@@ -65,6 +65,32 @@ impl Plugin for Config {
               error,
             );
           }
+          Cmd::GetAvailableLanguages { callback, error } => {
+            tauri::execute_promise(
+              webview,
+              move || match handler::get_available_languages() {
+                Ok(res) => Ok(res),
+                Err(e) => Err(e.into()),
+              },
+              callback,
+              error,
+            );
+          }
+          Cmd::GetLocalizedStrings {
+            language,
+            callback,
+            error,
+          } => {
+            tauri::execute_promise(
+              webview,
+              move || match handler::get_localized_strings(language) {
+                Ok(res) => Ok(res),
+                Err(e) => Err(e.into()),
+              },
+              callback,
+              error,
+            );
+          }
         }
         // dispatch of async request should always succeed
         Ok(true)
