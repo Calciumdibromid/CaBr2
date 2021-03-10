@@ -1,5 +1,4 @@
 {
-  "version": 1,
   "name": "English",
   "locale": "en_us",
   "strings": {
@@ -96,8 +95,7 @@
       "getAvailableDocumentTypes": "Laden der verfügbaren Dokumentarten fehlgeschlagen!",
       "loadFile": "Failed loading file!",
       "saveFile": "File Save Failed!",
-      "exportPDF": "Export PDF failed!",
-      "localeLoading": "Loading language failed!"
+      "exportPDF": "Export PDF failed!"
     },
     "success": {
       "loadFile": "File successfully loaded",
