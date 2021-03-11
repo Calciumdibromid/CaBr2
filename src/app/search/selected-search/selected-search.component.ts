@@ -1,11 +1,10 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-
 import { debounceTime } from 'rxjs/operators';
 
 import { SearchArgument, SearchType, SearchTypeMapping } from '../../@core/services/search/search.model';
-import { AlertService } from 'src/app/@core/services/alertsnackbar/altersnackbar.service';
-import { GlobalModel } from 'src/app/@core/models/global.model';
+import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
+import { GlobalModel } from '../../@core/models/global.model';
 import { LocalizedStrings } from '../../@core/services/i18n/i18n.service';
 import Logger from '../../@core/utils/logger';
 import { SearchService } from '../../@core/services/search/search.service';
@@ -83,7 +82,7 @@ export class SelectedSearchComponent implements OnInit {
 
   onEnter(event: any): boolean {
     event.preventDefault();
-    this.suggestionResults.forEach((value, key) => {
+    this.suggestionResults.forEach((value) => {
       value.splice(0, value.length);
     });
     this.triggerSearch.emit();
@@ -97,6 +96,10 @@ export class SelectedSearchComponent implements OnInit {
       searchType: control.get('searchOption')?.value,
       pattern: control.get('userInput')?.value,
     }));
+  }
+
+  clear(): void {
+    this.selections.controls.map((control) => control.patchValue({ userInput: '' }));
   }
 
   private registerValueChangeListener(selectionGroup: FormGroup): void {
