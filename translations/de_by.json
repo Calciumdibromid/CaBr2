@@ -1,0 +1,107 @@
+{
+  "name": "Boarisch",
+  "locale": "de_by",
+  "strings": {
+    "base": {
+      "addElement": "Oana mea",
+      "removeElement": "Oana weniga",
+      "print": "Haus aufs Bladl",
+      "cancel": "Na los bleim",
+      "ok": "Basd scho",
+      "save": "Auf'n PC damid"
+    },
+    "menu": {
+      "newDocument": "Wos neis",
+      "loadFile": "Wos oids hoin",
+      "saveFile": "Betriebsanweisung speichan",
+      "exportPDF": "Ois PDF exportiern",
+      "darkModeSwitchInfo": "Aufd' dunkle Seitn' wexln"
+    },
+    "header": {
+      "docTitle": "Titl vom Wisch:",
+      "organisation": "Organisation:",
+      "labCourse": "Gruppn:",
+      "name": "Nama:",
+      "place": "Blotz:",
+      "assistant": "Da Hibe:",
+      "preparation": "Zu machans Gmisch:"
+    },
+    "search": {
+      "exact": "Subba genaue Suche",
+      "option": "Suchoption:",
+      "searchButton": "Suche",
+      "removeSubstance": "Substanz rausdoa",
+      "removeOption": "Suchoption wegmacha",
+      "addOption": "Suchoption dazua doa",
+      "resultsHeader": "Gfundne Sachan",
+      "noResult": "Nix gfundn",
+      "error": "S'Programm wuit ned"
+    },
+    "substance": {
+      "name": "Wia mas' ruaft",
+      "needsName": "Du, ohne Nama gäds ned",
+      "casNumber": "De Ammi-Numma",
+      "molecularFormula": "Stoffkürzl",
+      "waterHazardClass": "Wia wäh duads de Fisch",
+      "signalWord": "Obacht",
+      "molarMass": "Molares Gwicht",
+      "unit": "Kürzl hinta da Zoi",
+      "lethalDose": "So vui kost fressn",
+      "mak": "MAK",
+      "meltingPoint": "Do schmuidsts",
+      "boilingPoint": "Do vadampfts",
+      "amount": "Meng",
+      "notANumber": "Koa Zoi",
+      "customUnit": "Woibadinga",
+      "hPhrases": "H-Satzal",
+      "noHPhrase": "Foische H-Numma",
+      "removeHPhrase": "H-Satz wegmacha",
+      "addHPhrase": "H-Satz dazua doa",
+      "pPhrases": "P-Satzal",
+      "noPPhrase": "Foische P-Numma",
+      "removePPhrase": "P-Satz wegad doa",
+      "addPPhrase": "P-Satz dazua doa",
+      "ghsSymbolsAddOrRemoveInfo": "Wenns so a Buidl weg- oda dazuadoa megst, muast nur auf des Buidl drugga",
+      "ghsSymbolsColorInfo": "Wenns grau is, dann hostas ned gnomma / Wenns bunt is, dann isses ogschoidn"
+    },
+    "descriptions": {
+      "humanAndEnvironmentDanger": "Des ko de Andan und der Umwelt bassiern:",
+      "rulesOfConduct": "Auf des muast aufbassn und des muast macha:",
+      "inCaseOfDanger": "Des muast macha, wenn wos bassiert:",
+      "disposal": "Wia weads weggschmissn:",
+      "signatureFieldStudent": "Ich stä dazua, des ois glesn zum hom und duas so macha.",
+      "signatureFieldAssistant": "I bass scho drauf auf, dass de Saubuam und -Madl koan Scheiß machan."
+    },
+    "preview": {
+      "info": "Des wos du do undn sigst is nur a Möglichkeit wias ausschaung ko. Des Zeig wos aufs Bladl kimmt, ko a bissal andas ausschaun!",
+      "tableSubstanceTitleHeader": "Des Zeig, wosd' hernimmst",
+      "tableMolarMassHeader": "MG [g/mol]",
+      "tableBoilingAndMeltingHeader": "Sdp.\nSmp.",
+      "tableGHSSymbolHeader": "Gfahrenschuild",
+      "tableHPPhrasesHeader": "H oda P Satzal\n(nua de Numman)",
+      "tableMAKHeader": "MAK, LD50\nWGK",
+      "tableAmountHeader": "Wos brach ma für's Gspui",
+      "tableHPPhrasesTitle": "Do sted da ganze Schmarrn zu de H- und P-Satzal:"
+    },
+    "error": {
+      "substanceWithCASExist": "Bisd bsuffa, des is doch scho do!",
+      "substanceLoadData": "Ko den Stoff ned griang! ",
+      "editSubstance": "Da Stoff hod ned verändert wean kenna!",
+      "configLoad": "De Einstellunga wuitn ned!",
+      "configSave": "Einstellunga hom ned gspeichat wean kenna!",
+      "getHazardSymbols": "Die Gfahrenschuidl meng ned!",
+      "loadSearchSuggestions": "Des Ladn der gewünschtn Vorschläge hod ned funktioniert!",
+      "loadSearchResults": "Des Ladn hod grod ned funktioniert!",
+      "getAvailableDocumentTypes": "Da Computer mog ned song, wos er ko!",
+      "loadFile": "S'Programm hod's ned ladn kenna!",
+      "saveFile": "Do is wos foisch ganga! De Datei hods ned auf'd Festplatte gschafft!",
+      "exportPDF": "S' Programm macht grod an grobn Scheiß!",
+      "localeLoading": "De Sprach gibd's ned!"
+    },
+    "success": {
+      "loadFile": "Datei basd",
+      "saveFile": "Datei is auf da Festplattn",
+      "exportPDF": "PDF is auf da Festplattn"
+    }
+  }
+}
