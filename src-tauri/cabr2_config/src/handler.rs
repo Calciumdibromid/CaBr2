@@ -1,13 +1,17 @@
 use std::{
   collections::HashMap,
-  fs::OpenOptions,
-  io::{Read, Write},
+  fs::{self, OpenOptions},
+  io::{BufReader, Read, Write},
   path::PathBuf,
 };
 
+use serde_json::Value;
+
+use crate::error::ConfigError;
+
 use super::{
   error::Result,
-  types::{GHSSymbols, JsonConfig, TomlConfig},
+  types::{GHSSymbols, JsonConfig, LocalizedStrings, LocalizedStringsHeader, TomlConfig},
   DATA_DIR,
 };
 
@@ -85,6 +89,76 @@ pub fn get_hazard_symbols() -> Result<GHSSymbols> {
   }
 
   Ok(symbols)
+}
+
+pub fn get_available_languages() -> Result<Vec<LocalizedStringsHeader>> {
+  let translation_folder = get_translation_folder();
+
+  let mut languages: Vec<LocalizedStringsHeader> = Vec::new();
+
+  if translation_folder.is_dir() {
+    for entry in fs::read_dir(translation_folder)? {
+      let path = match entry {
+        Ok(entry) => entry.path(),
+        Err(err) => {
+          log::debug!("error when iterating over translation files: {:?}", err);
+          continue;
+        }
+      };
+      let reader = match OpenOptions::new().read(true).open(path) {
+        Ok(file) => BufReader::new(file),
+        Err(err) => {
+          log::debug!("error when opening translation file: {:?}", err);
+          continue;
+        }
+      };
+      match serde_json::from_reader(reader) {
+        Ok(lang) => languages.push(lang),
+        Err(err) => {
+          log::debug!("error when reading translation file: {:?}", err)
+        }
+      };
+    }
+  }
+
+  Ok(languages)
+}
+
+pub fn get_localized_strings(language: String) -> Result<Value> {
+  let mut translation_path = get_translation_folder();
+  translation_path.push(&language);
+  let translation_path = translation_path.with_extension("json");
+
+  if translation_path.is_file() {
+    let reader = match OpenOptions::new().read(true).open(&translation_path) {
+      Ok(file) => BufReader::new(file),
+      Err(err) => {
+        log::error!("opening translation file '{:?}' failed: {:?}", translation_path, err);
+        return Err(ConfigError::LocalizationReadError(language));
+      }
+    };
+    match serde_json::from_reader(reader) {
+      Ok(localized) => {
+        let localized: LocalizedStrings = localized;
+        return Ok(localized.strings);
+      }
+      Err(err) => {
+        log::error!("reading translation file '{:?}' failed: {:?}", translation_path, err);
+        return Err(ConfigError::LocalizationReadError(language));
+      }
+    };
+  }
+
+  log::error!("translation file '{:?}' is not a file", translation_path);
+  Err(ConfigError::LocalizationNotFound(language))
+}
+
+#[inline]
+fn get_translation_folder() -> PathBuf {
+  let mut translation_folder = DATA_DIR.clone();
+  translation_folder.push("translations");
+
+  translation_folder
 }
 
 #[cfg(not(debug_assertions))]

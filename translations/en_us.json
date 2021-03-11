@@ -1,0 +1,107 @@
+{
+  "name": "English",
+  "locale": "en_us",
+  "strings": {
+    "base": {
+      "addElement": "Add entry",
+      "removeElement": "Remove entry",
+      "print": "Print",
+      "cancel": "Cancel",
+      "ok": "Ok",
+      "save": "Save"
+    },
+    "menu": {
+      "newDocument": "New safety datasheet",
+      "loadFile": "Open safety datasheet",
+      "saveFile": "Save safety datasheet",
+      "exportPDF": "Export as PDF",
+      "darkModeSwitchInfo": "Toggle light/dark theme"
+    },
+    "header": {
+      "docTitle": "Document title:",
+      "organisation": "Organization:",
+      "labCourse": "Lab/Course:",
+      "name": "Name:",
+      "place": "Place:",
+      "assistant": "Assistant:",
+      "preparation": "Preparation/Task:"
+    },
+    "search": {
+      "exact": "Exact search",
+      "option": "Search options:",
+      "searchButton": "Search",
+      "removeSubstance": "Remove substance",
+      "removeOption": "Remove search option",
+      "addOption": "Add search option",
+      "resultsHeader": "Search results",
+      "noResult": "No results",
+      "error": "An error occurred while retrieving data"
+    },
+    "substance": {
+      "name": "Name",
+      "needsName": "Name is required",
+      "casNumber": "CAS number",
+      "molecularFormula": "Molecular formula",
+      "waterHazardClass": "Water hazard class",
+      "signalWord": "Signal word",
+      "molarMass": "Molar mass",
+      "unit": "Unit",
+      "lethalDose": "Lethal dose",
+      "mak": "MAK",
+      "meltingPoint": "Melting point",
+      "boilingPoint": "Boiling point",
+      "amount": "Quantity",
+      "notANumber": "Not a number",
+      "customUnit": "Custom unit",
+      "hPhrases": "H-phrases",
+      "noHPhrase": "Invalid H-number",
+      "removeHPhrase": "remove H-phrase",
+      "addHPhrase": "add H-phrase",
+      "pPhrases": "P-phrases",
+      "noPPhrase": "Invalid P-number",
+      "removePPhrase": "remove P-phrase",
+      "addPPhrase": "add P-phrase",
+      "ghsSymbolsAddOrRemoveInfo": "To remove or add click on the symbol",
+      "ghsSymbolsColorInfo": "gray: not selected / colorized: selected"
+    },
+    "descriptions": {
+      "humanAndEnvironmentDanger": "Additional dangers for humans and environment (e.g. carcinogenic, teratogenic):",
+      "rulesOfConduct": "Protective measures and safety rules:",
+      "inCaseOfDanger": "Behavior in case of danger and first aid:",
+      "disposal": "Disposal:",
+      "signatureFieldStudent": "I hereby confirm that I will execute the task/preparation according to the here presented safety data instructions.",
+      "signatureFieldAssistant": "The student is allowed to perform the presented task/preparation."
+    },
+    "preview": {
+      "info": "This is only a preview. The generated PDF may look different!",
+      "tableSubstanceTitleHeader": "Used substances and products",
+      "tableMolarMassHeader": "MW\n[g/mol]",
+      "tableBoilingAndMeltingHeader": "BP\nMP",
+      "tableGHSSymbolHeader": "GHS hazard pictograms",
+      "tableHPPhrasesHeader": "H/P-phrases\n(numbers)",
+      "tableMAKHeader": "TLV, LD50,\nWHC",
+      "tableAmountHeader": "Amount used",
+      "tableHPPhrasesTitle": "Text of essential H/P phrases:"
+    },
+    "error": {
+      "substanceWithCASExist": "Substance with identical CAS number exists already!",
+      "substanceLoadData": "Failed to load substance data!",
+      "editSubstance": "Edit substance failed!",
+      "configLoad": "Failed to read configuration!",
+      "configSave": "Failed to save configuration!",
+      "getHazardSymbols": "Failed to load hazard symbols!",
+      "loadSearchSuggestions": "Failed to load search suggestions!",
+      "loadSearchResults": "Failed to load search results!",
+      "getAvailableDocumentTypes": "Failed to load available document types!",
+      "loadFile": "Failed loading file!",
+      "saveFile": "Saving file failed!",
+      "exportPDF": "Exporting PDF failed!",
+      "localeLoading": "Failed to load language!"
+    },
+    "success": {
+      "loadFile": "File successfully loaded",
+      "saveFile": "File saved successfully",
+      "exportPDF": "PDF exported successfully"
+    }
+  }
+}

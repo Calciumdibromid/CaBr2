@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+
 import { GlobalModel } from '../@core/models/global.model';
 import { Header } from '../@core/interfaces/Header';
-
-import { strings } from '../../assets/strings.json';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 
 @Component({
   selector: 'app-header',
@@ -12,11 +12,12 @@ import { strings } from '../../assets/strings.json';
 export class HeaderComponent implements OnInit {
   header!: Header;
 
-  strings = strings;
+  strings!: LocalizedStrings;
 
   constructor(
     public globals: GlobalModel,
   ) {
+    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
   }
 
   ngOnInit(): void {

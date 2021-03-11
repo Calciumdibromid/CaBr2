@@ -1,9 +1,11 @@
 {
+  "name": "Deutsch",
+  "locale": "de_de",
   "strings": {
     "base": {
       "addElement": "Eintrag hinzufügen",
       "removeElement": "Eintrag entfernen",
-      "print": "Print",
+      "print": "Drucken",
       "cancel": "Abbrechen",
       "ok": "Ok",
       "save": "Speichern"
@@ -13,7 +15,7 @@
       "loadFile": "Bestehende Betriebsanweisung öffnen",
       "saveFile": "Betriebsanweisung speichern",
       "exportPDF": "Als PDF exportieren",
-      "darkModeSwitchInfo": "Auf dunkles Thema umschalten"
+      "darkModeSwitchInfo": "Auf helles/dunkles Thema umschalten"
     },
     "header": {
       "docTitle": "Dokument Titel:",
@@ -53,17 +55,17 @@
       "customUnit": "Eigene Einheit",
       "hPhrases": "H-Sätze",
       "noHPhrase": "Ungültige H-Nummer",
-      "removeHPhrase": "P-Satz entfernen",
+      "removeHPhrase": "H-Satz entfernen",
       "addHPhrase": "H-Satz hinzufügen",
       "pPhrases": "P-Sätze",
       "noPPhrase": "Ungültige P-Nummer",
       "removePPhrase": "P-Satz entfernen",
       "addPPhrase": "P-Satz hinzufügen",
-      "ghsSymbolsAddOrRemoveInfo": "Zum entfernen oder hinzufügen auf das Symbol klicken",
-      "ghsSymbolsColorInfo": "Grau: nicht gewählt / Farbig: Gewählt"
+      "ghsSymbolsAddOrRemoveInfo": "Zum Entfernen oder Hinzufügen auf das Symbol klicken",
+      "ghsSymbolsColorInfo": "grau: nicht gewählt / farbig: gewählt"
     },
     "descriptions": {
-      "humanAndEnvironmentDanger": "Gefahren für Mensch und Umwelt, die von den Ausgangsmaterialien bzw. dem(n) Produkt ausgehen, soweit sie nicht durch genannte Angaben abgedeckt sind (z.B. krebserregend, fruchtschädigend, hautresorptiv):",
+      "humanAndEnvironmentDanger": "Gefahren für Mensch und Umwelt, die von den Ausgangsmaterialien bzw. den Produkten ausgehen, soweit sie nicht durch genannte Angaben abgedeckt sind (z.B. krebserregend, fruchtschädigend, hautresorptiv):",
       "rulesOfConduct": "Schutzmaßnahmen und Verhaltensregeln:",
       "inCaseOfDanger": "Verhalten im Gefahrenfall, Erste-Hilfe-Maßnahmen (gegebenfalls Kopie der entsprechenden Literaturstelle beiheften):",
       "disposal": "Entsorgung:",
@@ -72,11 +74,11 @@
     },
     "preview": {
       "info": "Dies is eine Vorschau. Die tatsächliche, generierte PDF kann minimale Unterschiede aufweisen!",
-      "tableSubstanceTitleHeader": "Eingesetzte Stoffe und Produkt(e)",
+      "tableSubstanceTitleHeader": "Eingesetzte Stoffe und Produkte",
       "tableMolarMassHeader": "MG\n[g/mol]",
       "tableBoilingAndMeltingHeader": "Sdp.\nSmp.",
-      "tableGHSSymbolHeader": "GHS-Symbol(e)",
-      "tableHPPhrasesHeader": "Nummern der H/P-Sätze",
+      "tableGHSSymbolHeader": "GHS-Symbole",
+      "tableHPPhrasesHeader": "H/P-Sätze\n(Nummern)",
       "tableMAKHeader": "MAK, LD50\nWGK",
       "tableAmountHeader": "für Ansatz benötigt",
       "tableHPPhrasesTitle": "Wortlaut der wesentlichen oben genannten H- und P-Sätze:"
@@ -93,7 +95,8 @@
       "getAvailableDocumentTypes": "Laden der verfügbaren Dokumentarten fehlgeschlagen!",
       "loadFile": "Laden der Datei fehlgeschlagen!",
       "saveFile": "Speichern der Datei fehlgeschlagen!",
-      "exportPDF": "Exportieren der PDF fehlgeschlagen!"
+      "exportPDF": "Exportieren der PDF fehlgeschlagen!",
+      "localeLoading": "Laden der Sprache fehlgeschlagen!"
     },
     "success": {
       "loadFile": "Datei erfolgreich geladen",

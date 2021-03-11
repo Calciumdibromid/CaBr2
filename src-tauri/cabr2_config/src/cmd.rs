@@ -18,4 +18,13 @@ pub enum Cmd {
     callback: String,
     error: String,
   },
+  GetAvailableLanguages {
+    callback: String,
+    error: String,
+  },
+  GetLocalizedStrings {
+    language: String,
+    callback: String,
+    error: String,
+  }
 }
