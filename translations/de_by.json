@@ -11,7 +11,7 @@
       "save": "Auf'n PC damid"
     },
     "menu": {
-      "newDocument": "Wos Neis",
+      "newDocument": "Wos neis",
       "loadFile": "Wos oids hoin",
       "saveFile": "Betriebsanweisung speichan",
       "exportPDF": "Ois PDF exportiern",
@@ -39,13 +39,13 @@
     },
     "substance": {
       "name": "Wia mas' ruaft",
-      "needsName": "Du ohne Nama gäds ned",
+      "needsName": "Du, ohne Nama gäds ned",
       "casNumber": "De Ammi-Numma",
       "molecularFormula": "Stoffkürzl",
       "waterHazardClass": "Wia wäh duads de Fisch",
       "signalWord": "Obacht",
       "molarMass": "Molares Gwicht",
-      "unit": "Kürzl hinta Zoin",
+      "unit": "Kürzl hinta da Zoi",
       "lethalDose": "So vui kost fressn",
       "mak": "MAK",
       "meltingPoint": "Do schmuidsts",
@@ -58,30 +58,30 @@
       "removeHPhrase": "H-Satz wegmacha",
       "addHPhrase": "H-Satz dazua doa",
       "pPhrases": "P-Satzal",
-      "noPPhrase": "Foischa P-Satz",
+      "noPPhrase": "Foischa P-Numma",
       "removePPhrase": "P-Satz wegad doa",
       "addPPhrase": "P-Satz dazua doa",
       "ghsSymbolsAddOrRemoveInfo": "Wenns so a Buidl weg- oda dazuadoa megst, muast nur auf des Buidl drugga",
       "ghsSymbolsColorInfo": "Wenns grau is, dann hostas ned gnomma / Wenns bunt is, dann isses ogschoidn"
     },
     "descriptions": {
-      "humanAndEnvironmentDanger": "Des ko de Andern und der Umwelt bassiern:",
+      "humanAndEnvironmentDanger": "Des ko de Andan und der Umwelt bassiern:",
       "rulesOfConduct": "Auf des muast aufbassn und des muast macha:",
-      "inCaseOfDanger": "Des muast macha wenn wos bassiert:",
+      "inCaseOfDanger": "Des muast macha, wenn wos bassiert:",
       "disposal": "Wia weads weggschmissn:",
-      "signatureFieldStudent": "Ich stä dazua des ois glesn zum hom und duas so macha.",
+      "signatureFieldStudent": "Ich stä dazua, des ois glesn zum hom und duas so macha.",
       "signatureFieldAssistant": "I bass scho drauf auf, dass de Saubuam und -Madl koan Scheiß machan."
     },
     "preview": {
-      "info": "Des wos du do undn sigst is nur a Möglichkeit, wias ausschaun ko. Des Zeig wos aufs Bladl kimmt, ko a bissal andas ausschaun!",
+      "info": "Des wos du do undn sigst is nur a Möglichkeit wias ausschaung ko. Des Zeig wos aufs Bladl kimmt, ko a bissal andas ausschaun!",
       "tableSubstanceTitleHeader": "Des Zeig, wosd' hernimmst",
       "tableMolarMassHeader": "MG [g/mol]",
       "tableBoilingAndMeltingHeader": "Sdp.\nSmp.",
       "tableGHSSymbolHeader": "Gfahrenschuild",
-      "tableHPPhrasesHeader": "H oda P Sätz\n(nua de Numman)",
+      "tableHPPhrasesHeader": "H oda P Satzal\n(nua de Numman)",
       "tableMAKHeader": "MAK, LD50\nWGK",
       "tableAmountHeader": "Wos brach ma für's Gspui",
-      "tableHPPhrasesTitle": "Do stead da ganze Schmarrn zu de H- und P-Satz:"
+      "tableHPPhrasesTitle": "Do sted da ganze Schmarrn zu de H- und P-Satzal:"
     },
     "error": {
       "substanceWithCASExist": "Bisd bsuffa, des is doch scho do!",
@@ -89,11 +89,11 @@
       "editSubstance": "Da Stoff hod ned verändert wean kenna!",
       "configLoad": "De Einstellunga wuitn ned!",
       "configSave": "Einstellunga hom ned gspeichat wean kenna!",
-      "getHazardSymbols": "Die Gfahrenschuild meng ned! Duad ma leid ;(",
+      "getHazardSymbols": "Die Gfahrenschuidl meng ned!",
       "loadSearchSuggestions": "Des Ladn der gewünschtn Vorschläge hod ned funktioniert!",
       "loadSearchResults": "Des Ladn hod grod ned funktioniert!",
-      "getAvailableDocumentTypes": "Da Computer mog ned sogn wo er ko!",
-      "loadFile": "S'Programm hod's ned ladn kena!",
+      "getAvailableDocumentTypes": "Da Computer mog ned song, wos er ko!",
+      "loadFile": "S'Programm hod's ned ladn kenna!",
       "saveFile": "Do is wos foisch ganga! De Datei hods ned auf'd Festplatte gschaft!",
       "exportPDF": "S' Programm macht grod groben Scheiß!",
       "localeLoading": "De sprach gibds ned!"
