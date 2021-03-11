@@ -91,6 +91,8 @@ export class SearchComponent implements OnInit {
               logger.error('could not get substance information:', err);
               this.alertService.error(this.strings.error.substanceLoadData);
             });
+
+        this.selectedSearch?.clear();
       }
     });
   }
