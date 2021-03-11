@@ -54,11 +54,11 @@
       "notANumber": "Koa Zoi",
       "customUnit": "Woibadinga",
       "hPhrases": "H-Satzal",
-      "noHPhrase": "Foischa H-Satz",
+      "noHPhrase": "Foische H-Numma",
       "removeHPhrase": "H-Satz wegmacha",
       "addHPhrase": "H-Satz dazua doa",
       "pPhrases": "P-Satzal",
-      "noPPhrase": "Foischa P-Numma",
+      "noPPhrase": "Foische P-Numma",
       "removePPhrase": "P-Satz wegad doa",
       "addPPhrase": "P-Satz dazua doa",
       "ghsSymbolsAddOrRemoveInfo": "Wenns so a Buidl weg- oda dazuadoa megst, muast nur auf des Buidl drugga",
@@ -94,9 +94,9 @@
       "loadSearchResults": "Des Ladn hod grod ned funktioniert!",
       "getAvailableDocumentTypes": "Da Computer mog ned song, wos er ko!",
       "loadFile": "S'Programm hod's ned ladn kenna!",
-      "saveFile": "Do is wos foisch ganga! De Datei hods ned auf'd Festplatte gschaft!",
-      "exportPDF": "S' Programm macht grod groben Scheiß!",
-      "localeLoading": "De sprach gibds ned!"
+      "saveFile": "Do is wos foisch ganga! De Datei hods ned auf'd Festplatte gschafft!",
+      "exportPDF": "S' Programm macht grod an grobn Scheiß!",
+      "localeLoading": "De Sprach gibd's ned!"
     },
     "success": {
       "loadFile": "Datei basd",
