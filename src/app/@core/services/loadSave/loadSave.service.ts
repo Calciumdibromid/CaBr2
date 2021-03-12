@@ -7,16 +7,9 @@ import { TauriService } from '../tauri/tauri.service';
   providedIn: 'root',
 })
 export class LoadSaveService {
-  constructor(
-    private tauriService: TauriService,
-  ) {
-  }
+  constructor(private tauriService: TauriService) {}
 
-  saveDocument(
-    fileType: string,
-    filename: string,
-    document: CaBr2Document
-  ): Observable<string> {
+  saveDocument(fileType: string, filename: string, document: CaBr2Document): Observable<string> {
     return this.tauriService.promisified({
       cmd: 'saveDocument',
       fileType,

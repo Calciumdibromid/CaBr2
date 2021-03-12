@@ -91,7 +91,9 @@
         <mat-form-field>
           <mat-label>{{ strings.substance.amount }}</mat-label>
           <input matInput formControlName="value" />
-          <mat-error *ngIf="this.form.get('amount')?.get('value')?.invalid">{{ strings.substance.notANumber }}</mat-error>
+          <mat-error *ngIf="this.form.get('amount')?.get('value')?.invalid">{{
+            strings.substance.notANumber
+          }}</mat-error>
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ strings.substance.unit }}</mat-label>

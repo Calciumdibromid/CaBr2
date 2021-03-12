@@ -36,10 +36,10 @@ export class SelectedSearchComponent {
     private globals: GlobalModel,
     private searchService: SearchService,
     private alertService: AlertService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
-    this.searchService.searchTypeMappingsObservable.subscribe((mapping) => this.searchOptions = mapping);
+    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
+    this.searchService.searchTypeMappingsObservable.subscribe((mapping) => (this.searchOptions = mapping));
   }
 
   initSelectionForm(): FormGroup {
@@ -93,7 +93,7 @@ export class SelectedSearchComponent {
   }
 
   onSubmit(): SearchArgument[] {
-    return this.selections.controls.map<SearchArgument>(control => ({
+    return this.selections.controls.map<SearchArgument>((control) => ({
       searchType: control.get('searchOption')?.value,
       pattern: control.get('userInput')?.value,
     }));
@@ -108,18 +108,15 @@ export class SelectedSearchComponent {
       .get('userInput')
       ?.valueChanges.pipe(debounceTime(500))
       .subscribe((result) => {
-        this.searchService
-          .searchSuggestions(selectionGroup.get('searchOption')?.value, result)
-          .subscribe((response) => {
-            this.suggestionResults.set(
-              selectionGroup.get('searchOption')?.value,
-              response
-            );
+        this.searchService.searchSuggestions(selectionGroup.get('searchOption')?.value, result).subscribe(
+          (response) => {
+            this.suggestionResults.set(selectionGroup.get('searchOption')?.value, response);
           },
-            (err) => {
-              logger.error('loading search suggestions failed:', err);
-              this.alertService.error(this.strings.error.loadSearchSuggestions);
-            });
+          (err) => {
+            logger.error('loading search suggestions failed:', err);
+            this.alertService.error(this.strings.error.loadSearchSuggestions);
+          },
+        );
       });
   }
 }

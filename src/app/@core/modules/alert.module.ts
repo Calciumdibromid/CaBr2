@@ -8,4 +8,4 @@ import { AlertsnackbarComponent } from '../../alertsnackbar/alertsnackbar.compon
   declarations: [AlertsnackbarComponent],
   exports: [AlertsnackbarComponent],
 })
-export class AlertModule { }
+export class AlertModule {}
