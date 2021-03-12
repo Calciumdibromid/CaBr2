@@ -26,19 +26,19 @@ export class ModifiableStringListComponent implements OnInit {
 
   strings!: LocalizedStrings;
 
-  constructor(
-    private globals: GlobalModel,
-    private formBuilder: FormBuilder
-  ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+  constructor(private globals: GlobalModel, private formBuilder: FormBuilder) {
+    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
 
     this.form = this.formBuilder.group({});
   }
 
   ngOnInit(): void {
-    this.elements.subscribe((elements) => this.form = this.formBuilder.group({
-      elements: this.formBuilder.array(elements.map((value) => this.initForm(value)) ?? []),
-    }));
+    this.elements.subscribe(
+      (elements) =>
+        (this.form = this.formBuilder.group({
+          elements: this.formBuilder.array(elements.map((value) => this.initForm(value)) ?? []),
+        })),
+    );
   }
 
   get controlElements(): FormArray {

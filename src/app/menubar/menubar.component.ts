@@ -38,7 +38,7 @@ export class MenubarComponent implements OnInit {
     private alertService: AlertService,
     private dialog: MatDialog,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
 
     this.loadSaveService.getAvailableDocumentTypes().subscribe(
       (types) => {

@@ -13,9 +13,7 @@ export type LocalizedStrings = typeof DEFAULT_STRINGS;
   providedIn: 'root',
 })
 export class I18nService {
-  constructor(
-    private tauriService: TauriService,
-  ) { }
+  constructor(private tauriService: TauriService) {}
 
   static getDefaultStrings(): LocalizedStrings {
     return DEFAULT_STRINGS;
@@ -29,19 +27,21 @@ export class I18nService {
 
   getLocalizedStrings(language: string): Observable<LocalizedStrings> {
     return new Observable((sub) => {
-      this.tauriService.promisified<LocalizedStrings>({
-        cmd: 'getLocalizedStrings',
-        language,
-      }).subscribe(
-        (strings) => {
-          logger.trace('loading localized strings successful:', strings);
-          sub.next(strings);
-        },
-        (err) => {
-          logger.error('loading localized strings failed:', err);
-          sub.next(I18nService.getDefaultStrings());
-        }
-      );
+      this.tauriService
+        .promisified<LocalizedStrings>({
+          cmd: 'getLocalizedStrings',
+          language,
+        })
+        .subscribe(
+          (strings) => {
+            logger.trace('loading localized strings successful:', strings);
+            sub.next(strings);
+          },
+          (err) => {
+            logger.error('loading localized strings failed:', err);
+            sub.next(I18nService.getDefaultStrings());
+          },
+        );
     });
   }
 }

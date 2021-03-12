@@ -7,19 +7,16 @@ import { TauriService } from '../tauri/tauri.service';
 import { SearchArguments, SearchResult, SearchType, SearchTypeMapping, searchTypes } from './search.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchService {
   searchTypeMappingsSubject = new BehaviorSubject<SearchTypeMapping[]>([]);
   searchTypeMappingsObservable = this.searchTypeMappingsSubject.asObservable();
 
-  constructor(
-    private tauriService: TauriService,
-    private globals: GlobalModel,
-  ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => this.searchTypeMappingsSubject.next(
-      searchTypes.map((t) => ({ viewValue: strings.search.types[t], value: t }))
-    ));
+  constructor(private tauriService: TauriService, private globals: GlobalModel) {
+    this.globals.localizedStringsObservable.subscribe((strings) =>
+      this.searchTypeMappingsSubject.next(searchTypes.map((t) => ({ viewValue: strings.search.types[t], value: t }))),
+    );
   }
 
   /**
@@ -39,7 +36,7 @@ export class SearchService {
     return this.tauriService.promisified({
       cmd: 'searchSuggestions',
       pattern: query,
-      searchType
+      searchType,
     });
   }
 

@@ -8,9 +8,8 @@ describe('MenubarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MenubarComponent ]
-    })
-    .compileComponents();
+      declarations: [MenubarComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
