@@ -525,11 +525,11 @@ mod tests {
 
   #[test]
   fn test_parsing_cobaltdinitrat() {
-    parse_response(&load_substance_json("assets/cobaltdinitrat.json")).unwrap();
+    parse_response(&load_substance_json("tests/assets/cobaltdinitrat.json")).unwrap();
   }
 
   #[test]
   fn test_parsing_calcium() {
-    parse_response(&load_substance_json("assets/calcium.json")).unwrap();
+    parse_response(&load_substance_json("tests/assets/calcium.json")).unwrap();
   }
 }
