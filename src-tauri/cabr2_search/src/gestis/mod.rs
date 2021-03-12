@@ -20,6 +20,7 @@ impl Gestis {
         // don't ask, just leave it
         // https://gestis.dguv.de/search -> webpack:///./src/api.ts?
         .auth_kind("Bearer", "dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd")
+        .set("User-Agent", &format!("cabr2 v{}", env!("CARGO_PKG_VERSION")))
         .build(),
     }
   }
