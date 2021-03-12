@@ -1,4 +1,5 @@
 mod merge;
+mod types;
 
 use std::{
   fs::OpenOptions,
@@ -16,6 +17,7 @@ use wkhtmltopdf::{Orientation, PageSize, PdfApplication, Size};
 
 use cabr2_config::DATA_DIR;
 
+use self::types::PDFCaBr2Document;
 use super::{
   error::{LoadSaveError, Result},
   types::{CaBr2Document, Saver},
@@ -32,7 +34,7 @@ impl Saver for PDF {
     }
 
     let title = document.header.document_title.clone();
-    match render_doc(&document) {
+    match render_doc(document.into()) {
       Err(e) => Err(e),
       Ok(pages) => {
         let channels = PDF_THREAD_CHANNEL.lock().unwrap();
@@ -68,16 +70,19 @@ impl Saver for PDF {
 const PDF_TEMPLATE_PAGES: [&str; 2] = ["first", "second"];
 
 /// render_doc get CaBr2Document and return html (dummy at the moment)
-fn render_doc(document: &CaBr2Document) -> Result<Vec<String>> {
+fn render_doc(document: PDFCaBr2Document) -> Result<Vec<String>> {
   #[derive(Debug, Serialize)]
   struct Context<'a> {
     stylesheet: &'a String,
-    document: &'a CaBr2Document,
+    document: &'a PDFCaBr2Document,
   }
 
   lazy_static! {
     static ref REG: Arc<Mutex<Option<(String, Handlebars<'static>)>>> = Arc::new(Mutex::new(None));
   }
+
+  log::debug!("converted data: {:#?}", document);
+  return Err(LoadSaveError::PdfMergeError("SUCCESS".into()));
 
   let mut reg = REG.lock().unwrap();
 
@@ -88,7 +93,7 @@ fn render_doc(document: &CaBr2Document) -> Result<Vec<String>> {
   let reg = reg.as_ref().unwrap();
   let context = Context {
     stylesheet: &reg.0,
-    document,
+    document: &document,
   };
   Ok(vec![
     reg.1.render(PDF_TEMPLATE_PAGES[0], &context)?,
