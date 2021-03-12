@@ -1,22 +1,25 @@
-import { SearchArguments, SearchResult, SearchType, SearchTypeMapping } from './search.model';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+
+import { GlobalModel } from '../../models/global.model';
 import { TauriService } from '../tauri/tauri.service';
+
+import { SearchArguments, SearchResult, SearchType, SearchTypeMapping, searchTypes } from './search.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
-  public searchTypeMappings: SearchTypeMapping[] = [
-    { viewValue: 'Stoffname', value: 'chemicalName' },
-    { viewValue: 'Summenformel', value: 'empiricalFormula' },
-    { viewValue: 'Nummern', value: 'numbers' },
-    { viewValue: 'Volltext', value: 'fullText' },
-  ];
+  searchTypeMappingsSubject = new BehaviorSubject<SearchTypeMapping[]>([]);
+  searchTypeMappingsObservable = this.searchTypeMappingsSubject.asObservable();
 
   constructor(
     private tauriService: TauriService,
+    private globals: GlobalModel,
   ) {
+    this.globals.localizedStringsObservable.subscribe((strings) => this.searchTypeMappingsSubject.next(
+      searchTypes.map((t) => ({ viewValue: strings.search.types[t], value: t }))
+    ));
   }
 
   /**

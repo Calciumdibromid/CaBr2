@@ -4,12 +4,12 @@
       <img src="assets/icons/menu.svg" />
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="newDocument()">{{strings.menu.newDocument}}</button>
-      <button mat-menu-item (click)="loadFile()">{{strings.menu.loadFile}}</button>
-      <button mat-menu-item (click)="saveFile('cb2')">{{strings.menu.saveFile}}</button>
-      <button mat-menu-item (click)="exportPDF()">{{strings.menu.exportPDF}}</button>
+      <button mat-menu-item (click)="newDocument()">{{ strings.menu.newDocument }}</button>
+      <button mat-menu-item (click)="loadFile()">{{ strings.menu.loadFile }}</button>
+      <button mat-menu-item (click)="saveFile('cb2')">{{ strings.menu.saveFile }}</button>
+      <button mat-menu-item (click)="exportPDF()">{{ strings.menu.exportPDF }}</button>
       <mat-divider></mat-divider>
-      <button mat-menu-item (click)='openManualDialog()'>Anleitung</button>
+      <button mat-menu-item (click)="openManualDialog()">{{ strings.menu.quickStart }}</button>
     </mat-menu>
     <br />
     <button class="icon" mat-icon-button (click)="scroll(headerTarget)">

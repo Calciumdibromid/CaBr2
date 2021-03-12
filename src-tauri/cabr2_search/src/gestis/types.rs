@@ -50,8 +50,8 @@ pub struct Alias {
 #[serde(rename_all = "camelCase")]
 pub enum SearchType {
   ChemicalName,
+  ChemicalFormula,
   Numbers,
-  EmpiricalFormula,
   FullText,
 }
 

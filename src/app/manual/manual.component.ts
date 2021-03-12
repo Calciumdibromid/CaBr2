@@ -1,16 +1,25 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
+import { GlobalModel } from '../@core/models/global.model';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
+
 @Component({
   selector: 'app-manual',
   templateUrl: './manual.component.html',
   styleUrls: ['./manual.component.scss'],
 })
 export class ManualComponent implements OnInit {
+  strings!: LocalizedStrings;
+
   constructor(
     public dialogRef: MatDialogRef<ManualComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: {content: string },
-    ) {}
+    @Inject(MAT_DIALOG_DATA) public data: { content: string },
 
-  ngOnInit(): void {}
+    private globals: GlobalModel,
+  ) {
+    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+  }
+
+  ngOnInit(): void { }
 }
