@@ -23,7 +23,6 @@ const log = (level: LogLevel, path: string, ...messages: any[]): void => {
  * for development purposes use the methods of `console.*`.
  */
 export default class Logger {
-
   path: string;
 
   /**

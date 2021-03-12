@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
     private alertService: AlertService,
     private i18nService: I18nService,
   ) {
-    this.global.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+    this.global.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
     // this is for testing only
     this.i18nService.getAvailableLanguages().subscribe(
       (languages) => logger.debug('available localizations:', languages),
@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
           (err) => {
             logger.error(err);
             this.alertService.error(this.strings.error.localeLoading);
-          }
+          },
         );
         this.switchMode(this.config.global.darkTheme);
       },

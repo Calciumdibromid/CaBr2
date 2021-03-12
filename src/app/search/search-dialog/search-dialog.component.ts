@@ -14,7 +14,7 @@ const logger = new Logger('search-dialog');
 @Component({
   selector: 'app-search-dialog',
   templateUrl: './search-dialog.component.html',
-  styleUrls: ['./search-dialog.component.scss']
+  styleUrls: ['./search-dialog.component.scss'],
 })
 export class SearchDialogComponent implements OnInit {
   searchResults: SearchResult[] = [];
@@ -34,7 +34,7 @@ export class SearchDialogComponent implements OnInit {
     private searchService: SearchService,
     private alertService: AlertService,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
   }
 
   ngOnInit(): void {
@@ -46,16 +46,18 @@ export class SearchDialogComponent implements OnInit {
     this.searchResults = [];
     this.searchFinished = false;
     this.searchFailed = false;
-    this.subscription.subscribe((response) => {
-      this.searchResults = response;
-      this.searchFinished = true;
-    },
+    this.subscription.subscribe(
+      (response) => {
+        this.searchResults = response;
+        this.searchFinished = true;
+      },
       (err) => {
         this.searchFinished = true;
         this.searchFailed = true;
         logger.error('loading search results failed:', err);
         this.alertService.error(this.strings.error.loadSearchResults);
-      });
+      },
+    );
   }
 
   setSelected(selected: SearchResult): void {
