@@ -82,7 +82,6 @@ fn render_doc(document: PDFCaBr2Document) -> Result<Vec<String>> {
   }
 
   log::debug!("converted data: {:#?}", document);
-  return Err(LoadSaveError::PdfMergeError("SUCCESS".into()));
 
   let mut reg = REG.lock().unwrap();
 
@@ -117,9 +116,9 @@ fn init_handlebars() -> Result<(String, Handlebars<'static>)> {
   }
 
   let mut buf = String::new();
-  let file = OpenOptions::new()
-    .read(true)
-    .open(template_path.with_file_name("styles").with_extension("css"))?;
+  template_path.push("styles.css");
+  log::trace!("styles_ path: {:?}", template_path);
+  let file = OpenOptions::new().read(true).open(template_path)?;
   let mut reader = BufReader::new(file);
   reader.read_to_string(&mut buf)?;
 

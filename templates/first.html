@@ -68,17 +68,17 @@
     </td>
   </tr>
 
+  {{#each document.substanceData}}
   <tr>
-    {{#each document.substanceData}}
-    <td class='min-width-5cm' colspan='2'>{{name}}</td>
-    <td class='min-width-2cm'>{{molar_mass}}</td>
-    <td class='min-width-2cm'>{{boiling_point}}<br/>{{melting_point}}</td>
+    <td class='min-width-5cm' colspan='2'>{{name.data}}<br/>{{molecularFormula.data}}</td>
+    <td class='min-width-2cm'>{{molarMass.data}}</td>
+    <td class='min-width-2cm'>{{boilingPoint.data}}<br/>{{meltingPoint.data}}</td>
     <td>TODO</td> {{! ghs symbols}}
     <td>TODO</td> {{! h-/p-phrases}}
-    <td>{{mak}}<br/>{{lethal_dose}}<br/>{{water_hazard_class}}</td>
-    <td>{{amount}}</td>
-    {{/each}}
+    <td>{{mak.data}}<br/>{{lethalDose.data}}<br/>{{waterHazardClass.data}}</td>
+    <td>{{amount.data}}</td>
   </tr>
+  {{/each}}
 
   <!-- h and p -->
   <tr>
