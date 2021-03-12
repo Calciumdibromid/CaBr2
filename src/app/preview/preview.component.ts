@@ -30,7 +30,6 @@ interface SimpleSubstanceData {
   styleUrls: ['./preview.component.scss'],
 })
 export class PreviewComponent implements OnInit {
-
   strings!: LocalizedStrings;
 
   header!: Header;
@@ -38,7 +37,7 @@ export class PreviewComponent implements OnInit {
   substanceData!: SimpleSubstanceData[];
 
   constructor(public globals: GlobalModel) {
-    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
   }
 
   ngOnInit(): void {
@@ -46,27 +45,29 @@ export class PreviewComponent implements OnInit {
 
     this.globals.substanceDataObservable
       .pipe(
-        map(data => data.map<SimpleSubstanceData>(value => ({
-          name: value.name.modifiedData ?? value.name.originalData,
-          cas: value.cas.modifiedData ?? value.cas.originalData,
-          molecularFormula: value.molecularFormula.modifiedData ?? value.molecularFormula.originalData,
-          molarMass: value.molarMass.modifiedData ?? value.molecularFormula.originalData,
-          meltingPoint: value.meltingPoint.modifiedData ?? value.meltingPoint.originalData,
-          boilingPoint: value.boilingPoint.modifiedData ?? value.boilingPoint.originalData,
-          waterHazardClass: value.waterHazardClass.modifiedData ?? value.waterHazardClass.originalData,
-          hPhrases: value.hPhrases.modifiedData ?? value.hPhrases.originalData,
-          pPhrases: value.pPhrases.modifiedData ?? value.pPhrases.originalData,
-          signalWord: value.signalWord.modifiedData ?? value.signalWord.originalData,
-          symbols: value.symbols.modifiedData ?? value.symbols.originalData,
-          lethalDose: value.lethalDose.modifiedData ?? value.lethalDose.originalData,
-          mak: value.mak.modifiedData ?? value.mak.originalData,
-          amount: value.amount.modifiedData ?? value.amount.originalData,
-        })))
+        map((data) =>
+          data.map<SimpleSubstanceData>((value) => ({
+            name: value.name.modifiedData ?? value.name.originalData,
+            cas: value.cas.modifiedData ?? value.cas.originalData,
+            molecularFormula: value.molecularFormula.modifiedData ?? value.molecularFormula.originalData,
+            molarMass: value.molarMass.modifiedData ?? value.molecularFormula.originalData,
+            meltingPoint: value.meltingPoint.modifiedData ?? value.meltingPoint.originalData,
+            boilingPoint: value.boilingPoint.modifiedData ?? value.boilingPoint.originalData,
+            waterHazardClass: value.waterHazardClass.modifiedData ?? value.waterHazardClass.originalData,
+            hPhrases: value.hPhrases.modifiedData ?? value.hPhrases.originalData,
+            pPhrases: value.pPhrases.modifiedData ?? value.pPhrases.originalData,
+            signalWord: value.signalWord.modifiedData ?? value.signalWord.originalData,
+            symbols: value.symbols.modifiedData ?? value.symbols.originalData,
+            lethalDose: value.lethalDose.modifiedData ?? value.lethalDose.originalData,
+            mak: value.mak.modifiedData ?? value.mak.originalData,
+            amount: value.amount.modifiedData ?? value.amount.originalData,
+          })),
+        ),
       )
-      .subscribe(data => this.substanceData = data);
+      .subscribe((data) => (this.substanceData = data));
   }
 
   getPhraseNumber(phrases: [string, string][]): string[] {
-    return phrases.map(p => p[0]);
+    return phrases.map((p) => p[0]);
   }
 }

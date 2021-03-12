@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd "$(dirname "$0")/../src-tauri"
+crate_root="$(pwd)"
+echo "crate_root=$crate_root"
+
+find "$crate_root" -name Cargo.toml | while read line; do
+  cd "$(dirname "$line")"
+  echo "context: $(pwd)"
+  sed -i "/^version = /cversion = \"$1\"" Cargo.toml
+done

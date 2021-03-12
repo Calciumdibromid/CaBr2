@@ -28,6 +28,9 @@ impl Plugin for Config {
       Ok(command) => {
         log::trace!("command: {:?}", &command);
         match command {
+          Cmd::GetProgramVersion { callback, error } => {
+            tauri::execute_promise(webview, move || Ok(env!("CARGO_PKG_VERSION")), callback, error);
+          }
           Cmd::GetConfig { callback, error } => {
             tauri::execute_promise(
               webview,

@@ -42,8 +42,8 @@ export class YesNoDialogComponent implements OnInit {
 
     private globals: GlobalModel,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }

@@ -37,17 +37,15 @@ export class GlobalModel {
   localizedStringsSubject = new BehaviorSubject<LocalizedStrings>(I18nService.getDefaultStrings());
   localizedStringsObservable = this.localizedStringsSubject.asObservable();
 
-  headerSubject = new BehaviorSubject<Header>(
-    {
-      assistant: '',
-      documentTitle: '',
-      labCourse: '',
-      name: '',
-      organisation: '',
-      place: '',
-      preparation: '',
-    }
-  );
+  headerSubject = new BehaviorSubject<Header>({
+    assistant: '',
+    documentTitle: '',
+    labCourse: '',
+    name: '',
+    organisation: '',
+    place: '',
+    preparation: '',
+  });
   headerObservable = this.headerSubject.asObservable();
 
   searchResultSubject = new BehaviorSubject<SearchResult[]>([]);

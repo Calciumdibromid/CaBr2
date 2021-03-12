@@ -33,14 +33,7 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
     ManualComponent,
     YesNoDialogComponent,
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    BrowserAnimationsModule,
-    MatModules,
-    AlertModule,
-  ],
+  imports: [BrowserModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatModules, AlertModule],
   providers: [GlobalModel, ConfigModel],
   bootstrap: [AppComponent],
 })

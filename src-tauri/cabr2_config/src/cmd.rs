@@ -5,6 +5,10 @@ use super::types::JsonConfig;
 #[derive(Debug, Deserialize)]
 #[serde(tag = "cmd", rename_all = "camelCase")]
 pub enum Cmd {
+  GetProgramVersion {
+    callback: String,
+    error: String,
+  },
   GetConfig {
     callback: String,
     error: String,
@@ -26,5 +30,5 @@ pub enum Cmd {
     language: String,
     callback: String,
     error: String,
-  }
+  },
 }
