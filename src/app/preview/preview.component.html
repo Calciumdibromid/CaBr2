@@ -64,6 +64,12 @@
         <td colspan="4" class="full-height top">TODO</td>
         <td colspan="4" class="full-height top">TODO</td>
       </tr>
+      <tr>
+        <td colspan="8">
+          <b>{{ strings.preview.sources }}:</b>
+          {{ getProviders() }}
+        </td>
+      </tr>
     </table>
     <table class="print unselectable">
       <tr>
@@ -115,11 +121,5 @@
         </td>
       </tr>
     </table>
-  </div>
-  <div>
-    <h3 class="mat-h3">{{strings.preview.sources}}:</h3>
-    <p>
-      {{getProviders()}}
-    </p>
   </div>
 </mat-card>
