@@ -1,17 +1,12 @@
+import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
 import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-
-import { I18nService, LocalizedStrings, LocalizedStringsHeader } from '../@core/services/i18n/i18n.service';
-import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
-import { ConfigModel } from '../@core/models/config.model';
-import { ConfigService } from '../@core/services/config/config.service';
-import { GlobalModel } from '../@core/models/global.model';
-import Logger from '../@core/utils/logger';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Subscription } from 'rxjs';
 
-const logger = new Logger('settings');
+import { ConfigModel, configObservable } from '../@core/models/config.model';
+import { I18nService, LocalizedStrings, LocalizedStringsHeader } from '../@core/services/i18n/i18n.service';
+import { GlobalModel } from '../@core/models/global.model';
 
 @Component({
   selector: 'app-settings',
@@ -26,13 +21,12 @@ export class SettingsComponent implements OnInit, OnDestroy {
   form: FormGroup;
   subscriptions: Subscription[] = [];
 
+  private config!: ConfigModel;
+
   constructor(
     public dialogRef: MatDialogRef<SettingsComponent>,
     private globals: GlobalModel,
-    private config: ConfigModel,
     private i18nService: I18nService,
-    private configService: ConfigService,
-    private alertService: AlertService,
     private formBuilder: FormBuilder,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
@@ -42,42 +36,32 @@ export class SettingsComponent implements OnInit, OnDestroy {
     });
   }
 
+  get f(): { [p: string]: AbstractControl } {
+    return this.form.controls;
+  }
+
   ngOnInit(): void {
-    const languageSubscription = this.i18nService.getAvailableLanguages().subscribe((languages) => {
-      this.languages = languages;
-    });
+    this.subscriptions.push(
+      this.i18nService.getAvailableLanguages().subscribe((languages) => this.languages = languages),
 
-    const configSubscription = this.configService.getConfig().subscribe((config) => {
-      this.form.patchValue({
-        language: config.global.language,
-        theme: config.global.darkTheme,
-      });
-    });
-
-    const darkModeSubscription = this.form
-      .get('theme')
-      ?.valueChanges.subscribe((change) => this.darkModeSwitched.emit(change));
-
-    const languageControlSubscription = this.form.get('language')?.valueChanges.subscribe((change) => {
-      this.config.global.language = change;
-      this.configService.saveConfig(this.config).subscribe(
-        () => logger.info('config saved'),
-        (err) => {
-          logger.error('saving config failed:', err);
-          this.alertService.error(this.strings.error.configSave);
+      configObservable.subscribe((config) => {
+        this.form.patchValue({
+          language: config.globalSection.language,
+          theme: config.globalSection.darkTheme,
         },
-      );
-    });
+          { emitEvent: false }
+        );
+        this.config = config;
+      }),
 
-    if (darkModeSubscription) {
-      this.subscriptions.push(darkModeSubscription);
-    }
+      this.f.theme.valueChanges.subscribe((change) =>
+        this.darkModeSwitched.emit(change)
+      ),
 
-    if (languageControlSubscription) {
-      this.subscriptions.push(languageControlSubscription);
-    }
-
-    this.subscriptions.push(languageSubscription, configSubscription);
+      this.f.language.valueChanges.subscribe((change) => {
+        this.config.setLanguage(change);
+      })
+    );
   }
 
   ngOnDestroy(): void {

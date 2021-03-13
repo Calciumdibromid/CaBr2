@@ -31,9 +31,9 @@ export class MenubarComponent implements OnInit {
 
   private loadFilter: string[] = [];
   private saveFilter: string[] = [];
+
   constructor(
     public globals: GlobalModel,
-    public config: ConfigModel,
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
     private alertService: AlertService,
