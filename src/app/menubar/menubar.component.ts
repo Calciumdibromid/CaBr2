@@ -15,6 +15,7 @@ import Logger from '../@core/utils/logger';
 import { ManualComponent } from '../manual/manual.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { TauriService } from '../@core/services/tauri/tauri.service';
+import { ConfigService } from '../@core/services/config/config.service';
 
 const logger = new Logger('menubar');
 
@@ -29,6 +30,8 @@ export class MenubarComponent implements OnInit {
 
   strings!: LocalizedStrings;
 
+  programmVersion!: string;
+
   private loadFilter: string[] = [];
   private saveFilter: string[] = [];
 
@@ -37,6 +40,7 @@ export class MenubarComponent implements OnInit {
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
     private alertService: AlertService,
+    private configService: ConfigService,
     private dialog: MatDialog,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
@@ -75,6 +79,11 @@ export class MenubarComponent implements OnInit {
     this.globals.inCaseOfDangerSubject.next(docsTemplate.inCaseOfDangerSubject);
 
     this.globals.substanceDataSubject.next([]);
+
+    this.configService
+      .getProgramVersion()
+      .pipe(first())
+      .subscribe((version) => (this.programmVersion = version));
   }
 
   newDocument(): void {
@@ -83,6 +92,10 @@ export class MenubarComponent implements OnInit {
 
   scroll(el: HTMLElement): void {
     el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  openMail(): void {
+    this.tauriService.openUrl('mailto:cabr2.help@gmail.com');
   }
 
   modelToDocument(): Observable<CaBr2Document> {
