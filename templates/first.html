@@ -75,7 +75,7 @@
     <td class='min-width-2cm{{#if (or boilingPoint.modified meltingPoint.modified)}} modified{{/if}}'>{{boilingPoint.data}}<br/>{{meltingPoint.data}}</td>
     <td class='min-width-5cm' colspan='2'>
       {{#each symbols.data}}
-        {{ghs_symbols .}}"
+        {{ghs_symbols @index}}
       {{/each}}
     </td>
     <td>TODO</td> {{! h-/p-phrases}}
