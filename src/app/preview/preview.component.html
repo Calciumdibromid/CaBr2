@@ -3,7 +3,7 @@
     <b>{{ strings.preview.info }}</b>
   </h2>
   <div class="flex">
-    <table class="print unselectable">
+    <table class="unselectable">
       <!-- header -->
       <tr>
         <th colspan="8">{{ header.documentTitle }}</th>
@@ -116,7 +116,10 @@
       </tr>
     </table>
   </div>
-
-  <!-- This is for testing purpose only by default the button is hidden -->
-  <button style="display: none" onclick="window.print()">{{ strings.base.print }}</button>
+  <div>
+    <h3 class="mat-h3">{{strings.preview.sources}}:</h3>
+    <p>
+      {{getProviders()}}
+    </p>
+  </div>
 </mat-card>
