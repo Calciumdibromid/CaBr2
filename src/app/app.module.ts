@@ -18,6 +18,7 @@ import { SearchComponent } from './search/search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
 import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
+import { SettingsComponent } from './settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
     EditSearchResultsComponent,
     ManualComponent,
     YesNoDialogComponent,
+    SettingsComponent,
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatModules, AlertModule],
   providers: [GlobalModel, ConfigModel],
