@@ -49,7 +49,6 @@ export class PreviewComponent implements OnInit {
       .pipe(
         map((data) =>
           data.map<SimpleSubstanceData>((value) => {
-            console.log(this.sources.indexOf(value.source.provider));
             if (this.sources.indexOf(value.source.provider) === -1) {
               this.sources.push(value.source.provider);
             }
