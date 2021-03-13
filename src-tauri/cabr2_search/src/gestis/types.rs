@@ -1,4 +1,4 @@
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 
 #[derive(Debug)]
 pub struct ParsedData {
@@ -43,39 +43,5 @@ pub struct Subchapter {
 
 #[derive(Debug, Deserialize)]
 pub struct Alias {
-  pub name: String,
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
-pub enum SearchType {
-  ChemicalName,
-  ChemicalFormula,
-  Numbers,
-  FullText,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SearchArgument {
-  pub search_type: SearchType,
-  pub pattern: String,
-}
-
-#[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SearchArguments {
-  #[serde(default)]
-  pub exact: bool,
-  pub arguments: Vec<SearchArgument>,
-}
-
-#[derive(Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct SearchResponse {
-  #[serde(rename(deserialize = "zvg_nr"))]
-  pub zvg_number: String,
-  #[serde(rename(deserialize = "cas_nr"))]
-  pub cas_number: Option<String>,
   pub name: String,
 }

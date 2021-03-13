@@ -108,7 +108,7 @@ export class SelectedSearchComponent {
       .get('userInput')
       ?.valueChanges.pipe(debounceTime(500))
       .subscribe((result) => {
-        this.searchService.searchSuggestions(selectionGroup.get('searchOption')?.value, result).subscribe(
+        this.searchService.searchSuggestions('gestis', selectionGroup.get('searchOption')?.value, result).subscribe(
           (response) => {
             this.suggestionResults.set(selectionGroup.get('searchOption')?.value, response);
           },
