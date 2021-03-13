@@ -3,8 +3,8 @@ use std::collections::HashMap;
 use lazy_static::lazy_static;
 use roxmltree::{Document, Node, NodeId};
 
-use super::error::{Result, SearchError};
 use super::types::{GestisResponse, ParsedData};
+use crate::error::{Result, SearchError};
 
 lazy_static! {
   pub static ref CHAPTER_MAPPING: HashMap<&'static str, (&'static str, &'static str)> = [

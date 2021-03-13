@@ -15,6 +15,12 @@
       "loadFile": "Open safety datasheet",
       "saveFile": "Save safety datasheet",
       "exportPDF": "Export as PDF",
+      "settings": "Settings",
+      "quickStart": "Quick Start"
+    },
+    "settings": {
+      "language": "Language",
+      "reloadRequired": "Reload required",
       "darkModeSwitchInfo": "Toggle light/dark theme"
     },
     "header": {
@@ -27,6 +33,12 @@
       "preparation": "Preparation/Task:"
     },
     "search": {
+      "types": {
+        "chemicalName": "Stoffname",
+        "chemicalFormula": "Summenformel",
+        "numbers": "Nummer",
+        "fullText": "Volltext"
+      },
       "exact": "Exact search",
       "option": "Search options:",
       "searchButton": "Search",
