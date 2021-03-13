@@ -1,10 +1,12 @@
-import { Component, HostBinding, Inject, OnInit, Renderer2 } from '@angular/core';
+import { Component, HostBinding, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { first, skip, switchMap } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
+import { Subscription } from 'rxjs';
 
+import { ConfigModel, configObservable } from './@core/models/config.model';
 import { I18nService, LocalizedStrings } from './@core/services/i18n/i18n.service';
 import { name, version } from '../../package.json';
 import { AlertService } from './@core/services/alertsnackbar/altersnackbar.service';
-import { ConfigModel } from './@core/models/config.model';
 import { ConfigService } from './@core/services/config/config.service';
 import { GlobalModel } from './@core/models/global.model';
 import Logger from './@core/utils/logger';
@@ -16,79 +18,91 @@ const logger = new Logger('main');
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   name = name;
   version = version;
   strings!: LocalizedStrings;
+
+  private config!: ConfigModel;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
 
-    private config: ConfigModel,
     private global: GlobalModel,
     private configService: ConfigService,
     private alertService: AlertService,
     private i18nService: I18nService,
   ) {
     this.global.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-    // this is for testing only
-    this.i18nService.getAvailableLanguages().subscribe(
-      (languages) => logger.debug('available localizations:', languages),
-      (err) => logger.error('getting available localizations failed:', err),
-    );
-    this.configService.getProgramVersion().subscribe(
-      (v) => logger.info(`running CaBr2 v${v}`)
-    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   ngOnInit(): void {
-    this.configService.getConfig().subscribe(
-      (config) => {
-        this.config.setConfig(config);
-        this.i18nService.getLocalizedStrings(config.global.language).subscribe(
-          (strings) => this.global.localizedStringsSubject.next(strings),
-          (err) => {
-            logger.error(err);
-            this.alertService.error(this.strings.error.localeLoading);
-          },
-        );
-        this.switchMode(this.config.global.darkTheme);
-      },
+    this.configService.getConfig().pipe(first()).subscribe(
+      (newConfig) => ConfigModel.setConfig(newConfig),
       (err) => {
         logger.error('loading config failed:', err);
         this.alertService.error(this.strings.error.configLoad);
       },
     );
 
-    this.configService.getHazardSymbols().subscribe(
-      (symbols) => this.global.setGHSSymbols(symbols),
-      (err) => {
-        logger.error('loading ghs-symbols failed:', err);
-        this.alertService.error(this.strings.error.getHazardSymbols);
-      },
+    this.subscriptions.push(
+      // skip initial config and first load
+      configObservable.pipe(
+        skip(2),
+        switchMap((config) => this.configService.saveConfig(config).pipe(first())),
+      ).subscribe(
+        () => logger.info('config saved'),
+        (err) => {
+          logger.error('saving config failed:', err);
+          this.alertService.error(this.strings.error.configSave);
+        },
+      ),
+
+      configObservable.subscribe((config) => {
+        // config is undefined before first call of this function
+        if (!(this.config?.globalSection.language === config.globalSection.language)) {
+          this.i18nService.getLocalizedStrings(config.globalSection.language).pipe(first()).subscribe(
+            (strings) => this.global.localizedStringsSubject.next(strings),
+            (err) => {
+              logger.error(err);
+              this.alertService.error(this.strings.error.localeLoading);
+            },
+          );
+        }
+
+        this.switchMode(config.globalSection.darkTheme);
+
+        this.config = config;
+      }),
+
+      this.configService.getHazardSymbols().subscribe(
+        (symbols) => this.global.setGHSSymbols(symbols),
+        (err) => {
+          logger.error('loading ghs-symbols failed:', err);
+          this.alertService.error(this.strings.error.getHazardSymbols);
+        },
+      )
     );
   }
 
   @HostBinding('class')
   get themeMode(): string {
-    return this.config.global.darkTheme ? 'theme-dark' : 'theme-light';
+    return this.config?.globalSection.darkTheme ? 'theme-dark' : 'theme-light';
   }
 
   switchMode(isDarkMode: boolean): void {
     const hostClass = isDarkMode ? 'theme-dark' : 'theme-light';
-    this.config.global.darkTheme = isDarkMode;
     this.renderer.setAttribute(this.document.body, 'class', hostClass);
   }
 
   switchModeSink(isDarkMode: boolean): void {
     this.switchMode(isDarkMode);
-    this.configService.saveConfig(this.config).subscribe(
-      () => logger.info('config saved'),
-      (err) => {
-        logger.error('saving config failed:', err);
-        this.alertService.error(this.strings.error.configSave);
-      },
-    );
+    this.config.setDarkMode(isDarkMode);
   }
 }

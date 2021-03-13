@@ -9,6 +9,7 @@
       <button mat-menu-item (click)="saveFile('cb2')">{{ strings.menu.saveFile }}</button>
       <button mat-menu-item (click)="exportPDF()">{{ strings.menu.exportPDF }}</button>
       <mat-divider></mat-divider>
+      <button mat-menu-item (click)="openSettingsDialog()">{{ strings.menu.settings }}</button>
       <button mat-menu-item (click)="openManualDialog()">{{ strings.menu.quickStart }}</button>
     </mat-menu>
     <br />
@@ -27,15 +28,6 @@
     <button class="icon" mat-icon-button (click)="scroll(preview)">
       <img class="svg" src="assets/icons/arrow.svg" />
     </button>
-    <br />
-    <mat-slide-toggle
-      class="toggle"
-      (change)="onDarkModeSwitched($event)"
-      [checked]="config.global.darkTheme"
-      color="primary"
-      [matTooltip]="strings.menu.darkModeSwitchInfo"
-    >
-    </mat-slide-toggle>
   </mat-sidenav>
   <mat-sidenav-content class="smooth-scroll unselectable">
     <div #headerTarget>

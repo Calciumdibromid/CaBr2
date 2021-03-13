@@ -16,8 +16,13 @@
       "loadFile": "Bestehende Betriebsanweisung öffnen",
       "saveFile": "Betriebsanweisung speichern",
       "exportPDF": "Als PDF exportieren",
-      "darkModeSwitchInfo": "Auf helles/dunkles Thema umschalten",
+      "settings": "Einstellungen",
       "quickStart": "Anleitung"
+    },
+    "settings": {
+      "language": "Sprache",
+      "reloadRequired": "Neu laden der Seite nötig",
+      "darkModeSwitchInfo": "Auf helles/dunkles Thema umschalten"
     },
     "header": {
       "docTitle": "Dokument Titel:",

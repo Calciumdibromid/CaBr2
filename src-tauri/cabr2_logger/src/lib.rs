@@ -9,7 +9,7 @@ use log::LevelFilter;
 use serde_json::{to_string_pretty, Value};
 use tauri::plugin::Plugin;
 
-use cabr2_config::{read_config, TomlConfig, TMP_DIR};
+use cabr2_config::{read_config, BackendConfig, TMP_DIR};
 use cabr2_types::logging::LogLevel;
 
 use cmd::Cmd;
@@ -30,7 +30,7 @@ impl Logger {
       .unwrap_or_else(|e| {
         eprintln!("loading config failed: {}", e);
         eprintln!("continuing with default config");
-        TomlConfig::default()
+        BackendConfig::default()
       })
       .logging;
 
