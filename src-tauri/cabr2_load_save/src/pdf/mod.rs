@@ -159,7 +159,7 @@ fn ghs_symbols(
 ) -> handlebars::HelperResult {
   let param = h.param(0).unwrap();
   out.write("<img class='ghs' src=\"")?;
-  out.write(format!("data:image/png;base64,{}", TEST).borrow())?; // TODO: return base64 encoded ghs symbols based on param
+  out.write(&format!("data:image/png;base64,{}", TEST))?; // TODO: return base64 encoded ghs symbols based on param
   out.write("\" alt=\"")?;
   out.write(param.value().render().as_ref())?; // alt content
   out.write("\" />")?;
