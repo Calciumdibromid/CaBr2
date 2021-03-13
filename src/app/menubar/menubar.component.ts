@@ -16,6 +16,7 @@ import { ManualComponent } from '../manual/manual.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 import { ConfigService } from '../@core/services/config/config.service';
+import { ReportBugComponent } from '../report-bug/report-bug.component';
 
 const logger = new Logger('menubar');
 
@@ -95,7 +96,7 @@ export class MenubarComponent implements OnInit {
   }
 
   openMail(): void {
-    this.tauriService.openUrl('mailto:cabr2.help@gmail.com');
+    this.dialog.open(ReportBugComponent);
   }
 
   modelToDocument(): Observable<CaBr2Document> {

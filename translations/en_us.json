@@ -23,6 +23,10 @@
       "reloadRequired": "Reload required",
       "darkModeSwitchInfo": "Toggle light/dark theme"
     },
+    "bugreport": {
+      "title": "Report a bug",
+      "sentence": "Report a bug on following email:"
+    },
     "header": {
       "docTitle": "Document title:",
       "organisation": "Organization:",
