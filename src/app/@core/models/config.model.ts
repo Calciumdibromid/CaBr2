@@ -1,30 +1,47 @@
-import { Injectable } from '@angular/core';
-import { LogLevel } from '../utils/logger';
+import { BehaviorSubject } from 'rxjs';
 
-@Injectable()
+import Logger from '../utils/logger';
+
+const logger = new Logger('config.model');
+
 export class ConfigModel {
-  global: Global = {
-    darkTheme: false,
-    language: 'de_de',
-  };
+  private global: Global;
 
-  // config should be read before saving so this should be ok
-  logging?: Logging;
+  constructor(global?: Global) {
+    if (global) {
+      this.global = global;
+    } else {
+      logger.debug('returning default config');
+      this.global = { darkTheme: false, language: 'de_de' };
+    }
+  }
 
-  setConfig(newConfig: ConfigModel) {
-    this.global = newConfig.global;
-    this.logging = newConfig.logging;
+  get globalSection(): Global {
+    return this.global;
+  }
+
+  static setConfig(config: ConfigModel): void {
+    // this must be config.global because this is mostly a deserialized JSON from the backend
+    configSubject.next(new ConfigModel(config.global));
+  }
+
+  setDarkMode(darkTheme: boolean): void {
+    if (this.global.darkTheme !== darkTheme) {
+      configSubject.next(new ConfigModel({ ...this.global, darkTheme }));
+    }
+  }
+
+  setLanguage(language: string): void {
+    if (this.global.language !== language) {
+      configSubject.next(new ConfigModel({ ...this.global, language }));
+    }
   }
 }
 
 export interface Global {
-  darkTheme: boolean;
-  language: string;
+  readonly darkTheme: boolean;
+  readonly language: string;
 }
 
-export interface Logging {
-  all: LogLevel;
-  cabr2: LogLevel;
-  rustls: LogLevel;
-  ureq: LogLevel;
-}
+export const configSubject = new BehaviorSubject<ConfigModel>(new ConfigModel());
+export const configObservable = configSubject.asObservable();
