@@ -1,0 +1,5 @@
+@import '~@angular/material/theming';
+
+$ang-CaBr2-primary: mat-palette($mat-orange);
+$ang-CaBr2-accent: mat-palette($mat-indigo, A200, A100, A400);
+$ang-CaBr2-warn: mat-palette($mat-red);
