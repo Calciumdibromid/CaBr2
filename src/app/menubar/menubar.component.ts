@@ -2,21 +2,19 @@ import { combineLatest, Observable } from 'rxjs';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { first, map, switchMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
-import { ConfigModel } from '../@core/models/config.model';
+import { ConfigService } from '../@core/services/config/config.service';
 import { docsTemplate } from '../../assets/docsTemplate.json';
 import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 import Logger from '../@core/utils/logger';
 import { ManualComponent } from '../manual/manual.component';
+import { ReportBugComponent } from '../report-bug/report-bug.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { TauriService } from '../@core/services/tauri/tauri.service';
-import { ConfigService } from '../@core/services/config/config.service';
-import { ReportBugComponent } from '../report-bug/report-bug.component';
 
 const logger = new Logger('menubar');
 
