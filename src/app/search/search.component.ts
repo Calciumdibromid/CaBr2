@@ -47,7 +47,7 @@ export class SearchComponent implements OnInit {
     private dialog: MatDialog,
     public globals: GlobalModel,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
   }
 
   ngOnInit(): void {
@@ -71,12 +71,12 @@ export class SearchComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.substanceService
-          .substanceInfo(result.zvgNumber)
-          .subscribe((value) => {
+        this.substanceService.substanceInfo('gestis', result.zvgNumber).subscribe(
+          (value) => {
             const cas = this.modifiedOrOriginal(value.cas);
             if (
-              cas && this.globals.substanceDataSubject.getValue().some(s => cas === this.modifiedOrOriginal(s.cas))
+              cas &&
+              this.globals.substanceDataSubject.getValue().some((s) => cas === this.modifiedOrOriginal(s.cas))
             ) {
               logger.warning('substance with same cas number already present:', cas);
               this.alertService.error(this.strings.error.substanceWithCASExist);
@@ -85,12 +85,12 @@ export class SearchComponent implements OnInit {
             const data = [...this.globals.substanceDataSubject.getValue(), value];
             this.dataSource.connect().next(data);
             this.globals.substanceDataSubject.next(data);
-
           },
-            (err) => {
-              logger.error('could not get substance information:', err);
-              this.alertService.error(this.strings.error.substanceLoadData);
-            });
+          (err) => {
+            logger.error('could not get substance information:', err);
+            this.alertService.error(this.strings.error.substanceLoadData);
+          },
+        );
 
         this.selectedSearch?.clear();
       }
@@ -107,31 +107,32 @@ export class SearchComponent implements OnInit {
         minHeight: 300,
       })
       .afterClosed()
-      .subscribe((substanceData?: SubstanceData) => {
-        // substanceData is only filled if editing was successful
-        if (substanceData) {
-          const newData = this.globals.substanceDataSubject.getValue();
-          const index = newData.indexOf(origData);
-          newData[index] = substanceData;
-          this.globals.substanceDataSubject.next(newData);
-        }
-      },
+      .subscribe(
+        (substanceData?: SubstanceData) => {
+          // substanceData is only filled if editing was successful
+          if (substanceData) {
+            const newData = this.globals.substanceDataSubject.getValue();
+            const index = newData.indexOf(origData);
+            newData[index] = substanceData;
+            this.globals.substanceDataSubject.next(newData);
+          }
+        },
         (err) => {
           logger.error('editing substance failed:', err);
           this.alertService.error(this.strings.error.editSubstance);
-        });
+        },
+      );
   }
 
   removeSubstance(event: MouseEvent, data: SubstanceData): void {
     event.preventDefault();
     event.stopPropagation();
 
-    this.globals.substanceDataObservable
-      .subscribe((value) => {
-        const index = value.indexOf(data);
-        value.splice(index, 1);
-        this.dataSource.connect().next(value);
-      });
+    this.globals.substanceDataObservable.subscribe((value) => {
+      const index = value.indexOf(data);
+      value.splice(index, 1);
+      this.dataSource.connect().next(value);
+    });
   }
 
   userUrlAvailable(source: Source): boolean {

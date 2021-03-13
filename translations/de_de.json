@@ -8,13 +8,20 @@
       "print": "Drucken",
       "cancel": "Abbrechen",
       "ok": "Ok",
-      "save": "Speichern"
+      "save": "Speichern",
+      "close": "Schließen"
     },
     "menu": {
       "newDocument": "Neue Betriebsanweisung",
       "loadFile": "Bestehende Betriebsanweisung öffnen",
       "saveFile": "Betriebsanweisung speichern",
       "exportPDF": "Als PDF exportieren",
+      "settings": "Einstellungen",
+      "quickStart": "Anleitung"
+    },
+    "settings": {
+      "language": "Sprache",
+      "reloadRequired": "Neu laden der Seite nötig",
       "darkModeSwitchInfo": "Auf helles/dunkles Thema umschalten"
     },
     "header": {
@@ -27,6 +34,12 @@
       "preparation": "Herzustellendes Präparat:"
     },
     "search": {
+      "types": {
+        "chemicalName": "Stoffname",
+        "chemicalFormula": "Summenformel",
+        "numbers": "Nummer",
+        "fullText": "Volltext"
+      },
       "exact": "Exakte Suche",
       "option": "Suchoption:",
       "searchButton": "Suche",

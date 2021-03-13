@@ -2,6 +2,9 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum SearchError {
+  #[error("unknown provider: {0}")]
+  UnknownProvider(String),
+
   #[error("rate limited by server")]
   RateLimit,
 

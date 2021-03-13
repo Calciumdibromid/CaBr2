@@ -70,7 +70,8 @@ export interface GroupMapping<T> {
 
 const unitMappings: GroupMapping<Unit>[] = [
   {
-    viewValue: 'Reine Substanz', unitMappings: [
+    viewValue: 'Reine Substanz',
+    unitMappings: [
       { viewValue: 'l (Liter)', value: Unit.LITRE },
       { viewValue: 'ml (Milliliter)', value: Unit.MILLILITER },
       { viewValue: 'µl (Mikroliter)', value: Unit.MICROLITRE },
@@ -79,16 +80,17 @@ const unitMappings: GroupMapping<Unit>[] = [
       { viewValue: 'µg (Mikrogramm)', value: Unit.MICROGRAM },
       { viewValue: 'Stück', value: Unit.PIECES },
       { viewValue: 'Custom', value: Unit.CUSTOM }, // TODO implement custom type
-    ]
+    ],
   },
   {
-    viewValue: 'Lösung', unitMappings: [
+    viewValue: 'Lösung',
+    unitMappings: [
       { viewValue: '% (v/v)', value: Unit.SOLUTIONRELATIVE },
       { viewValue: 'mol/l', value: Unit.SOLUTIONMOL },
       { viewValue: 'mmol/l', value: Unit.SOLUTIONMILLIMOL },
       { viewValue: 'µmol/l', value: Unit.SOLUTIONMICROMOL },
-    ]
-  }
+    ],
+  },
 ];
 
 const temperatureUnitMapping: UnitMapping<TemperatureUnit>[] = [

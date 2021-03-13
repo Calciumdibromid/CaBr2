@@ -1,22 +1,22 @@
-import { SearchArguments, SearchResult, SearchType, SearchTypeMapping } from './search.model';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+
+import { GlobalModel } from '../../models/global.model';
 import { TauriService } from '../tauri/tauri.service';
 
+import { SearchArguments, SearchResult, SearchType, SearchTypeMapping, searchTypes } from './search.model';
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchService {
-  public searchTypeMappings: SearchTypeMapping[] = [
-    { viewValue: 'Stoffname', value: 'chemicalName' },
-    { viewValue: 'Summenformel', value: 'empiricalFormula' },
-    { viewValue: 'Nummern', value: 'numbers' },
-    { viewValue: 'Volltext', value: 'fullText' },
-  ];
+  searchTypeMappingsSubject = new BehaviorSubject<SearchTypeMapping[]>([]);
+  searchTypeMappingsObservable = this.searchTypeMappingsSubject.asObservable();
 
-  constructor(
-    private tauriService: TauriService,
-  ) {
+  constructor(private tauriService: TauriService, private globals: GlobalModel) {
+    this.globals.localizedStringsObservable.subscribe((strings) =>
+      this.searchTypeMappingsSubject.next(searchTypes.map((t) => ({ viewValue: strings.search.types[t], value: t }))),
+    );
   }
 
   /**
@@ -32,11 +32,12 @@ export class SearchService {
    * ]
    * ```
    */
-  searchSuggestions(searchType: SearchType, query: string): Observable<string[]> {
+  searchSuggestions(provider: string, searchType: SearchType, query: string): Observable<string[]> {
     return this.tauriService.promisified({
       cmd: 'searchSuggestions',
+      provider,
       pattern: query,
-      searchType
+      searchType,
     });
   }
 
@@ -59,9 +60,10 @@ export class SearchService {
    * ]
    * ```
    */
-  search(args: SearchArguments): Observable<SearchResult[]> {
+  search(provider: string, args: SearchArguments): Observable<SearchResult[]> {
     return this.tauriService.promisified({
       cmd: 'search',
+      provider,
       arguments: args,
     });
   }

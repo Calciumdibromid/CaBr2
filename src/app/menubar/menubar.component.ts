@@ -13,6 +13,7 @@ import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 import Logger from '../@core/utils/logger';
 import { ManualComponent } from '../manual/manual.component';
+import { SettingsComponent } from '../settings/settings.component';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
 const logger = new Logger('menubar');
@@ -30,15 +31,15 @@ export class MenubarComponent implements OnInit {
 
   private loadFilter: string[] = [];
   private saveFilter: string[] = [];
+
   constructor(
     public globals: GlobalModel,
-    public config: ConfigModel,
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
     private alertService: AlertService,
     private dialog: MatDialog,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
 
     this.loadSaveService.getAvailableDocumentTypes().subscribe(
       (types) => {
@@ -194,10 +195,16 @@ export class MenubarComponent implements OnInit {
   }
 
   openManualDialog(): void {
-    this.dialog.open(ManualComponent);
+    this.dialog.open(ManualComponent, {
+      data: { content: 'foo' },
+    });
   }
 
-  onDarkModeSwitched({ checked }: MatSlideToggleChange): void {
-    this.darkModeSwitched.emit(checked);
+  openSettingsDialog(): void {
+    const dialogRef = this.dialog.open(SettingsComponent);
+
+    dialogRef.componentInstance.darkModeSwitched.subscribe((checked: boolean) => {
+      this.darkModeSwitched.emit(checked);
+    });
   }
 }

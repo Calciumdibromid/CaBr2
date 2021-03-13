@@ -21,21 +21,25 @@ $ang-CaBr2-warn: mat-palette($mat-red);
 
 // Create the theme object. A theme consists of configurations for individual
 // theming systems such as "color" or "typography".
-$ang-CaBr2-theme: mat-light-theme((
-  color: (
-    primary: $ang-CaBr2-primary,
-    accent: $ang-CaBr2-accent,
-    warn: $ang-CaBr2-warn,
-  ),
-));
+$ang-CaBr2-theme: mat-light-theme(
+  (
+    color: (
+      primary: $ang-CaBr2-primary,
+      accent: $ang-CaBr2-accent,
+      warn: $ang-CaBr2-warn,
+    ),
+  )
+);
 
-$ang-CaBr2-theme-dark: mat-dark-theme((
-  color: (
-    primary: $ang-CaBr2-primary,
-    accent: $ang-CaBr2-accent,
-    warn: $ang-CaBr2-warn,
-  ),
-));
+$ang-CaBr2-theme-dark: mat-dark-theme(
+  (
+    color: (
+      primary: $ang-CaBr2-primary,
+      accent: $ang-CaBr2-accent,
+      warn: $ang-CaBr2-warn,
+    ),
+  )
+);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
@@ -85,13 +89,14 @@ $ang-CaBr2-theme-dark: mat-dark-theme((
 
 /* You can add global styles to this file, and also import other style files */
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
 .border-margin-padding-rounded {

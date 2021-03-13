@@ -1,8 +1,8 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
-import { SearchArgument, SearchType, SearchTypeMapping } from '../../@core/services/search/search.model';
+import { SearchArgument, SearchType, SearchTypeMapping, searchTypes } from '../../@core/services/search/search.model';
 import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
 import { GlobalModel } from '../../@core/models/global.model';
 import { LocalizedStrings } from '../../@core/services/i18n/i18n.service';
@@ -16,26 +16,19 @@ const logger = new Logger('selected-search');
   templateUrl: './selected-search.component.html',
   styleUrls: ['./selected-search.component.scss'],
 })
-export class SelectedSearchComponent implements OnInit {
+export class SelectedSearchComponent {
   @Output()
   triggerSearch = new EventEmitter();
 
   strings!: LocalizedStrings;
 
-  searchOptions: SearchTypeMapping[] = this.searchService.searchTypeMappings;
-
-  availableSearchTypes: SearchType[] = this.searchService.searchTypeMappings.map(value => value.value);
+  searchOptions!: SearchTypeMapping[];
 
   form: FormGroup = this.formBuilder.group({
     selections: this.formBuilder.array([this.initSelectionForm()]),
   });
 
-  suggestionResults: Map<SearchType, string[]> = new Map([
-    ['chemicalName', []],
-    ['empiricalFormula', []],
-    ['numbers', []],
-    ['fullText', []],
-  ]);
+  suggestionResults: Map<SearchType, string[]> = new Map(searchTypes.map((t) => [t, []]));
 
   addButtonHover = false;
 
@@ -43,17 +36,28 @@ export class SelectedSearchComponent implements OnInit {
     private globals: GlobalModel,
     private searchService: SearchService,
     private alertService: AlertService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
-  }
-
-  ngOnInit(): void {
+    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
+    this.searchService.searchTypeMappingsObservable.subscribe((mapping) => (this.searchOptions = mapping));
   }
 
   initSelectionForm(): FormGroup {
+    let searchOption;
+
+    for (const option of searchTypes) {
+      if (!this.selections?.controls.some((selection) => selection.get('searchOption')?.value === option)) {
+        searchOption = option;
+        break;
+      }
+    }
+
+    if (!searchOption) {
+      throw new Error('searchOption is undefined');
+    }
+
     const selectionGroup = this.formBuilder.group({
-      searchOption: this.availableSearchTypes.shift(),
+      searchOption,
       userInput: '',
       hover: false,
     });
@@ -72,12 +76,11 @@ export class SelectedSearchComponent implements OnInit {
   }
 
   removeSearchOption(index: number): void {
-    this.availableSearchTypes.push(this.selections.at(index).get('searchOption')?.value);
     this.selections.removeAt(index);
   }
 
-  isDisabled(option: string): boolean {
-    return this.selections.controls.filter(value => value.get('searchOption')?.value === option).length > 0;
+  isDisabled(option: SearchType): boolean {
+    return this.selections.controls.some((selection) => selection.get('searchOption')?.value === option);
   }
 
   onEnter(event: any): boolean {
@@ -89,10 +92,8 @@ export class SelectedSearchComponent implements OnInit {
     return false;
   }
 
-  // TODO handle change in searchTypeSelection
-
   onSubmit(): SearchArgument[] {
-    return this.selections.controls.map<SearchArgument>(control => ({
+    return this.selections.controls.map<SearchArgument>((control) => ({
       searchType: control.get('searchOption')?.value,
       pattern: control.get('userInput')?.value,
     }));
@@ -107,18 +108,15 @@ export class SelectedSearchComponent implements OnInit {
       .get('userInput')
       ?.valueChanges.pipe(debounceTime(500))
       .subscribe((result) => {
-        this.searchService
-          .searchSuggestions(selectionGroup.get('searchOption')?.value, result)
-          .subscribe((response) => {
-            this.suggestionResults.set(
-              selectionGroup.get('searchOption')?.value,
-              response
-            );
+        this.searchService.searchSuggestions('gestis', selectionGroup.get('searchOption')?.value, result).subscribe(
+          (response) => {
+            this.suggestionResults.set(selectionGroup.get('searchOption')?.value, response);
           },
-            (err) => {
-              logger.error('loading search suggestions failed:', err);
-              this.alertService.error(this.strings.error.loadSearchSuggestions);
-            });
+          (err) => {
+            logger.error('loading search suggestions failed:', err);
+            this.alertService.error(this.strings.error.loadSearchSuggestions);
+          },
+        );
       });
   }
 }

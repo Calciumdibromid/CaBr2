@@ -11,7 +11,7 @@ use tauri::{self, plugin::Plugin};
 
 use cmd::Cmd;
 pub use handler::{read_config, write_config};
-pub use types::TomlConfig;
+pub use types::BackendConfig;
 
 lazy_static! {
   pub static ref PROJECT_DIRS: ProjectDirs = ProjectDirs::from("de", "Calciumdibromid", "CaBr2").unwrap();
@@ -28,6 +28,9 @@ impl Plugin for Config {
       Ok(command) => {
         log::trace!("command: {:?}", &command);
         match command {
+          Cmd::GetProgramVersion { callback, error } => {
+            tauri::execute_promise(webview, move || Ok(env!("CARGO_PKG_VERSION")), callback, error);
+          }
           Cmd::GetConfig { callback, error } => {
             tauri::execute_promise(
               webview,

@@ -1,4 +1,5 @@
-export type SearchType = 'chemicalName' | 'empiricalFormula' | 'numbers' | 'fullText';
+export type SearchType = 'chemicalName' | 'chemicalFormula' | 'numbers' | 'fullText';
+export const searchTypes: SearchType[] = ['chemicalName', 'chemicalFormula', 'numbers', 'fullText'];
 
 export interface SearchTypeMapping {
   viewValue: string;

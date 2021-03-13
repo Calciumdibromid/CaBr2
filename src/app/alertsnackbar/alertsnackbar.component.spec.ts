@@ -8,9 +8,8 @@ describe('AlertsnackbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AlertsnackbarComponent ]
-    })
-    .compileComponents();
+      declarations: [AlertsnackbarComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

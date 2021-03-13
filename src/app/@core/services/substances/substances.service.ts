@@ -4,18 +4,16 @@ import { SubstanceData } from './substances.model';
 import { TauriService } from '../tauri/tauri.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SubstancesService {
-  constructor(
-    private tauriService: TauriService,
-  ) {
-  }
+  constructor(private tauriService: TauriService) { }
 
-  substanceInfo(zvgNumber: string): Observable<SubstanceData> {
+  substanceInfo(provider: string, identifier: string): Observable<SubstanceData> {
     return this.tauriService.promisified({
       cmd: 'getSubstanceData',
-      zvgNumber,
+      provider,
+      identifier,
     });
   }
 }

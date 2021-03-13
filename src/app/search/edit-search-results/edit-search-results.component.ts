@@ -54,7 +54,7 @@ export class EditSearchResultsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => this.strings = strings);
+    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
 
     this.form = this.initControls();
   }
@@ -80,14 +80,10 @@ export class EditSearchResultsComponent implements OnInit {
       boilingPoint: this.modifiedOrOriginal(this.data.boilingPoint) ?? '',
       waterHazardClass: this.modifiedOrOriginal(this.data.waterHazardClass) ?? '',
       hPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal<[string, string][]>(this.data.hPhrases).map((hPhrase) =>
-          this.initHPhrases(hPhrase),
-        ),
+        this.modifiedOrOriginal<[string, string][]>(this.data.hPhrases).map((hPhrase) => this.initHPhrases(hPhrase)),
       ),
       pPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal<[string, string][]>(this.data.pPhrases).map((pPhrase) =>
-          this.initPPhrases(pPhrase),
-        ),
+        this.modifiedOrOriginal<[string, string][]>(this.data.pPhrases).map((pPhrase) => this.initPPhrases(pPhrase)),
       ),
       signalWord: this.modifiedOrOriginal(this.data.signalWord) ?? '',
       symbols: this.formBuilder.array(this.modifiedOrOriginal(this.data.symbols)),
