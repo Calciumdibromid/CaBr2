@@ -1,64 +1,72 @@
-html, body {
-    padding: 0;
-    margin: 0;
-    width: 210mm;
-    height: 297mm;
+html,
+body {
+  padding: 0;
+  margin: 0;
+  width: 210mm;
+  height: 297mm;
 }
 
-table, th, td {
-    border: 1px solid #000;
-    border-collapse: collapse;
+table,
+th,
+td {
+  border: 1px solid #000;
+  border-collapse: collapse;
 }
 
 table {
-    width: 200mm;
-    height: 287mm;
-    margin: 4mm;
+  width: 200mm;
+  height: 287mm;
+  margin: 4mm;
 }
 
 tr th {
-    text-align: center;
-    padding: 8px;
-    height: 8mm;
-    font-size: 20px;
+  text-align: center;
+  padding: 8px;
+  height: 8mm;
+  font-size: 20px;
 }
 
 tr td {
-    height: 8mm;
-    text-align: left;
-    padding: 8px;
+  height: 8mm;
+  text-align: left;
+  padding: 8px;
 }
 
 .full-height {
-    height: unset !important;
+  height: unset !important;
 }
 
 .top {
-    vertical-align: top;
+  vertical-align: top;
 }
 
 .center {
-    text-align: center;
+  text-align: center;
 }
 
 .min-width-5cm {
-    min-width: 5cm;
+  min-width: 5cm;
 }
 
 .min-width-2cm {
-    min-width: 2cm;
+  min-width: 2cm;
 }
 
 .height-2cm {
-    height: 3.7cm;
-    min-height: 3.7cm;
-    max-height: 3.7cm;
+  height: 3.7cm;
+  min-height: 3.7cm;
+  max-height: 3.7cm;
 }
 
 .height-5cm9 {
-    max-height: 5.9cm;
+  max-height: 5.9cm;
 }
 
 .modified {
-    font-style: italic;
+  font-style: italic;
+}
+
+.ghs {
+  width: 25pt;
+  height: 25pt;
 }

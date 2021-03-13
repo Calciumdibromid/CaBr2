@@ -26,5 +26,5 @@ pub enum Cmd {
     language: String,
     callback: String,
     error: String,
-  }
+  },
 }
