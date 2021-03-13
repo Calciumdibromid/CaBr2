@@ -24,6 +24,10 @@
       "reloadRequired": "Neu laden der Seite nötig",
       "darkModeSwitchInfo": "Auf helles/dunkles Thema umschalten"
     },
+    "bugreport": {
+      "title": "Einen Fehler melden",
+      "sentence": "Falls ein Fehler festgestellt wurde, kann man mit folgender Mail mit den Entwicklern in Kontakt getreten werden:"
+    },
     "header": {
       "docTitle": "Dokument Titel:",
       "organisation": "Organisation:",
