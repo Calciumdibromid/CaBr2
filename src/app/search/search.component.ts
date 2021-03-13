@@ -71,7 +71,7 @@ export class SearchComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.substanceService.substanceInfo(result.zvgNumber).subscribe(
+        this.substanceService.substanceInfo('gestis', result.zvgNumber).subscribe(
           (value) => {
             const cas = this.modifiedOrOriginal(value.cas);
             if (
