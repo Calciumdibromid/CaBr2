@@ -47,12 +47,18 @@
       </tr>
 
       <tr *ngFor="let data of substanceData">
-        <td class="min-width-5cm" colspan="2">{{ data.name }}</td>
+        <td class="min-width-5cm" colspan="2">
+          {{ data.name }}<br />
+          <div class="padding-top-5px"><span [outerHTML]="data.molecularFormula | subMolecularFormula"></span></div>
+        </td>
         <td class="min-width-2cm">{{ data.molarMass }}</td>
-        <td class="min-width-2cm">{{ data.boilingPoint }} {{ data.meltingPoint }}</td>
-        <td>{{ data.symbols }}</td>
-        <td>{{ getPhraseNumber(data.hPhrases).join(' ') }} {{ getPhraseNumber(data.pPhrases).join(' ') }}</td>
-        <td>{{ data.mak }}</td>
+        <td class="min-width-2cm">{{ data.boilingPoint }}<br />{{ data.meltingPoint }}</td>
+        <td>
+          <img *ngFor="let symbol of data.symbols" [src]="sanitizeImage(symbol)" alt="{{ symbol }}" />
+          <span class="signalword">{{ data.signalWord }}</span>
+        </td>
+        <td>{{ getPhraseNumber(data.hPhrases).join(', ') }}<br />{{ getPhraseNumber(data.pPhrases).join(', ') }}</td>
+        <td>{{ data.mak }}<br>{{ data.waterHazardClass }}</td>
         <td>{{ data.amount?.value }} {{ data.amount?.unit }}</td>
       </tr>
 
@@ -61,8 +67,16 @@
         <td class="center" colspan="8">{{ strings.preview.tableHPPhrasesTitle }}</td>
       </tr>
       <tr>
-        <td colspan="4" class="full-height top">TODO</td>
-        <td colspan="4" class="full-height top">TODO</td>
+        <td colspan="4" class="full-height top">
+          <div *ngFor="let phrase of getHPhrases()">
+            {{ phrase }}
+          </div>
+        </td>
+        <td colspan="4" class="full-height top">
+          <div *ngFor="let phrase of getPPhrases()">
+            {{ phrase }}
+          </div>
+        </td>
       </tr>
     </table>
     <table class="print unselectable">

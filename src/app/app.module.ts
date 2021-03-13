@@ -17,6 +17,7 @@ import { PreviewComponent } from './preview/preview.component';
 import { SearchComponent } from './search/search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
+import { SubMolecularFormula } from './@core/pipes/molecularformula.pipe';
 import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
 
 @NgModule({
@@ -32,8 +33,16 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
     EditSearchResultsComponent,
     ManualComponent,
     YesNoDialogComponent,
+    SubMolecularFormula,
   ],
-  imports: [BrowserModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatModules, AlertModule],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatModules,
+    AlertModule,
+  ],
   providers: [GlobalModel, ConfigModel],
   bootstrap: [AppComponent],
 })
