@@ -72,7 +72,7 @@
   <tr>
     <td class='min-width-5cm' colspan='2'>{{name.data}}<br/>{{molecularFormula.data}}</td>
     <td class='min-width-2cm'>{{molarMass.data}}</td>
-    <td class='min-width-2cm'>{{boilingPoint.data}}<br/>{{meltingPoint.data}}</td>
+    <td class='min-width-2cm{{#if boilingPoint.modified}} modified{{\if}}'>{{boilingPoint.data}}<br/>{{meltingPoint.data}}</td>
     <td>TODO</td> {{! ghs symbols}}
     <td>TODO</td> {{! h-/p-phrases}}
     <td>{{mak.data}}<br/>{{lethalDose.data}}<br/>{{waterHazardClass.data}}</td>

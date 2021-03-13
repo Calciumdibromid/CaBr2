@@ -58,3 +58,7 @@ tr td {
 .height-5cm9 {
     max-height: 5.9cm;
 }
+
+.modified {
+    font-family: cursive;
+}
