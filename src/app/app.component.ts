@@ -37,6 +37,9 @@ export class AppComponent implements OnInit {
       (languages) => logger.debug('available localizations:', languages),
       (err) => logger.error('getting available localizations failed:', err),
     );
+    this.configService.getProgramVersion().subscribe(
+      (v) => logger.info(`running CaBr2 v${v}`)
+    );
   }
 
   ngOnInit(): void {
