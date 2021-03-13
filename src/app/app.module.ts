@@ -13,6 +13,7 @@ import { MatModules } from './@core/modules/mat.modules';
 import { MenubarComponent } from './menubar/menubar.component';
 import { ModifiableStringListComponent } from './modifiable-string-list/modifiable-string-list.component';
 import { PreviewComponent } from './preview/preview.component';
+import { ReportBugComponent } from './report-bug/report-bug.component';
 import { SearchComponent } from './search/search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
@@ -33,6 +34,7 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
     ManualComponent,
     YesNoDialogComponent,
     SettingsComponent,
+    ReportBugComponent,
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatModules, AlertModule],
   providers: [GlobalModel],
