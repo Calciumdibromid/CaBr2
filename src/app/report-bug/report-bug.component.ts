@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+
 import { GlobalModel } from '../@core/models/global.model';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 import { TauriService } from '../@core/services/tauri/tauri.service';
@@ -11,7 +13,11 @@ import { TauriService } from '../@core/services/tauri/tauri.service';
 export class ReportBugComponent implements OnInit {
   strings!: LocalizedStrings;
 
-  constructor(private tauriService: TauriService, private globals: GlobalModel) {
+  constructor(
+    private tauriService: TauriService,
+    private globals: GlobalModel,
+    public dialogRef: MatDialogRef<ReportBugComponent>,
+  ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
   }
 
