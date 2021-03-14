@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { first } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -128,9 +129,10 @@ export class SearchComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    this.globals.substanceDataObservable.subscribe((value) => {
+    this.globals.substanceDataObservable.pipe(first()).subscribe((value) => {
       const index = value.indexOf(data);
       value.splice(index, 1);
+      this.globals.substanceDataSubject.next(value);
       this.dataSource.connect().next(value);
     });
   }
