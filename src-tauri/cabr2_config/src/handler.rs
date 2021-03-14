@@ -1,10 +1,13 @@
 use std::{
   collections::HashMap,
+  env,
   fs::{self, OpenOptions},
   io::{BufReader, Read, Write},
   path::PathBuf,
 };
 
+use directories_next::ProjectDirs;
+use lazy_static::lazy_static;
 use serde_json::Value;
 
 use crate::error::ConfigError;
@@ -12,8 +15,13 @@ use crate::error::ConfigError;
 use super::{
   error::Result,
   types::{BackendConfig, FrontendConfig, GHSSymbols, LocalizedStrings, LocalizedStringsHeader},
-  DATA_DIR,
 };
+
+lazy_static! {
+  pub static ref PROJECT_DIRS: ProjectDirs = ProjectDirs::from("de", "Calciumdibromid", "CaBr2").unwrap();
+  pub static ref DATA_DIR: PathBuf = get_program_data_dir();
+  pub static ref TMP_DIR: PathBuf = env::temp_dir();
+}
 
 pub fn get_config() -> Result<FrontendConfig> {
   Ok(read_config()?.into())
@@ -199,4 +207,54 @@ fn get_config_path() -> PathBuf {
   let config_path = PathBuf::from(std::env::args().next().unwrap());
   // src-tauri/target
   config_path.parent().unwrap().with_file_name("config.toml")
+}
+
+fn get_program_data_dir() -> PathBuf {
+  #[cfg(not(debug_assertions))]
+  {
+    #[cfg(not(feature = "portable"))]
+    {
+      #[cfg(target_os = "linux")]
+      {
+        log::trace!("data path: linux");
+        return PathBuf::from("/usr/lib/cabr2/");
+      }
+
+      #[cfg(target_os = "macos")]
+      {
+        log::trace!("data path: macos");
+        unimplemented!();
+      }
+
+      #[cfg(target_os = "windows")]
+      {
+        log::trace!("data path: windows");
+        return PathBuf::from(env::args().next().unwrap())
+          .parent()
+          .unwrap()
+          .to_path_buf();
+      }
+    }
+
+    #[cfg(feature = "portable")]
+    {
+      log::trace!("data path: portable");
+      return PathBuf::from(env::args().next().unwrap())
+        .parent()
+        .unwrap()
+        .to_path_buf();
+    }
+  }
+
+  #[cfg(debug_assertions)]
+  {
+    log::trace!("data path: debug");
+    let mut program_path = PathBuf::from(env::args().next().unwrap())
+      .parent()
+      .unwrap()
+      .to_path_buf();
+    // git repo root
+    program_path.push("../../../");
+    program_path.canonicalize().unwrap()
+  }
 }
