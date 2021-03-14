@@ -5,7 +5,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import {
-  Amount,
   Data,
   SubstanceData,
   TemperatureUnit,
@@ -205,9 +204,12 @@ export class EditSearchResultsComponent implements OnInit {
         symbols: this.evaluateFormArray(this.symbols, (symbol) => symbol?.value, this.data.symbols),
         lethalDose: this.evaluateForm('lethalDose', this.data.lethalDose),
         mak: this.evaluateForm('mak', this.data.mak),
-        amount: this.amount.dirty ? {
-          value: this.amount.get('value')?.value, unit: this.amount.get('unit')?.value
-        } : this.data.amount,
+        amount: this.amount.dirty
+          ? {
+              value: this.amount.get('value')?.value,
+              unit: this.amount.get('unit')?.value,
+            }
+          : this.data.amount,
       };
 
       if (!this.form.invalid) {
@@ -222,10 +224,7 @@ export class EditSearchResultsComponent implements OnInit {
     this.dialogRef.close(returnData);
   }
 
-  private evaluateForm<T>(
-    formControlName: string,
-    currentData: Data<T>,
-  ): Data<T> {
+  private evaluateForm<T>(formControlName: string, currentData: Data<T>): Data<T> {
     const control = this.form?.get(formControlName);
 
     if (control?.dirty) {
