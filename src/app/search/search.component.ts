@@ -106,6 +106,7 @@ export class SearchComponent implements OnInit {
         minWidth: 800,
         maxHeight: 900,
         minHeight: 300,
+        autoFocus: false,
       })
       .afterClosed()
       .subscribe(
