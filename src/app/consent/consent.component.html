@@ -1,0 +1,20 @@
+<h2 mat-dialog-title>Wichtige Information! | Important!</h2>
+<p>
+  Bei CaBr<sub>2</sub> handelt es sich um ein Open-Source-Projekt und daher basiert die Verwendung der generierten
+  Betriebsanweisungen auf Eigenverantwortung.
+</p>
+<p>
+  Weder das Programm, noch die Entwickler sind für den Inhalt verantwortlich und können für unkorrekte oder
+  unvollständige Informationen zur Rechenschaft gezogen werden.
+</p>
+<mat-divider></mat-divider>
+<p>
+  CaBr<sub>2</sub> is an open-source project and therefore the use of the generated operating operating instructions is based on personal responsibility. 
+</p>
+<p>
+  Neither the program, nor the developers are responsible for the content and can be held liable for incorrect or for incorrect or incomplete information.
+</p>
+<mat-divider></mat-divider>
+<mat-dialog-actions>
+  <button (click)="dialogRef.close()" [disabled]="timer > 0" mat-raised-button>{{ strings.base.ok }} {{ timer > 0 ? '(' + timer + ')' : '' }}</button>
+</mat-dialog-actions>

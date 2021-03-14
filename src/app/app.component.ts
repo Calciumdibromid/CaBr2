@@ -1,6 +1,7 @@
 import { Component, HostBinding, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { first, skip, switchMap } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import { ConfigModel, configObservable } from './@core/models/config.model';
@@ -8,6 +9,7 @@ import { I18nService, LocalizedStrings } from './@core/services/i18n/i18n.servic
 import { name, version } from '../../package.json';
 import { AlertService } from './@core/services/alertsnackbar/altersnackbar.service';
 import { ConfigService } from './@core/services/config/config.service';
+import { ConsentComponent } from './consent/consent.component';
 import { GlobalModel } from './@core/models/global.model';
 import Logger from './@core/utils/logger';
 
@@ -29,6 +31,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
+    private dialog: MatDialog,
 
     private global: GlobalModel,
     private configService: ConfigService,
@@ -89,6 +92,13 @@ export class AppComponent implements OnInit, OnDestroy {
         },
       )
     );
+
+    this.dialog.open(ConsentComponent, {
+      data: {
+        duration: 10,
+      },
+      disableClose: true,
+    });
   }
 
   @HostBinding('class')
