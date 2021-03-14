@@ -224,10 +224,10 @@ export class EditSearchResultsComponent implements OnInit {
         symbols: this.evaluateFormArray(this.symbols, (symbol) => symbol?.value, this.data.symbols),
         lethalDose: this.evaluateForm('lethalDose', this.data.lethalDose, (value) => value?.length === 0),
         mak: this.evaluateForm('mak', this.data.mak, (value) => value?.length === 0),
-        amount: this.amount.dirty ? { value: this.amount.get('value')?.value, unit: this.amount.get('unit')?.value } : undefined,
+        amount: this.amount.dirty ? {
+          value: this.amount.get('value')?.value, unit: this.amount.get('unit')?.value
+        } : undefined,
       };
-
-      console.log("amount dirty:", this.amount.dirty);
 
       if (!this.form.invalid) {
         returnData = newData;
