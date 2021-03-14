@@ -1,4 +1,4 @@
-<div>{{ data.content }}</div>
+<div mat-dialog-content [innerHTML]="data.content"></div>
 <mat-divider></mat-divider>
 <div mat-dialog-actions>
   <button mat-button (click)="dialogRef.close()">{{ strings.base.close }}</button>

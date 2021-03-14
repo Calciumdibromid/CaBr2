@@ -14,6 +14,7 @@ import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 import Logger from '../@core/utils/logger';
 import { ManualComponent } from '../manual/manual.component';
 import { TauriService } from '../@core/services/tauri/tauri.service';
+import { ConfigService } from '../@core/services/config/config.service';
 
 const logger = new Logger('menubar');
 
@@ -36,6 +37,7 @@ export class MenubarComponent implements OnInit {
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
     private alertService: AlertService,
+    private configService: ConfigService,
     private dialog: MatDialog,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
@@ -194,7 +196,13 @@ export class MenubarComponent implements OnInit {
   }
 
   openManualDialog(): void {
-    this.dialog.open(ManualComponent);
+    this.configService.getPromptHtml('gettingStarted').subscribe((html) => {
+      this.dialog.open(ManualComponent, {
+        data: {
+          content: html
+        }
+      });
+    });
   }
 
   onDarkModeSwitched({ checked }: MatSlideToggleChange): void {
