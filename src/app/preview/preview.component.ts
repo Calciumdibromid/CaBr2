@@ -12,7 +12,7 @@ interface SimpleSubstanceData {
   name: string;
   cas?: string;
   molecularFormula: string;
-  molarMass: string;
+  molarMass?: string;
   meltingPoint?: string;
   boilingPoint?: string;
   waterHazardClass?: string;
@@ -58,7 +58,7 @@ export class PreviewComponent implements OnInit {
               name: value.name.modifiedData ?? value.name.originalData,
               cas: value.cas.modifiedData ?? value.cas.originalData,
               molecularFormula: value.molecularFormula.modifiedData ?? value.molecularFormula.originalData,
-              molarMass: value.molarMass.modifiedData ?? value.molarMass.originalData ?? '',
+              molarMass: value.molarMass.modifiedData ?? value.molarMass.originalData,
               meltingPoint: value.meltingPoint.modifiedData ?? value.meltingPoint.originalData,
               boilingPoint: value.boilingPoint.modifiedData ?? value.boilingPoint.originalData,
               waterHazardClass: value.waterHazardClass.modifiedData ?? value.waterHazardClass.originalData,
