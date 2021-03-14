@@ -82,6 +82,7 @@
       {{ #each symbols.data }}
         {{ ghs_symbols this }}
       {{ /each }}
+      {{ #if signalWord.data }}<p class="signalword{{ #if signalWord.modified }} modified{{ /if }}">{{ signalWord.data }}</p>{{ /if }}
     </td>
     <td class="phrase-numbers">
       {{ h_p_phrases_numbers hPhrases.data }}

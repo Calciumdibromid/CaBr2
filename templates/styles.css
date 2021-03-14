@@ -85,3 +85,8 @@ tr td {
 .phrases {
   font-size: small;
 }
+
+.signalword {
+  font-size: small;
+  margin-top: 0;
+}
