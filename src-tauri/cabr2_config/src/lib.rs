@@ -87,6 +87,21 @@ impl Plugin for Config {
               error,
             );
           }
+          Cmd::GetPromptHtml {
+            name,
+            callback,
+            error,
+          } => {
+            tauri::execute_promise(
+              webview,
+              move || match handler::get_prompt_html(name) {
+                Ok(res) => Ok(res),
+                Err(e) => Err(e.into()),
+              },
+              callback,
+              error,
+            );
+          }
         }
         // dispatch of async request should always succeed
         Ok(true)

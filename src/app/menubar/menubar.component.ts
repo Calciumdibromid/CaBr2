@@ -208,8 +208,12 @@ export class MenubarComponent implements OnInit {
   }
 
   openManualDialog(): void {
-    this.dialog.open(ManualComponent, {
-      data: { content: 'foo' },
+    this.configService.getPromptHtml('gettingStarted').subscribe((html) => {
+      this.dialog.open(ManualComponent, {
+        data: {
+          content: html,
+        },
+      });
     });
   }
 

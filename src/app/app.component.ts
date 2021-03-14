@@ -39,6 +39,13 @@ export class AppComponent implements OnInit, OnDestroy {
     private i18nService: I18nService,
   ) {
     this.global.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
+    this.configService
+      .getPromptHtml('gettingStarted')
+      .pipe(first())
+      .subscribe(
+        (str) => logger.debug('html: [', str, ']'),
+        (err) => logger.error(err),
+      );
   }
 
   ngOnDestroy(): void {
