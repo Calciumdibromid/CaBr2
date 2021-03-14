@@ -220,13 +220,4 @@ export class MenubarComponent implements OnInit {
       this.darkModeSwitched.emit(checked);
     });
   }
-
-  openConsentDialog(): void {
-    this.dialog.open(ConsentComponent, {
-      data: {
-        duration: 0,
-      },
-      disableClose: true,
-    });
-  }
 }

@@ -93,9 +93,9 @@ export class AppComponent implements OnInit, OnDestroy {
       )
     );
 
-    // TODO make this better
-    this.configService.getConfig().pipe(first()).subscribe((config) => {
-      if (!config['global'].acceptedConsent) {
+    // skip initial config only first load is needed
+    configObservable.pipe(skip(1), first()).subscribe((config) => {
+      if (!config.globalSection.acceptedConsent) {
         this.dialog.open(ConsentComponent, {
           data: {
             duration: 10,
