@@ -7,7 +7,7 @@ import { TauriService } from '../tauri/tauri.service';
   providedIn: 'root',
 })
 export class SubstancesService {
-  constructor(private tauriService: TauriService) { }
+  constructor(private tauriService: TauriService) {}
 
   substanceInfo(provider: string, identifier: string): Observable<SubstanceData> {
     return this.tauriService.promisified({
