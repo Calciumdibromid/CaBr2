@@ -8,7 +8,7 @@ import { TauriService } from '../tauri/tauri.service';
   providedIn: 'root',
 })
 export class ConfigService {
-  constructor(private tauriService: TauriService) { }
+  constructor(private tauriService: TauriService) {}
 
   getConfig(): Observable<ConfigModel> {
     return this.tauriService.promisified({
@@ -32,7 +32,7 @@ export class ConfigService {
   getPromptHtml(name: string): Observable<string> {
     return this.tauriService.promisified({
       cmd: 'getPromptHtml',
-      name
+      name,
     });
   }
 }

@@ -8,7 +8,7 @@ import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
   selector: 'app-manual',
   templateUrl: './manual.component.html',
   styleUrls: ['./manual.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class ManualComponent implements OnInit {
   strings!: LocalizedStrings;

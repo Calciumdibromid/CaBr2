@@ -38,10 +38,13 @@ export class AppComponent implements OnInit {
       (languages) => logger.debug('available localizations:', languages),
       (err) => logger.error('getting available localizations failed:', err),
     );
-    this.configService.getPromptHtml('gettingStarted').pipe(first()).subscribe(
-      (str) => logger.debug('html: [', str, ']'),
-      (err) => logger.error(err),
-    );
+    this.configService
+      .getPromptHtml('gettingStarted')
+      .pipe(first())
+      .subscribe(
+        (str) => logger.debug('html: [', str, ']'),
+        (err) => logger.error(err),
+      );
   }
 
   ngOnInit(): void {

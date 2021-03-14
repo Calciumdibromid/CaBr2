@@ -199,8 +199,8 @@ export class MenubarComponent implements OnInit {
     this.configService.getPromptHtml('gettingStarted').subscribe((html) => {
       this.dialog.open(ManualComponent, {
         data: {
-          content: html
-        }
+          content: html,
+        },
       });
     });
   }
