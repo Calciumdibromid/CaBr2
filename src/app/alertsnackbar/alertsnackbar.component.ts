@@ -58,7 +58,7 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
     if (alert) {
       this.snackBarVisible = true;
       return this.snackBar.open(alert.message, '', {
-        duration: 3000,
+        duration: 6000,
         horizontalPosition: 'right',
         verticalPosition: 'top',
         panelClass: this.cssClass(alert),
