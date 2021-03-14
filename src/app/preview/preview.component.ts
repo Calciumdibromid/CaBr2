@@ -68,7 +68,7 @@ export class PreviewComponent implements OnInit {
               symbols: value.symbols.modifiedData ?? value.symbols.originalData,
               lethalDose: value.lethalDose.modifiedData ?? value.lethalDose.originalData,
               mak: value.mak.modifiedData ?? value.mak.originalData,
-              amount: value.amount.modifiedData ?? value.amount.originalData,
+              amount: value.amount,
             };
           }),
         ),

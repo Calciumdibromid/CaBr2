@@ -112,13 +112,13 @@ impl Loader for Beryllium {
                 }
 
                 if unit.is_some() && value.is_some() {
-                  Data::new(Some(Amount {
+                  Some(Amount {
                     unit: unit.unwrap(),
                     value: value.unwrap(),
-                  }))
+                  })
                 } else {
                   log::debug!("could not convert amount: {{ unit: {:?}, value: {:?} }}", unit, value);
-                  Data::new(None)
+                  None
                 }
               },
               source: Source {

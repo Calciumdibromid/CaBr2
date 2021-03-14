@@ -1,60 +1,110 @@
-html, body {
-    padding: 0;
-    margin: 0;
-    width: 210mm;
-    height: 297mm;
+html,
+body {
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
 }
 
-table, th, td {
-    border: 1px solid #000;
-    border-collapse: collapse;
+table,
+th,
+td {
+  border: 1px solid #000;
+  border-collapse: collapse;
 }
 
 table {
-    width: 200mm;
-    height: 287mm;
-    margin: 4mm;
+  width: 100%;
+  height: 100%;
 }
 
 tr th {
-    text-align: center;
-    padding: 8px;
-    height: 8mm;
-    font-size: 20px;
+  text-align: center;
+  padding: 8px;
+  height: 8mm;
+  font-size: 20px;
 }
 
 tr td {
-    height: 8mm;
-    text-align: left;
-    padding: 8px;
+  text-align: left;
+  padding: 8px;
+}
+
+li {
+  padding: 5px 0;
 }
 
 .full-height {
-    height: unset !important;
+  height: unset !important;
 }
 
 .top {
-    vertical-align: top;
+  vertical-align: top;
 }
 
 .center {
-    text-align: center;
+  text-align: center;
 }
 
 .min-width-5cm {
-    min-width: 5cm;
+  min-width: 4.5cm;
 }
 
 .min-width-2cm {
-    min-width: 2cm;
+  min-width: 2cm;
+}
+
+.min-width-ghs-symbols {
+  min-width: 2.9cm;
 }
 
 .height-2cm {
-    height: 3.7cm;
-    min-height: 3.7cm;
-    max-height: 3.7cm;
+  height: 3.7cm;
+  min-height: 3.7cm;
+  max-height: 3.7cm;
 }
 
 .height-5cm9 {
-    max-height: 5.9cm;
+  max-height: 5.9cm;
+}
+
+.modified {
+  font-style: italic;
+}
+
+.ghs {
+  width: 25pt;
+  height: 25pt;
+}
+
+.phrase-numbers {
+  max-width: 4cm;
+  font-size: x-small;
+}
+
+.value-with-unit {
+  font-size: small;
+}
+
+.phrases {
+  font-size: small;
+}
+
+.signalword {
+  font-size: small;
+  margin-top: 0;
+}
+
+.list-heading {
+  font-weight: bolder;
+  padding: 10px 0;
+}
+
+.signature {
+  width: 7cm;
+  margin: 5px 10px;
+  margin-top: 1.5cm;
+  font-size: small;
+  text-indent: 5px;
+  border-top: 1px solid #000;
 }
