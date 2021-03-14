@@ -9,7 +9,7 @@
   <div *ngIf="searchResults.length > 0; else empty">
     <mat-selection-list [multiple]="false" dense>
       <cdk-virtual-scroll-viewport itemSize="50" class="viewport">
-        <mat-list-option *cdkVirtualFor="let result of searchResults" (click)="setSelected(result)">
+        <mat-list-option *cdkVirtualFor="let result of searchResults" (click)="setSelected(result)" (dblclick)="close(false)">
           {{ result.casNumber }} {{ result.name }}
         </mat-list-option>
       </cdk-virtual-scroll-viewport>
@@ -27,5 +27,5 @@
 <mat-divider class="divider"></mat-divider>
 <div mat-dialog-actions>
   <button mat-button (click)="close(true)">{{ strings.base.cancel }}</button>
-  <button mat-button (click)="close(false)">{{ strings.base.ok }}</button>
+  <button mat-button (click)="close(false)" [disabled]="selected === undefined">{{ strings.base.ok }}</button>
 </div>
