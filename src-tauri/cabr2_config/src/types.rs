@@ -27,6 +27,7 @@ impl std::convert::From<BackendConfig> for FrontendConfig {
 pub struct FrontendGlobal {
   pub dark_theme: bool,
   pub language: String,
+  pub accepted_consent: bool,
 }
 
 impl std::convert::From<Global> for FrontendGlobal {
@@ -34,6 +35,7 @@ impl std::convert::From<Global> for FrontendGlobal {
     FrontendGlobal {
       dark_theme: config.dark_theme,
       language: config.language,
+      accepted_consent: config.accepted_consent,
     }
   }
 }
@@ -64,6 +66,7 @@ impl std::default::Default for BackendConfig {
       global: Global {
         dark_theme: false,
         language: "de_de".into(),
+        accepted_consent: false,
       },
       logging: Logging {
         all: Some(LogLevel::DEBUG),
@@ -79,6 +82,7 @@ impl std::default::Default for BackendConfig {
 pub struct Global {
   pub dark_theme: bool,
   pub language: String,
+  pub accepted_consent: bool,
 }
 
 impl std::convert::From<FrontendGlobal> for Global {
@@ -86,6 +90,7 @@ impl std::convert::From<FrontendGlobal> for Global {
     Global {
       dark_theme: config.dark_theme,
       language: config.language,
+      accepted_consent: config.accepted_consent,
     }
   }
 }

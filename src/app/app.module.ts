@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 
 import { AlertModule } from './@core/modules/alert.module';
 import { AppComponent } from './app.component';
+import { ConsentComponent } from './consent/consent.component';
 import { EditSearchResultsComponent } from './search/edit-search-results/edit-search-results.component';
 import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './header/header.component';
@@ -36,6 +37,7 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
     YesNoDialogComponent,
     SettingsComponent,
     ReportBugComponent,
+    ConsentComponent,
     SubMolecularFormula,
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatModules, AlertModule],
