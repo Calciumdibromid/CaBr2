@@ -93,11 +93,25 @@ export class AppComponent implements OnInit, OnDestroy {
       )
     );
 
-    this.dialog.open(ConsentComponent, {
-      data: {
-        duration: 10,
-      },
-      disableClose: true,
+    // TODO make this better
+    this.configService.getConfig().pipe(first()).subscribe((config) => {
+      if (!config['global'].acceptedConsent) {
+        this.dialog.open(ConsentComponent, {
+          data: {
+            duration: 10,
+          },
+          disableClose: true,
+        }).afterClosed().subscribe(() => {
+          this.config.setAcceptedConsent(true);
+          this.configService.saveConfig(this.config).pipe(first()).subscribe(
+            () => logger.info('config saved'),
+            (err) => {
+              logger.error('saving config failed:', err);
+              this.alertService.error(this.strings.error.configSave);
+            },
+          );
+        });
+      }
     });
   }
 

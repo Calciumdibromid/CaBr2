@@ -12,7 +12,7 @@ export class ConfigModel {
       this.global = global;
     } else {
       logger.debug('returning default config');
-      this.global = { darkTheme: false, language: 'de_de' };
+      this.global = { darkTheme: false, language: 'de_de', acceptedConsent: false };
     }
   }
 
@@ -36,11 +36,18 @@ export class ConfigModel {
       configSubject.next(new ConfigModel({ ...this.global, language }));
     }
   }
+
+  setAcceptedConsent(acceptedConsent: boolean): void {
+    if (this.global.acceptedConsent !== acceptedConsent) {
+      configSubject.next(new ConfigModel({ ...this.global, acceptedConsent }));
+    }
+  }
 }
 
 export interface Global {
   readonly darkTheme: boolean;
   readonly language: string;
+  readonly acceptedConsent: boolean;
 }
 
 export const configSubject = new BehaviorSubject<ConfigModel>(new ConfigModel());
