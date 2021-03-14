@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { first } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -15,7 +16,6 @@ import { TauriService } from '../@core/services/tauri/tauri.service';
 import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './selected-search/selected-search.component';
-import { first } from 'rxjs/operators';
 
 const logger = new Logger('search');
 
