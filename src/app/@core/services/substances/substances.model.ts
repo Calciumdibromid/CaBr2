@@ -14,7 +14,7 @@ export interface SubstanceData {
   lethalDose: Data<string | undefined>;
   mak: Data<string | undefined>;
   readonly source: Source;
-  amount: Data<Amount | undefined>;
+  amount: Amount | undefined;
 }
 
 export interface Data<T> {

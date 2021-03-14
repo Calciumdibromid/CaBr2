@@ -67,11 +67,16 @@ export class EditSearchResultsComponent implements OnInit {
   }
 
   initControls(): FormGroup {
-    const amount = this.modifiedOrOriginal<Amount | undefined>(this.data.amount) ?? {
-      value: '',
-      unit: Unit.GRAM,
-    };
-    return this.formBuilder.group({
+    let amount;
+    let amountDirty = false;
+    if (this.data.amount) {
+      amount = this.data.amount;
+      amountDirty = true;
+    } else {
+      amount = { value: '', unit: Unit.GRAM };
+    }
+
+    const group = this.formBuilder.group({
       name: [this.modifiedOrOriginal(this.data.name), Validators.required],
       cas: this.modifiedOrOriginal(this.data.cas) ?? '',
       molecularFormula: this.modifiedOrOriginal(this.data.molecularFormula),
@@ -94,6 +99,12 @@ export class EditSearchResultsComponent implements OnInit {
         unit: amount.unit,
       }),
     });
+
+    if (amountDirty) {
+      group.get('amount')?.markAsDirty();
+    }
+
+    return group;
   }
 
   get hPhrases(): FormArray {
@@ -213,13 +224,12 @@ export class EditSearchResultsComponent implements OnInit {
         symbols: this.evaluateFormArray(this.symbols, (symbol) => symbol?.value, this.data.symbols),
         lethalDose: this.evaluateForm('lethalDose', this.data.lethalDose, (value) => value?.length === 0),
         mak: this.evaluateForm('mak', this.data.mak, (value) => value?.length === 0),
-        amount: this.evaluateFormGroup(
-          this.amount,
-          (obj) => ({ value: obj.get('value')?.value, unit: obj.get('unit')?.value }),
-          (newObj, oldObj) => newObj?.value !== oldObj.modifiedData?.value,
-          (obj) => obj?.value.length === 0,
-          this.data.amount,
-        ),
+        amount: this.amount.dirty
+          ? {
+              value: this.amount.get('value')?.value,
+              unit: this.amount.get('unit')?.value,
+            }
+          : undefined,
       };
 
       if (!this.form.invalid) {
