@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
 
-import { Amount, Source, SubstanceData, Unit } from '../@core/services/substances/substances.model';
+import { Amount } from '../@core/services/substances/substances.model';
 import { GlobalModel } from '../@core/models/global.model';
 import { Header } from '../@core/interfaces/Header';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
@@ -11,7 +12,7 @@ interface SimpleSubstanceData {
   name: string;
   cas?: string;
   molecularFormula: string;
-  molarMass: string;
+  molarMass?: string;
   meltingPoint?: string;
   boilingPoint?: string;
   waterHazardClass?: string;
@@ -38,7 +39,7 @@ export class PreviewComponent implements OnInit {
 
   sources: string[] = [];
 
-  constructor(public globals: GlobalModel) {
+  constructor(public globals: GlobalModel, private sanitizer: DomSanitizer) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
   }
 
@@ -57,7 +58,7 @@ export class PreviewComponent implements OnInit {
               name: value.name.modifiedData ?? value.name.originalData,
               cas: value.cas.modifiedData ?? value.cas.originalData,
               molecularFormula: value.molecularFormula.modifiedData ?? value.molecularFormula.originalData,
-              molarMass: value.molarMass.modifiedData ?? value.molecularFormula.originalData,
+              molarMass: value.molarMass.modifiedData ?? value.molarMass.originalData,
               meltingPoint: value.meltingPoint.modifiedData ?? value.meltingPoint.originalData,
               boilingPoint: value.boilingPoint.modifiedData ?? value.boilingPoint.originalData,
               waterHazardClass: value.waterHazardClass.modifiedData ?? value.waterHazardClass.originalData,
@@ -67,7 +68,7 @@ export class PreviewComponent implements OnInit {
               symbols: value.symbols.modifiedData ?? value.symbols.originalData,
               lethalDose: value.lethalDose.modifiedData ?? value.lethalDose.originalData,
               mak: value.mak.modifiedData ?? value.mak.originalData,
-              amount: value.amount.modifiedData ?? value.amount.originalData,
+              amount: value.amount,
             };
           }),
         ),
@@ -77,6 +78,27 @@ export class PreviewComponent implements OnInit {
 
   getPhraseNumber(phrases: [string, string][]): string[] {
     return phrases.map((p) => p[0]);
+  }
+
+  sanitizeImage(key: string): SafeResourceUrl | undefined {
+    const img = this.globals.ghsSymbols.get(key);
+    if (img) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(img);
+    }
+
+    return undefined;
+  }
+
+  getHPhrases(): Set<string> {
+    const phraseSet = new Set<string>();
+    this.substanceData.flatMap((data) => data.hPhrases).forEach((phrase) => phraseSet.add(phrase.join(':\u00A0')));
+    return phraseSet;
+  }
+
+  getPPhrases(): Set<string> {
+    const phraseSet = new Set<string>();
+    this.substanceData.flatMap((data) => data.pPhrases).forEach((phrase) => phraseSet.add(phrase.join(':\u00A0')));
+    return phraseSet;
   }
 
   getProviders(): string {

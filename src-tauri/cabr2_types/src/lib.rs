@@ -20,7 +20,7 @@ pub struct SubstanceData {
   pub symbols: Data<Vec<String>>,
   pub lethal_dose: Data<Option<String>>,
   pub mak: Data<Option<String>>,
-  pub amount: Data<Option<Amount>>,
+  pub amount: Option<Amount>,
   pub source: Source,
 }
 
@@ -28,8 +28,8 @@ pub struct SubstanceData {
 #[serde(rename_all = "camelCase")]
 pub struct Data<T> {
   #[serde(skip_serializing_if = "Option::is_none")]
-  modified_data: Option<T>,
-  original_data: T,
+  pub modified_data: Option<T>,
+  pub original_data: T,
 }
 
 impl<T> Data<T> {
@@ -56,7 +56,7 @@ pub struct Amount {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "UPPERCASE")]
 pub enum Unit {
   Litre,
   Milliliter,
