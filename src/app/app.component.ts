@@ -8,6 +8,7 @@ import { ConfigModel } from './@core/models/config.model';
 import { ConfigService } from './@core/services/config/config.service';
 import { GlobalModel } from './@core/models/global.model';
 import Logger from './@core/utils/logger';
+import { first } from 'rxjs/operators';
 
 const logger = new Logger('main');
 
@@ -36,6 +37,10 @@ export class AppComponent implements OnInit {
     this.i18nService.getAvailableLanguages().subscribe(
       (languages) => logger.debug('available localizations:', languages),
       (err) => logger.error('getting available localizations failed:', err),
+    );
+    this.configService.getPromptHtml('gettingStarted').pipe(first()).subscribe(
+      (str) => logger.debug('html: [', str, ']'),
+      (err) => logger.error(err),
     );
   }
 

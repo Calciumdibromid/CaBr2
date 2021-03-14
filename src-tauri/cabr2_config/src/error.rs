@@ -7,6 +7,9 @@ pub enum ConfigError {
   #[error("no localization for language '{0}' found")]
   LocalizationNotFound(String),
 
+  #[error("prompt html not found: {0}")]
+  NoPromptHtml(String),
+
   #[error("toml deserializing failed: '{0}'")]
   TomlDeserializeError(#[from] toml::de::Error),
   #[error("toml serializing failed: '{0}'")]
