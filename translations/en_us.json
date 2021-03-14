@@ -91,11 +91,17 @@
     "preview": {
       "info": "This is only a preview. The generated PDF may look different!",
       "tableSubstanceTitleHeader": "Used substances and products",
-      "tableMolarMassHeader": "MW\n[g/mol]",
-      "tableBoilingAndMeltingHeader": "BP\nMP",
+      "tableMolarMassHeader": {
+        "mw": "MW",
+        "grammPerMol": "[g/mol]"
+      },
+      "tableBoilingHeader": "BP",
+      "tableMeltingHeader": "MP",
       "tableGHSSymbolHeader": "GHS hazard pictograms",
-      "tableHPPhrasesHeader": "H/P-phrases\n(numbers)",
-      "tableMAKHeader": "TLV, LD50,\nWHC",
+      "tableHPPhrasesHeader": "H/P-phrases",
+      "tableHPPhrasesNumberHeader": "(numbers)",
+      "tableMAKHeader": "TLV, LD50,",
+      "tableWHCHeader": "WHC",
       "tableAmountHeader": "Amount used",
       "tableHPPhrasesTitle": "Text of essential H/P phrases:",
       "sources": "Sources"
