@@ -6,7 +6,7 @@ fn main() {
 
   let config = cabr2_config::Config;
   let load_save = cabr2_load_save::LoadSave::new();
-  let search = cabr2_search::Gestis::new();
+  let search = cabr2_search::Search::new();
 
   log::debug!("initializing tauri application...");
 

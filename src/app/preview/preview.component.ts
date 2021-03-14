@@ -37,6 +37,8 @@ export class PreviewComponent implements OnInit {
 
   substanceData!: SimpleSubstanceData[];
 
+  sources: string[] = [];
+
   constructor(public globals: GlobalModel, private sanitizer: DomSanitizer) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
   }
@@ -47,22 +49,28 @@ export class PreviewComponent implements OnInit {
     this.globals.substanceDataObservable
       .pipe(
         map((data) =>
-          data.map<SimpleSubstanceData>((value) => ({
-            name: value.name.modifiedData ?? value.name.originalData,
-            cas: value.cas.modifiedData ?? value.cas.originalData,
-            molecularFormula: value.molecularFormula.modifiedData ?? value.molecularFormula.originalData,
-            molarMass: value.molarMass.modifiedData ?? value.molarMass.originalData ?? '',
-            meltingPoint: value.meltingPoint.modifiedData ?? value.meltingPoint.originalData,
-            boilingPoint: value.boilingPoint.modifiedData ?? value.boilingPoint.originalData,
-            waterHazardClass: value.waterHazardClass.modifiedData ?? value.waterHazardClass.originalData,
-            hPhrases: value.hPhrases.modifiedData ?? value.hPhrases.originalData,
-            pPhrases: value.pPhrases.modifiedData ?? value.pPhrases.originalData,
-            signalWord: value.signalWord.modifiedData ?? value.signalWord.originalData,
-            symbols: value.symbols.modifiedData ?? value.symbols.originalData,
-            lethalDose: value.lethalDose.modifiedData ?? value.lethalDose.originalData,
-            mak: value.mak.modifiedData ?? value.mak.originalData,
-            amount: value.amount.modifiedData ?? value.amount.originalData,
-          })),
+          data.map<SimpleSubstanceData>((value) => {
+            if (this.sources.indexOf(value.source.provider) === -1) {
+              this.sources.push(value.source.provider);
+            }
+
+            return {
+              name: value.name.modifiedData ?? value.name.originalData,
+              cas: value.cas.modifiedData ?? value.cas.originalData,
+              molecularFormula: value.molecularFormula.modifiedData ?? value.molecularFormula.originalData,
+              molarMass: value.molarMass.modifiedData ?? value.molarMass.originalData ?? '',
+              meltingPoint: value.meltingPoint.modifiedData ?? value.meltingPoint.originalData,
+              boilingPoint: value.boilingPoint.modifiedData ?? value.boilingPoint.originalData,
+              waterHazardClass: value.waterHazardClass.modifiedData ?? value.waterHazardClass.originalData,
+              hPhrases: value.hPhrases.modifiedData ?? value.hPhrases.originalData,
+              pPhrases: value.pPhrases.modifiedData ?? value.pPhrases.originalData,
+              signalWord: value.signalWord.modifiedData ?? value.signalWord.originalData,
+              symbols: value.symbols.modifiedData ?? value.symbols.originalData,
+              lethalDose: value.lethalDose.modifiedData ?? value.lethalDose.originalData,
+              mak: value.mak.modifiedData ?? value.mak.originalData,
+              amount: value.amount.modifiedData ?? value.amount.originalData,
+            };
+          }),
         ),
       )
       .subscribe((data) => (this.substanceData = data));
@@ -91,5 +99,9 @@ export class PreviewComponent implements OnInit {
     const phraseSet = new Set<string>();
     this.substanceData.flatMap((data) => data.pPhrases).forEach((phrase) => phraseSet.add(phrase.join(': ')));
     return phraseSet;
+  }
+
+  getProviders(): string {
+    return this.sources.join(', ');
   }
 }

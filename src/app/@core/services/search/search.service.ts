@@ -32,9 +32,10 @@ export class SearchService {
    * ]
    * ```
    */
-  searchSuggestions(searchType: SearchType, query: string): Observable<string[]> {
+  searchSuggestions(provider: string, searchType: SearchType, query: string): Observable<string[]> {
     return this.tauriService.promisified({
       cmd: 'searchSuggestions',
+      provider,
       pattern: query,
       searchType,
     });
@@ -59,9 +60,10 @@ export class SearchService {
    * ]
    * ```
    */
-  search(args: SearchArguments): Observable<SearchResult[]> {
+  search(provider: string, args: SearchArguments): Observable<SearchResult[]> {
     return this.tauriService.promisified({
       cmd: 'search',
+      provider,
       arguments: args,
     });
   }
