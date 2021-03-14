@@ -91,13 +91,13 @@ export class PreviewComponent implements OnInit {
 
   getHPhrases(): Set<string> {
     const phraseSet = new Set<string>();
-    this.substanceData.flatMap((data) => data.hPhrases).forEach((phrase) => phraseSet.add(phrase.join(': ')));
+    this.substanceData.flatMap((data) => data.hPhrases).forEach((phrase) => phraseSet.add(phrase.join(':\u00A0')));
     return phraseSet;
   }
 
   getPPhrases(): Set<string> {
     const phraseSet = new Set<string>();
-    this.substanceData.flatMap((data) => data.pPhrases).forEach((phrase) => phraseSet.add(phrase.join(': ')));
+    this.substanceData.flatMap((data) => data.pPhrases).forEach((phrase) => phraseSet.add(phrase.join(':\u00A0')));
     return phraseSet;
   }
 
