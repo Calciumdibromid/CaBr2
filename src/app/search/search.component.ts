@@ -15,6 +15,7 @@ import { TauriService } from '../@core/services/tauri/tauri.service';
 import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './selected-search/selected-search.component';
+import { first } from 'rxjs/operators';
 
 const logger = new Logger('search');
 
@@ -128,9 +129,10 @@ export class SearchComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    this.globals.substanceDataObservable.subscribe((value) => {
+    this.globals.substanceDataObservable.pipe(first()).subscribe((value) => {
       const index = value.indexOf(data);
       value.splice(index, 1);
+      this.globals.substanceDataSubject.next(value);
       this.dataSource.connect().next(value);
     });
   }
