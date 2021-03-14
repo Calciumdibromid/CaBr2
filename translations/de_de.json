@@ -98,7 +98,8 @@
       "tableHPPhrasesHeader": "H/P-Sätze\n(Nummern)",
       "tableMAKHeader": "MAK, LD50\nWGK",
       "tableAmountHeader": "für Ansatz benötigt",
-      "tableHPPhrasesTitle": "Wortlaut der wesentlichen oben genannten H- und P-Sätze:"
+      "tableHPPhrasesTitle": "Wortlaut der wesentlichen oben genannten H- und P-Sätze:",
+      "sources": "Quellen"
     },
     "error": {
       "substanceWithCASExist": "Substanz mit selber CAS Nummer existiert bereits!",
