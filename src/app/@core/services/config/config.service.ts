@@ -34,4 +34,11 @@ export class ConfigService {
       cmd: 'getHazardSymbols',
     });
   }
+
+  getPromptHtml(name: string): Observable<string> {
+    return this.tauriService.promisified({
+      cmd: 'getPromptHtml',
+      name,
+    });
+  }
 }

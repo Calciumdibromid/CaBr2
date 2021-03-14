@@ -31,4 +31,9 @@ pub enum Cmd {
     callback: String,
     error: String,
   },
+  GetPromptHtml {
+    name: String,
+    callback: String,
+    error: String,
+  },
 }
