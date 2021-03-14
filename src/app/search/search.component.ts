@@ -61,7 +61,6 @@ export class SearchComponent implements OnInit {
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       data: {
         arguments: this.selectedSearch?.onSubmit(),
-        results: this.globals.searchResults,
       },
       maxWidth: 1500,
       minWidth: 800,
