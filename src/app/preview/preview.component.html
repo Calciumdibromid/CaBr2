@@ -38,11 +38,11 @@
       <!-- ingredients -->
       <tr>
         <td colspan="2">{{ strings.preview.tableSubstanceTitleHeader }}</td>
-        <td>{{ strings.preview.tableMolarMassHeader }}</td>
-        <td>{{ strings.preview.tableBoilingAndMeltingHeader }}</td>
+        <td>{{ strings.preview.tableMolarMassHeader.mw }}<br>{{ strings.preview.tableMolarMassHeader.grammPerMol }}</td>
+        <td>{{ strings.preview.tableBoilingHeader }}<br>{{ strings.preview.tableMeltingHeader }}</td>
         <td>{{ strings.preview.tableGHSSymbolHeader }}</td>
-        <td>{{ strings.preview.tableHPPhrasesHeader }}</td>
-        <td>{{ strings.preview.tableMAKHeader }}</td>
+        <td>{{ strings.preview.tableHPPhrasesHeader }}<br>{{ strings.preview.tableHPPhrasesNumberHeader }}</td>
+        <td>{{ strings.preview.tableMAKHeader }}<br>{{ strings.preview.tableWHCHeader }}</td>
         <td>{{ strings.preview.tableAmountHeader }}</td>
       </tr>
 
@@ -68,12 +68,12 @@
       </tr>
       <tr>
         <td colspan="4" class="full-height top">
-          <div *ngFor="let phrase of getHPhrases()">
+          <div class="phrase" *ngFor="let phrase of getHPhrases()">
             {{ phrase }}
           </div>
         </td>
         <td colspan="4" class="full-height top">
-          <div *ngFor="let phrase of getPPhrases()">
+          <div class="phrase" *ngFor="let phrase of getPPhrases()">
             {{ phrase }}
           </div>
         </td>
