@@ -85,8 +85,7 @@ fn render_doc(document: PDFCaBr2Document) -> Result<Vec<String>> {
 
   let mut reg = REG.lock().unwrap();
 
-  if true {
-    //reg.is_none() {
+  if reg.is_none() {
     *reg = Some(init_handlebars()?);
   }
 
