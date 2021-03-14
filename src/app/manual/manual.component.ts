@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { GlobalModel } from '../@core/models/global.model';
@@ -8,6 +8,7 @@ import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
   selector: 'app-manual',
   templateUrl: './manual.component.html',
   styleUrls: ['./manual.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ManualComponent implements OnInit {
   strings!: LocalizedStrings;
