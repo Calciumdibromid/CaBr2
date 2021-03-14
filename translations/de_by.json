@@ -7,15 +7,26 @@
       "removeElement": "Oana weniga",
       "print": "Haus aufs Bladl",
       "cancel": "Na los bleim",
-      "ok": "Basd scho",
-      "save": "Auf'n PC damid"
+      "ok": "Basd",
+      "save": "Auf'n PC damid",
+      "close": "Weg damid!"
     },
     "menu": {
       "newDocument": "Wos neis",
       "loadFile": "Wos oids hoin",
       "saveFile": "Betriebsanweisung speichan",
       "exportPDF": "Ois PDF exportiern",
+      "settings": "Sachan eistain",
+      "quickStart": "Da Wisch wias gäd"
+    },
+    "settings": {
+      "language": "Sproch",
+      "reloadRequired": "Dua moi de Seitn nei lon lossn",
       "darkModeSwitchInfo": "Aufd' dunkle Seitn' wexln"
+    },
+    "bugreport": {
+      "title": "Do geht wos ned!",
+      "sentence": "Wennst merkst, dass wos ned ganz stimmt, dann kost du mit de Computernerds so schmatzn:"
     },
     "header": {
       "docTitle": "Titl vom Wisch:",
@@ -27,6 +38,12 @@
       "preparation": "Zu machans Gmisch:"
     },
     "search": {
+      "types": {
+        "chemicalName": "Stoffnama",
+        "chemicalFormula": "Stoffkürzl",
+        "numbers": "Numma",
+        "fullText": "Suach überoi"
+      },
       "exact": "Subba genaue Suche",
       "option": "Suchoption:",
       "searchButton": "Suche",
@@ -75,13 +92,20 @@
     "preview": {
       "info": "Des wos du do undn sigst is nur a Möglichkeit wias ausschaung ko. Des Zeig wos aufs Bladl kimmt, ko a bissal andas ausschaun!",
       "tableSubstanceTitleHeader": "Des Zeig, wosd' hernimmst",
-      "tableMolarMassHeader": "MG [g/mol]",
-      "tableBoilingAndMeltingHeader": "Sdp.\nSmp.",
+      "tableMolarMassHeader": {
+        "mw": "MG",
+        "grammPerMol": "[g/mol]"
+      },
+      "tableBoilingHeader": "Sdp.",
+      "tableMeltingHeader": "Smp.",
       "tableGHSSymbolHeader": "Gfahrenschuild",
-      "tableHPPhrasesHeader": "H oda P Satzal\n(nua de Numman)",
-      "tableMAKHeader": "MAK, LD50\nWGK",
+      "tableHPPhrasesHeader": "H-/P-Satzal",
+      "tableHPPhrasesNumberHeader": "(Numman)",
+      "tableMAKHeader": "MAK, LD50",
+      "tableWHCHeader": "WGK",
       "tableAmountHeader": "Wos brach ma für's Gspui",
-      "tableHPPhrasesTitle": "Do sted da ganze Schmarrn zu de H- und P-Satzal:"
+      "tableHPPhrasesTitle": "Do sted da ganze Schmarrn zu de H- und P-Satzal:",
+      "sources": "Vo do kimts her"
     },
     "error": {
       "substanceWithCASExist": "Bisd bsuffa, des is doch scho do!",
