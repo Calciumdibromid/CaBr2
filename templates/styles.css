@@ -30,6 +30,10 @@ tr td {
   padding: 8px;
 }
 
+li {
+  padding: 5px 0;
+}
+
 .full-height {
   height: unset !important;
 }
@@ -89,4 +93,18 @@ tr td {
 .signalword {
   font-size: small;
   margin-top: 0;
+}
+
+.list-heading {
+  font-weight: bolder;
+  padding: 10px 0;
+}
+
+.signature {
+  width: 7cm;
+  margin: 5px 10px;
+  margin-top: 1.5cm;
+  font-size: small;
+  text-indent: 5px;
+  border-top: 1px solid #000;
 }
