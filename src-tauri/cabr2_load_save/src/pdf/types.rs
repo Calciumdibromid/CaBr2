@@ -37,7 +37,7 @@ pub struct PDFSubstanceData {
   lethal_dose: Data<Option<String>>,
   mak: Data<Option<String>>,
   amount: Option<Amount>,
-  source: Source,
+  pub source: Source,
 }
 
 #[derive(Debug, Default, Deserialize, Serialize)]

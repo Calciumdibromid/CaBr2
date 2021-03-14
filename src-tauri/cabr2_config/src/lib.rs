@@ -10,8 +10,8 @@ use lazy_static::lazy_static;
 use tauri::{self, plugin::Plugin};
 
 use cmd::Cmd;
-pub use handler::{read_config, write_config};
-pub use types::BackendConfig;
+pub use handler::{get_hazard_symbols, read_config, write_config};
+pub use types::{BackendConfig, GHSSymbols};
 
 lazy_static! {
   pub static ref PROJECT_DIRS: ProjectDirs = ProjectDirs::from("de", "Calciumdibromid", "CaBr2").unwrap();

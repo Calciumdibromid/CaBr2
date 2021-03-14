@@ -127,6 +127,7 @@ fn init_handlebars() -> Result<(String, Handlebars<'static>)> {
   reg.register_helper("h_p_phrases_numbers", Box::new(handlebar_helpers::h_p_phrases_numbers));
   reg.register_helper("h_p_phrases", Box::new(handlebar_helpers::h_p_phrases));
   reg.register_helper("value_or_dash", Box::new(handlebar_helpers::value_or_dash));
+  reg.register_helper("providers", Box::new(handlebar_helpers::providers));
 
   Ok((buf, reg))
 }
@@ -192,59 +193,22 @@ fn init_pdf_application() -> PDFChannels {
 
 /// Custom helpers for handlebars
 mod handlebar_helpers {
-  use std::collections::BTreeSet;
+  use std::{
+    collections::{BTreeSet, HashMap},
+    sync::{Arc, Mutex},
+  };
 
   use handlebars::{Handlebars, JsonRender, RenderError};
+  use lazy_static::lazy_static;
+
+  use cabr2_config::{get_hazard_symbols, GHSSymbols};
 
   use super::types::PDFSubstanceData;
 
-  const TEST: &str = "R0lGODlhZABkAPcAAP//////zP//mf//Zv//M///AP/M///MzP/Mmf/MZv/MM//MAP+Z//+ZzP+Z
-mf+ZZv+ZM/+ZAP9m//9mzP9mmf9mZv9mM/9mAP8z//8zzP8zmf8zZv8zM/8zAP8A//8AzP8Amf8A
-Zv8AM/8AAMz//8z/zMz/mcz/Zsz/M8z/AMzM/8zMzMzMmczMZszMM8zMAMyZ/8yZzMyZmcyZZsyZ
-M8yZAMxm/8xmzMxmmcxmZsxmM8xmAMwz/8wzzMwzmcwzZswzM8wzAMwA/8wAzMwAmcwAZswAM8wA
-AJn//5n/zJn/mZn/Zpn/M5n/AJnM/5nMzJnMmZnMZpnMM5nMAJmZ/5mZzJmZmZmZZpmZM5mZAJlm
-/5lmzJlmmZlmZplmM5lmAJkz/5kzzJkzmZkzZpkzM5kzAJkA/5kAzJkAmZkAZpkAM5kAAGb//2b/
-zGb/mWb/Zmb/M2b/AGbM/2bMzGbMmWbMZmbMM2bMAGaZ/2aZzGaZmWaZZmaZM2aZAGZm/2ZmzGZm
-mWZmZmZmM2ZmAGYz/2YzzGYzmWYzZmYzM2YzAGYA/2YAzGYAmWYAZmYAM2YAADP//zP/zDP/mTP/
-ZjP/MzP/ADPM/zPMzDPMmTPMZjPMMzPMADOZ/zOZzDOZmTOZZjOZMzOZADNm/zNmzDNmmTNmZjNm
-MzNmADMz/zMzzDMzmTMzZjMzMzMzADMA/zMAzDMAmTMAZjMAMzMAAAD//wD/zAD/mQD/ZgD/MwD/
-AADM/wDMzADMmQDMZgDMMwDMAACZ/wCZzACZmQCZZgCZMwCZAABm/wBmzABmmQBmZgBmMwBmAAAz
-/wAzzAAzmQAzZgAzMwAzAAAA/wAAzAAAmQAAZgAAMwAAAP///twrGf39/Pr6+fb29fHx8O3t7IyK
-iN3c29bV1GBdW3h1cxkUEVJOTL68u6yqqUZBP//8+/318/76+dofC90yIOl0Z/O1rvvp59shD9sk
-EtwnFdwqGNwsGtwtG9wtHN44J+uHfe6XjvCmn//9/ebl5f7+/v///yH5BAEAAP8ALAAAAABkAGQA
-AAj/AP8JHEiwoMGDCBMqXMiwocOHEB2yi0ixosWLArNplIexo8eP/zSKzAaypEmGI0eeXMkyZEqV
-LWN2TEkvZTyZOCm+lCcv5cScQBfSjOdOX8+UQZMapMnOnT8A+uLNG8lRqVKm7tYB2Bp1qsiqVnNi
-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
-aC0HBAA7";
+  lazy_static! {
+    static ref GHS_SYMBOLS: Arc<Mutex<GHSSymbols>> =
+      Arc::new(Mutex::new(get_hazard_symbols().unwrap_or(HashMap::new())));
+  }
 
   /// Inlines the actual ghs-symbol-images from their keys as base64-encodes pngs
   pub fn ghs_symbols(
@@ -256,7 +220,14 @@ aC0HBAA7";
   ) -> handlebars::HelperResult {
     let param = h.param(0).unwrap();
     out.write("<img class='ghs' src=\"")?;
-    out.write(&format!("data:image/png;base64,{}", TEST))?;
+    out.write(
+      GHS_SYMBOLS
+        .lock()
+        .unwrap()
+        .get(param.value().as_str().unwrap_or_default())
+        .unwrap_or(&String::from(""))
+        .as_str(),
+    )?;
     out.write("\" alt=\"")?;
     out.write(&param.value().render())?; // alt content
     out.write("\" />")?;
@@ -351,6 +322,32 @@ aC0HBAA7";
       handlebars::JsonValue::Null => out.write("-")?,
       _ => out.write(&param.render())?,
     };
+    Ok(())
+  }
+
+  /// Writes the `Set` of providers separated by `,`
+  pub fn providers(
+    _: &handlebars::Helper,
+    _: &Handlebars,
+    ctx: &handlebars::Context,
+    _: &mut handlebars::RenderContext,
+    out: &mut dyn handlebars::Output,
+  ) -> handlebars::HelperResult {
+    let substances: Vec<PDFSubstanceData> =
+      match serde_json::from_value(ctx.data()["document"]["substanceData"].clone()) {
+        Ok(substances) => substances,
+        Err(err) => return Err(RenderError::new(format!("json deserialize error: {:?}", err))),
+      };
+
+    let providers: BTreeSet<String> = substances.into_iter().map(|s| s.source.provider).collect();
+
+    // kill empty string from empty substance lines
+    for (i, provider) in providers.iter().filter(|p| !p.is_empty()).enumerate() {
+      if i > 0 {
+        out.write(", ")?;
+      }
+      out.write(provider)?;
+    }
     Ok(())
   }
 }
