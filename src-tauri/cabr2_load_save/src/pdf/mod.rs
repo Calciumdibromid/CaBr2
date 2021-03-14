@@ -81,8 +81,6 @@ fn render_doc(document: PDFCaBr2Document) -> Result<Vec<String>> {
     static ref REG: Arc<Mutex<Option<(String, Handlebars<'static>)>>> = Arc::new(Mutex::new(None));
   }
 
-  log::debug!("converted data: {:#?}", document);
-
   let mut reg = REG.lock().unwrap();
 
   if reg.is_none() {
