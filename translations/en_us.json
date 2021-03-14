@@ -8,7 +8,8 @@
       "print": "Print",
       "cancel": "Cancel",
       "ok": "Ok",
-      "save": "Save"
+      "save": "Save",
+      "close": "Close"
     },
     "menu": {
       "newDocument": "New safety datasheet",
@@ -16,7 +17,7 @@
       "saveFile": "Save safety datasheet",
       "exportPDF": "Export as PDF",
       "settings": "Settings",
-      "quickStart": "Quick Start"
+      "quickStart": "Guide"
     },
     "settings": {
       "language": "Language",
@@ -38,10 +39,10 @@
     },
     "search": {
       "types": {
-        "chemicalName": "Stoffname",
-        "chemicalFormula": "Summenformel",
-        "numbers": "Nummer",
-        "fullText": "Volltext"
+        "chemicalName": "Chemical name",
+        "chemicalFormula": "Molecular formula",
+        "numbers": "Number",
+        "fullText": "Full Text"
       },
       "exact": "Exact search",
       "option": "Search options:",
@@ -100,7 +101,7 @@
       "tableGHSSymbolHeader": "GHS hazard pictograms",
       "tableHPPhrasesHeader": "H/P-phrases",
       "tableHPPhrasesNumberHeader": "(numbers)",
-      "tableMAKHeader": "TLV, LD50,",
+      "tableMAKHeader": "MAC, LD50",
       "tableWHCHeader": "WHC",
       "tableAmountHeader": "Amount used",
       "tableHPPhrasesTitle": "Text of essential H/P phrases:",
