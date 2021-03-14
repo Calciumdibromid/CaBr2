@@ -11,15 +11,15 @@ use crate::error::ConfigError;
 
 use super::{
   error::Result,
-  types::{GHSSymbols, JsonConfig, LocalizedStrings, LocalizedStringsHeader, TomlConfig},
+  types::{BackendConfig, FrontendConfig, GHSSymbols, LocalizedStrings, LocalizedStringsHeader},
   DATA_DIR,
 };
 
-pub fn get_config() -> Result<JsonConfig> {
+pub fn get_config() -> Result<FrontendConfig> {
   Ok(read_config()?.into())
 }
 
-pub fn read_config() -> Result<TomlConfig> {
+pub fn read_config() -> Result<BackendConfig> {
   let config_path = get_config_path();
   log::trace!("reading config from: {:?}", config_path);
 
@@ -27,23 +27,24 @@ pub fn read_config() -> Result<TomlConfig> {
     Ok(file) => file,
     Err(e) => match e.kind() {
       std::io::ErrorKind::NotFound => {
-        save_config(TomlConfig::default().into())?;
+        write_config(BackendConfig::default())?;
         return read_config();
       }
       _ => return Err(e.into()),
     },
   };
+
   let mut buf = String::new();
   file.read_to_string(&mut buf)?;
 
-  Ok(toml::from_str::<TomlConfig>(&buf)?)
+  Ok(toml::from_str::<BackendConfig>(&buf)?)
 }
 
-pub fn save_config(config: JsonConfig) -> Result<()> {
+pub fn save_config(config: FrontendConfig) -> Result<()> {
   write_config(config.into())
 }
 
-pub fn write_config(config: TomlConfig) -> Result<()> {
+pub fn write_config(config: BackendConfig) -> Result<()> {
   let config_path = get_config_path();
   log::trace!("writing config to: {:?}", config_path);
 

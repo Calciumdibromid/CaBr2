@@ -10,6 +10,12 @@ import { TauriService } from '../tauri/tauri.service';
 export class ConfigService {
   constructor(private tauriService: TauriService) {}
 
+  getProgramVersion(): Observable<string> {
+    return this.tauriService.promisified({
+      cmd: 'getProgramVersion',
+    });
+  }
+
   getConfig(): Observable<ConfigModel> {
     return this.tauriService.promisified({
       cmd: 'getConfig',

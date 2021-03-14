@@ -16,8 +16,17 @@
       "loadFile": "Bestehende Betriebsanweisung öffnen",
       "saveFile": "Betriebsanweisung speichern",
       "exportPDF": "Als PDF exportieren",
-      "darkModeSwitchInfo": "Auf helles/dunkles Thema umschalten",
+      "settings": "Einstellungen",
       "quickStart": "Anleitung"
+    },
+    "settings": {
+      "language": "Sprache",
+      "reloadRequired": "Neu laden der Seite nötig",
+      "darkModeSwitchInfo": "Auf helles/dunkles Thema umschalten"
+    },
+    "bugreport": {
+      "title": "Einen Fehler melden",
+      "sentence": "Falls ein Fehler festgestellt wurde, kann man mit folgender Mail mit den Entwicklern in Kontakt getreten werden:"
     },
     "header": {
       "docTitle": "Dokument Titel:",
@@ -83,13 +92,20 @@
     "preview": {
       "info": "Dies is eine Vorschau. Die tatsächliche, generierte PDF kann minimale Unterschiede aufweisen!",
       "tableSubstanceTitleHeader": "Eingesetzte Stoffe und Produkte",
-      "tableMolarMassHeader": "MG\n[g/mol]",
-      "tableBoilingAndMeltingHeader": "Sdp.\nSmp.",
+      "tableMolarMassHeader": {
+        "mw": "MG",
+        "grammPerMol": "[g/mol]"
+      },
+      "tableBoilingHeader": "Sdp.",
+      "tableMeltingHeader": "Smp.",
       "tableGHSSymbolHeader": "GHS-Symbole",
-      "tableHPPhrasesHeader": "H/P-Sätze\n(Nummern)",
-      "tableMAKHeader": "MAK, LD50\nWGK",
+      "tableHPPhrasesHeader": "H/P-Sätze",
+      "tableHPPhrasesNumberHeader": "(Nummern)",
+      "tableMAKHeader": "MAK, LD50",
+      "tableWHCHeader": "WGK",
       "tableAmountHeader": "für Ansatz benötigt",
-      "tableHPPhrasesTitle": "Wortlaut der wesentlichen oben genannten H- und P-Sätze:"
+      "tableHPPhrasesTitle": "Wortlaut der wesentlichen oben genannten H- und P-Sätze:",
+      "sources": "Quellen"
     },
     "error": {
       "substanceWithCASExist": "Substanz mit selber CAS Nummer existiert bereits!",

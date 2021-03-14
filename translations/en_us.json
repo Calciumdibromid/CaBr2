@@ -15,7 +15,17 @@
       "loadFile": "Open safety datasheet",
       "saveFile": "Save safety datasheet",
       "exportPDF": "Export as PDF",
+      "settings": "Settings",
+      "quickStart": "Quick Start"
+    },
+    "settings": {
+      "language": "Language",
+      "reloadRequired": "Reload required",
       "darkModeSwitchInfo": "Toggle light/dark theme"
+    },
+    "bugreport": {
+      "title": "Report a bug",
+      "sentence": "Report a bug on following email:"
     },
     "header": {
       "docTitle": "Document title:",
@@ -27,6 +37,12 @@
       "preparation": "Preparation/Task:"
     },
     "search": {
+      "types": {
+        "chemicalName": "Stoffname",
+        "chemicalFormula": "Summenformel",
+        "numbers": "Nummer",
+        "fullText": "Volltext"
+      },
       "exact": "Exact search",
       "option": "Search options:",
       "searchButton": "Search",
@@ -75,13 +91,20 @@
     "preview": {
       "info": "This is only a preview. The generated PDF may look different!",
       "tableSubstanceTitleHeader": "Used substances and products",
-      "tableMolarMassHeader": "MW\n[g/mol]",
-      "tableBoilingAndMeltingHeader": "BP\nMP",
+      "tableMolarMassHeader": {
+        "mw": "MW",
+        "grammPerMol": "[g/mol]"
+      },
+      "tableBoilingHeader": "BP",
+      "tableMeltingHeader": "MP",
       "tableGHSSymbolHeader": "GHS hazard pictograms",
-      "tableHPPhrasesHeader": "H/P-phrases\n(numbers)",
-      "tableMAKHeader": "TLV, LD50,\nWHC",
+      "tableHPPhrasesHeader": "H/P-phrases",
+      "tableHPPhrasesNumberHeader": "(numbers)",
+      "tableMAKHeader": "TLV, LD50,",
+      "tableWHCHeader": "WHC",
       "tableAmountHeader": "Amount used",
-      "tableHPPhrasesTitle": "Text of essential H/P phrases:"
+      "tableHPPhrasesTitle": "Text of essential H/P phrases:",
+      "sources": "Sources"
     },
     "error": {
       "substanceWithCASExist": "Substance with identical CAS number exists already!",

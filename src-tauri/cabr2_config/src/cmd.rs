@@ -1,6 +1,6 @@
 use serde::Deserialize;
 
-use super::types::JsonConfig;
+use super::types::FrontendConfig;
 
 #[derive(Debug, Deserialize)]
 #[serde(tag = "cmd", rename_all = "camelCase")]
@@ -14,7 +14,7 @@ pub enum Cmd {
     error: String,
   },
   SaveConfig {
-    config: JsonConfig,
+    config: FrontendConfig,
     callback: String,
     error: String,
   },
