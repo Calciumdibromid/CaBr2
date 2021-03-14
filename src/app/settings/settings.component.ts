@@ -42,25 +42,24 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.i18nService.getAvailableLanguages().subscribe((languages) => this.languages = languages),
+      this.i18nService.getAvailableLanguages().subscribe((languages) => (this.languages = languages)),
 
       configObservable.subscribe((config) => {
-        this.form.patchValue({
-          language: config.globalSection.language,
-          theme: config.globalSection.darkTheme,
-        },
-          { emitEvent: false }
+        this.form.patchValue(
+          {
+            language: config.globalSection.language,
+            theme: config.globalSection.darkTheme,
+          },
+          { emitEvent: false },
         );
         this.config = config;
       }),
 
-      this.f.theme.valueChanges.subscribe((change) =>
-        this.darkModeSwitched.emit(change)
-      ),
+      this.f.theme.valueChanges.subscribe((change) => this.darkModeSwitched.emit(change)),
 
       this.f.language.valueChanges.subscribe((change) => {
         this.config.setLanguage(change);
-      })
+      }),
     );
   }
 
