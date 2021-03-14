@@ -1,48 +1,49 @@
 <html>
 <head>
-  <meta charset='UTF-8'>
-  <meta name='viewport'
-        content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'>
-  <meta http-equiv='X-UA-Compatible' content='ie=edge'>
-  <style>{{stylesheet}}</style>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>{{ stylesheet }}</style>
 </head>
 <body>
-<table class='print'>
+<table>
   <!-- header -->
   <tr>
-    <th colspan='8'>{{document.header.documentTitle}}</th>
+    <th colspan="8">{{ document.header.documentTitle }}</th>
   </tr>
   <tr>
-    <th colspan='8'>{{document.header.organisation}}</th>
+    <th colspan="8">{{ document.header.organisation }}</th>
   </tr>
   <tr>
-    <th colspan='8'>{{document.header.labCourse}}</th>
+    <th colspan="8">{{ document.header.labCourse }}</th>
   </tr>
   <tr>
-    <td colspan='3'>
+    <td colspan="3">
       Name(n)<br />
-      {{document.header.name}}
+      {{ document.header.name }}
     </td>
-    <td colspan='2'>
+    <td colspan="2">
       Platz<br />
-      {{document.header.place}}
+      {{ document.header.place }}
     </td>
-    <td colspan='3'>
+    <td colspan="3">
       Assistent/in<br />
-      {{document.header.assistant}}
+      {{ document.header.assistant }}
     </td>
   </tr>
   <tr>
-    <td colspan='8'>
+    <td colspan="8">
       Herzustellendes Präparat:<br />
-      <b>{{document.header.preparation}}</b>
+      <b>{{ document.header.preparation }}</b>
     </td>
   </tr>
 
   <!-- ingredients -->
   <tr>
-    <td colspan='2'>
-      eingesetzte Stoffe und Produkte
+    <td colspan="2">
+      eingesetzte Stoffe<br/>
+      und Produkte
     </td>
     <td>
       MG<br />
@@ -56,7 +57,8 @@
       GHS-Symbole
     </td>
     <td>
-      Nummern der H/P-Sätze
+      H/P-Sätze<br/>
+      (Nummern)
     </td>
     <td>
       MAK<br />
@@ -68,27 +70,45 @@
     </td>
   </tr>
 
+  {{ #each document.substanceData }}
   <tr>
-    {{#each document.substanceData}}
-    <td class='min-width-5cm' colspan='2'>{{name}}</td>
-    <td class='min-width-2cm'>{{molar_mass}}</td>
-    <td class='min-width-2cm'>{{boiling_point}}<br/>{{melting_point}}</td>
-    <td>TODO</td> {{! ghs symbols}}
-    <td>TODO</td> {{! h-/p-phrases}}
-    <td>{{mak}}<br/>{{lethal_dose}}<br/>{{water_hazard_class}}</td>
-    <td>{{amount}}</td>
-    {{/each}}
+    <td class="min-width-5cm" colspan="2">{{ name.data }}<br/>{{ molecularFormula.data }}</td>
+    <td class="min-width-2cm value-with-unit{{ #if molarMass.modified }} modified{{ /if }}">{{ value_or_dash molarMass.data }}</td>
+    <td class="min-width-2cm value-with-unit{{ #if (or boilingPoint.modified meltingPoint.modified) }} modified{{ /if }}">
+      {{ value_or_dash boilingPoint.data }}<br/>
+      {{ value_or_dash meltingPoint.data }}
+    </td>
+    <td class="min-width-ghs-symbols">
+      {{ #each symbols.data }}
+        {{ ghs_symbols this }}
+      {{ /each }}
+      {{ #if signalWord.data }}<p class="signalword{{ #if signalWord.modified }} modified{{ /if }}">{{ signalWord.data }}</p>{{ /if }}
+    </td>
+    <td class="phrase-numbers">
+      {{ h_p_phrases_numbers hPhrases.data }}
+      <br/>
+      <br/>
+      {{ h_p_phrases_numbers pPhrases.data }}
+    </td>
+    <td class="min-width-2cm value-with-unit">{{ value_or_dash mak.data }}<br/>{{ value_or_dash lethalDose.data }}<br/>{{ value_or_dash waterHazardClass.data }}</td>
+    <td>{{ amount.value }}&nbsp;{{ amount.unit }}</td>
   </tr>
+  {{ /each }}
 
   <!-- h and p -->
   <tr>
-    <td class='center' colspan='8'>
+    <td class="center" colspan="8">
       Wortlaut der wesentlichen oben genannten H- und P-Sätze:
     </td>
   </tr>
+  <tr class="full-height">
+    <td colspan="4" class="full-height top phrases">{{ h_p_phrases "h" }}</td>
+    <td colspan="4" class="full-height top phrases">{{ h_p_phrases "p" }}</td>
+  </tr>
   <tr>
-    <td colspan='4' class='full-height top'>TODO</td> {{! h-phrases}}
-    <td colspan='4' class='full-height top'>TODO</td> {{! p-phrases}}
+    <td colspan="8">
+      <b>Quellen:</b> {{ providers "" }}
+    </td>
   </tr>
 </table>
 </body>

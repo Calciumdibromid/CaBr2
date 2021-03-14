@@ -8,8 +8,9 @@ use std::env;
 use tauri::{self, plugin::Plugin};
 
 use cmd::Cmd;
-pub use handler::{read_config, write_config, DATA_DIR, PROJECT_DIRS, TMP_DIR};
-pub use types::BackendConfig;
+
+pub use handler::{get_hazard_symbols, read_config, write_config, DATA_DIR, PROJECT_DIRS, TMP_DIR};
+pub use types::{BackendConfig, GHSSymbols};
 
 pub struct Config;
 
