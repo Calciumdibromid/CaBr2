@@ -5,7 +5,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import {
-  Amount,
   Data,
   SubstanceData,
   TemperatureUnit,
@@ -67,14 +66,7 @@ export class EditSearchResultsComponent implements OnInit {
   }
 
   initControls(): FormGroup {
-    let amount;
-    let amountDirty = false;
-    if (this.data.amount) {
-      amount = this.data.amount;
-      amountDirty = true;
-    } else {
-      amount = { value: '', unit: Unit.GRAM };
-    }
+    const amount = this.data.amount ?? { value: '', unit: Unit.GRAM };
 
     const group = this.formBuilder.group({
       name: [this.modifiedOrOriginal(this.data.name), Validators.required],
@@ -99,10 +91,6 @@ export class EditSearchResultsComponent implements OnInit {
         unit: amount.unit,
       }),
     });
-
-    if (amountDirty) {
-      group.get('amount')?.markAsDirty();
-    }
 
     return group;
   }
@@ -195,21 +183,13 @@ export class EditSearchResultsComponent implements OnInit {
     if (!this.abort) {
       const newData: SubstanceData = {
         ...this.data,
-        name: this.evaluateForm('name', this.data.name, (value) => value.length === 0),
-        cas: this.evaluateForm('cas', this.data.cas, (value) => value?.length === 0),
-        molecularFormula: this.evaluateForm(
-          'molecularFormula',
-          this.data.molecularFormula,
-          (value) => value.length === 0,
-        ),
-        molarMass: this.evaluateForm('molarMass', this.data.molarMass, (value) => value?.length === 0),
-        meltingPoint: this.evaluateForm('meltingPoint', this.data.meltingPoint, (value) => value?.length === 0),
-        boilingPoint: this.evaluateForm('boilingPoint', this.data.boilingPoint, (value) => value?.length === 0),
-        waterHazardClass: this.evaluateForm(
-          'waterHazardClass',
-          this.data.waterHazardClass,
-          (value) => value?.length === 0,
-        ),
+        name: this.evaluateForm('name', this.data.name),
+        cas: this.evaluateForm('cas', this.data.cas),
+        molecularFormula: this.evaluateForm('molecularFormula', this.data.molecularFormula),
+        molarMass: this.evaluateForm('molarMass', this.data.molarMass),
+        meltingPoint: this.evaluateForm('meltingPoint', this.data.meltingPoint),
+        boilingPoint: this.evaluateForm('boilingPoint', this.data.boilingPoint),
+        waterHazardClass: this.evaluateForm('waterHazardClass', this.data.waterHazardClass),
         hPhrases: this.evaluateFormArray(
           this.hPhrases,
           (value) => [value.get('hNumber')?.value, value.get('hPhrase')?.value],
@@ -220,16 +200,16 @@ export class EditSearchResultsComponent implements OnInit {
           (value) => [value.get('pNumber')?.value, value.get('pPhrase')?.value],
           this.data.pPhrases,
         ),
-        signalWord: this.evaluateForm('signalWord', this.data.signalWord, (value) => value?.length === 0),
+        signalWord: this.evaluateForm('signalWord', this.data.signalWord),
         symbols: this.evaluateFormArray(this.symbols, (symbol) => symbol?.value, this.data.symbols),
-        lethalDose: this.evaluateForm('lethalDose', this.data.lethalDose, (value) => value?.length === 0),
-        mak: this.evaluateForm('mak', this.data.mak, (value) => value?.length === 0),
+        lethalDose: this.evaluateForm('lethalDose', this.data.lethalDose),
+        mak: this.evaluateForm('mak', this.data.mak),
         amount: this.amount.dirty
           ? {
               value: this.amount.get('value')?.value,
               unit: this.amount.get('unit')?.value,
             }
-          : undefined,
+          : this.data.amount,
       };
 
       if (!this.form.invalid) {
@@ -244,19 +224,13 @@ export class EditSearchResultsComponent implements OnInit {
     this.dialogRef.close(returnData);
   }
 
-  private evaluateForm<T>(
-    formControlName: string,
-    currentData: Data<T>,
-    emptyCallback: (value: T) => boolean,
-  ): Data<T> {
+  private evaluateForm<T>(formControlName: string, currentData: Data<T>): Data<T> {
     const control = this.form?.get(formControlName);
 
     if (control?.dirty) {
       let retData: Data<T> = { originalData: currentData.originalData };
-      if (control.value !== (currentData.modifiedData ?? '')) {
-        if (!emptyCallback(control.value)) {
-          retData = { ...retData, modifiedData: control.value };
-        }
+      if (control.value !== (currentData.modifiedData ?? currentData.originalData)) {
+        retData = { ...retData, modifiedData: control.value };
       }
       return retData;
     }
@@ -271,30 +245,8 @@ export class EditSearchResultsComponent implements OnInit {
     if (formArray.touched) {
       const newArray = formArray.controls.map(mapCallback);
       let retData: Data<T[]> = { originalData: currentData.originalData };
-      if (newArray !== (currentData.modifiedData ?? [])) {
-        if (newArray.length !== 0) {
-          retData = { ...retData, modifiedData: newArray };
-        }
-      }
-      return retData;
-    }
-    return currentData;
-  }
-
-  private evaluateFormGroup<T>(
-    formGroup: FormGroup,
-    mapCallback: (value: AbstractControl) => T,
-    cmpCallback: (newObj: T, oldObj: Data<T>) => boolean,
-    emptyCallback: (obj: T) => boolean,
-    currentData: Data<T>,
-  ): Data<T> {
-    if (formGroup.dirty) {
-      const newObject = mapCallback(formGroup);
-      let retData: Data<T> = { originalData: currentData.originalData };
-      if (cmpCallback(newObject, currentData)) {
-        if (!emptyCallback(newObject)) {
-          retData = { ...retData, modifiedData: newObject };
-        }
+      if (newArray !== (currentData.modifiedData ?? currentData.originalData)) {
+        retData = { ...retData, modifiedData: newArray };
       }
       return retData;
     }
