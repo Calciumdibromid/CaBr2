@@ -24,6 +24,10 @@
       "reloadRequired": "Neu laden der Seite nötig",
       "darkModeSwitchInfo": "Auf helles/dunkles Thema umschalten"
     },
+    "bugreport": {
+      "title": "Einen Fehler melden",
+      "sentence": "Falls ein Fehler festgestellt wurde, kann man mit folgender Mail mit den Entwicklern in Kontakt getreten werden:"
+    },
     "header": {
       "docTitle": "Dokument Titel:",
       "organisation": "Organisation:",
@@ -94,7 +98,8 @@
       "tableHPPhrasesHeader": "H/P-Sätze\n(Nummern)",
       "tableMAKHeader": "MAK, LD50\nWGK",
       "tableAmountHeader": "für Ansatz benötigt",
-      "tableHPPhrasesTitle": "Wortlaut der wesentlichen oben genannten H- und P-Sätze:"
+      "tableHPPhrasesTitle": "Wortlaut der wesentlichen oben genannten H- und P-Sätze:",
+      "sources": "Quellen"
     },
     "error": {
       "substanceWithCASExist": "Substanz mit selber CAS Nummer existiert bereits!",

@@ -28,6 +28,15 @@
     <button class="icon" mat-icon-button (click)="scroll(preview)">
       <img class="svg" src="assets/icons/arrow.svg" />
     </button>
+
+    <div class="bug">
+      <button class="icon" mat-icon-button (click)="openMail()">
+        <img class="svg" src="assets/icons/bug.svg" />
+      </button>
+      <span>
+        {{ programmVersion }}
+      </span>
+    </div>
   </mat-sidenav>
   <mat-sidenav-content class="smooth-scroll unselectable">
     <div #headerTarget>

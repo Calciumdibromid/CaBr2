@@ -2,17 +2,17 @@ import { combineLatest, Observable } from 'rxjs';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { first, map, switchMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
-import { ConfigModel } from '../@core/models/config.model';
+import { ConfigService } from '../@core/services/config/config.service';
 import { docsTemplate } from '../../assets/docsTemplate.json';
 import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 import Logger from '../@core/utils/logger';
 import { ManualComponent } from '../manual/manual.component';
+import { ReportBugComponent } from '../report-bug/report-bug.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
@@ -29,6 +29,8 @@ export class MenubarComponent implements OnInit {
 
   strings!: LocalizedStrings;
 
+  programmVersion!: string;
+
   private loadFilter: string[] = [];
   private saveFilter: string[] = [];
 
@@ -37,6 +39,7 @@ export class MenubarComponent implements OnInit {
     private loadSaveService: LoadSaveService,
     private tauriService: TauriService,
     private alertService: AlertService,
+    private configService: ConfigService,
     private dialog: MatDialog,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
@@ -75,6 +78,11 @@ export class MenubarComponent implements OnInit {
     this.globals.inCaseOfDangerSubject.next(docsTemplate.inCaseOfDangerSubject);
 
     this.globals.substanceDataSubject.next([]);
+
+    this.configService
+      .getProgramVersion()
+      .pipe(first())
+      .subscribe((version) => (this.programmVersion = version));
   }
 
   newDocument(): void {
@@ -83,6 +91,10 @@ export class MenubarComponent implements OnInit {
 
   scroll(el: HTMLElement): void {
     el.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  openMail(): void {
+    this.dialog.open(ReportBugComponent);
   }
 
   modelToDocument(): Observable<CaBr2Document> {

@@ -45,7 +45,7 @@ $ang-CaBr2-theme-dark: mat-dark-theme(
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 .theme-dark {
-  @include angular-material-theme($ang-CaBr2-theme-dark);
+  @include angular-material-color($ang-CaBr2-theme-dark);
   mat-dialog-container {
     background: #303030 !important;
   }
@@ -65,7 +65,7 @@ $ang-CaBr2-theme-dark: mat-dark-theme(
 }
 
 .theme-light {
-  @include angular-material-theme($ang-CaBr2-theme);
+  @include angular-material-color($ang-CaBr2-theme);
   mat-dialog-container {
     background: #fafafa !important;
   }

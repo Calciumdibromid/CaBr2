@@ -23,6 +23,10 @@
       "reloadRequired": "Reload required",
       "darkModeSwitchInfo": "Toggle light/dark theme"
     },
+    "bugreport": {
+      "title": "Report a bug",
+      "sentence": "Report a bug on following email:"
+    },
     "header": {
       "docTitle": "Document title:",
       "organisation": "Organization:",
@@ -93,7 +97,8 @@
       "tableHPPhrasesHeader": "H/P-phrases\n(numbers)",
       "tableMAKHeader": "TLV, LD50,\nWHC",
       "tableAmountHeader": "Amount used",
-      "tableHPPhrasesTitle": "Text of essential H/P phrases:"
+      "tableHPPhrasesTitle": "Text of essential H/P phrases:",
+      "sources": "Sources"
     },
     "error": {
       "substanceWithCASExist": "Substance with identical CAS number exists already!",
