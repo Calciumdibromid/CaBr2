@@ -10,7 +10,6 @@ import { AlertService } from './@core/services/alertsnackbar/altersnackbar.servi
 import { ConfigService } from './@core/services/config/config.service';
 import { GlobalModel } from './@core/models/global.model';
 import Logger from './@core/utils/logger';
-import { first } from 'rxjs/operators';
 
 const logger = new Logger('main');
 

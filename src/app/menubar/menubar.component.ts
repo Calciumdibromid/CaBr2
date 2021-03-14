@@ -15,7 +15,6 @@ import { ManualComponent } from '../manual/manual.component';
 import { ReportBugComponent } from '../report-bug/report-bug.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { TauriService } from '../@core/services/tauri/tauri.service';
-import { ConfigService } from '../@core/services/config/config.service';
 
 const logger = new Logger('menubar');
 
