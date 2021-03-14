@@ -170,6 +170,26 @@ export class MenubarComponent implements OnInit {
 
   exportPDF(): void {
     logger.trace('exportPDF()');
+    this.modelToDocument().pipe(first()).subscribe((doc) =>
+      this.loadSaveService.saveDocument('pdf', '/tmp/test.pdf', doc).pipe(first()).subscribe(
+        (res) => {
+          logger.debug(res);
+          this.alertService.success(this.strings.success.exportPDF);
+        },
+        (err) => {
+          logger.error(err);
+          // fix for an error that occurs only in windows
+          if (err === 'Could not initialize COM.') {
+            logger.debug('ty windows -.- | attempting fix');
+            this.loadFile();
+            this.exportPDF();
+            return;
+          }
+          this.alertService.error(this.strings.error.exportPDF);
+        },
+      )
+    );
+    return;
     combineLatest([this.tauriService.save({ filter: 'pdf' }), this.modelToDocument()])
       .pipe(
         switchMap((value) => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1])),

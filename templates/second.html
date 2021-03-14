@@ -1,59 +1,59 @@
 <html>
 <head>
-  <meta charset='UTF-8'>
-  <meta name='viewport'
-        content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'>
-  <meta http-equiv='X-UA-Compatible' content='ie=edge'>
-  <style>{{stylesheet}}</style>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style>{{ stylesheet }}</style>
 </head>
 <body>
-<table class='print'>
+<table>
   <tr>
-    <td colspan='2' class='top height-5cm9'>
-      <b>Gefahren für Mensch und Umwelt, die von den Ausgangsmaterialien bzw. dem(n) Produkt ausgehen, soweit sie nicht durch genannte Angaben abgedeckt sind (z.B. krebserregend, fruchtschädigend, hautresorptiv):{{! document.descriptions.humanAndEnvironmentDanger}}</b>
+    <td colspan="2" class="top height-5cm9">
+      <b>Gefahren für Mensch und Umwelt, die von den Ausgangsmaterialien bzw. dem(n) Produkt ausgehen, soweit sie nicht durch genannte Angaben abgedeckt sind (z.B. krebserregend, fruchtschädigend, hautresorptiv):{{! document.descriptions.humanAndEnvironmentDanger }}</b>
       <ul>
-          {{#each document.humanAndEnvironmentDanger}}
-          <li>{{this}}</li>
-        {{/each}}
+          {{ #each document.humanAndEnvironmentDanger }}
+          <li>{{ this }}</li>
+        {{ /each }}
       </ul>
     </td>
   </tr>
   <tr>
-    <td colspan='2' class='top height-5cm9'>
-      <b>Schutzmaßnahmen und Verhaltensregeln:{{! document.descriptions.rulesOfConduct}}</b>
+    <td colspan="2" class="top height-5cm9">
+      <b>Schutzmaßnahmen und Verhaltensregeln:{{! document.descriptions.rulesOfConduct }}</b>
       <ul>
-          {{#each document.rulesOfConduct}}
-          <li>{{this}}</li>
-        {{/each}}
+          {{ #each document.rulesOfConduct }}
+          <li>{{ this }}</li>
+        {{ /each }}
       </ul>
     </td>
   </tr>
   <tr>
-    <td colspan='2' class='top height-5cm9'>
-      <b>Verhalten im Gefahrenfall, Erste-Hilfe-Maßnahmen (gegebenfalls Kopie der entsprechenden Literaturstelle beiheften):{{! document.descriptions.inCaseOfDanger}}</b>
+    <td colspan="2" class="top height-5cm9">
+      <b>Verhalten im Gefahrenfall, Erste-Hilfe-Maßnahmen (gegebenfalls Kopie der entsprechenden Literaturstelle beiheften):{{! document.descriptions.inCaseOfDanger }}</b>
       <ul>
-          {{#each document.inCaseOfDanger}}
-          <li>{{this}}</li>
-        {{/each}}
+          {{ #each document.inCaseOfDanger }}
+          <li>{{ this }}</li>
+        {{ /each }}
       </ul>
     </td>
   </tr>
   <tr>
-    <td colspan='2' class='top height-5cm9'>
-      <b>Entsorgung:{{! document.descriptions.disposal}}</b>
+    <td colspan="2" class="top height-5cm9">
+      <b>Entsorgung:{{! document.descriptions.disposal }}</b>
       <ul>
-          {{#each document.disposal}}
-          <li>{{this}}</li>
-        {{/each}}
+          {{ #each document.disposal }}
+          <li>{{ this }}</li>
+        {{ /each }}
       </ul>
     </td>
   </tr>
   <tr>
-    <td class='top height-2cm'>
-      Hiermit verpflichte ich mich, den Versuch gemäß den in dieser Betriebsanweisung aufgeführten Sicherheitsvorschriften durchzuführen.{{! document.descriptions.signStudent}}
+    <td class="top height-2cm">
+      Hiermit verpflichte ich mich, den Versuch gemäß den in dieser Betriebsanweisung aufgeführten Sicherheitsvorschriften durchzuführen.{{! document.descriptions.signStudent }}
     </td>
-    <td class='top height-2cm'>
-      Präparat zur Synthese mit den auf der Vorderseite berechneten Chemikalienmengen freigegeben.{{! document.descriptions.signAssistant}}
+    <td class="top height-2cm">
+      Präparat zur Synthese mit den auf der Vorderseite berechneten Chemikalienmengen freigegeben.{{! document.descriptions.signAssistant }}
     </td>
   </tr>
 </table>

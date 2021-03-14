@@ -20,7 +20,7 @@ pub struct SubstanceData {
   pub symbols: Data<Vec<String>>,
   pub lethal_dose: Data<Option<String>>,
   pub mak: Data<Option<String>>,
-  pub amount: Data<Option<Amount>>,
+  pub amount: Option<Amount>,
   pub source: Source,
 }
 
@@ -56,7 +56,7 @@ pub struct Amount {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-#[serde(rename_all = "camelCase")]
+#[serde(rename_all = "UPPERCASE")]
 pub enum Unit {
   Litre,
   Milliliter,

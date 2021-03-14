@@ -84,7 +84,7 @@ impl Provider for Gestis {
       lethal_dose: Data::new(data.lethal_dose),
       signal_word: Data::new(data.signal_word),
       mak: Data::new(data.mak),
-      amount: Data::new(None),
+      amount: None,
       h_phrases: Data::new(match data.h_phrases {
         Some(inner) => inner,
         None => Vec::new(),

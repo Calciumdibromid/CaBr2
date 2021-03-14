@@ -2,8 +2,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  width: 210mm;
-  height: 297mm;
+  width: 100%;
+  height: 100%;
 }
 
 table,
@@ -14,9 +14,8 @@ td {
 }
 
 table {
-  width: 200mm;
-  height: 287mm;
-  margin: 4mm;
+  width: 100%;
+  height: 100%;
 }
 
 tr th {
@@ -27,7 +26,6 @@ tr th {
 }
 
 tr td {
-  height: 8mm;
   text-align: left;
   padding: 8px;
 }
@@ -45,11 +43,15 @@ tr td {
 }
 
 .min-width-5cm {
-  min-width: 5cm;
+  min-width: 4.5cm;
 }
 
 .min-width-2cm {
   min-width: 2cm;
+}
+
+.min-width-ghs-symbols {
+  min-width: 2.9cm;
 }
 
 .height-2cm {
@@ -69,4 +71,17 @@ tr td {
 .ghs {
   width: 25pt;
   height: 25pt;
+}
+
+.phrase-numbers {
+  max-width: 4cm;
+  font-size: x-small;
+}
+
+.value-with-unit {
+  font-size: small;
+}
+
+.phrases {
+  font-size: small;
 }
