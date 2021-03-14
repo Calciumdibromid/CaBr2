@@ -43,37 +43,45 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.configService.getConfig().pipe(first()).subscribe(
-      (newConfig) => ConfigModel.setConfig(newConfig),
-      (err) => {
-        logger.error('loading config failed:', err);
-        this.alertService.error(this.strings.error.configLoad);
-      },
-    );
+    this.configService
+      .getConfig()
+      .pipe(first())
+      .subscribe(
+        (newConfig) => ConfigModel.setConfig(newConfig),
+        (err) => {
+          logger.error('loading config failed:', err);
+          this.alertService.error(this.strings.error.configLoad);
+        },
+      );
 
     this.subscriptions.push(
       // skip initial config and first load
-      configObservable.pipe(
-        skip(2),
-        switchMap((config) => this.configService.saveConfig(config).pipe(first())),
-      ).subscribe(
-        () => logger.info('config saved'),
-        (err) => {
-          logger.error('saving config failed:', err);
-          this.alertService.error(this.strings.error.configSave);
-        },
-      ),
+      configObservable
+        .pipe(
+          skip(2),
+          switchMap((config) => this.configService.saveConfig(config).pipe(first())),
+        )
+        .subscribe(
+          () => logger.info('config saved'),
+          (err) => {
+            logger.error('saving config failed:', err);
+            this.alertService.error(this.strings.error.configSave);
+          },
+        ),
 
       configObservable.subscribe((config) => {
         // config is undefined before first call of this function
         if (!(this.config?.globalSection.language === config.globalSection.language)) {
-          this.i18nService.getLocalizedStrings(config.globalSection.language).pipe(first()).subscribe(
-            (strings) => this.global.localizedStringsSubject.next(strings),
-            (err) => {
-              logger.error(err);
-              this.alertService.error(this.strings.error.localeLoading);
-            },
-          );
+          this.i18nService
+            .getLocalizedStrings(config.globalSection.language)
+            .pipe(first())
+            .subscribe(
+              (strings) => this.global.localizedStringsSubject.next(strings),
+              (err) => {
+                logger.error(err);
+                this.alertService.error(this.strings.error.localeLoading);
+              },
+            );
         }
 
         this.switchMode(config.globalSection.darkTheme);
@@ -87,7 +95,7 @@ export class AppComponent implements OnInit, OnDestroy {
           logger.error('loading ghs-symbols failed:', err);
           this.alertService.error(this.strings.error.getHazardSymbols);
         },
-      )
+      ),
     );
   }
 

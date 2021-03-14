@@ -38,11 +38,13 @@
       <!-- ingredients -->
       <tr>
         <td colspan="2">{{ strings.preview.tableSubstanceTitleHeader }}</td>
-        <td>{{ strings.preview.tableMolarMassHeader.mw }}<br>{{ strings.preview.tableMolarMassHeader.grammPerMol }}</td>
-        <td>{{ strings.preview.tableBoilingHeader }}<br>{{ strings.preview.tableMeltingHeader }}</td>
+        <td>
+          {{ strings.preview.tableMolarMassHeader.mw }}<br />{{ strings.preview.tableMolarMassHeader.grammPerMol }}
+        </td>
+        <td>{{ strings.preview.tableBoilingHeader }}<br />{{ strings.preview.tableMeltingHeader }}</td>
         <td>{{ strings.preview.tableGHSSymbolHeader }}</td>
-        <td>{{ strings.preview.tableHPPhrasesHeader }}<br>{{ strings.preview.tableHPPhrasesNumberHeader }}</td>
-        <td>{{ strings.preview.tableMAKHeader }}<br>{{ strings.preview.tableWHCHeader }}</td>
+        <td>{{ strings.preview.tableHPPhrasesHeader }}<br />{{ strings.preview.tableHPPhrasesNumberHeader }}</td>
+        <td>{{ strings.preview.tableMAKHeader }}<br />{{ strings.preview.tableWHCHeader }}</td>
         <td>{{ strings.preview.tableAmountHeader }}</td>
       </tr>
 
@@ -58,7 +60,7 @@
           <span class="signalword">{{ data.signalWord }}</span>
         </td>
         <td>{{ getPhraseNumber(data.hPhrases).join(', ') }}<br />{{ getPhraseNumber(data.pPhrases).join(', ') }}</td>
-        <td>{{ data.mak }}<br>{{ data.waterHazardClass }}</td>
+        <td>{{ data.mak }}<br />{{ data.waterHazardClass }}</td>
         <td>{{ data.amount?.value }} {{ data.amount?.unit }}</td>
       </tr>
 

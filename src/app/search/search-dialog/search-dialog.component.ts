@@ -38,13 +38,10 @@ export class SearchDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscription = this.searchService.search(
-      'gestis',
-      {
-        arguments: this.data.arguments,
-        exact: this.exactSearch,
-      }
-    );
+    this.subscription = this.searchService.search('gestis', {
+      arguments: this.data.arguments,
+      exact: this.exactSearch,
+    });
 
     this.searchResults = [];
     this.searchFinished = false;
