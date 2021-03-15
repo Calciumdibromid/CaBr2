@@ -5,9 +5,16 @@ use cabr2_types::SubstanceData;
 use super::error::Result;
 
 pub trait Provider {
+  fn get_name(&self) -> String;
   fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> Result<Vec<String>>;
   fn get_search_results(&self, arguments: SearchArguments) -> Result<Vec<SearchResponse>>;
   fn get_substance_data(&self, identifier: String) -> Result<SubstanceData>;
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct ProviderInfo {
+  pub name: String,
+  pub identifier: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -27,7 +34,6 @@ pub struct SearchArgument {
 }
 
 #[derive(Debug, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct SearchArguments {
   #[serde(default)]
   pub exact: bool,
