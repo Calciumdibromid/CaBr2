@@ -25,7 +25,7 @@ pub struct PDFSubstanceData {
   name: Data<String>,
   alternative_names: Vec<String>,
   cas: Data<Option<String>>,
-  molecular_formula: Data<String>,
+  molecular_formula: Data<Option<String>>,
   molar_mass: Data<Option<String>>,
   melting_point: Data<Option<String>>,
   boiling_point: Data<Option<String>>,
@@ -118,7 +118,7 @@ impl std::convert::From<SubstanceData> for PDFSubstanceData {
       h_phrases: data.h_phrases.into(),
       p_phrases: data.p_phrases.into(),
       signal_word: data.signal_word.into(),
-      symbols: data.symbols.into(), // TODO fill with actual symbols
+      symbols: data.symbols.into(),
       lethal_dose: data.lethal_dose.into(),
       mak: data.mak.into(),
       amount: match data.amount {

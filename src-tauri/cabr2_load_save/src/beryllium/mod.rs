@@ -53,7 +53,7 @@ impl Loader for Beryllium {
               name: Data::new(substance.names[0].clone()),
               alternative_names: substance.names.split_off(1),
               cas: Data::new(substance.cas),
-              molecular_formula: Data::new(substance.chemical_formula.unwrap_or_default()),
+              molecular_formula: Data::new(substance.chemical_formula),
               molar_mass: Data::new(substance.molecular_weight),
               boiling_point: Data::new(substance.boiling_point),
               melting_point: Data::new(match substance.melting_point {
