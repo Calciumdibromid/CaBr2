@@ -6,7 +6,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { ConfigService } from '../@core/services/config/config.service';
-import { ConsentComponent } from '../consent/consent.component';
 import { docsTemplate } from '../../assets/docsTemplate.json';
 import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';

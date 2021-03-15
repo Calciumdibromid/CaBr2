@@ -1,3 +1,4 @@
+import { filter, map } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 
 import Logger from '../utils/logger';
@@ -20,29 +21,38 @@ export class ConfigModel {
     return this.global;
   }
 
+  static setLoadedConfig(config: ConfigModel): void {
+    // this must be config.global because this is mostly a deserialized JSON from the backend
+    configSubject.next([new ConfigModel(config.global), ConfigState.LOADED]);
+  }
+
   static setConfig(config: ConfigModel): void {
     // this must be config.global because this is mostly a deserialized JSON from the backend
-    configSubject.next(new ConfigModel(config.global));
+    configSubject.next([new ConfigModel(config.global), ConfigState.CHANGED]);
   }
 
   setDarkMode(darkTheme: boolean): void {
     if (this.global.darkTheme !== darkTheme) {
-      configSubject.next(new ConfigModel({ ...this.global, darkTheme }));
+      setConfig(new ConfigModel({ ...this.global, darkTheme }));
     }
   }
 
   setLanguage(language: string): void {
     if (this.global.language !== language) {
-      configSubject.next(new ConfigModel({ ...this.global, language }));
+      setConfig(new ConfigModel({ ...this.global, language }));
     }
   }
 
   setAcceptedConsent(acceptedConsent: boolean): void {
     if (this.global.acceptedConsent !== acceptedConsent) {
-      configSubject.next(new ConfigModel({ ...this.global, acceptedConsent }));
+      setConfig(new ConfigModel({ ...this.global, acceptedConsent }));
     }
   }
 }
+
+const setConfig = (config: ConfigModel): void => {
+  configSubject.next([config, ConfigState.CHANGED]);
+};
 
 export interface Global {
   readonly darkTheme: boolean;
@@ -50,5 +60,23 @@ export interface Global {
   readonly acceptedConsent: boolean;
 }
 
-export const configSubject = new BehaviorSubject<ConfigModel>(new ConfigModel());
-export const configObservable = configSubject.asObservable();
+enum ConfigState {
+  INITIAL,
+  LOADED,
+  CHANGED,
+}
+
+const configSubject = new BehaviorSubject<[ConfigModel, ConfigState]>([new ConfigModel(), ConfigState.INITIAL]);
+const privConfigObservable = configSubject.asObservable();
+/** all config changes */
+export const configObservable = privConfigObservable.pipe(map(([config, _]) => config));
+/** only if config is loaded from storage */
+export const configLoadObservable = privConfigObservable.pipe(
+  filter(([_, state]) => state === ConfigState.LOADED),
+  map(([config, _]) => config),
+);
+/** only if config was changed but not loaded */
+export const configChangeObservable = privConfigObservable.pipe(
+  filter(([_, state]) => state === ConfigState.CHANGED),
+  map(([config, _]) => config),
+);
