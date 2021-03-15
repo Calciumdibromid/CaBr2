@@ -5,6 +5,10 @@ use crate::types::{SearchArguments, SearchType};
 #[derive(Debug, Deserialize)]
 #[serde(tag = "cmd", rename_all = "camelCase")]
 pub enum Cmd {
+  GetAvailableProviders {
+    callback: String,
+    error: String,
+  },
   #[serde(rename_all = "camelCase")]
   SearchSuggestions {
     provider: String,
@@ -13,14 +17,12 @@ pub enum Cmd {
     callback: String,
     error: String,
   },
-  #[serde(rename_all = "camelCase")]
   Search {
     provider: String,
     arguments: SearchArguments,
     callback: String,
     error: String,
   },
-  #[serde(rename_all = "camelCase")]
   GetSubstanceData {
     provider: String,
     identifier: String,

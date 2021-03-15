@@ -11,7 +11,7 @@ import {
   temperatureUnitMapping,
   Unit,
   unitMappings,
-} from '../../@core/services/substances/substances.model';
+} from '../../@core/services/provider/substances.model';
 import { GlobalModel } from '../../@core/models/global.model';
 import { LocalizedStrings } from '../../@core/services/i18n/i18n.service';
 
