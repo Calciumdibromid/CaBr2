@@ -21,12 +21,16 @@ pub struct Gestis {
 
 impl Gestis {
   pub fn new() -> Gestis {
+    #[cfg(not(test))]
+    let user_agent = &format!("cabr2 v{}", env!("CARGO_PKG_VERSION"));
+    #[cfg(test)]
+    let user_agent = "cabr2 testing";
     Gestis {
       agent: Agent::new()
         // don't ask, just leave it
         // https://gestis.dguv.de/search -> webpack:///./src/api.ts?
         .auth_kind("Bearer", "dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd")
-        .set("User-Agent", &format!("cabr2 v{}", env!("CARGO_PKG_VERSION")))
+        .set("User-Agent", user_agent)
         .build(),
     }
   }
@@ -129,5 +133,46 @@ impl SearchType {
       SearchType::Numbers => "nummern",
       SearchType::FullText => "volltextsuche",
     }
+  }
+}
+
+#[cfg(test)]
+mod tests {
+  use lazy_static::lazy_static;
+
+  use super::*;
+
+  lazy_static! {
+    static ref GESTIS: Gestis = Gestis::new();
+  }
+
+  #[test]
+  fn test_suggestions_chemical_name() {
+    assert_eq!(
+      GESTIS
+        .get_quick_search_suggestions(SearchType::ChemicalName, "cobaltnit".into())
+        .unwrap(),
+      vec!["cobaltnitrat"]
+    );
+  }
+
+  #[test]
+  fn test_suggestions_chemical_formula() {
+    assert_eq!(
+      GESTIS
+        .get_quick_search_suggestions(SearchType::ChemicalFormula, "h2o".into())
+        .unwrap(),
+      vec!["h2o", "h2o2", "h2o2sr", "h2o2zn", "h2o3s", "h2o3se", "h2o4s", "h2o4se", "h2o4w", "h2o7s2"]
+    );
+  }
+
+  #[test]
+  fn test_suggestions_numbers() {
+    assert_eq!(
+      GESTIS
+        .get_quick_search_suggestions(SearchType::Numbers, "5340".into())
+        .unwrap(),
+      vec!["5340", "53404-28-7", "53408-94-9"]
+    );
   }
 }
