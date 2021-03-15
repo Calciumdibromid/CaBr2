@@ -122,7 +122,7 @@ impl Loader for Beryllium {
                 }
               },
               source: Source {
-                provider: substance.source_provider.unwrap_or_default(),
+                provider: substance.source_provider.unwrap_or("custom".into()).to_lowercase(),
                 url: {
                   let mut url = substance.source_url.unwrap_or_default();
                   // remap gestis url to new one

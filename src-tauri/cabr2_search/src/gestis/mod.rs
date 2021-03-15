@@ -37,6 +37,10 @@ impl Gestis {
 }
 
 impl Provider for Gestis {
+  fn get_name(&self) -> String {
+    "Gestis".into()
+  }
+
   fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> Result<Vec<String>> {
     let url = format!(
       "{}/{}/de?{}={}",
@@ -103,7 +107,7 @@ impl Provider for Gestis {
         None => Vec::new(),
       }),
       source: Source {
-        provider: "GESTIS".into(),
+        provider: "gestis".into(),
         url,
         last_updated: chrono::Utc::now(),
       },
