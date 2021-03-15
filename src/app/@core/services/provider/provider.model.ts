@@ -21,3 +21,10 @@ export interface SearchResult {
   casNumber: string;
   name: string;
 }
+
+export interface Provider {
+  name: string;
+  identifier: string;
+}
+
+export type ProviderMapping = Map<string, Provider>;

@@ -32,10 +32,10 @@
             <button
               mat-raised-button
               color="primary"
-              [disabled]="userUrlAvailable(element.source)"
+              [disabled]="sourceButtonDisabled(element.source)"
               (click)="openSource($event, element.source)"
             >
-              {{ element.source.provider }}
+              {{ getProviderName(element.source) }}
             </button>
             <button
               mat-icon-button

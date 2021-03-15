@@ -52,7 +52,9 @@
       "addOption": "Suchoption hinzufügen",
       "resultsHeader": "Suchergebnisse",
       "noResult": "Keine Ergebnisse",
-      "error": "Fehler beim Anfragen der Daten"
+      "error": "Fehler beim Anfragen der Daten",
+      "customSubstance": "Selbst erstellt",
+      "unsupportedProviderInfo": "nicht unterstützt"
     },
     "substance": {
       "name": "Name",
