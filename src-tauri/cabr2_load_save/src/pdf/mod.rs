@@ -191,7 +191,7 @@ fn init_pdf_application() -> PDFChannels {
 /// Custom helpers for handlebars
 mod handlebar_helpers {
   use std::{
-    collections::{BTreeSet, HashMap},
+    collections::BTreeSet,
     sync::{Arc, Mutex},
   };
 
@@ -203,8 +203,7 @@ mod handlebar_helpers {
   use super::types::PDFSubstanceData;
 
   lazy_static! {
-    static ref GHS_SYMBOLS: Arc<Mutex<GHSSymbols>> =
-      Arc::new(Mutex::new(get_hazard_symbols().unwrap_or(HashMap::new())));
+    static ref GHS_SYMBOLS: Arc<Mutex<GHSSymbols>> = Arc::new(Mutex::new(get_hazard_symbols().unwrap_or_default()));
   }
 
   /// Inlines the actual ghs-symbol-images from their keys as base64-encodes pngs
