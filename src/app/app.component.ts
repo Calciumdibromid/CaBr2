@@ -39,13 +39,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private i18nService: I18nService,
   ) {
     this.global.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-    this.configService
-      .getPromptHtml('gettingStarted')
-      .pipe(first())
-      .subscribe(
-        (str) => logger.debug('html: [', str, ']'),
-        (err) => logger.error(err),
-      );
   }
 
   ngOnDestroy(): void {
@@ -108,8 +101,7 @@ export class AppComponent implements OnInit, OnDestroy {
       ),
     );
 
-    // skip initial config only first load is needed
-    configObservable.pipe(skip(1), first()).subscribe((config) => {
+    configObservable.pipe(first()).subscribe((config) => {
       if (!config.globalSection.acceptedConsent) {
         this.dialog
           .open(ConsentComponent, {
