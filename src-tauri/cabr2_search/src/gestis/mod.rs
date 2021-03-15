@@ -15,8 +15,6 @@ const SEARCH_SUGGESTIONS: &str = "search_suggestions";
 const SEARCH: &str = "search";
 const ARTICLE: &str = "article";
 
-const SEARCH_TYPE_NAMES: [&str; 4] = ["stoffname", "nummern", "summenformel", "volltextsuche"];
-
 pub struct Gestis {
   agent: Agent,
 }
@@ -38,7 +36,10 @@ impl Provider for Gestis {
   fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> Result<Vec<String>> {
     let url = format!(
       "{}/{}/de?{}={}",
-      BASE_URL, SEARCH_SUGGESTIONS, SEARCH_TYPE_NAMES[search_type as usize], pattern
+      BASE_URL,
+      SEARCH_SUGGESTIONS,
+      search_type.as_str(),
+      pattern
     );
     let res = make_request(&self.agent, &url)?;
 
@@ -49,7 +50,7 @@ impl Provider for Gestis {
     let args: Vec<String> = arguments
       .arguments
       .into_iter()
-      .map(|a| format!("{}={}", SEARCH_TYPE_NAMES[a.search_type as usize], a.pattern))
+      .map(|a| format!("{}={}", a.search_type.as_str(), a.pattern))
       .collect();
 
     let url = format!(
@@ -116,5 +117,17 @@ pub fn make_request(agent: &Agent, url: &str) -> Result<ureq::Response> {
     200..=399 => Ok(res),
     429 => Err(SearchError::RateLimit),
     _ => Err(SearchError::RequestError(res.status())),
+  }
+}
+
+impl SearchType {
+  /// Returns the search type as the string that is used in the query parameters
+  pub fn as_str(&self) -> &'static str {
+    match self {
+      SearchType::ChemicalName => "stoffname",
+      SearchType::ChemicalFormula => "summenformel",
+      SearchType::Numbers => "nummern",
+      SearchType::FullText => "volltextsuche",
+    }
   }
 }
