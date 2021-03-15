@@ -1,6 +1,6 @@
 [package]
 name = "cabr2"
-version = "0.1.0"
+version = "0.2.0"
 description = 'Generate "experiment wise safety sheets" in compliance to European law.'
 authors = [
   "Epsilon_02 <epsilon_02@mailbox.org>",
