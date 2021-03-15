@@ -78,7 +78,7 @@ impl std::default::Default for PDFSubstanceData {
       source: Source {
         provider: String::default(),
         url: String::default(),
-        last_updated: BEGINNING_OF_TIME.clone(),
+        last_updated: *BEGINNING_OF_TIME,
       },
     }
   }
