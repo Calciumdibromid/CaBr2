@@ -64,22 +64,25 @@ pub fn parse_response(json: &GestisResponse) -> Result<ParsedData> {
 
   Ok(ParsedData {
     cas: match get_cas(json) {
-      Ok(inner) => inner,
+      Ok(inner) => Some(inner),
       Err(e) => {
-        // should never occur
+        let e = match &molecular_formula_molar_mass_error {
+          Some(e_new) => e_new,
+          None => &e,
+        };
         log::debug!("[cas_number] error: {:#?}", e);
-        return Err(e);
+        None
       }
     },
     molecular_formula: match molecular_formula {
-      Ok(inner) => inner,
-      Err(mut e) => {
-        if molecular_formula_molar_mass_error.is_some() {
-          e = molecular_formula_molar_mass_error.unwrap();
-        }
-        // should never occur
+      Ok(inner) => Some(inner),
+      Err(e) => {
+        let e = match &molecular_formula_molar_mass_error {
+          Some(e_new) => e_new,
+          None => &e,
+        };
         log::debug!("[molecular_formula] error: {:#?}", e);
-        return Err(e);
+        None
       }
     },
     molar_mass: match molar_mass {

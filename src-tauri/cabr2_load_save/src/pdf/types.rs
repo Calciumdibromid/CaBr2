@@ -25,7 +25,7 @@ pub struct PDFSubstanceData {
   name: Data<String>,
   alternative_names: Vec<String>,
   cas: Data<Option<String>>,
-  molecular_formula: Data<String>,
+  molecular_formula: Data<Option<String>>,
   molar_mass: Data<Option<String>>,
   melting_point: Data<Option<String>>,
   boiling_point: Data<Option<String>>,
