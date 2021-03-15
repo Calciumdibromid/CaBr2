@@ -2,12 +2,17 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
-import { SearchArgument, SearchType, SearchTypeMapping, searchTypes } from '../../@core/services/search/search.model';
+import {
+  SearchArgument,
+  SearchType,
+  SearchTypeMapping,
+  searchTypes,
+} from '../../@core/services/provider/provider.model';
 import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
 import { GlobalModel } from '../../@core/models/global.model';
 import { LocalizedStrings } from '../../@core/services/i18n/i18n.service';
 import Logger from '../../@core/utils/logger';
-import { SearchService } from '../../@core/services/search/search.service';
+import { ProviderService } from '../../@core/services/provider/provider.service';
 
 const logger = new Logger('selected-search');
 
@@ -34,12 +39,12 @@ export class SelectedSearchComponent {
 
   constructor(
     private globals: GlobalModel,
-    private searchService: SearchService,
+    private providerService: ProviderService,
     private alertService: AlertService,
     private formBuilder: FormBuilder,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-    this.searchService.searchTypeMappingsObservable.subscribe((mapping) => (this.searchOptions = mapping));
+    this.providerService.searchTypeMappingsObservable.subscribe((mapping) => (this.searchOptions = mapping));
   }
 
   initSelectionForm(): FormGroup {
@@ -108,7 +113,7 @@ export class SelectedSearchComponent {
       .get('userInput')
       ?.valueChanges.pipe(debounceTime(500))
       .subscribe((result) => {
-        this.searchService.searchSuggestions('gestis', selectionGroup.get('searchOption')?.value, result).subscribe(
+        this.providerService.searchSuggestions('gestis', selectionGroup.get('searchOption')?.value, result).subscribe(
           (response) => {
             this.suggestionResults.set(selectionGroup.get('searchOption')?.value, response);
           },

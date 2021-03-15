@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
 
-import { Amount } from '../@core/services/substances/substances.model';
+import { Amount } from '../@core/services/provider/substances.model';
 import { GlobalModel } from '../@core/models/global.model';
 import { Header } from '../@core/interfaces/Header';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
