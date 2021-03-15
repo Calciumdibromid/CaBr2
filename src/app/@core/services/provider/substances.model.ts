@@ -1,4 +1,4 @@
-export interface SubstanceData {
+export class SubstanceData {
   name: Data<string>;
   readonly alternativeNames: string[];
   cas: Data<string | undefined>;
@@ -13,8 +13,33 @@ export interface SubstanceData {
   symbols: Data<string[]>;
   lethalDose: Data<string | undefined>;
   mak: Data<string | undefined>;
-  readonly source: Source;
+  readonly source!: Source;
   amount: Amount | undefined;
+
+  private readonly EMPTY_STRING_DATA = { originalData: '' };
+  private readonly EMPTY_LIST_DATA = { originalData: [] };
+
+  constructor(data?: Partial<SubstanceData>) {
+    this.name = this.EMPTY_STRING_DATA;
+    this.cas = this.EMPTY_STRING_DATA;
+    this.molecularFormula = this.EMPTY_STRING_DATA;
+    this.molarMass = this.EMPTY_STRING_DATA;
+    this.meltingPoint = this.EMPTY_STRING_DATA;
+    this.boilingPoint = this.EMPTY_STRING_DATA;
+    this.waterHazardClass = this.EMPTY_STRING_DATA;
+    this.hPhrases = this.EMPTY_LIST_DATA;
+    this.pPhrases = this.EMPTY_LIST_DATA;
+    this.signalWord = this.EMPTY_STRING_DATA;
+    this.symbols = this.EMPTY_LIST_DATA;
+    this.lethalDose = this.EMPTY_STRING_DATA;
+    this.mak = this.EMPTY_STRING_DATA;
+
+    this.alternativeNames = [];
+
+    if (data) {
+      Object.assign(this, data);
+    }
+  }
 }
 
 export interface Data<T> {

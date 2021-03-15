@@ -181,7 +181,7 @@ export class EditSearchResultsComponent implements OnInit {
     let returnData;
 
     if (!this.abort) {
-      const newData: SubstanceData = {
+      const newData = new SubstanceData({
         ...this.data,
         name: this.evaluateForm('name', this.data.name),
         cas: this.evaluateForm('cas', this.data.cas),
@@ -210,7 +210,7 @@ export class EditSearchResultsComponent implements OnInit {
               unit: this.amount.get('unit')?.value,
             }
           : this.data.amount,
-      };
+      });
 
       if (!this.form.invalid) {
         returnData = newData;

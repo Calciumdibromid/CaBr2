@@ -155,8 +155,15 @@ export class SearchComponent implements OnInit {
   }
 
   addCustomSubstanceData(): void {
-    // TODO implement me
-    console.log('TODO implement me');
+    const data = [...this.globals.substanceDataSubject.getValue(), new SubstanceData({
+      source: {
+        url: 'invalid',
+        provider: 'custom',
+        lastUpdated: new Date(),
+      }
+    })];
+    this.dataSource.connect().next(data);
+    this.globals.substanceDataSubject.next(data);
   }
 
   getProviderName(source: Source): string {
