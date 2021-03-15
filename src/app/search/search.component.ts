@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -31,7 +30,8 @@ export class SearchComponent implements OnInit {
   selectedSearch: SelectedSearchComponent | undefined;
 
   res: SearchArgument[] = [];
-  control = new FormControl();
+
+  addButtonHover = false;
 
   strings!: LocalizedStrings;
 
@@ -148,6 +148,11 @@ export class SearchComponent implements OnInit {
     if (matches) {
       this.tauriService.openUrl(`https://gestis.dguv.de/data?name=${matches[2]}&lang=${matches[1]}`);
     }
+  }
+
+  addCustomSubstanceData(): void {
+    // TODO implement me
+    console.log('TODO implement me');
   }
 
   // TODO move to SubstanceData class
