@@ -339,7 +339,11 @@ mod handlebar_helpers {
     let providers: BTreeSet<String> = substances.into_iter().map(|s| s.source.provider).collect();
 
     // kill empty string from empty substance lines
-    for (i, provider) in providers.iter().filter(|p| !p.is_empty()).enumerate() {
+    for (i, provider) in providers
+      .iter()
+      .filter(|p| !(p.is_empty() || p.as_str() == "custom"))
+      .enumerate()
+    {
       if i > 0 {
         out.write(", ")?;
       }
