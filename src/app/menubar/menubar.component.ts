@@ -61,21 +61,11 @@ export class MenubarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.globals.headerSubject.next({
-      assistant: docsTemplate.assistant,
-      documentTitle: docsTemplate.documentTitle,
-      labCourse: docsTemplate.labCourse,
-      name: docsTemplate.name,
-      organisation: docsTemplate.organisation,
-      place: docsTemplate.place,
-      preparation: docsTemplate.preparation,
-    });
-
-    this.globals.humanAndEnvironmentDangerSubject.next(docsTemplate.humanAndEnvironmentDangerSubject);
-
-    this.globals.rulesOfConductSubject.next(docsTemplate.rulesOfConductSubject);
-
-    this.globals.inCaseOfDangerSubject.next(docsTemplate.inCaseOfDangerSubject);
+    this.globals.headerSubject.next(docsTemplate.header);
+    this.globals.humanAndEnvironmentDangerSubject.next(docsTemplate.humanAndEnvironmentDanger);
+    this.globals.rulesOfConductSubject.next(docsTemplate.rulesOfConduct);
+    this.globals.inCaseOfDangerSubject.next(docsTemplate.inCaseOfDanger);
+    this.globals.disposalSubject.next(docsTemplate.disposal);
 
     this.globals.substanceDataSubject.next([]);
 
