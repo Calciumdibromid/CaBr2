@@ -9,7 +9,7 @@ pub struct SubstanceData {
   pub name: Data<String>,
   pub alternative_names: Vec<String>,
   pub cas: Data<Option<String>>,
-  pub molecular_formula: Data<String>,
+  pub molecular_formula: Data<Option<String>>,
   pub molar_mass: Data<Option<String>>,
   pub melting_point: Data<Option<String>>,
   pub boiling_point: Data<Option<String>>,

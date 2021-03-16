@@ -79,7 +79,8 @@
       "removePPhrase": "remove P-phrase",
       "addPPhrase": "add P-phrase",
       "ghsSymbolsAddOrRemoveInfo": "To remove or add click on the symbol",
-      "ghsSymbolsColorInfo": "gray: not selected / colorized: selected"
+      "ghsSymbolsColorInfo": "gray: not selected / colorized: selected",
+      "addCustomSubstanceData": "Add custom substance"
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Additional dangers for humans and environment (e.g. carcinogenic, teratogenic):",

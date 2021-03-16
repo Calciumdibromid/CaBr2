@@ -191,7 +191,7 @@ fn init_pdf_application() -> PDFChannels {
 /// Custom helpers for handlebars
 mod handlebar_helpers {
   use std::{
-    collections::{BTreeSet, HashMap},
+    collections::BTreeSet,
     sync::{Arc, Mutex},
   };
 
@@ -203,8 +203,7 @@ mod handlebar_helpers {
   use super::types::PDFSubstanceData;
 
   lazy_static! {
-    static ref GHS_SYMBOLS: Arc<Mutex<GHSSymbols>> =
-      Arc::new(Mutex::new(get_hazard_symbols().unwrap_or(HashMap::new())));
+    static ref GHS_SYMBOLS: Arc<Mutex<GHSSymbols>> = Arc::new(Mutex::new(get_hazard_symbols().unwrap_or_default()));
   }
 
   /// Inlines the actual ghs-symbol-images from their keys as base64-encodes pngs
@@ -339,7 +338,11 @@ mod handlebar_helpers {
     let providers: BTreeSet<String> = substances.into_iter().map(|s| s.source.provider).collect();
 
     // kill empty string from empty substance lines
-    for (i, provider) in providers.iter().filter(|p| !p.is_empty()).enumerate() {
+    for (i, provider) in providers
+      .iter()
+      .filter(|p| !(p.is_empty() || p.as_str() == "custom"))
+      .enumerate()
+    {
       if i > 0 {
         out.write(", ")?;
       }

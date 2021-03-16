@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -31,7 +30,8 @@ export class SearchComponent implements OnInit {
   selectedSearch: SelectedSearchComponent | undefined;
 
   res: SearchArgument[] = [];
-  control = new FormControl();
+
+  addButtonHover = false;
 
   strings!: LocalizedStrings;
 
@@ -152,6 +152,21 @@ export class SearchComponent implements OnInit {
     if (matches) {
       this.tauriService.openUrl(`https://gestis.dguv.de/data?name=${matches[2]}&lang=${matches[1]}`);
     }
+  }
+
+  addCustomSubstanceData(): void {
+    const data = [
+      ...this.globals.substanceDataSubject.getValue(),
+      new SubstanceData({
+        source: {
+          url: 'invalid',
+          provider: 'custom',
+          lastUpdated: new Date(),
+        },
+      }),
+    ];
+    this.dataSource.connect().next(data);
+    this.globals.substanceDataSubject.next(data);
   }
 
   getProviderName(source: Source): string {
