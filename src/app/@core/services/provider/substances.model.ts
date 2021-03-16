@@ -1,8 +1,8 @@
-export interface SubstanceData {
+export class SubstanceData {
   name: Data<string>;
   readonly alternativeNames: string[];
   cas: Data<string | undefined>;
-  molecularFormula: Data<string>;
+  molecularFormula: Data<string | undefined>;
   molarMass: Data<string | undefined>;
   meltingPoint: Data<string | undefined>;
   boilingPoint: Data<string | undefined>;
@@ -13,8 +13,32 @@ export interface SubstanceData {
   symbols: Data<string[]>;
   lethalDose: Data<string | undefined>;
   mak: Data<string | undefined>;
-  readonly source: Source;
   amount: Amount | undefined;
+  readonly source: Source;
+
+  constructor(data?: Partial<SubstanceData>) {
+    this.name = EMPTY_STRING_DATA();
+    this.cas = EMPTY_DATA();
+    this.molecularFormula = EMPTY_DATA();
+    this.molarMass = EMPTY_DATA();
+    this.meltingPoint = EMPTY_DATA();
+    this.boilingPoint = EMPTY_DATA();
+    this.waterHazardClass = EMPTY_DATA();
+    this.hPhrases = EMPTY_LIST_DATA();
+    this.pPhrases = EMPTY_LIST_DATA();
+    this.signalWord = EMPTY_DATA();
+    this.symbols = EMPTY_LIST_DATA();
+    this.lethalDose = EMPTY_DATA();
+    this.mak = EMPTY_DATA();
+
+    this.alternativeNames = [];
+
+    this.source = { url: '', provider: 'custom', lastUpdated: new Date() };
+
+    if (data) {
+      Object.assign(this, data);
+    }
+  }
 }
 
 export interface Data<T> {
@@ -99,3 +123,7 @@ const temperatureUnitMapping: UnitMapping<TemperatureUnit>[] = [
 ];
 
 export { unitMappings, temperatureUnitMapping };
+
+const EMPTY_STRING_DATA = () => ({ originalData: '' });
+const EMPTY_DATA = () => ({ originalData: undefined });
+const EMPTY_LIST_DATA = () => ({ originalData: [] });
