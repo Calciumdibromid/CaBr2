@@ -16,6 +16,11 @@ export class SubstanceData {
   amount: Amount | undefined;
   readonly source: Source;
 
+  /**
+   * Create new optionally empty SubstanceData.
+   *
+   * If `source` is empty it will be treated as custom substance.
+   */
   constructor(data?: Partial<SubstanceData>) {
     this.name = EMPTY_STRING_DATA();
     this.cas = EMPTY_DATA();
