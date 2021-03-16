@@ -12,7 +12,7 @@ import Logger from '../@core/utils/logger';
 import { ProviderService } from '../@core/services/provider/provider.service';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
-import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
+import { EditSubstanceDataComponent } from '../edit-substance-data/edit-substance-data.component';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './selected-search/selected-search.component';
 
@@ -103,7 +103,7 @@ export class SearchComponent implements OnInit {
 
   openResultDialog(origData: SubstanceData): void {
     this.dialog
-      .open(EditSearchResultsComponent, {
+      .open(EditSubstanceDataComponent, {
         data: origData,
         maxWidth: 1500,
         minWidth: 800,

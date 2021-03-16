@@ -12,20 +12,20 @@ import {
   temperatureUnitMapping,
   Unit,
   unitMappings,
-} from '../../@core/services/provider/substances.model';
-import { compareArrays } from '../../@core/utils/compare';
-import { GlobalModel } from '../../@core/models/global.model';
-import { LocalizedStrings } from '../../@core/services/i18n/i18n.service';
-import Logger from 'src/app/@core/utils/logger';
+} from '../@core/services/provider/substances.model';
+import { compareArrays } from '../@core/utils/compare';
+import { GlobalModel } from '../@core/models/global.model';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
+import Logger from '../@core/utils/logger';
 
 const logger = new Logger('edit-substance-data');
 
 @Component({
-  selector: 'app-edit-search-results',
-  templateUrl: './edit-search-results.component.html',
-  styleUrls: ['./edit-search-results.component.scss'],
+  selector: 'app-edit-substance-data',
+  templateUrl: './edit-substance-data.component.html',
+  styleUrls: ['./edit-substance-data.component.scss'],
 })
-export class EditSearchResultsComponent implements OnInit, OnDestroy {
+export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   form: FormGroup;
 
   strings!: LocalizedStrings;
@@ -50,7 +50,7 @@ export class EditSearchResultsComponent implements OnInit, OnDestroy {
   customSubscription?: Subscription;
 
   constructor(
-    public dialogRef: MatDialogRef<EditSearchResultsComponent>,
+    public dialogRef: MatDialogRef<EditSubstanceDataComponent>,
     public globals: GlobalModel,
     @Inject(MAT_DIALOG_DATA) public data: SubstanceData,
     private formBuilder: FormBuilder,
