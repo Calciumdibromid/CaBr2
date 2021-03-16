@@ -84,7 +84,7 @@ impl Provider for Gestis {
     let res_data = SubstanceData {
       name: Data::new(json.name.clone()),
       alternative_names: json.aliases.into_iter().map(|a| a.name).collect(),
-      cas: Data::new(Some(data.cas)),
+      cas: Data::new(data.cas),
       molecular_formula: Data::new(data.molecular_formula),
       molar_mass: Data::new(data.molar_mass),
       melting_point: Data::new(data.melting_point),

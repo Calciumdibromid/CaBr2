@@ -1,21 +1,33 @@
 {
   "docsTemplate": {
-    "assistant": "",
-    "documentTitle": "Betriebsanweisungen nach EG Nr. 1272/2008",
-    "labCourse": "Praktikum Anorganische Chemie",
-    "name": "",
-    "organisation": "Für chemische Laboratorien des Campus Burghausen",
-    "place": "",
-    "preparation": "",
-    "humanAndEnvironmentDangerSubject": [
+    "header": {
+      "assistant": "",
+      "documentTitle": "Betriebsanweisungen nach EG Nr. 1272/2008",
+      "labCourse": "Praktikum Anorganische Chemie",
+      "name": "",
+      "organisation": "Für chemische Laboratorien des Campus Burghausen",
+      "place": "",
+      "preparation": ""
+    },
+    "humanAndEnvironmentDanger": [
       "Bei anhaltender Augenreizung ärztlichen Rat einholen. Funkenerzeugung und elektrische Aufladung vermeiden."
     ],
-    "rulesOfConductSubject": ["Hautschutz und Schutzkleidung mit Schutzbrille tragen."],
-    "inCaseOfDangerSubject": [
+    "rulesOfConduct": ["Hautschutz und Schutzkleidung mit Schutzbrille tragen."],
+    "inCaseOfDanger": [
       "Nach Einatmen: An die frische Luft bringen. Sofort Arzt hinzuziehen.",
       "Nach Hautkontakt: Sofort mit Wasser abwaschen. Kontaminierte Kleidung entfernen. Sofort Arzt hinzuziehen.",
       "Nach Verschlucken: Mund mit Wasser spülen, Wasser trinken lassen. Kein Erbrechen auslösen. Nur bei Bewusstsein!",
       "Nach Augenkontakt: Mit Wasser spülen. Falls vorhanden nach Möglichkeit Kontaktlinsen entfernen und weiter spülen. Sofort Augenarzt hinzuziehen."
+    ],
+    "disposal": [
+      "metallsaltzhaltige, wässrige Lösungen, neutral-basisch",
+      "metallsaltzhaltige, wässrige Lösungen, neutral-sauer",
+      "halogenfreier, wässriger Lösemittelabfall",
+      "halogenhaltige, wässrige organische Lösungen",
+      "Sammelbehälter für Lösemittel zum Recycling",
+      "Sammelbehälter Präparate",
+      "Feststoff-Abfall organisch",
+      "Feststoff-Abfall anorganisch"
     ]
   }
 }

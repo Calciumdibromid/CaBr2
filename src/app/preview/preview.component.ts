@@ -11,7 +11,7 @@ import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 interface SimpleSubstanceData {
   name: string;
   cas?: string;
-  molecularFormula: string;
+  molecularFormula?: string;
   molarMass?: string;
   meltingPoint?: string;
   boilingPoint?: string;

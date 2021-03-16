@@ -2,8 +2,8 @@ use serde::Deserialize;
 
 #[derive(Debug)]
 pub struct ParsedData {
-  pub cas: String,
-  pub molecular_formula: String,
+  pub cas: Option<String>,
+  pub molecular_formula: Option<String>,
   pub molar_mass: Option<String>,
   pub melting_point: Option<String>,
   pub boiling_point: Option<String>,
