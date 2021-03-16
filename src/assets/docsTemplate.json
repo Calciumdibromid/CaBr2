@@ -22,8 +22,14 @@
       "Nach Augenkontakt: Mit Wasser spülen. Falls vorhanden nach Möglichkeit Kontaktlinsen entfernen und weiter spülen. Sofort Augenarzt hinzuziehen."
     ],
     "disposal": [
-      "Nur die dafür vorgesehenen Kanister Entsorgen!",
-      "Entsorgung nur im Abzug!"
+      "metallsaltzhaltige, wässrige Lösungen, neutral-basisch",
+      "metallsaltzhaltige, wässrige Lösungen, neutral-sauer",
+      "halogenfreier, wässriger Lösemittelabfall",
+      "halogenhaltige, wässrige organische Lösungen",
+      "Sammelbehälter für Lösemittel zum Recycling",
+      "Sammelbehälter Präparate",
+      "Feststoff-Abfall organisch",
+      "Feststoff-Abfall anorganisch"
     ]
   }
 }
