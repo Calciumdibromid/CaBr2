@@ -93,7 +93,6 @@ impl std::convert::From<CaBr2Document> for PDFCaBr2Document {
         for _ in substances.len()..4 {
           substances.push(PDFSubstanceData::default());
         }
-        substances.push(PDFSubstanceData::default());
         substances
       },
       human_and_environment_danger: doc.human_and_environment_danger,
