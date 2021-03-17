@@ -14,7 +14,7 @@ import {
   SearchTypeMapping,
   searchTypes,
 } from './provider.model';
-import { SubstanceData } from './substances.model';
+import { SubstanceData } from '../../models/substances.model';
 
 @Injectable({
   providedIn: 'root',

@@ -3,7 +3,7 @@ import { first } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { Data, Source, SubstanceData } from '../@core/services/provider/substances.model';
+import { Data, Source, SubstanceData } from '../@core/models/substances.model';
 import { ProviderMapping, SearchArgument } from '../@core/services/provider/provider.model';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { GlobalModel } from '../@core/models/global.model';

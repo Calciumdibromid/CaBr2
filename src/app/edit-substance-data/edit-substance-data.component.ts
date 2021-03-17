@@ -12,7 +12,7 @@ import {
   temperatureUnitMapping,
   Unit,
   unitMappings,
-} from '../@core/services/provider/substances.model';
+} from '../@core/models/substances.model';
 import { compareArrays } from '../@core/utils/compare';
 import { GlobalModel } from '../@core/models/global.model';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
