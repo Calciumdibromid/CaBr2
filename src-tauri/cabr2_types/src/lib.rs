@@ -22,6 +22,9 @@ pub struct SubstanceData {
   pub mak: Data<Option<String>>,
   pub amount: Option<Amount>,
   pub source: Source,
+
+  // set to true if user has clicked on this substance
+  pub checked: bool,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

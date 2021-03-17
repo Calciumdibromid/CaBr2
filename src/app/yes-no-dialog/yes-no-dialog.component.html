@@ -1,9 +1,15 @@
 <h1 mat-dialog-title>
   <mat-icon *ngIf="data.iconName">{{ data.iconName }}</mat-icon>
-  {{ data.title }}
+  <div class="title">{{ data.title }}</div>
 </h1>
 <div mat-dialog-content>
-  <p>{{ data.content }}</p>
+  <p *ngFor="let line of data.content">{{ line }}</p>
+  <ul *ngIf="data.listItems">
+    <li *ngFor="let item of data.listItems">{{ item }}</li>
+  </ul>
+  <div *ngIf="data.footerText">
+    <p *ngFor="let line of data.footerText">{{ line }}</p>
+  </div>
 </div>
 <mat-divider></mat-divider>
 <div mat-dialog-actions>

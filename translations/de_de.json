@@ -48,6 +48,7 @@
       "option": "Suchoption:",
       "searchButton": "Suche",
       "removeSubstance": "Substanz entfernen",
+      "editSubstance": "Substanz bearbeiten",
       "removeOption": "Suchoption entfernen",
       "addOption": "Suchoption hinzufügen",
       "resultsHeader": "Suchergebnisse",
@@ -57,6 +58,7 @@
       "unsupportedProviderInfo": "nicht unterstützt"
     },
     "substance": {
+      "edited": "Bearbeitet?",
       "name": "Name",
       "needsName": "Name benötigt",
       "casNumber": "CAS Nummer",
@@ -80,6 +82,7 @@
       "noPPhrase": "Ungültige P-Nummer",
       "removePPhrase": "P-Satz entfernen",
       "addPPhrase": "P-Satz hinzufügen",
+      "editingHint": "Zum Beabeiten auf Substanz klicken.",
       "ghsSymbolsAddOrRemoveInfo": "Zum Entfernen oder Hinzufügen auf das Symbol klicken",
       "ghsSymbolsColorInfo": "grau: nicht gewählt / farbig: gewählt",
       "addCustomSubstanceData": "Eigene Substanz hinzufügen"
@@ -89,6 +92,10 @@
       "rulesOfConduct": "Schutzmaßnahmen und Verhaltensregeln:",
       "inCaseOfDanger": "Verhalten im Gefahrenfall, Erste-Hilfe-Maßnahmen (gegebenfalls Kopie der entsprechenden Literaturstelle beiheften):",
       "disposal": "Entsorgung:",
+      "humanAndEnvironmentDangerShort": "Gefahren",
+      "rulesOfConductShort": "Schutzmaßnahmen",
+      "inCaseOfDangerShort": "Gefahrenfall",
+      "disposalShort": "Entsorgung",
       "signatureFieldStudent": "Hiermit verpflichte ich mich, den Versuch gemäß den in dieser Betriebsanweisung aufgeführten Sicherheitsvorschriften durchzuführen.",
       "signatureFieldAssistant": "Präparat zur Synthese mit den auf der Vorderseite berechneten Chemikalienmengen freigegeben."
     },
@@ -129,6 +136,13 @@
       "loadFile": "Datei erfolgreich geladen",
       "saveFile": "Datei erfolgreich gespeichert",
       "exportPDF": "PDF erfolgreich exportiert"
+    },
+    "dialogs": {
+      "unchangedValues": {
+        "title": "Unveränderte Werte",
+        "content": ["Folgende Werte wurden nicht verändert."],
+        "footer": ["Trotzdem fortfahren?"]
+      }
     }
   }
 }

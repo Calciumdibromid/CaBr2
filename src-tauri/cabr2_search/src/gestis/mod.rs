@@ -111,6 +111,8 @@ impl Provider for Gestis {
         url,
         last_updated: chrono::Utc::now(),
       },
+
+      checked: false,
     };
 
     Ok(res_data)

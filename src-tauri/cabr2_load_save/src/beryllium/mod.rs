@@ -144,6 +144,8 @@ impl Loader for Beryllium {
                   Err(_) => *BEGINNING_OF_TIME,
                 },
               },
+
+              checked: true,
             })
             .collect(),
         })
