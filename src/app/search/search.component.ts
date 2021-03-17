@@ -1,19 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { Data, Source, SubstanceData } from '../@core/services/substances/substances.model';
+import { Data, Source, SubstanceData } from '../@core/models/substances.model';
+import { ProviderMapping, SearchArgument } from '../@core/services/provider/provider.model';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { GlobalModel } from '../@core/models/global.model';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 import Logger from '../@core/utils/logger';
-import { SearchArgument } from '../@core/services/search/search.model';
-import { SubstancesService } from '../@core/services/substances/substances.service';
+import { ProviderService } from '../@core/services/provider/provider.service';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
-import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
+import { EditSubstanceDataComponent } from '../edit-substance-data/edit-substance-data.component';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './selected-search/selected-search.component';
 
@@ -31,18 +30,21 @@ export class SearchComponent implements OnInit {
   selectedSearch: SelectedSearchComponent | undefined;
 
   res: SearchArgument[] = [];
-  control = new FormControl();
+
+  addButtonHover = false;
 
   strings!: LocalizedStrings;
 
+  providerMapping!: ProviderMapping;
+
   substanceData: SubstanceData[] = [];
 
-  displayedColumns = ['name', 'cas', 'actions'];
+  displayedColumns = ['edited', 'name', 'cas', 'source', 'actions'];
 
   dataSource!: MatTableDataSource<SubstanceData>;
 
   constructor(
-    private substanceService: SubstancesService,
+    private providerService: ProviderService,
     private tauriService: TauriService,
     private alertService: AlertService,
     private dialog: MatDialog,
@@ -55,6 +57,8 @@ export class SearchComponent implements OnInit {
     this.globals.substanceDataObservable.subscribe((data) => {
       this.dataSource = new MatTableDataSource(data);
     });
+
+    this.providerService.providerMappingsObservable.subscribe((providers) => (this.providerMapping = providers));
   }
 
   openDialog(): void {
@@ -71,7 +75,7 @@ export class SearchComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.substanceService.substanceInfo('gestis', result.zvgNumber).subscribe(
+        this.providerService.substanceData('gestis', result.zvgNumber).subscribe(
           (value) => {
             const cas = this.modifiedOrOriginal(value.cas);
             if (
@@ -97,9 +101,10 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  openResultDialog(origData: SubstanceData): void {
+  openEditDialog(origData: SubstanceData): void {
+    origData.checked = true;
     this.dialog
-      .open(EditSearchResultsComponent, {
+      .open(EditSubstanceDataComponent, {
         data: origData,
         maxWidth: 1500,
         minWidth: 800,
@@ -137,8 +142,8 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  userUrlAvailable(source: Source): boolean {
-    return !GESTIS_URL_RE.test(source.url);
+  sourceButtonDisabled(source: Source): boolean {
+    return source.provider === 'custom' || !this.providerMapping.has(source.provider);
   }
 
   openSource(event: MouseEvent, source: Source): void {
@@ -147,6 +152,25 @@ export class SearchComponent implements OnInit {
     const matches = source.url.match(GESTIS_URL_RE);
     if (matches) {
       this.tauriService.openUrl(`https://gestis.dguv.de/data?name=${matches[2]}&lang=${matches[1]}`);
+    }
+  }
+
+  addCustomSubstanceData(): void {
+    const data = [
+      ...this.globals.substanceDataSubject.getValue(),
+      // create new custom SubstanceData
+      new SubstanceData({ checked: true }),
+    ];
+    this.dataSource.connect().next(data);
+    this.globals.substanceDataSubject.next(data);
+  }
+
+  getProviderName(source: Source): string {
+    if (source.provider === 'custom') {
+      return this.strings.search.customSubstance;
+    } else {
+      const provider = this.providerMapping.get(source.provider);
+      return provider ? provider.name : `${source.provider} (${this.strings.search.unsupportedProviderInfo})`;
     }
   }
 

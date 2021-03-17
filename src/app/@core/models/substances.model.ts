@@ -1,8 +1,8 @@
-export interface SubstanceData {
+export class SubstanceData {
   name: Data<string>;
   readonly alternativeNames: string[];
   cas: Data<string | undefined>;
-  molecularFormula: Data<string>;
+  molecularFormula: Data<string | undefined>;
   molarMass: Data<string | undefined>;
   meltingPoint: Data<string | undefined>;
   boilingPoint: Data<string | undefined>;
@@ -13,8 +13,70 @@ export interface SubstanceData {
   symbols: Data<string[]>;
   lethalDose: Data<string | undefined>;
   mak: Data<string | undefined>;
-  readonly source: Source;
   amount: Amount | undefined;
+  readonly source: Source;
+  checked: boolean;
+
+  /**
+   * Create new optionally empty SubstanceData.
+   *
+   * If `source` is empty it will be treated as custom substance.
+   */
+  constructor(data?: Partial<SubstanceData>) {
+    this.name = EMPTY_STRING_DATA();
+    this.cas = EMPTY_DATA();
+    this.molecularFormula = EMPTY_DATA();
+    this.molarMass = EMPTY_DATA();
+    this.meltingPoint = EMPTY_DATA();
+    this.boilingPoint = EMPTY_DATA();
+    this.waterHazardClass = EMPTY_DATA();
+    this.hPhrases = EMPTY_LIST_DATA();
+    this.pPhrases = EMPTY_LIST_DATA();
+    this.signalWord = EMPTY_DATA();
+    this.symbols = EMPTY_LIST_DATA();
+    this.lethalDose = EMPTY_DATA();
+    this.mak = EMPTY_DATA();
+
+    this.alternativeNames = [];
+
+    this.source = { url: '', provider: 'custom', lastUpdated: new Date() };
+
+    this.checked = false;
+
+    if (data) {
+      Object.assign(this, data);
+    }
+  }
+
+  /**
+   * Returns `true` if any of its members of type `Data<T>` has `modifiedData` set.
+   */
+  // this compiles pretty well, we can leave it like this
+  get isModified(): boolean {
+    // checks if t is of type Data<T>
+    const isData = <T>(t: any): t is Data<T> => {
+      if (t instanceof Object && 'originalData' in t) {
+        return true;
+      }
+      return false;
+    };
+
+    for (const propName in this) {
+      if (isData(this[propName])) {
+        // data is of type Data<T>
+        const data = this[propName] as any;
+        if (data.modifiedData !== undefined) {
+          return true;
+        }
+      }
+    }
+
+    if (this.amount) {
+      return true;
+    }
+
+    return false;
+  }
 }
 
 export interface Data<T> {
@@ -99,3 +161,7 @@ const temperatureUnitMapping: UnitMapping<TemperatureUnit>[] = [
 ];
 
 export { unitMappings, temperatureUnitMapping };
+
+const EMPTY_STRING_DATA = () => ({ originalData: '' });
+const EMPTY_DATA = () => ({ originalData: undefined });
+const EMPTY_LIST_DATA = () => ({ originalData: [] });

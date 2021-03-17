@@ -9,7 +9,7 @@ pub struct SubstanceData {
   pub name: Data<String>,
   pub alternative_names: Vec<String>,
   pub cas: Data<Option<String>>,
-  pub molecular_formula: Data<String>,
+  pub molecular_formula: Data<Option<String>>,
   pub molar_mass: Data<Option<String>>,
   pub melting_point: Data<Option<String>>,
   pub boiling_point: Data<Option<String>>,
@@ -22,6 +22,9 @@ pub struct SubstanceData {
   pub mak: Data<Option<String>>,
   pub amount: Option<Amount>,
   pub source: Source,
+
+  // set to true if user has clicked on this substance
+  pub checked: bool,
 }
 
 #[derive(Debug, Deserialize, Serialize)]

@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditSearchResultsComponent } from './edit-search-results.component';
+import { EditSubstanceDataComponent } from './edit-substance-data.component';
 
 describe('EditSearchResultsComponent', () => {
-  let component: EditSearchResultsComponent;
-  let fixture: ComponentFixture<EditSearchResultsComponent>;
+  let component: EditSubstanceDataComponent;
+  let fixture: ComponentFixture<EditSubstanceDataComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [EditSearchResultsComponent],
+      declarations: [EditSubstanceDataComponent],
     }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditSearchResultsComponent);
+    fixture = TestBed.createComponent(EditSubstanceDataComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

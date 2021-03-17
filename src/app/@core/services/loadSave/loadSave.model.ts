@@ -1,5 +1,5 @@
 import { Header } from '../../interfaces/Header';
-import { SubstanceData } from '../substances/substances.model';
+import { SubstanceData } from '../../models/substances.model';
 
 export interface CaBr2Document {
   header: Header;

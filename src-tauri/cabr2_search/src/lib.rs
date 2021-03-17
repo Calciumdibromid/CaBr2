@@ -30,6 +30,20 @@ impl Plugin for Search {
       Ok(command) => {
         log::trace!("command: {:?}", &command);
         match command {
+          Cmd::GetAvailableProviders {
+            callback,
+            error,
+          } => {
+            tauri::execute_promise(
+              webview,
+              move || match handler::get_available_providers() {
+                Ok(res) => Ok(res),
+                Err(e) => Err(e.into()),
+              },
+              callback,
+              error,
+            );
+          }
           Cmd::SearchSuggestions {
             provider,
             pattern,

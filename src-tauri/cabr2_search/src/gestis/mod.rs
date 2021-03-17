@@ -15,30 +15,39 @@ const SEARCH_SUGGESTIONS: &str = "search_suggestions";
 const SEARCH: &str = "search";
 const ARTICLE: &str = "article";
 
-const SEARCH_TYPE_NAMES: [&str; 4] = ["stoffname", "nummern", "summenformel", "volltextsuche"];
-
 pub struct Gestis {
   agent: Agent,
 }
 
 impl Gestis {
   pub fn new() -> Gestis {
+    #[cfg(not(test))]
+    let user_agent = &format!("cabr2 v{}", env!("CARGO_PKG_VERSION"));
+    #[cfg(test)]
+    let user_agent = "cabr2 testing";
     Gestis {
       agent: Agent::new()
         // don't ask, just leave it
         // https://gestis.dguv.de/search -> webpack:///./src/api.ts?
         .auth_kind("Bearer", "dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd")
-        .set("User-Agent", &format!("cabr2 v{}", env!("CARGO_PKG_VERSION")))
+        .set("User-Agent", user_agent)
         .build(),
     }
   }
 }
 
 impl Provider for Gestis {
+  fn get_name(&self) -> String {
+    "Gestis".into()
+  }
+
   fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> Result<Vec<String>> {
     let url = format!(
       "{}/{}/de?{}={}",
-      BASE_URL, SEARCH_SUGGESTIONS, SEARCH_TYPE_NAMES[search_type as usize], pattern
+      BASE_URL,
+      SEARCH_SUGGESTIONS,
+      search_type.as_str(),
+      pattern
     );
     let res = make_request(&self.agent, &url)?;
 
@@ -49,7 +58,7 @@ impl Provider for Gestis {
     let args: Vec<String> = arguments
       .arguments
       .into_iter()
-      .map(|a| format!("{}={}", SEARCH_TYPE_NAMES[a.search_type as usize], a.pattern))
+      .map(|a| format!("{}={}", a.search_type.as_str(), a.pattern))
       .collect();
 
     let url = format!(
@@ -75,7 +84,7 @@ impl Provider for Gestis {
     let res_data = SubstanceData {
       name: Data::new(json.name.clone()),
       alternative_names: json.aliases.into_iter().map(|a| a.name).collect(),
-      cas: Data::new(Some(data.cas)),
+      cas: Data::new(data.cas),
       molecular_formula: Data::new(data.molecular_formula),
       molar_mass: Data::new(data.molar_mass),
       melting_point: Data::new(data.melting_point),
@@ -98,10 +107,12 @@ impl Provider for Gestis {
         None => Vec::new(),
       }),
       source: Source {
-        provider: "GESTIS".into(),
+        provider: "gestis".into(),
         url,
         last_updated: chrono::Utc::now(),
       },
+
+      checked: false,
     };
 
     Ok(res_data)
@@ -116,5 +127,58 @@ pub fn make_request(agent: &Agent, url: &str) -> Result<ureq::Response> {
     200..=399 => Ok(res),
     429 => Err(SearchError::RateLimit),
     _ => Err(SearchError::RequestError(res.status())),
+  }
+}
+
+impl SearchType {
+  /// Returns the search type as the string that is used in the query parameters
+  pub fn as_str(&self) -> &'static str {
+    match self {
+      SearchType::ChemicalName => "stoffname",
+      SearchType::ChemicalFormula => "summenformel",
+      SearchType::Numbers => "nummern",
+      SearchType::FullText => "volltextsuche",
+    }
+  }
+}
+
+#[cfg(test)]
+mod tests {
+  use lazy_static::lazy_static;
+
+  use super::*;
+
+  lazy_static! {
+    static ref GESTIS: Gestis = Gestis::new();
+  }
+
+  #[test]
+  fn test_suggestions_chemical_name() {
+    assert_eq!(
+      GESTIS
+        .get_quick_search_suggestions(SearchType::ChemicalName, "cobaltnit".into())
+        .unwrap(),
+      vec!["cobaltnitrat"]
+    );
+  }
+
+  #[test]
+  fn test_suggestions_chemical_formula() {
+    assert_eq!(
+      GESTIS
+        .get_quick_search_suggestions(SearchType::ChemicalFormula, "h2o".into())
+        .unwrap(),
+      vec!["h2o", "h2o2", "h2o2sr", "h2o2zn", "h2o3s", "h2o3se", "h2o4s", "h2o4se", "h2o4w", "h2o7s2"]
+    );
+  }
+
+  #[test]
+  fn test_suggestions_numbers() {
+    assert_eq!(
+      GESTIS
+        .get_quick_search_suggestions(SearchType::Numbers, "5340".into())
+        .unwrap(),
+      vec!["5340", "53404-28-7", "53408-94-9"]
+    );
   }
 }

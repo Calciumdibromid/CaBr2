@@ -5,8 +5,8 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
+import { compareArrays } from '../@core/utils/compare';
 import { ConfigService } from '../@core/services/config/config.service';
-import { ConsentComponent } from '../consent/consent.component';
 import { docsTemplate } from '../../assets/docsTemplate.json';
 import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
@@ -16,6 +16,7 @@ import { ManualComponent } from '../manual/manual.component';
 import { ReportBugComponent } from '../report-bug/report-bug.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { TauriService } from '../@core/services/tauri/tauri.service';
+import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
 const logger = new Logger('menubar');
 
@@ -62,21 +63,11 @@ export class MenubarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.globals.headerSubject.next({
-      assistant: docsTemplate.assistant,
-      documentTitle: docsTemplate.documentTitle,
-      labCourse: docsTemplate.labCourse,
-      name: docsTemplate.name,
-      organisation: docsTemplate.organisation,
-      place: docsTemplate.place,
-      preparation: docsTemplate.preparation,
-    });
-
-    this.globals.humanAndEnvironmentDangerSubject.next(docsTemplate.humanAndEnvironmentDangerSubject);
-
-    this.globals.rulesOfConductSubject.next(docsTemplate.rulesOfConductSubject);
-
-    this.globals.inCaseOfDangerSubject.next(docsTemplate.inCaseOfDangerSubject);
+    this.globals.headerSubject.next(docsTemplate.header);
+    this.globals.humanAndEnvironmentDangerSubject.next(docsTemplate.humanAndEnvironmentDanger);
+    this.globals.rulesOfConductSubject.next(docsTemplate.rulesOfConduct);
+    this.globals.inCaseOfDangerSubject.next(docsTemplate.inCaseOfDanger);
+    this.globals.disposalSubject.next(docsTemplate.disposal);
 
     this.globals.substanceDataSubject.next([]);
 
@@ -149,49 +140,85 @@ export class MenubarComponent implements OnInit {
       );
   }
 
-  saveFile(type: string): void {
-    logger.trace(`saveFile(${type})`);
+  exportFile(type: string): void {
+    logger.trace(`exportFile('${type}')`);
+    this.modelToDocument()
+      .pipe(first())
+      .subscribe((doc) => {
+        const unmodifiedStuff = this.checkUnmodified(doc);
+        if (unmodifiedStuff) {
+          this.dialog
+            .open(YesNoDialogComponent, {
+              data: {
+                iconName: 'warning',
+                title: this.strings.dialogs.unchangedValues.title,
+                content: this.strings.dialogs.unchangedValues.content,
+                listItems: unmodifiedStuff,
+                footerText: this.strings.dialogs.unchangedValues.footer,
+              },
+              panelClass: ['unselectable', 'undragable'],
+            })
+            .afterClosed()
+            .pipe(first())
+            .subscribe((res) => (res ? this.saveFile(type, doc) : undefined));
+        } else {
+          this.saveFile(type, doc);
+        }
+      });
+  }
 
+  /**
+   * Returns `true` if the `CaBr2Document has some unchecked default values
+   */
+  checkUnmodified(document: CaBr2Document): string[] {
+    const unmodified = [];
+    for (const substance of document.substanceData) {
+      if (!substance.checked) {
+        unmodified.push(substance.name.modifiedData ?? substance.name.originalData);
+      }
+    }
+    for (const section of [
+      [
+        document.humanAndEnvironmentDanger,
+        docsTemplate.humanAndEnvironmentDanger,
+        [this.strings.descriptions.humanAndEnvironmentDangerShort],
+      ],
+      [document.rulesOfConduct, docsTemplate.rulesOfConduct, [this.strings.descriptions.rulesOfConductShort]],
+      [document.inCaseOfDanger, docsTemplate.inCaseOfDanger, [this.strings.descriptions.inCaseOfDangerShort]],
+      [document.disposal, docsTemplate.disposal, [this.strings.descriptions.disposalShort]],
+    ]) {
+      if (compareArrays(section[0], section[1])) {
+        unmodified.push(section[2][0]);
+      }
+    }
+    return unmodified;
+  }
+
+  saveFile(type: string, document: CaBr2Document): void {
     // check for development, should never occur in production
     if (this.saveFilter.indexOf(type) < 0) {
       throw Error('unsupported file type');
     }
 
-    combineLatest([this.tauriService.save({ filter: type }), this.modelToDocument()])
+    this.tauriService
+      .save({ filter: type })
       .pipe(
-        switchMap((value) => this.loadSaveService.saveDocument(type, value[0] as string, value[1])),
+        switchMap((filename) => this.loadSaveService.saveDocument(type, filename as string, document)),
         first(),
       )
       .subscribe(
         (res) => {
           logger.debug(res);
-          this.alertService.success(this.strings.success.saveFile);
-        },
-        (err) => {
-          logger.error(err);
-          // fix for an error that occurs only in windows
-          if (err === 'Could not initialize COM.') {
-            logger.debug('ty windows -.- | attempting fix');
-            this.loadFile();
-            this.saveFile(type);
-            return;
-          }
-          this.alertService.error(this.strings.error.saveFile);
-        },
-      );
-  }
 
-  exportPDF(): void {
-    logger.trace('exportPDF()');
-    combineLatest([this.tauriService.save({ filter: 'pdf' }), this.modelToDocument()])
-      .pipe(
-        switchMap((value) => this.loadSaveService.saveDocument('pdf', value[0] as string, value[1])),
-        first(),
-      )
-      .subscribe(
-        (res) => {
-          logger.debug(res);
-          this.alertService.success(this.strings.success.exportPDF);
+          switch (type) {
+            case 'pdf':
+              this.alertService.success(this.strings.success.exportPDF);
+              break;
+
+            default:
+              this.alertService.success(this.strings.success.saveFile);
+              break;
+          }
         },
         (err) => {
           logger.error(err);
@@ -199,10 +226,19 @@ export class MenubarComponent implements OnInit {
           if (err === 'Could not initialize COM.') {
             logger.debug('ty windows -.- | attempting fix');
             this.loadFile();
-            this.exportPDF();
+            this.saveFile(type, document);
             return;
           }
-          this.alertService.error(this.strings.error.exportPDF);
+
+          switch (type) {
+            case 'pdf':
+              this.alertService.error(this.strings.error.exportPDF);
+              break;
+
+            default:
+              this.alertService.error(this.strings.error.saveFile);
+              break;
+          }
         },
       );
   }

@@ -1,52 +1,67 @@
 <mat-card class="onepager-mat-card">
   <div class="flex">
-    <!-- TODO make this to one way databinding -->
     <app-selected-search (triggerSearch)="openDialog()" class="width-100"></app-selected-search>
   </div>
   <button class="button unselectable" mat-flat-button color="primary" (click)="openDialog()">
     {{ strings.search.searchButton }}
   </button>
-  <mat-divider class="divider"></mat-divider>
-  <div class="margin-bottom"></div>
+  <mat-divider class="margin-top-small"></mat-divider>
+  <div class="margin-bottom-small"></div>
 
-  <div class="mat-elevation-z8 margin-top">
+  <div class="editing-hint margin-top margin-left-small">{{ strings.substance.editingHint }}</div>
+
+  <div class="mat-elevation-z8 margin-top-small">
     <mat-table [dataSource]="dataSource">
-      <ng-container matColumnDef="name" [sticky]="true">
+      <ng-container matColumnDef="edited">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'edited-column'"> {{ strings.substance.edited }}</mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'edited-column'">
+          <span *ngIf="element.isModified" class="material-icons"> done </span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> {{ strings.substance.name }}</mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.name.modifiedData ? element.name.modifiedData : element.name.originalData }}
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="cas" [sticky]="true">
+      <ng-container matColumnDef="cas">
         <mat-header-cell *matHeaderCellDef> {{ strings.substance.casNumber }}</mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.cas.modifiedData ? element.cas.modifiedData : element.cas.originalData }}
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="actions" [sticky]="true">
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          <div class="right">
-            <button
-              mat-raised-button
-              color="primary"
-              [disabled]="userUrlAvailable(element.source)"
-              (click)="openSource($event, element.source)"
-            >
-              {{ element.source.provider }}
-            </button>
-            <button
-              mat-icon-button
-              (click)="removeSubstance($event, element)"
-              [matTooltip]="strings.search.removeSubstance"
-              matTooltipPosition="left"
-            >
-              <span class="material-icons"> delete </span>
-            </button>
-          </div>
+      <ng-container matColumnDef="source">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'buttons source-column'"></mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'buttons source-column'">
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="sourceButtonDisabled(element.source)"
+            (click)="openSource($event, element.source)"
+          >
+            {{ getProviderName(element.source) }}
+          </button>
         </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'buttons button-column'"></mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'buttons button-column'"
+          ><button mat-icon-button [matTooltip]="strings.search.editSubstance" matTooltipPosition="left">
+            <span class="material-icons"> mode_edit </span>
+          </button>
+          <button
+            mat-icon-button
+            (click)="removeSubstance($event, element)"
+            [matTooltip]="strings.search.removeSubstance"
+            matTooltipPosition="left"
+          >
+            <span class="material-icons"> delete </span>
+          </button></mat-cell
+        >
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
@@ -54,8 +69,21 @@
       <mat-row
         class="mat-option"
         *matRowDef="let row; columns: displayedColumns"
-        (click)="openResultDialog(row)"
+        (click)="openEditDialog(row)"
       ></mat-row>
     </mat-table>
+  </div>
+  <div class="margin-top-small">
+    <button
+      mat-icon-button
+      matTooltip="{{ strings.substance.addCustomSubstanceData }}"
+      matTooltipPosition="right"
+      (mouseenter)="addButtonHover = true"
+      (mouseleave)="addButtonHover = false"
+      (click)="addCustomSubstanceData()"
+    >
+      <mat-icon *ngIf="!addButtonHover"> add_circle_outline </mat-icon>
+      <mat-icon color="primary" *ngIf="addButtonHover"> add_circle </mat-icon>
+    </button>
   </div>
 </mat-card>

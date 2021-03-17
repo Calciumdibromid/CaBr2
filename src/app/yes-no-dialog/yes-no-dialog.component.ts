@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 import { GlobalModel } from '../@core/models/global.model';
@@ -7,7 +7,9 @@ import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 export interface YesNoDialogData {
   iconName?: string;
   title: string;
-  content: string;
+  content: string[];
+  listItems?: string[];
+  footerText?: string[];
 }
 
 @Component({
@@ -15,15 +17,17 @@ export interface YesNoDialogData {
   templateUrl: './yes-no-dialog.component.html',
   styleUrls: ['./yes-no-dialog.component.scss'],
 })
-export class YesNoDialogComponent implements OnInit {
+export class YesNoDialogComponent {
   strings!: LocalizedStrings;
 
   /**
    * To use this component you must inject `MatDialog`.
+   *
    * The value `iconName` is optional.
+   *
    * Get icon names from [here](https://material.io/resources/icons/?icon=info&style=baseline)
    * ```ts
-   * matDialog.open(ManualComponent, {
+   * matDialog.open(YesNoDialogComponent, {
    *  data: {
    *    iconName: 'exampleIcon',
    *    title: 'Example title',
@@ -32,9 +36,6 @@ export class YesNoDialogComponent implements OnInit {
    *  autofocus: false  // default is true
    * });
    * ```
-   *
-   * @param dialogRef
-   * @param data
    */
   constructor(
     public dialogRef: MatDialogRef<YesNoDialogComponent>,
@@ -44,6 +45,4 @@ export class YesNoDialogComponent implements OnInit {
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
   }
-
-  ngOnInit(): void {}
 }

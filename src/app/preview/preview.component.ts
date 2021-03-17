@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
 
-import { Amount } from '../@core/services/substances/substances.model';
+import { Amount } from '../@core/models/substances.model';
 import { GlobalModel } from '../@core/models/global.model';
 import { Header } from '../@core/interfaces/Header';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
@@ -11,7 +11,7 @@ import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 interface SimpleSubstanceData {
   name: string;
   cas?: string;
-  molecularFormula: string;
+  molecularFormula?: string;
   molarMass?: string;
   meltingPoint?: string;
   boilingPoint?: string;
@@ -72,6 +72,26 @@ export class PreviewComponent implements OnInit {
             };
           }),
         ),
+        map((substances) => {
+          for (let i = substances.length; i < 5; i++) {
+            substances.push({
+              name: '',
+              cas: '',
+              molecularFormula: '',
+              molarMass: '',
+              meltingPoint: '',
+              boilingPoint: '',
+              waterHazardClass: '',
+              hPhrases: [],
+              pPhrases: [],
+              signalWord: '',
+              symbols: [],
+              lethalDose: '',
+              mak: '',
+            });
+          }
+          return substances;
+        }),
       )
       .subscribe((data) => (this.substanceData = data));
   }

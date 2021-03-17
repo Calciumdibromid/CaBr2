@@ -25,7 +25,7 @@ pub struct PDFSubstanceData {
   name: Data<String>,
   alternative_names: Vec<String>,
   cas: Data<Option<String>>,
-  molecular_formula: Data<String>,
+  molecular_formula: Data<Option<String>>,
   molar_mass: Data<Option<String>>,
   melting_point: Data<Option<String>>,
   boiling_point: Data<Option<String>>,
@@ -53,6 +53,26 @@ pub struct Amount {
   pub unit: String,
 }
 
+impl PDFSubstanceData {
+  pub fn empty(&self) -> bool {
+    self.name.data.is_empty()
+      && self.alternative_names.is_empty()
+      && self.cas.data.is_none()
+      && self.molecular_formula.data.is_none()
+      && self.molar_mass.data.is_none()
+      && self.melting_point.data.is_none()
+      && self.boiling_point.data.is_none()
+      && self.water_hazard_class.data.is_none()
+      && self.h_phrases.data.is_empty()
+      && self.p_phrases.data.is_empty()
+      && self.signal_word.data.is_none()
+      && self.symbols.data.is_empty()
+      && self.lethal_dose.data.is_none()
+      && self.mak.data.is_none()
+      && self.amount.is_none()
+  }
+}
+
 impl std::default::Default for PDFSubstanceData {
   fn default() -> Self {
     lazy_static! {
@@ -78,7 +98,7 @@ impl std::default::Default for PDFSubstanceData {
       source: Source {
         provider: String::default(),
         url: String::default(),
-        last_updated: BEGINNING_OF_TIME.clone(),
+        last_updated: *BEGINNING_OF_TIME,
       },
     }
   }
@@ -89,11 +109,21 @@ impl std::convert::From<CaBr2Document> for PDFCaBr2Document {
     PDFCaBr2Document {
       header: doc.header,
       substance_data: {
-        let mut substances: Vec<PDFSubstanceData> = doc.substance_data.into_iter().map(|s| s.into()).collect();
-        for _ in substances.len()..4 {
+        let mut substances: Vec<PDFSubstanceData> = doc
+          .substance_data
+          .into_iter()
+          .map(|s| {
+            let s: PDFSubstanceData = s.into();
+            if s.empty() {
+              PDFSubstanceData::default()
+            } else {
+              s
+            }
+          })
+          .collect();
+        for _ in substances.len()..5 {
           substances.push(PDFSubstanceData::default());
         }
-        substances.push(PDFSubstanceData::default());
         substances
       },
       human_and_environment_danger: doc.human_and_environment_danger,
@@ -118,7 +148,7 @@ impl std::convert::From<SubstanceData> for PDFSubstanceData {
       h_phrases: data.h_phrases.into(),
       p_phrases: data.p_phrases.into(),
       signal_word: data.signal_word.into(),
-      symbols: data.symbols.into(), // TODO fill with actual symbols
+      symbols: data.symbols.into(),
       lethal_dose: data.lethal_dose.into(),
       mak: data.mak.into(),
       amount: match data.amount {

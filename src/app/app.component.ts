@@ -1,10 +1,15 @@
 import { Component, HostBinding, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { first, skip, switchMap } from 'rxjs/operators';
+import { first, switchMap } from 'rxjs/operators';
 import { DOCUMENT } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
-import { ConfigModel, configObservable } from './@core/models/config.model';
+import {
+  configChangeObservable,
+  configLoadObservable,
+  ConfigModel,
+  configObservable,
+} from './@core/models/config.model';
 import { I18nService, LocalizedStrings } from './@core/services/i18n/i18n.service';
 import { name, version } from '../../package.json';
 import { AlertService } from './@core/services/alertsnackbar/altersnackbar.service';
@@ -50,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .getConfig()
       .pipe(first())
       .subscribe(
-        (newConfig) => ConfigModel.setConfig(newConfig),
+        (newConfig) => ConfigModel.setLoadedConfig(newConfig),
         (err) => {
           logger.error('loading config failed:', err);
           this.alertService.error(this.strings.error.configLoad);
@@ -58,19 +63,13 @@ export class AppComponent implements OnInit, OnDestroy {
       );
 
     this.subscriptions.push(
-      // skip initial config and first load
-      configObservable
-        .pipe(
-          skip(2),
-          switchMap((config) => this.configService.saveConfig(config).pipe(first())),
-        )
-        .subscribe(
-          () => logger.info('config saved'),
-          (err) => {
-            logger.error('saving config failed:', err);
-            this.alertService.error(this.strings.error.configSave);
-          },
-        ),
+      configChangeObservable.pipe(switchMap((config) => this.configService.saveConfig(config).pipe(first()))).subscribe(
+        () => logger.info('config saved'),
+        (err) => {
+          logger.error('saving config failed:', err);
+          this.alertService.error(this.strings.error.configSave);
+        },
+      ),
 
       configObservable.subscribe((config) => {
         // config is undefined before first call of this function
@@ -101,7 +100,7 @@ export class AppComponent implements OnInit, OnDestroy {
       ),
     );
 
-    configObservable.pipe(first()).subscribe((config) => {
+    configLoadObservable.pipe(first()).subscribe((config) => {
       if (!config.globalSection.acceptedConsent) {
         this.dialog
           .open(ConsentComponent, {
