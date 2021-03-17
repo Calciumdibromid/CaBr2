@@ -70,6 +70,11 @@ export class SubstanceData {
         }
       }
     }
+
+    if (this.amount) {
+      return true;
+    }
+
     return false;
   }
 }
