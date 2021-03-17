@@ -6,46 +6,57 @@
   <button class="button unselectable" mat-flat-button color="primary" (click)="openDialog()">
     {{ strings.search.searchButton }}
   </button>
-  <mat-divider class="margin-top-20px"></mat-divider>
-  <div class="margin-bottom"></div>
+  <mat-divider class="margin-top-small"></mat-divider>
+  <div class="margin-bottom-small"></div>
 
-  <div class="mat-elevation-z8 margin-top">
+  <div class="editing-hint margin-top margin-left-small">{{ strings.substance.editingHint }}</div>
+
+  <div class="mat-elevation-z8 margin-top-small">
     <mat-table [dataSource]="dataSource">
-      <ng-container matColumnDef="name" [sticky]="true">
+      <ng-container matColumnDef="edited">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'edited-column'"> {{ strings.substance.edited }}</mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'edited-column'">
+          <span *ngIf="element.isModified" class="material-icons"> done </span>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> {{ strings.substance.name }}</mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.name.modifiedData ? element.name.modifiedData : element.name.originalData }}
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="cas" [sticky]="true">
+      <ng-container matColumnDef="cas">
         <mat-header-cell *matHeaderCellDef> {{ strings.substance.casNumber }}</mat-header-cell>
         <mat-cell *matCellDef="let element">
           {{ element.cas.modifiedData ? element.cas.modifiedData : element.cas.originalData }}
         </mat-cell>
       </ng-container>
 
-      <ng-container matColumnDef="actions" [sticky]="true">
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          <div class="right">
-            <button
-              mat-raised-button
-              color="primary"
-              [disabled]="sourceButtonDisabled(element.source)"
-              (click)="openSource($event, element.source)"
-            >
-              {{ getProviderName(element.source) }}
-            </button>
-            <button
-              mat-icon-button
-              (click)="removeSubstance($event, element)"
-              [matTooltip]="strings.search.removeSubstance"
-              matTooltipPosition="left"
-            >
-              <span class="material-icons"> delete </span>
-            </button>
-          </div>
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef [ngClass]="'button-column'"></mat-header-cell>
+        <mat-cell *matCellDef="let element" [ngClass]="'button-column'">
+          <button
+            mat-raised-button
+            color="primary"
+            [disabled]="sourceButtonDisabled(element.source)"
+            (click)="openSource($event, element.source)"
+          >
+            {{ getProviderName(element.source) }}
+          </button>
+          <!-- TODO fix button spacing if you can -->
+          <button mat-icon-button [matTooltip]="strings.search.editSubstance" matTooltipPosition="left">
+            <span class="material-icons"> mode_edit </span>
+          </button>
+          <button
+            mat-icon-button
+            (click)="removeSubstance($event, element)"
+            [matTooltip]="strings.search.removeSubstance"
+            matTooltipPosition="left"
+          >
+            <span class="material-icons"> delete </span>
+          </button>
         </mat-cell>
       </ng-container>
 
@@ -58,7 +69,7 @@
       ></mat-row>
     </mat-table>
   </div>
-  <div class="margin-top-20px">
+  <div class="margin-top-small">
     <button
       mat-icon-button
       matTooltip="{{ strings.substance.addCustomSubstanceData }}"

@@ -44,6 +44,31 @@ export class SubstanceData {
       Object.assign(this, data);
     }
   }
+
+  /**
+   * Returns `true` if any of its members of type `Data<T>` has `modifiedData` set.
+   */
+  // this compiles pretty well, we can leave it like this
+  get isModified(): boolean {
+    // checks if t is of type Data<T>
+    const isData = <T>(t: any): t is Data<T> => {
+      if (t && 'originalData' in t) {
+        return true;
+      }
+      return false;
+    };
+
+    for (const propName in this) {
+      if (isData(this[propName])) {
+        // data is of type Data<T>
+        const data = this[propName] as any;
+        if (data.modifiedData) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
 }
 
 export interface Data<T> {

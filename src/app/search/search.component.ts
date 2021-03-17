@@ -39,7 +39,7 @@ export class SearchComponent implements OnInit {
 
   substanceData: SubstanceData[] = [];
 
-  displayedColumns = ['name', 'cas', 'actions'];
+  displayedColumns = ['edited', 'name', 'cas', 'actions'];
 
   dataSource!: MatTableDataSource<SubstanceData>;
 

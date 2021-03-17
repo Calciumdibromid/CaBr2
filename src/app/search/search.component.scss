@@ -1,3 +1,5 @@
+@import '../../styles/color';
+
 .flex {
   display: flex;
   flex-direction: row;
@@ -21,18 +23,33 @@
   padding: 5px;
 }
 
-.margin-top-20px {
+.margin-top-small {
   margin-top: 20px;
 }
 
-.margin-bottom {
+.margin-top {
+  margin-top: 40px;
+}
+
+.margin-bottom-small {
   margin-bottom: 20px;
 }
 
-.right {
-  margin-left: auto;
+.margin-left-small {
+  margin-left: 20px;
 }
 
-.margin-top {
-  margin-top: 38px;
+.editing-hint {
+  color: mat-color($ang-CaBr2-primary);
+}
+
+.button-column {
+  justify-content: flex-end;
+  max-width: 200px;
+  min-width: 100px;
+}
+
+.edited-column {
+  max-width: 100px;
+  min-width: 50px;
 }
