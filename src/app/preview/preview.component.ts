@@ -72,6 +72,26 @@ export class PreviewComponent implements OnInit {
             };
           }),
         ),
+        map((substances) => {
+          for (let i = substances.length; i < 5; i++) {
+            substances.push({
+              name: '',
+              cas: '',
+              molecularFormula: '',
+              molarMass: '',
+              meltingPoint: '',
+              boilingPoint: '',
+              waterHazardClass: '',
+              hPhrases: [],
+              pPhrases: [],
+              signalWord: '',
+              symbols: [],
+              lethalDose: '',
+              mak: '',
+            })
+          }
+          return substances;
+        })
       )
       .subscribe((data) => (this.substanceData = data));
   }
