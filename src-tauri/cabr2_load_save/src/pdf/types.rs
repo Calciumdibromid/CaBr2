@@ -53,6 +53,26 @@ pub struct Amount {
   pub unit: String,
 }
 
+impl PDFSubstanceData {
+  pub fn empty(&self) -> bool {
+    self.name.data.is_empty()
+      && self.alternative_names.is_empty()
+      && self.cas.data.is_none()
+      && self.molecular_formula.data.is_none()
+      && self.molar_mass.data.is_none()
+      && self.melting_point.data.is_none()
+      && self.boiling_point.data.is_none()
+      && self.water_hazard_class.data.is_none()
+      && self.h_phrases.data.is_empty()
+      && self.p_phrases.data.is_empty()
+      && self.signal_word.data.is_none()
+      && self.symbols.data.is_empty()
+      && self.lethal_dose.data.is_none()
+      && self.mak.data.is_none()
+      && self.amount.is_none()
+  }
+}
+
 impl std::default::Default for PDFSubstanceData {
   fn default() -> Self {
     lazy_static! {
@@ -89,8 +109,19 @@ impl std::convert::From<CaBr2Document> for PDFCaBr2Document {
     PDFCaBr2Document {
       header: doc.header,
       substance_data: {
-        let mut substances: Vec<PDFSubstanceData> = doc.substance_data.into_iter().map(|s| s.into()).collect();
-        for _ in substances.len()..4 {
+        let mut substances: Vec<PDFSubstanceData> = doc
+          .substance_data
+          .into_iter()
+          .map(|s| {
+            let s: PDFSubstanceData = s.into();
+            if s.empty() {
+              PDFSubstanceData::default()
+            } else {
+              s
+            }
+          })
+          .collect();
+        for _ in substances.len()..5 {
           substances.push(PDFSubstanceData::default());
         }
         substances
