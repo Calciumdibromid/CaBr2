@@ -1,5 +1,5 @@
 <mat-sidenav-container autosize>
-  <mat-sidenav class="fixed unselectable" mode="side" opened disableClose>
+  <mat-sidenav class="navbar-flex unselectable fixed" mode="side" opened disableClose>
     <button class="hamburger icon" mat-icon-button [matMenuTriggerFor]="menu">
       <img src="assets/icons/menu.svg" />
     </button>
@@ -12,31 +12,29 @@
       <button mat-menu-item (click)="openSettingsDialog()">{{ strings.menu.settings }}</button>
       <button mat-menu-item (click)="openManualDialog()">{{ strings.menu.quickStart }}</button>
     </mat-menu>
-    <br />
+
     <button class="icon" mat-icon-button (click)="scroll(headerTarget)">
       <img class="svg" src="assets/icons/flask.svg" />
     </button>
-    <br />
+
     <button class="icon" mat-icon-button (click)="scroll(search)">
       <img class="svg" src="assets/icons/magnifier.svg" />
     </button>
-    <br />
+
     <button class="icon" mat-icon-button (click)="scroll(securitythings)">
       <img class="svg" src="assets/icons/puzzle.svg" />
     </button>
-    <br />
+
     <button class="icon" mat-icon-button (click)="scroll(preview)">
       <img class="svg" src="assets/icons/arrow.svg" />
     </button>
 
-    <div class="bug">
-      <button class="icon" mat-icon-button (click)="openMail()">
-        <img class="svg" src="assets/icons/bug.svg" />
-      </button>
-      <span>
-        {{ programmVersion }}
-      </span>
-    </div>
+    <button class="icon down" mat-icon-button (click)="openMail()">
+      <img class="svg" src="assets/icons/bug.svg" />
+    </button>
+    <span class="version">
+      {{ programmVersion }}
+    </span>
   </mat-sidenav>
   <mat-sidenav-content class="smooth-scroll unselectable">
     <div #headerTarget>
