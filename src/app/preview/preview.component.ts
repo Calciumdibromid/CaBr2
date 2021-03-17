@@ -88,10 +88,10 @@ export class PreviewComponent implements OnInit {
               symbols: [],
               lethalDose: '',
               mak: '',
-            })
+            });
           }
           return substances;
-        })
+        }),
       )
       .subscribe((data) => (this.substanceData = data));
   }
