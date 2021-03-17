@@ -15,7 +15,13 @@ export class SubstanceData {
   mak: Data<string | undefined>;
   amount: Amount | undefined;
   readonly source: Source;
+  checked: boolean;
 
+  /**
+   * Create new optionally empty SubstanceData.
+   *
+   * If `source` is empty it will be treated as custom substance.
+   */
   constructor(data?: Partial<SubstanceData>) {
     this.name = EMPTY_STRING_DATA();
     this.cas = EMPTY_DATA();
@@ -35,9 +41,41 @@ export class SubstanceData {
 
     this.source = { url: '', provider: 'custom', lastUpdated: new Date() };
 
+    this.checked = false;
+
     if (data) {
       Object.assign(this, data);
     }
+  }
+
+  /**
+   * Returns `true` if any of its members of type `Data<T>` has `modifiedData` set.
+   */
+  // this compiles pretty well, we can leave it like this
+  get isModified(): boolean {
+    // checks if t is of type Data<T>
+    const isData = <T>(t: any): t is Data<T> => {
+      if (t instanceof Object && 'originalData' in t) {
+        return true;
+      }
+      return false;
+    };
+
+    for (const propName in this) {
+      if (isData(this[propName])) {
+        // data is of type Data<T>
+        const data = this[propName] as any;
+        if (data.modifiedData !== undefined) {
+          return true;
+        }
+      }
+    }
+
+    if (this.amount) {
+      return true;
+    }
+
+    return false;
   }
 }
 

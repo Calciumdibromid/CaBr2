@@ -3,7 +3,7 @@ import { first } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { Data, Source, SubstanceData } from '../@core/services/provider/substances.model';
+import { Data, Source, SubstanceData } from '../@core/models/substances.model';
 import { ProviderMapping, SearchArgument } from '../@core/services/provider/provider.model';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { GlobalModel } from '../@core/models/global.model';
@@ -12,7 +12,7 @@ import Logger from '../@core/utils/logger';
 import { ProviderService } from '../@core/services/provider/provider.service';
 import { TauriService } from '../@core/services/tauri/tauri.service';
 
-import { EditSearchResultsComponent } from './edit-search-results/edit-search-results.component';
+import { EditSubstanceDataComponent } from '../edit-substance-data/edit-substance-data.component';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './selected-search/selected-search.component';
 
@@ -39,7 +39,7 @@ export class SearchComponent implements OnInit {
 
   substanceData: SubstanceData[] = [];
 
-  displayedColumns = ['name', 'cas', 'actions'];
+  displayedColumns = ['edited', 'name', 'cas', 'source', 'actions'];
 
   dataSource!: MatTableDataSource<SubstanceData>;
 
@@ -101,9 +101,10 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  openResultDialog(origData: SubstanceData): void {
+  openEditDialog(origData: SubstanceData): void {
+    origData.checked = true;
     this.dialog
-      .open(EditSearchResultsComponent, {
+      .open(EditSubstanceDataComponent, {
         data: origData,
         maxWidth: 1500,
         minWidth: 800,
@@ -157,13 +158,8 @@ export class SearchComponent implements OnInit {
   addCustomSubstanceData(): void {
     const data = [
       ...this.globals.substanceDataSubject.getValue(),
-      new SubstanceData({
-        source: {
-          url: 'invalid',
-          provider: 'custom',
-          lastUpdated: new Date(),
-        },
-      }),
+      // create new custom SubstanceData
+      new SubstanceData({ checked: true }),
     ];
     this.dataSource.connect().next(data);
     this.globals.substanceDataSubject.next(data);

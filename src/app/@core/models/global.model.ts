@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { I18nService, LocalizedStrings } from '../services/i18n/i18n.service';
 import { Header } from '../interfaces/Header';
 import { SearchResult } from '../services/provider/provider.model';
-import { SubstanceData } from '../services/provider/substances.model';
+import { SubstanceData } from './substances.model';
 
 @Injectable()
 export class GlobalModel {
