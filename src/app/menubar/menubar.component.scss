@@ -4,8 +4,25 @@
   position: fixed;
   // windoof -.-
   width: 72px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 10px;
+}
+
+::ng-deep .mat-drawer-inner-container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh !important;
+}
+
+.down {
+  margin-top: auto;
+}
+
+.version {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
 }
 
 .hamburger {
@@ -31,14 +48,4 @@
 
 .svg {
   margin: -9%;
-}
-
-.bug {
-  position: absolute;
-  bottom: 5px;
-  left: 12%;
-
-  span {
-    margin-left: 9px;
-  }
 }
