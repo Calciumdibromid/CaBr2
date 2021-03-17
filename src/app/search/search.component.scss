@@ -43,10 +43,18 @@
   color: mat-color($ang-CaBr2-primary);
 }
 
-.button-column {
-  justify-content: flex-end;
+.source-column {
   max-width: 200px;
   min-width: 100px;
+}
+
+.button-column {
+  max-width: 100px;
+  min-width: 50px;
+}
+
+.buttons {
+  justify-content: flex-end;
 }
 
 .edited-column {

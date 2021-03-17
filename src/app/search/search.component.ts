@@ -39,7 +39,7 @@ export class SearchComponent implements OnInit {
 
   substanceData: SubstanceData[] = [];
 
-  displayedColumns = ['edited', 'name', 'cas', 'actions'];
+  displayedColumns = ['edited', 'name', 'cas', 'source', 'actions'];
 
   dataSource!: MatTableDataSource<SubstanceData>;
 
@@ -101,7 +101,8 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  openResultDialog(origData: SubstanceData): void {
+  openEditDialog(origData: SubstanceData): void {
+    origData.checked = true;
     this.dialog
       .open(EditSubstanceDataComponent, {
         data: origData,
@@ -158,7 +159,7 @@ export class SearchComponent implements OnInit {
     const data = [
       ...this.globals.substanceDataSubject.getValue(),
       // create new custom SubstanceData
-      new SubstanceData(),
+      new SubstanceData({ checked: true }),
     ];
     this.dataSource.connect().next(data);
     this.globals.substanceDataSubject.next(data);

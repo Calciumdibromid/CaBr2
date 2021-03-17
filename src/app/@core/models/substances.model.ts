@@ -15,6 +15,7 @@ export class SubstanceData {
   mak: Data<string | undefined>;
   amount: Amount | undefined;
   readonly source: Source;
+  checked: boolean;
 
   /**
    * Create new optionally empty SubstanceData.
@@ -40,6 +41,8 @@ export class SubstanceData {
 
     this.source = { url: '', provider: 'custom', lastUpdated: new Date() };
 
+    this.checked = false;
+
     if (data) {
       Object.assign(this, data);
     }
@@ -52,7 +55,7 @@ export class SubstanceData {
   get isModified(): boolean {
     // checks if t is of type Data<T>
     const isData = <T>(t: any): t is Data<T> => {
-      if (t && 'originalData' in t) {
+      if (t instanceof Object && 'originalData' in t) {
         return true;
       }
       return false;
