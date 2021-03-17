@@ -216,6 +216,8 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
     logger.trace('closing with data:', returnData);
 
+    logger.error(returnData.cas);
+
     this.dialogRef.close(returnData);
   }
 
@@ -235,7 +237,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     if (control?.dirty) {
       let retData: Data<T> = { originalData: currentData.originalData };
       // if new value is empty or still/again the original value don't set modified field
-      if (control.value && control.value !== currentData.originalData) {
+      if (control.value !== null && control.value !== currentData.originalData) {
         retData = { ...retData, modifiedData: control.value };
       }
       return retData;

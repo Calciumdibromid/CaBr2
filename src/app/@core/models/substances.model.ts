@@ -65,7 +65,7 @@ export class SubstanceData {
       if (isData(this[propName])) {
         // data is of type Data<T>
         const data = this[propName] as any;
-        if (data.modifiedData) {
+        if (data.modifiedData !== null) {
           return true;
         }
       }
