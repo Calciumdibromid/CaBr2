@@ -48,13 +48,17 @@
       "option": "Suchoption:",
       "searchButton": "Suche",
       "removeSubstance": "Substanz rausdoa",
+      "editSubstance": "Edit substance",
       "removeOption": "Suchoption wegmacha",
       "addOption": "Suchoption dazua doa",
       "resultsHeader": "Gfundne Sachan",
       "noResult": "Nix gfundn",
+      "customSubstance": "Create own",
+      "unsupportedProviderInfo": "not supported",
       "error": "S'Programm wuit ned"
     },
     "substance": {
+      "edited": "Edited?",
       "name": "Wia mas' ruaft",
       "needsName": "Du, ohne Nama gäds ned",
       "casNumber": "De Ammi-Numma",
@@ -78,14 +82,20 @@
       "noPPhrase": "Foische P-Numma",
       "removePPhrase": "P-Satz wegad doa",
       "addPPhrase": "P-Satz dazua doa",
+      "editingHint": "Click on substance to edit.",
       "ghsSymbolsAddOrRemoveInfo": "Wenns so a Buidl weg- oda dazuadoa megst, muast nur auf des Buidl drugga",
-      "ghsSymbolsColorInfo": "Wenns grau is, dann hostas ned gnomma / Wenns bunt is, dann isses ogschoidn"
+      "ghsSymbolsColorInfo": "Wenns grau is, dann hostas ned gnomma / Wenns bunt is, dann isses ogschoidn",
+      "addCustomSubstanceData": "Add custom substance"
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Des ko de Andan und der Umwelt bassiern:",
       "rulesOfConduct": "Auf des muast aufbassn und des muast macha:",
       "inCaseOfDanger": "Des muast macha, wenn wos bassiert:",
       "disposal": "Wia weads weggschmissn:",
+      "humanAndEnvironmentDangerShort": "Dangers",
+      "rulesOfConductShort": "Protection measures",
+      "inCaseOfDangerShort": "Hazard case",
+      "disposalShort": "Disposal",
       "signatureFieldStudent": "Ich stä dazua, des ois glesn zum hom und duas so macha.",
       "signatureFieldAssistant": "I bass scho drauf auf, dass de Saubuam und -Madl koan Scheiß machan."
     },
@@ -126,6 +136,17 @@
       "loadFile": "Datei basd",
       "saveFile": "Datei is auf da Festplattn",
       "exportPDF": "PDF is auf da Festplattn"
+    },
+    "dialogs": {
+      "unchangedValues": {
+        "title": "Unchanged values",
+        "content": [
+          "The following values were not changed."
+        ],
+        "footer": [
+          "Continue anyway?"
+        ]
+      }
     }
   }
 }
