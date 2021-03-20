@@ -53,9 +53,9 @@
       "addOption": "Suchoption hinzufügen",
       "resultsHeader": "Suchergebnisse",
       "noResult": "Keine Ergebnisse",
-      "error": "Fehler beim Anfragen der Daten",
       "customSubstance": "Selbst erstellt",
-      "unsupportedProviderInfo": "nicht unterstützt"
+      "unsupportedProviderInfo": "nicht unterstützt",
+      "error": "Fehler beim Anfragen der Daten"
     },
     "substance": {
       "edited": "Bearbeitet?",
