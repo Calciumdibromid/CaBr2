@@ -48,13 +48,17 @@
       "option": "Search options:",
       "searchButton": "Search",
       "removeSubstance": "Remove substance",
+      "editSubstance": "Edit substance",
       "removeOption": "Remove search option",
       "addOption": "Add search option",
       "resultsHeader": "Search results",
       "noResult": "No results",
+      "customSubstance": "Custom",
+      "unsupportedProviderInfo": "not supported",
       "error": "An error occurred while retrieving data"
     },
     "substance": {
+      "edited": "Edited?",
       "name": "Name",
       "needsName": "Name is required",
       "casNumber": "CAS number",
@@ -78,6 +82,7 @@
       "noPPhrase": "Invalid P-number",
       "removePPhrase": "remove P-phrase",
       "addPPhrase": "add P-phrase",
+      "editingHint": "Click on substance to edit.",
       "ghsSymbolsAddOrRemoveInfo": "To remove or add click on the symbol",
       "ghsSymbolsColorInfo": "gray: not selected / colorized: selected",
       "addCustomSubstanceData": "Add custom substance"
@@ -87,6 +92,10 @@
       "rulesOfConduct": "Protective measures and safety rules:",
       "inCaseOfDanger": "Behavior in case of danger and first aid:",
       "disposal": "Disposal:",
+      "humanAndEnvironmentDangerShort": "Dangers",
+      "rulesOfConductShort": "Protection measures",
+      "inCaseOfDangerShort": "Hazard case",
+      "disposalShort": "Disposal",
       "signatureFieldStudent": "I hereby confirm that I will execute the task/preparation according to the here presented safety data instructions.",
       "signatureFieldAssistant": "The student is allowed to perform the presented task/preparation."
     },
@@ -127,6 +136,13 @@
       "loadFile": "File successfully loaded",
       "saveFile": "File saved successfully",
       "exportPDF": "PDF exported successfully"
+    },
+    "dialogs": {
+      "unchangedValues": {
+        "title": "Unchanged values",
+        "content": ["The following values were not changed."],
+        "footer": ["Continue anyway?"]
+      }
     }
   }
 }
