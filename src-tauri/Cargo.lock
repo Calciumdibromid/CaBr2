@@ -221,7 +221,7 @@ dependencies = [
 
 [[package]]
 name = "cabr2"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "cabr2_config",
  "cabr2_load_save",
@@ -234,7 +234,7 @@ dependencies = [
 
 [[package]]
 name = "cabr2_config"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "base64",
  "cabr2_types",
@@ -250,7 +250,7 @@ dependencies = [
 
 [[package]]
 name = "cabr2_load_save"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "cabr2_config",
  "cabr2_types",
@@ -270,7 +270,7 @@ dependencies = [
 
 [[package]]
 name = "cabr2_logger"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "cabr2_config",
  "cabr2_types",
@@ -284,7 +284,7 @@ dependencies = [
 
 [[package]]
 name = "cabr2_search"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "cabr2_types",
  "chrono",
@@ -300,7 +300,7 @@ dependencies = [
 
 [[package]]
 name = "cabr2_types"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "chrono",
  "log 0.4.14",
@@ -377,33 +377,6 @@ name = "constant_time_eq"
 version = "0.1.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "245097e9a4535ee1e3e3931fcfcd55a796a44c643e8596ff6566d68f09b87bbc"
-
-[[package]]
-name = "cookie"
-version = "0.14.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "03a5d7b21829bc7b4bf4754a978a241ae54ea55a40f92bb20216e54096f4b951"
-dependencies = [
- "percent-encoding 2.1.0",
- "time 0.2.25",
- "version_check",
-]
-
-[[package]]
-name = "cookie_store"
-version = "0.12.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3818dfca4b0cb5211a659bbcbb94225b7127407b2b135e650d717bfb78ab10d3"
-dependencies = [
- "cookie",
- "idna 0.2.2",
- "log 0.4.14",
- "publicsuffix",
- "serde",
- "serde_json",
- "time 0.2.25",
- "url 2.2.1",
-]
 
 [[package]]
 name = "core-foundation"
@@ -1494,25 +1467,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "publicsuffix"
-version = "1.5.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "95b4ce31ff0a27d93c8de1849cf58162283752f065a90d508f1105fa6c9a213f"
-dependencies = [
- "idna 0.2.2",
- "url 2.2.1",
-]
-
-[[package]]
-name = "qstring"
-version = "0.7.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d464fae65fff2680baf48019211ce37aaec0c78e9264c84a3e484717f965104e"
-dependencies = [
- "percent-encoding 2.1.0",
-]
-
-[[package]]
 name = "quick-error"
 version = "1.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2433,17 +2387,14 @@ checksum = "a156c684c91ea7d62626509bce3cb4e1d9ed5c4d978f7b4352658f96a4c26b4a"
 
 [[package]]
 name = "ureq"
-version = "1.5.4"
+version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "294b85ef5dbc3670a72e82a89971608a1fcc4ed5c7c5a2895230d31a95f0569b"
+checksum = "6fbeb1aabb07378cf0e084971a74f24241273304653184f54cdce113c0d7df1b"
 dependencies = [
  "base64",
  "chunked_transfer",
- "cookie",
- "cookie_store",
  "log 0.4.14",
  "once_cell",
- "qstring",
  "rustls",
  "serde",
  "serde_json",
