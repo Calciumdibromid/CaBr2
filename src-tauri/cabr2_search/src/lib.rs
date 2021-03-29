@@ -23,7 +23,7 @@ impl Search {
       .build();
 
     let mut providers = handler::REGISTERED_PROVIDERS.lock().unwrap();
-    providers.insert("gestis", Box::new(gestis::Gestis::new(agent.clone())));
+    providers.insert("gestis", Box::new(gestis::Gestis::new(agent)));
 
     Search
   }
