@@ -2,8 +2,6 @@
 #![allow(clippy::unnecessary_unwrap)]
 #![allow(clippy::upper_case_acronyms)]
 
-use tauri::plugin::Plugin;
-
 mod cmd;
 mod error;
 mod handler;
@@ -13,19 +11,23 @@ mod beryllium;
 mod cabr2;
 mod pdf;
 
+use tauri::plugin::Plugin;
+
+use cabr2_types::ProviderMapping;
+
 use cmd::Cmd;
 
 pub struct LoadSave;
 
 impl LoadSave {
-  pub fn new() -> LoadSave {
+  pub fn new(provider_mapping: ProviderMapping) -> LoadSave {
     let mut loaders = handler::REGISTERED_LOADERS.lock().unwrap();
     loaders.insert("cb2", Box::new(cabr2::CaBr2));
     loaders.insert("be", Box::new(beryllium::Beryllium));
 
     let mut savers = handler::REGISTERED_SAVERS.lock().unwrap();
     savers.insert("cb2", Box::new(cabr2::CaBr2));
-    savers.insert("pdf", Box::new(pdf::PDF));
+    savers.insert("pdf", Box::new(pdf::PDF::new(provider_mapping)));
 
     LoadSave
   }
