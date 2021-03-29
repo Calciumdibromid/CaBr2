@@ -1,5 +1,6 @@
 #![allow(clippy::new_without_default)]
 #![allow(clippy::unnecessary_unwrap)]
+#![allow(clippy::upper_case_acronyms)]
 
 mod cmd;
 mod error;
@@ -9,6 +10,7 @@ mod types;
 mod gestis;
 
 use tauri::plugin::Plugin;
+use ureq::AgentBuilder;
 
 use cmd::Cmd;
 
@@ -16,8 +18,12 @@ pub struct Search;
 
 impl Search {
   pub fn new() -> Search {
+    let agent = AgentBuilder::new()
+      .user_agent(&format!("cabr2/v{}", env!("CARGO_PKG_VERSION")))
+      .build();
+
     let mut providers = handler::REGISTERED_PROVIDERS.lock().unwrap();
-    providers.insert("gestis", Box::new(gestis::Gestis::new()));
+    providers.insert("gestis", Box::new(gestis::Gestis::new(agent)));
 
     Search
   }
@@ -30,10 +36,7 @@ impl Plugin for Search {
       Ok(command) => {
         log::trace!("command: {:?}", &command);
         match command {
-          Cmd::GetAvailableProviders {
-            callback,
-            error,
-          } => {
+          Cmd::GetAvailableProviders { callback, error } => {
             tauri::execute_promise(
               webview,
               move || match handler::get_available_providers() {

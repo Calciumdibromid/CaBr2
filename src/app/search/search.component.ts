@@ -3,6 +3,7 @@ import { first } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Data, Source, SubstanceData } from '../@core/models/substances.model';
 import { ProviderMapping, SearchArgument } from '../@core/services/provider/provider.model';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
@@ -172,6 +173,13 @@ export class SearchComponent implements OnInit {
       const provider = this.providerMapping.get(source.provider);
       return provider ? provider.name : `${source.provider} (${this.strings.search.unsupportedProviderInfo})`;
     }
+  }
+
+  drop(event: CdkDragDrop<string[]> | any) {
+    moveItemInArray(this.dataSource.data, event.previousIndex, event.currentIndex);
+    const data = this.dataSource.data.slice();
+    this.dataSource.connect().next(data);
+    this.globals.substanceDataSubject.next(data);
   }
 
   // TODO move to SubstanceData class
