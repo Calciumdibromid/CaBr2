@@ -13,7 +13,7 @@ edition = "2018"
 cabr2_config = { path = "../cabr2_config/" }
 cabr2_types = { path = "../cabr2_types/" }
 chrono = "0.4.19"
-handlebars = "3.5.3"
+handlebars = "3.5.4"
 lazy_static = "1.4.0"
 log = "0.4.14"
 lopdf = "0.26.0"
