@@ -1,5 +1,6 @@
 #![allow(clippy::new_without_default)]
 #![allow(clippy::unnecessary_unwrap)]
+#![allow(clippy::upper_case_acronyms)]
 
 mod cmd;
 mod error;
