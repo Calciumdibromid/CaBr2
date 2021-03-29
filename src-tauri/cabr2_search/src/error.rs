@@ -2,6 +2,10 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum SearchError {
+  // should never occur in the wild
+  #[error("already logged")]
+  Logged,
+
   #[error("unknown provider: {0}")]
   UnknownProvider(String),
 
@@ -14,8 +18,8 @@ pub enum SearchError {
   #[error("no xml found")]
   NoXML,
 
-  #[error("no value")]
   // the value is explicitly empty
+  #[error("no value")]
   Empty,
 
   #[error("missing information: {0}")]
