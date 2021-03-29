@@ -1,3 +1,5 @@
+#![allow(clippy::upper_case_acronyms)]
+
 pub mod logging;
 
 use chrono::{DateTime, Utc};
