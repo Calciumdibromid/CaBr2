@@ -11,7 +11,7 @@
   <div class="editing-hint margin-top margin-left-small">{{ strings.substance.editingHint }}</div>
 
   <div class="mat-elevation-z8 margin-top-small">
-    <mat-table [dataSource]="dataSource">
+    <mat-table [dataSource]="dataSource" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="dataSource">
       <ng-container matColumnDef="edited">
         <mat-header-cell *matHeaderCellDef [ngClass]="'edited-column'"> {{ strings.substance.edited }}</mat-header-cell>
         <mat-cell *matCellDef="let element" [ngClass]="'edited-column'">
@@ -49,8 +49,9 @@
 
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef [ngClass]="'buttons button-column'"></mat-header-cell>
-        <mat-cell *matCellDef="let element" [ngClass]="'buttons button-column'"
-          ><button mat-icon-button [matTooltip]="strings.search.editSubstance" matTooltipPosition="left">
+        <mat-cell *matCellDef="let element" [ngClass]="'buttons button-column'">
+          <div class="action-buttons">
+          <button mat-icon-button [matTooltip]="strings.search.editSubstance" matTooltipPosition="left">
             <span class="material-icons"> mode_edit </span>
           </button>
           <button
@@ -60,8 +61,10 @@
             matTooltipPosition="left"
           >
             <span class="material-icons"> delete </span>
-          </button></mat-cell
-        >
+          </button>
+          <span [matTooltip]="strings.substance.dragAndDrop" class="material-icons"> drag_handle </span>
+        </div>
+        </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
@@ -70,6 +73,8 @@
         class="mat-option"
         *matRowDef="let row; columns: displayedColumns"
         (click)="openEditDialog(row)"
+        [cdkDragData]="row"
+        cdkDrag
       ></mat-row>
     </mat-table>
   </div>

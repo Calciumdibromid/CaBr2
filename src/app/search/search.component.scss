@@ -20,7 +20,22 @@
   margin-left: auto;
   margin-right: auto;
   width: 80%;
-  padding: 5px;
+  padding: 10px;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: row;
+  align-content: space-evenly;
+  align-items: center;
+
+  button {
+    margin-right: 10px;
+  }
+}
+
+.mat-icon-button {
+  width: auto;
 }
 
 .margin-top-small {
