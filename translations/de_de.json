@@ -85,7 +85,8 @@
       "editingHint": "Zum Beabeiten auf Substanz klicken.",
       "ghsSymbolsAddOrRemoveInfo": "Zum Entfernen oder Hinzufügen auf das Symbol klicken",
       "ghsSymbolsColorInfo": "grau: nicht gewählt / farbig: gewählt",
-      "addCustomSubstanceData": "Eigene Substanz hinzufügen"
+      "addCustomSubstanceData": "Eigene Substanz hinzufügen",
+      "dragAndDrop": "Drag & Drop"
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Gefahren für Mensch und Umwelt, die von den Ausgangsmaterialien bzw. den Produkten ausgehen, soweit sie nicht durch genannte Angaben abgedeckt sind (z.B. krebserregend, fruchtschädigend, hautresorptiv):",

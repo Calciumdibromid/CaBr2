@@ -85,7 +85,8 @@
       "editingHint": "Click on substance to edit.",
       "ghsSymbolsAddOrRemoveInfo": "To remove or add click on the symbol",
       "ghsSymbolsColorInfo": "gray: not selected / colorized: selected",
-      "addCustomSubstanceData": "Add custom substance"
+      "addCustomSubstanceData": "Add custom substance",
+      "dragAndDrop": "drag & drop"
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Additional dangers for humans and environment (e.g. carcinogenic, teratogenic):",
