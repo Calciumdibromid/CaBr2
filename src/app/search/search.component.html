@@ -51,19 +51,19 @@
         <mat-header-cell *matHeaderCellDef [ngClass]="'buttons button-column'"></mat-header-cell>
         <mat-cell *matCellDef="let element" [ngClass]="'buttons button-column'">
           <div class="action-buttons">
-          <button mat-icon-button [matTooltip]="strings.search.editSubstance" matTooltipPosition="left">
-            <span class="material-icons"> mode_edit </span>
-          </button>
-          <button
-            mat-icon-button
-            (click)="removeSubstance($event, element)"
-            [matTooltip]="strings.search.removeSubstance"
-            matTooltipPosition="left"
-          >
-            <span class="material-icons"> delete </span>
-          </button>
-          <span [matTooltip]="strings.substance.dragAndDrop" class="material-icons"> drag_handle </span>
-        </div>
+            <button mat-icon-button [matTooltip]="strings.search.editSubstance" matTooltipPosition="left">
+              <span class="material-icons"> mode_edit </span>
+            </button>
+            <button
+              mat-icon-button
+              (click)="removeSubstance($event, element)"
+              [matTooltip]="strings.search.removeSubstance"
+              matTooltipPosition="left"
+            >
+              <span class="material-icons"> delete </span>
+            </button>
+            <span [matTooltip]="strings.substance.dragAndDrop" class="material-icons"> drag_handle </span>
+          </div>
         </mat-cell>
       </ng-container>
 
