@@ -6,6 +6,8 @@ import { Amount } from '../@core/models/substances.model';
 import { GlobalModel } from '../@core/models/global.model';
 import { Header } from '../@core/interfaces/Header';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
+import { ProviderMapping } from '../@core/services/provider/provider.model';
+import { ProviderService } from '../@core/services/provider/provider.service';
 
 // TODO ViewSubstanceData and move
 interface SimpleSubstanceData {
@@ -36,11 +38,14 @@ export class PreviewComponent implements OnInit {
   header!: Header;
 
   substanceData!: SimpleSubstanceData[];
+  providerMapping!: ProviderMapping;
 
-  sources: string[] = [];
+  sources: Set<string> = new Set();
 
-  constructor(public globals: GlobalModel, private sanitizer: DomSanitizer) {
+  constructor(public globals: GlobalModel, private providerService: ProviderService, private sanitizer: DomSanitizer) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
+
+    this.providerService.providerMappingsObservable.subscribe((providers) => (this.providerMapping = providers));
   }
 
   ngOnInit(): void {
@@ -50,8 +55,9 @@ export class PreviewComponent implements OnInit {
       .pipe(
         map((data) =>
           data.map<SimpleSubstanceData>((value) => {
-            if (this.sources.indexOf(value.source.provider) === -1) {
-              this.sources.push(value.source.provider);
+            const provider = this.providerMapping.get(value.source.provider);
+            if (provider && provider.identifier !== 'custom') {
+              this.sources.add(provider.name);
             }
 
             return {
@@ -122,6 +128,6 @@ export class PreviewComponent implements OnInit {
   }
 
   getProviders(): string {
-    return this.sources.join(', ');
+    return Array.from(this.sources.values()).join(', ');
   }
 }
