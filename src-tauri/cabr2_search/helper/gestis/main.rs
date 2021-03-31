@@ -32,6 +32,12 @@ fn extract_xmls(res: &GestisResponse) -> std::io::Result<()> {
   folder.push(&res.name);
   fs::create_dir_all(&folder)?;
 
+  let mut response_file = folder.clone();
+  response_file.push("_response.json");
+  let file = OpenOptions::new().write(true).create(true).open(response_file)?;
+  let writer = BufWriter::new(file);
+  serde_json::to_writer_pretty(writer, res)?;
+
   println!("extracting: {}.json", res.name);
 
   for (chapter_name, (chapter, subchapter)) in gestis::xml_parser::CHAPTER_MAPPING.iter() {
@@ -42,18 +48,17 @@ fn extract_xmls(res: &GestisResponse) -> std::io::Result<()> {
         let mut filename = folder.clone();
         filename.push(chapter_name);
 
-        let file = OpenOptions::new()
+        let mut file = OpenOptions::new()
           .create(true)
           .write(true)
           .open(filename.with_extension("xml"))?;
 
-        let mut writer = BufWriter::new(file);
-        writer.write_all(xml.as_ref())?;
+        file.write_all(xml.as_bytes())?;
 
         println!("\x1B[32mSUCCESS\x1B[m");
       }
       Err(_) => {
-        println!("\x1B[31mFAILURE\x1B[m");
+        println!("\x1B[31mNO_XML\x1B[m");
         continue;
       }
     }

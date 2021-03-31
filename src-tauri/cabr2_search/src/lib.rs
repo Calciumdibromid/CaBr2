@@ -4,6 +4,7 @@
 
 mod cmd;
 pub mod error;
+#[cfg(feature = "handler")]
 mod handler;
 pub mod types;
 

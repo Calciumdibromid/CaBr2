@@ -23,8 +23,9 @@ thiserror = "1.0.24"
 ureq = { version = "2.1.0", features = ["tls", "json"] }
 
 [features]
-tauri_plugin = [ "tauri" ]
-default = [ ]
+handler = []
+tauri_plugin = [ "tauri", "handler" ]
+default = []
 
 [[bin]]
 name = "gestis_helper"
