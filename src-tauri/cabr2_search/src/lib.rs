@@ -2,13 +2,14 @@
 #![allow(clippy::unnecessary_unwrap)]
 #![allow(clippy::upper_case_acronyms)]
 
+#[cfg(feature = "tauri_plugin")]
 mod cmd;
 pub mod error;
+#[cfg(feature = "gestis")]
+pub mod gestis;
 #[cfg(feature = "handler")]
 mod handler;
 pub mod types;
-
-pub mod gestis;
 
 #[cfg(feature = "tauri_plugin")]
 pub use plugin::Search;
@@ -18,7 +19,9 @@ mod plugin {
   use tauri::plugin::Plugin;
   use ureq::AgentBuilder;
 
-  use super::{cmd::Cmd, gestis, handler};
+  #[cfg(feature = "gestis")]
+  use super::gestis;
+  use super::{cmd::Cmd, handler};
 
   pub struct Search;
 
@@ -29,6 +32,7 @@ mod plugin {
         .build();
 
       let mut providers = handler::REGISTERED_PROVIDERS.lock().unwrap();
+      #[cfg(feature = "gestis")]
       providers.insert("gestis", Box::new(gestis::Gestis::new(agent)));
 
       Search

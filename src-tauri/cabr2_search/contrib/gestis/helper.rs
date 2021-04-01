@@ -28,7 +28,7 @@ fn main() {
 }
 
 fn extract_xmls(res: &GestisResponse) -> std::io::Result<()> {
-  let mut folder = PathBuf::from("helper_data");
+  let mut folder = PathBuf::from("gestis_helper");
   folder.push(&res.name);
   fs::create_dir_all(&folder)?;
 
