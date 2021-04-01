@@ -1,5 +1,5 @@
-mod types;
-mod xml_parser;
+pub mod types;
+pub mod xml_parser;
 
 use cabr2_types::{Data, Source, SubstanceData};
 use types::GestisResponse;
@@ -22,6 +22,13 @@ pub struct Gestis {
 impl Gestis {
   pub fn new(agent: Agent) -> Gestis {
     Gestis { agent }
+  }
+
+  pub fn get_article(&self, identifier: String) -> Result<(GestisResponse, String)> {
+    let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, identifier);
+    let res = self.make_request(&url)?;
+
+    Ok((res.into_json()?, url))
   }
 
   fn make_request(&self, url: &str) -> Result<ureq::Response> {
@@ -90,10 +97,7 @@ impl Provider for Gestis {
   }
 
   fn get_substance_data(&self, identifier: String) -> Result<cabr2_types::SubstanceData> {
-    let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, identifier);
-    let res = self.make_request(&url)?;
-
-    let json: GestisResponse = res.into_json()?;
+    let (json, url) = self.get_article(identifier)?;
 
     let data = xml_parser::parse_response(&json)?;
 

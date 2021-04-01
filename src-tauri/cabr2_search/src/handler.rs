@@ -4,8 +4,9 @@ use std::{
   sync::{Arc, Mutex},
 };
 
-use cabr2_types::SubstanceData;
 use lazy_static::lazy_static;
+
+use cabr2_types::SubstanceData;
 
 use crate::types::{ProviderInfo, SearchArguments, SearchResponse, SearchType};
 
