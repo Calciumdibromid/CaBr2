@@ -16,6 +16,8 @@ pub use plugin::Search;
 
 #[cfg(feature = "tauri_plugin")]
 mod plugin {
+  use std::collections::HashMap;
+
   use tauri::plugin::Plugin;
   use ureq::AgentBuilder;
 
@@ -36,6 +38,16 @@ mod plugin {
       providers.insert("gestis", Box::new(gestis::Gestis::new(agent)));
 
       Search
+    }
+
+    pub fn get_provider_mapping(&self) -> HashMap<String, String> {
+      let providers = handler::REGISTERED_PROVIDERS.lock().unwrap();
+      let mut mapping = HashMap::new();
+      for (id, provider) in providers.iter() {
+        mapping.insert(id.to_string(), provider.get_name());
+      }
+
+      mapping
     }
   }
 
