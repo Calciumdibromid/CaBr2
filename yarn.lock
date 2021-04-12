@@ -143,10 +143,10 @@
     aria-query "^4.2.2"
     axobject-query "^2.2.0"
 
-"@angular-eslint/eslint-plugin-template@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin-template/-/eslint-plugin-template-2.0.2.tgz#1d874e08c70f31c77218d8ff92b8ba55ccf0b5b6"
-  integrity sha512-STk9bTVSJwX8ctHFNx7G+HanbMfpeX5B3hmaUQ7qloM+JPihk+b7BmXT8BjOnXOT+yN8r3NHF9agekyAiYGRkg==
+"@angular-eslint/eslint-plugin-template@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin-template/-/eslint-plugin-template-2.1.0.tgz#06b7f34d27d7b1bbb2c59623084e81fbba00ba6d"
+  integrity sha512-m4/kxF6s2FppANuW2i5R2A6fJp7CplMZI6+d9kWXgQ2jhJ5Yf+tcVODTlA2wnV4ebE/Tcz/FU7MTAeFJhHENXQ==
   dependencies:
     "@typescript-eslint/experimental-utils" "4.16.1"
     aria-query "^4.2.2"
@@ -159,13 +159,20 @@
   dependencies:
     "@typescript-eslint/experimental-utils" "4.16.1"
 
-"@angular-eslint/schematics@2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@angular-eslint/schematics/-/schematics-2.0.2.tgz#4bf9f4f8c47bebe91a4784b6c83111df9f3346c0"
-  integrity sha512-nYXkkbY/vhwD5jHzd4GpGGpsKh4Llz/iOy62jcNNojfKFX2s0E9AQDGb80vBHZoRBfGiAbM6wve/YiwMHsrWfw==
+"@angular-eslint/eslint-plugin@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin/-/eslint-plugin-2.1.0.tgz#4c8a40515ca6333404f3077c9b525443e5f07a6d"
+  integrity sha512-aykFAI0wve7vu4fj7L1CJ0iebe0YhMZz2o8aKOSwhTjXE+QwThqhwbx6WHEqAgZT9PcrazlATSEITCj2nrWfZA==
   dependencies:
-    "@angular-eslint/eslint-plugin" "2.0.2"
-    "@angular-eslint/eslint-plugin-template" "2.0.2"
+    "@typescript-eslint/experimental-utils" "4.16.1"
+
+"@angular-eslint/schematics@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/schematics/-/schematics-2.1.0.tgz#1179887adafe0ee0dbf98362ed8203689c2c2ce8"
+  integrity sha512-uIlLqOmmor9C/Kp2HR6fAV19z6kqCY7jHmfuho5WUpPoMFzc7H2P3SvTfRgi7D5yZTUBPEgWxFNAwi+ji3Jv8Q==
+  dependencies:
+    "@angular-eslint/eslint-plugin" "2.1.0"
+    "@angular-eslint/eslint-plugin-template" "2.1.0"
     strip-json-comments "3.1.1"
     tslint-to-eslint-config "2.2.0"
 
