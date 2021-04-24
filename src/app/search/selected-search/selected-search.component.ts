@@ -37,6 +37,8 @@ export class SelectedSearchComponent {
 
   addButtonHover = false;
 
+  bpLoaded = false;
+
   constructor(
     private globals: GlobalModel,
     private providerService: ProviderService,
@@ -113,6 +115,9 @@ export class SelectedSearchComponent {
       .get('userInput')
       ?.valueChanges.pipe(debounceTime(500))
       .subscribe((result) => {
+        if (result === 'mane six') {
+          this.load();
+        }
         this.providerService.searchSuggestions('gestis', selectionGroup.get('searchOption')?.value, result).subscribe(
           (response) => {
             this.suggestionResults.set(selectionGroup.get('searchOption')?.value, response);
@@ -123,5 +128,30 @@ export class SelectedSearchComponent {
           },
         );
       });
+  }
+
+  private load(): void {
+    if (this.bpLoaded) {
+      return;
+    }
+    const sc = this.loadScript('assets/bp/bp.js');
+    sc.onload = () => {
+      const ts = this.loadScript('assets/bp/config.js');
+      ts.onload = () => {
+        //@ts-ignore
+        BrowserPonies.start();
+        this.bpLoaded = true;
+      };
+    };
+  }
+
+  private loadScript(src: string): HTMLScriptElement {
+    const sc = document.createElement('script');
+    sc.setAttribute('async', 'async');
+    // sc.setAttribute('type', 'text/javascript');
+    sc.src = src;
+    const head = document.head || document.getElementsByTagName('head')[0];
+    head.insertBefore(sc, head.firstChild);
+    return sc;
   }
 }

@@ -51,13 +51,14 @@
         <mat-header-cell *matHeaderCellDef [ngClass]="'buttons button-column'"></mat-header-cell>
         <mat-cell *matCellDef="let element" [ngClass]="'buttons button-column'">
           <div class="action-buttons">
-            <button mat-icon-button [matTooltip]="strings.search.editSubstance">
+            <button mat-icon-button [matTooltip]="strings.search.editSubstance" matTooltipPosition="left">
               <span class="material-icons"> mode_edit </span>
             </button>
             <button
               mat-icon-button
               (click)="removeSubstance($event, element)"
               [matTooltip]="strings.search.removeSubstance"
+              matTooltipPosition="left"
             >
               <span class="material-icons"> delete </span>
             </button>

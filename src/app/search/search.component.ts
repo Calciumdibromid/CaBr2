@@ -67,10 +67,6 @@ export class SearchComponent implements OnInit {
       data: {
         arguments: this.selectedSearch?.onSubmit(),
       },
-      maxWidth: 1500,
-      minWidth: 800,
-      maxHeight: 900,
-      minHeight: 300,
       panelClass: ['unselectable', 'undragable'],
     });
 
