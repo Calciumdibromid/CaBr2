@@ -5,7 +5,7 @@
     <p class="unselectable undragable">{{ strings.search.exact }}</p>
   </mat-checkbox>
 </section>
-<div *ngIf="searchFinished; else loading">
+<div *ngIf="!searchFinished; else loading">
   <div *ngIf="searchResults.length > 0; else empty">
     <mat-selection-list [multiple]="false" dense>
       <cdk-virtual-scroll-viewport itemSize="50" class="viewport">
@@ -21,7 +21,7 @@
   </div>
 </div>
 <ng-template #loading>
-  <mat-spinner></mat-spinner>
+  <app-loading width="100%"></app-loading>
 </ng-template>
 <ng-template #empty>
   <p class="viewport empty">
