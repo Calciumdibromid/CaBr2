@@ -14,9 +14,21 @@ cabr2_types = { path = "../cabr2_types/" }
 chrono = "0.4.19"
 lazy_static = "1.4.0"
 log = "0.4.14"
-roxmltree = "0.14.0"
+roxmltree = { version = "0.14.1", optional = true }
 serde = { version = "1.0.125", features = ["derive"] }
 serde_json = "1.0.64"
-tauri = { version = "0.11.1", default-features = false }
+structopt = { version = "0.3.21", optional = true }
+tauri = { version = "0.11.1", default-features = false, optional = true }
 thiserror = "1.0.24"
-ureq = { version = "1.5.4", features = ["tls", "json"] }
+ureq = { version = "2.1.0", features = ["tls", "json"], optional = true }
+
+[features]
+handler = []
+gestis = [ "roxmltree", "ureq" ]
+tauri_plugin = [ "tauri", "handler" ]
+default = []
+
+[[bin]]
+name = "gestis_helper"
+path = "contrib/gestis/helper.rs"
+required-features = [ "structopt", "gestis" ]

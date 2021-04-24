@@ -2,6 +2,8 @@
 
 pub mod logging;
 
+use std::collections::HashMap;
+
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
@@ -76,3 +78,5 @@ pub enum Unit {
   SolutionMicromol,
   Custom(String),
 }
+
+pub type ProviderMapping = HashMap<String, String>;

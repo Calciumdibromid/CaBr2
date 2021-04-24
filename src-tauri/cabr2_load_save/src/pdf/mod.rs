@@ -2,6 +2,7 @@ mod merge;
 mod types;
 
 use std::{
+  collections::HashMap,
   fs::OpenOptions,
   io::{BufReader, Read},
   path::PathBuf,
@@ -9,6 +10,7 @@ use std::{
   thread,
 };
 
+use cabr2_types::ProviderMapping;
 use handlebars::Handlebars;
 use lazy_static::lazy_static;
 use lopdf::Document;
@@ -23,9 +25,20 @@ use super::{
   types::{CaBr2Document, Saver},
 };
 
+type PDFThreadChannels = Arc<Mutex<(mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>)>>;
+
+lazy_static! {
+  pub static ref PROVIDER_MAPPING: Arc<Mutex<ProviderMapping>> = Arc::new(Mutex::new(HashMap::new()));
+}
+
 pub struct PDF;
 
-type PDFThreadChannels = Arc<Mutex<(mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>)>>;
+impl PDF {
+  pub fn new(provider_mapping: ProviderMapping) -> PDF {
+    PROVIDER_MAPPING.lock().unwrap().extend(provider_mapping.into_iter());
+    PDF
+  }
+}
 
 impl Saver for PDF {
   fn save_document(&self, filename: PathBuf, document: CaBr2Document) -> Result<()> {
@@ -200,7 +213,7 @@ mod handlebar_helpers {
 
   use cabr2_config::{get_hazard_symbols, GHSSymbols};
 
-  use super::types::PDFSubstanceData;
+  use super::{types::PDFSubstanceData, PROVIDER_MAPPING};
 
   lazy_static! {
     static ref GHS_SYMBOLS: Arc<Mutex<GHSSymbols>> = Arc::new(Mutex::new(get_hazard_symbols().unwrap_or_default()));
@@ -337,10 +350,12 @@ mod handlebar_helpers {
 
     let providers: BTreeSet<String> = substances.into_iter().map(|s| s.source.provider).collect();
 
+    let provider_mapping = PROVIDER_MAPPING.lock().unwrap();
     // kill empty string from empty substance lines
     for (i, provider) in providers
       .iter()
       .filter(|p| !(p.is_empty() || p.as_str() == "custom"))
+      .map(|p| provider_mapping.get(p).unwrap())
       .enumerate()
     {
       if i > 0 {

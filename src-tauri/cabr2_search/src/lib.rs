@@ -2,109 +2,134 @@
 #![allow(clippy::unnecessary_unwrap)]
 #![allow(clippy::upper_case_acronyms)]
 
+#[cfg(feature = "tauri_plugin")]
 mod cmd;
-mod error;
+pub mod error;
+#[cfg(feature = "gestis")]
+pub mod gestis;
+#[cfg(feature = "handler")]
 mod handler;
-mod types;
+pub mod types;
 
-mod gestis;
+#[cfg(feature = "tauri_plugin")]
+pub use plugin::Search;
 
-use tauri::plugin::Plugin;
+#[cfg(feature = "tauri_plugin")]
+mod plugin {
+  use std::collections::HashMap;
 
-use cmd::Cmd;
+  use tauri::plugin::Plugin;
+  use ureq::AgentBuilder;
 
-pub struct Search;
+  #[cfg(feature = "gestis")]
+  use super::gestis;
+  use super::{cmd::Cmd, handler};
 
-impl Search {
-  pub fn new() -> Search {
-    let mut providers = handler::REGISTERED_PROVIDERS.lock().unwrap();
-    providers.insert("gestis", Box::new(gestis::Gestis::new()));
+  pub struct Search;
 
-    Search
-  }
-}
+  impl Search {
+    pub fn new() -> Search {
+      let agent = AgentBuilder::new()
+        .user_agent(&format!("cabr2/v{}", env!("CARGO_PKG_VERSION")))
+        .build();
 
-impl Plugin for Search {
-  fn extend_api(&self, webview: &mut tauri::Webview, payload: &str) -> Result<bool, String> {
-    match serde_json::from_str(payload) {
-      Err(e) => Err(e.to_string()),
-      Ok(command) => {
-        log::trace!("command: {:?}", &command);
-        match command {
-          Cmd::GetAvailableProviders {
-            callback,
-            error,
-          } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::get_available_providers() {
-                Ok(res) => Ok(res),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-          Cmd::SearchSuggestions {
-            provider,
-            pattern,
-            search_type,
-            callback,
-            error,
-          } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::get_quick_search_suggestions(provider, search_type, pattern) {
-                Ok(res) => Ok(res),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-          Cmd::Search {
-            provider,
-            arguments,
-            callback,
-            error,
-          } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::get_search_results(provider, arguments) {
-                Ok(res) => Ok(res),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-          Cmd::GetSubstanceData {
-            provider,
-            identifier,
-            callback,
-            error,
-          } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::get_substance_data(provider, identifier) {
-                Ok(res) => Ok(res),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-        }
-        Ok(true)
+      let mut providers = handler::REGISTERED_PROVIDERS.lock().unwrap();
+      #[cfg(feature = "gestis")]
+      providers.insert("gestis", Box::new(gestis::Gestis::new(agent)));
+
+      Search
+    }
+
+    pub fn get_provider_mapping(&self) -> HashMap<String, String> {
+      let providers = handler::REGISTERED_PROVIDERS.lock().unwrap();
+      let mut mapping = HashMap::new();
+      for (id, provider) in providers.iter() {
+        mapping.insert(id.to_string(), provider.get_name());
       }
+
+      mapping
     }
   }
 
-  fn created(&self, _: &mut tauri::Webview<'_>) {
-    log::trace!("plugin created");
-  }
+  impl Plugin for Search {
+    fn extend_api(&self, webview: &mut tauri::Webview, payload: &str) -> Result<bool, String> {
+      match serde_json::from_str(payload) {
+        Err(e) => Err(e.to_string()),
+        Ok(command) => {
+          log::trace!("command: {:?}", &command);
+          match command {
+            Cmd::GetAvailableProviders { callback, error } => {
+              tauri::execute_promise(
+                webview,
+                move || match handler::get_available_providers() {
+                  Ok(res) => Ok(res),
+                  Err(e) => Err(e.into()),
+                },
+                callback,
+                error,
+              );
+            }
+            Cmd::SearchSuggestions {
+              provider,
+              pattern,
+              search_type,
+              callback,
+              error,
+            } => {
+              tauri::execute_promise(
+                webview,
+                move || match handler::get_quick_search_suggestions(provider, search_type, pattern) {
+                  Ok(res) => Ok(res),
+                  Err(e) => Err(e.into()),
+                },
+                callback,
+                error,
+              );
+            }
+            Cmd::Search {
+              provider,
+              arguments,
+              callback,
+              error,
+            } => {
+              tauri::execute_promise(
+                webview,
+                move || match handler::get_search_results(provider, arguments) {
+                  Ok(res) => Ok(res),
+                  Err(e) => Err(e.into()),
+                },
+                callback,
+                error,
+              );
+            }
+            Cmd::GetSubstanceData {
+              provider,
+              identifier,
+              callback,
+              error,
+            } => {
+              tauri::execute_promise(
+                webview,
+                move || match handler::get_substance_data(provider, identifier) {
+                  Ok(res) => Ok(res),
+                  Err(e) => Err(e.into()),
+                },
+                callback,
+                error,
+              );
+            }
+          }
+          Ok(true)
+        }
+      }
+    }
 
-  fn ready(&self, _: &mut tauri::Webview<'_>) {
-    log::trace!("plugin ready");
+    fn created(&self, _: &mut tauri::Webview<'_>) {
+      log::trace!("plugin created");
+    }
+
+    fn ready(&self, _: &mut tauri::Webview<'_>) {
+      log::trace!("plugin ready");
+    }
   }
 }

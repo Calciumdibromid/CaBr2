@@ -1,5 +1,5 @@
-mod types;
-mod xml_parser;
+pub mod types;
+pub mod xml_parser;
 
 use cabr2_types::{Data, Source, SubstanceData};
 use types::GestisResponse;
@@ -20,18 +20,41 @@ pub struct Gestis {
 }
 
 impl Gestis {
-  pub fn new() -> Gestis {
-    #[cfg(not(test))]
-    let user_agent = &format!("cabr2 v{}", env!("CARGO_PKG_VERSION"));
-    #[cfg(test)]
-    let user_agent = "cabr2 testing";
-    Gestis {
-      agent: Agent::new()
-        // don't ask, just leave it
-        // https://gestis.dguv.de/search -> webpack:///./src/api.ts?
-        .auth_kind("Bearer", "dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd")
-        .set("User-Agent", user_agent)
-        .build(),
+  pub fn new(agent: Agent) -> Gestis {
+    Gestis { agent }
+  }
+
+  pub fn get_article(&self, identifier: String) -> Result<(GestisResponse, String)> {
+    let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, identifier);
+    let res = self.make_request(&url)?;
+
+    Ok((res.into_json()?, url))
+  }
+
+  fn make_request(&self, url: &str) -> Result<ureq::Response> {
+    match self
+      .agent
+      .get(&url)
+      // don't ask, just leave it
+      // https://gestis.dguv.de/search -> webpack:///./src/api.ts?
+      .set("Authorization", "Bearer dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd")
+      .call()
+    {
+      Ok(response) => {
+        log::debug!("{} {} - {}", response.status(), response.status_text(), &url);
+        Ok(response)
+      }
+      Err(ureq::Error::Status(code, response)) => {
+        log::error!("{} {} - {}", code, response.status_text(), &url);
+        match code {
+          429 => Err(SearchError::RateLimit),
+          _ => Err(SearchError::RequestError(code)),
+        }
+      }
+      Err(err) => {
+        log::error!("error when requesting url: {} -> {:?}", &url, err);
+        Err(SearchError::Logged)
+      }
     }
   }
 }
@@ -49,9 +72,9 @@ impl Provider for Gestis {
       search_type.as_str(),
       pattern
     );
-    let res = make_request(&self.agent, &url)?;
+    let res = self.make_request(&url)?;
 
-    Ok(res.into_json_deserialize()?)
+    Ok(res.into_json()?)
   }
 
   fn get_search_results(&self, arguments: SearchArguments) -> Result<Vec<SearchResponse>> {
@@ -68,16 +91,13 @@ impl Provider for Gestis {
       args.join("&"),
       arguments.exact,
     );
-    let res = make_request(&self.agent, &url)?;
+    let res = self.make_request(&url)?;
 
-    Ok(res.into_json_deserialize()?)
+    Ok(res.into_json()?)
   }
 
   fn get_substance_data(&self, identifier: String) -> Result<cabr2_types::SubstanceData> {
-    let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, identifier);
-    let res = make_request(&self.agent, &url)?;
-
-    let json: GestisResponse = res.into_json_deserialize()?;
+    let (json, url) = self.get_article(identifier)?;
 
     let data = xml_parser::parse_response(&json)?;
 
@@ -119,17 +139,6 @@ impl Provider for Gestis {
   }
 }
 
-pub fn make_request(agent: &Agent, url: &str) -> Result<ureq::Response> {
-  let res = agent.get(&url).call();
-  log::debug!("{} - {}", res.status_line(), &url);
-
-  match res.status() {
-    200..=399 => Ok(res),
-    429 => Err(SearchError::RateLimit),
-    _ => Err(SearchError::RequestError(res.status())),
-  }
-}
-
 impl SearchType {
   /// Returns the search type as the string that is used in the query parameters
   pub fn as_str(&self) -> &'static str {
@@ -145,11 +154,12 @@ impl SearchType {
 #[cfg(test)]
 mod tests {
   use lazy_static::lazy_static;
+  use ureq::AgentBuilder;
 
   use super::*;
 
   lazy_static! {
-    static ref GESTIS: Gestis = Gestis::new();
+    static ref GESTIS: Gestis = Gestis::new(AgentBuilder::new().user_agent("cabr2/testing").build());
   }
 
   #[test]
