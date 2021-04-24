@@ -9,6 +9,7 @@ import { ConsentComponent } from './consent/consent.component';
 import { EditSubstanceDataComponent } from './edit-substance-data/edit-substance-data.component';
 import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './header/header.component';
+import { LoadingComponent } from './loading/loading.component';
 import { ManualComponent } from './manual/manual.component';
 import { MatModules } from './@core/modules/mat.modules';
 import { MenubarComponent } from './menubar/menubar.component';
@@ -21,7 +22,6 @@ import { SelectedSearchComponent } from './search/selected-search/selected-searc
 import { SettingsComponent } from './settings/settings.component';
 import { SubMolecularFormula } from './@core/pipes/molecularformula.pipe';
 import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
-import { LoadingComponent } from './loading/loading.component';
 
 @NgModule({
   declarations: [
