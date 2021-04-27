@@ -20,7 +20,7 @@ serde_json = "1.0.64"
 structopt = { version = "0.3.21", optional = true }
 tauri = { version = "0.11.1", default-features = false, optional = true }
 thiserror = "1.0.24"
-ureq = { version = "2.1.0", features = ["tls", "json"], optional = true }
+ureq = { version = "2.1.1", features = ["tls", "json"], optional = true }
 
 [features]
 handler = []
