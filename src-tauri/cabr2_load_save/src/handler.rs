@@ -6,6 +6,8 @@ use std::{
 
 use lazy_static::lazy_static;
 
+use crate::types::DialogFilter;
+
 use super::{
   error::{LoadSaveError, Result},
   types::{CaBr2Document, DocumentTypes, Loader, Saver},
@@ -66,18 +68,33 @@ pub fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
 }
 
 pub fn get_available_document_types() -> Result<DocumentTypes> {
-  Ok(DocumentTypes {
-    load: REGISTERED_LOADERS
-      .lock()
-      .expect("couldn't get lock for REGISTERED_LOADERS")
-      .keys()
-      .map(|s| s.to_string())
-      .collect(),
-    save: REGISTERED_SAVERS
-      .lock()
-      .expect("couldn't get lock for REGISTERED_SAVERS")
-      .keys()
-      .map(|s| s.to_string())
-      .collect(),
-  })
+  let mut load: Vec<DialogFilter> = REGISTERED_LOADERS
+    .lock()
+    .expect("couldn't get lock for REGISTERED_LOADERS")
+    .iter()
+    .map(|(ext, (name, _))| DialogFilter {
+      name: name.to_string(),
+      extensions: vec![ext.to_string()],
+    })
+    .collect();
+
+  // set cb2 as first element
+  if let Some((i, _)) = (&load).iter().enumerate().find(|(_, f)| f.extensions[0] == "cb2") {
+    if i != 0 {
+      log::debug!("setting cb2 as first file type from: {}", i);
+      load.swap(i, 0);
+    }
+  }
+
+  let save = REGISTERED_SAVERS
+    .lock()
+    .expect("couldn't get lock for REGISTERED_SAVERS")
+    .iter()
+    .map(|(ext, (name, _))| DialogFilter {
+      name: name.to_string(),
+      extensions: vec![ext.to_string()],
+    })
+    .collect();
+
+  Ok(DocumentTypes { load, save })
 }

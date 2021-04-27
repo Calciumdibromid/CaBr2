@@ -18,17 +18,20 @@ pub use plugin::Search;
 mod plugin {
   use std::collections::HashMap;
 
-  use tauri::plugin::Plugin;
+  use tauri::{plugin::Plugin, InvokeMessage, Params, Window};
   use ureq::AgentBuilder;
 
   #[cfg(feature = "gestis")]
   use super::gestis;
-  use super::{cmd::Cmd, handler};
+  // handler is a required feature for tauri_plugin
+  use super::handler;
 
-  pub struct Search;
+  pub struct Search<M: Params> {
+    invoke_handler: Box<dyn Fn(InvokeMessage<M>) + Send + Sync>,
+  }
 
-  impl Search {
-    pub fn new() -> Search {
+  impl<M: Params> Search<M> {
+    pub fn new() -> Self {
       let agent = AgentBuilder::new()
         .user_agent(&format!("cabr2/v{}", env!("CARGO_PKG_VERSION")))
         .build();
@@ -37,7 +40,15 @@ mod plugin {
       #[cfg(feature = "gestis")]
       providers.insert("gestis", Box::new(gestis::Gestis::new(agent)));
 
-      Search
+      use super::cmd::*;
+      Search {
+        invoke_handler: Box::new(tauri::generate_handler![
+          get_available_providers,
+          search_suggestions,
+          search,
+          get_substance_data,
+        ]),
+      }
     }
 
     pub fn get_provider_mapping(&self) -> HashMap<String, String> {
@@ -51,85 +62,17 @@ mod plugin {
     }
   }
 
-  impl Plugin for Search {
-    fn extend_api(&self, webview: &mut tauri::Webview, payload: &str) -> Result<bool, String> {
-      match serde_json::from_str(payload) {
-        Err(e) => Err(e.to_string()),
-        Ok(command) => {
-          log::trace!("command: {:?}", &command);
-          match command {
-            Cmd::GetAvailableProviders { callback, error } => {
-              tauri::execute_promise(
-                webview,
-                move || match handler::get_available_providers() {
-                  Ok(res) => Ok(res),
-                  Err(e) => Err(e.into()),
-                },
-                callback,
-                error,
-              );
-            }
-            Cmd::SearchSuggestions {
-              provider,
-              pattern,
-              search_type,
-              callback,
-              error,
-            } => {
-              tauri::execute_promise(
-                webview,
-                move || match handler::get_quick_search_suggestions(provider, search_type, pattern) {
-                  Ok(res) => Ok(res),
-                  Err(e) => Err(e.into()),
-                },
-                callback,
-                error,
-              );
-            }
-            Cmd::Search {
-              provider,
-              arguments,
-              callback,
-              error,
-            } => {
-              tauri::execute_promise(
-                webview,
-                move || match handler::get_search_results(provider, arguments) {
-                  Ok(res) => Ok(res),
-                  Err(e) => Err(e.into()),
-                },
-                callback,
-                error,
-              );
-            }
-            Cmd::GetSubstanceData {
-              provider,
-              identifier,
-              callback,
-              error,
-            } => {
-              tauri::execute_promise(
-                webview,
-                move || match handler::get_substance_data(provider, identifier) {
-                  Ok(res) => Ok(res),
-                  Err(e) => Err(e.into()),
-                },
-                callback,
-                error,
-              );
-            }
-          }
-          Ok(true)
-        }
-      }
+  impl<M: Params> Plugin<M> for Search<M> {
+    fn name(&self) -> &'static str {
+      "cabr2_search"
     }
 
-    fn created(&self, _: &mut tauri::Webview<'_>) {
+    fn extend_api(&mut self, message: InvokeMessage<M>) {
+      (self.invoke_handler)(message)
+    }
+
+    fn created(&mut self, _: Window<M>) {
       log::trace!("plugin created");
-    }
-
-    fn ready(&self, _: &mut tauri::Webview<'_>) {
-      log::trace!("plugin ready");
     }
   }
 }

@@ -10,14 +10,15 @@ fn main() {
 
   log::debug!("initializing tauri application...");
 
-  tauri::Builder::new()
-    .plugin(config)
-    .plugin(load_save)
+  tauri::Builder::default()
     .plugin(logger)
+    .plugin(config)
     .plugin(search)
+    .plugin(load_save)
     .setup(|_| {
       log::debug!("tauri setup complete");
       Ok(())
     })
-    .run(tauri::generate_context!());
+    .run(tauri::generate_context!())
+    .unwrap();
 }

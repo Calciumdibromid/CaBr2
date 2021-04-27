@@ -11,16 +11,16 @@ mod beryllium;
 mod cabr2;
 mod pdf;
 
-use tauri::plugin::Plugin;
+use tauri::{plugin::Plugin, InvokeMessage, Params, Window};
 
 use cabr2_types::ProviderMapping;
 
-use cmd::Cmd;
+pub struct LoadSave<M: Params> {
+  invoke_handler: Box<dyn Fn(InvokeMessage<M>) + Send + Sync>,
+}
 
-pub struct LoadSave;
-
-impl LoadSave {
-  pub fn new(provider_mapping: ProviderMapping) -> LoadSave {
+impl<M: Params> LoadSave<M> {
+  pub fn new(provider_mapping: ProviderMapping) -> Self {
     let mut loaders = handler::REGISTERED_LOADERS.lock().unwrap();
     loaders.insert("cb2", Box::new(cabr2::CaBr2));
     loaders.insert("be", Box::new(beryllium::Beryllium));
@@ -29,72 +29,27 @@ impl LoadSave {
     savers.insert("cb2", Box::new(cabr2::CaBr2));
     savers.insert("pdf", Box::new(pdf::PDF::new(provider_mapping)));
 
-    LoadSave
+    use cmd::*;
+    LoadSave {
+      invoke_handler: Box::new(tauri::generate_handler![
+        save_document,
+        load_document,
+        get_available_document_types,
+      ]),
+    }
   }
 }
 
-impl Plugin for LoadSave {
-  fn extend_api(&self, webview: &mut tauri::Webview, payload: &str) -> Result<bool, String> {
-    match serde_json::from_str(payload) {
-      Err(e) => Err(e.to_string()),
-      Ok(command) => {
-        log::trace!("command: {:?}", &command);
-        match command {
-          Cmd::SaveDocument {
-            file_type,
-            filename,
-            document,
-            callback,
-            error,
-          } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::save_document(file_type, filename, document) {
-                Ok(_) => Ok(()),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-          Cmd::LoadDocument {
-            filename,
-            callback,
-            error,
-          } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::load_document(filename) {
-                Ok(res) => Ok(res),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-          Cmd::GetAvailableDocumentTypes { callback, error } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::get_available_document_types() {
-                Ok(res) => Ok(res),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-        }
-        // dispatch of async request should always succeed
-        Ok(true)
-      }
-    }
+impl<M: Params> Plugin<M> for LoadSave<M> {
+  fn name(&self) -> &'static str {
+    "cabr2_load_save"
   }
 
-  fn created(&self, _: &mut tauri::Webview<'_>) {
+  fn extend_api(&mut self, message: InvokeMessage<M>) {
+    (self.invoke_handler)(message)
+  }
+
+  fn created(&mut self, _: Window<M>) {
     log::trace!("plugin created");
-  }
-
-  fn ready(&self, _: &mut tauri::Webview<'_>) {
-    log::trace!("plugin ready");
   }
 }

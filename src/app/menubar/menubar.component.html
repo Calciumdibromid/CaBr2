@@ -6,8 +6,12 @@
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="newDocument()">{{ strings.menu.newDocument }}</button>
       <button mat-menu-item (click)="loadFile()">{{ strings.menu.loadFile }}</button>
-      <button mat-menu-item (click)="exportFile('cb2')">{{ strings.menu.saveFile }}</button>
-      <button mat-menu-item (click)="exportFile('pdf')">{{ strings.menu.exportPDF }}</button>
+      <button mat-menu-item (click)="exportFile({ name: 'foo', extensions: ['cb2'] })">
+        {{ strings.menu.saveFile }}
+      </button>
+      <button mat-menu-item (click)="exportFile({ name: 'foo', extensions: ['cb2'] })">
+        {{ strings.menu.exportPDF }}
+      </button>
       <mat-divider></mat-divider>
       <button mat-menu-item (click)="openSettingsDialog()">{{ strings.menu.settings }}</button>
       <button mat-menu-item (click)="openManualDialog()">{{ strings.menu.quickStart }}</button>

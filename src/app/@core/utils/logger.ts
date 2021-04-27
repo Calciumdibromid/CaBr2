@@ -1,4 +1,4 @@
-import { invoke } from 'tauri/api/tauri';
+import { invoke } from '@tauri-apps/api/tauri';
 
 export enum LogLevel {
   TRACE = 'TRACE',
@@ -9,8 +9,7 @@ export enum LogLevel {
 }
 
 const log = (level: LogLevel, path: string, ...messages: any[]): void => {
-  invoke({
-    cmd: 'log',
+  invoke('log', {
     level,
     path,
     messages,
