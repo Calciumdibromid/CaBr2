@@ -13,11 +13,12 @@ use super::{
   types::{CaBr2Document, DocumentTypes, Loader, Saver},
 };
 
+type LoadersMap = Arc<Mutex<HashMap<&'static str, (&'static str, Box<dyn Loader + Send + Sync>)>>>;
+type SaversMap = Arc<Mutex<HashMap<&'static str, (&'static str, Box<dyn Saver + Send + Sync>)>>>;
+
 lazy_static! {
-  pub static ref REGISTERED_LOADERS: Arc<Mutex<HashMap<&'static str, Box<dyn Loader + Send + Sync>>>> =
-    Arc::new(Mutex::new(HashMap::new()));
-  pub static ref REGISTERED_SAVERS: Arc<Mutex<HashMap<&'static str, Box<dyn Saver + Send + Sync>>>> =
-    Arc::new(Mutex::new(HashMap::new()));
+  pub static ref REGISTERED_LOADERS: LoadersMap = Arc::new(Mutex::new(HashMap::new()));
+  pub static ref REGISTERED_SAVERS: SaversMap = Arc::new(Mutex::new(HashMap::new()));
 }
 
 pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Document) -> Result<()> {
