@@ -17,7 +17,7 @@ Here's how to run the test suite:
 | :-------------------- | :---------------------------------------------------------------- |
 |``yarn lint``          | lint frontend code   |
 |``yarn prettier -c src`` | check formatiton of frontend files  |
-|``./contrib/for-each-cargo clippy``  | lint backend files   |
+|``cd src-tauri`` and ``cargo clippy``  | lint backend files   |
 
 - run tests (Suggest run in linux)
 
@@ -30,7 +30,7 @@ Here's how to run the test suite:
 
 We do all translation work inside [Crowdin](https://crowdin.com/project/CaBr2).
 The only translation that is maintained in this git repository is
-[`en_us.ini`](https://github.com/Calciumdibromid/CaBr2/blob/develop/translations/en_us.json)
+[`en_us.json`](https://github.com/Calciumdibromid/CaBr2/blob/develop/translations/en_us.json)
 and is synced regularly to Crowdin. Once a translation has reached
 A SATISFACTORY PERCENTAGE it will be synced back into this repo and
 included in the next released version.
@@ -49,4 +49,4 @@ Imports are sorted, src contain frontend only, src-tauri contain backend only.
 Before v1.0 there will be a release if needed.
 After v1.0 one release halve a year (bugfixes excluded).
 
-We use semantic versioning.
+We use [semantic](https://semver.org/) versioning.
