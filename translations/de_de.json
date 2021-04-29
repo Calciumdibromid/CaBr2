@@ -141,8 +141,12 @@
     "dialogs": {
       "unchangedValues": {
         "title": "Unveränderte Werte",
-        "content": ["Folgende Werte wurden nicht verändert."],
-        "footer": ["Trotzdem fortfahren?"]
+        "content": [
+          "Folgende Werte wurden nicht verändert."
+        ],
+        "footer": [
+          "Trotzdem fortfahren?"
+        ]
       }
     }
   }
