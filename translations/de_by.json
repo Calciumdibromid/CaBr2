@@ -48,17 +48,17 @@
       "option": "Suchoption:",
       "searchButton": "Suche",
       "removeSubstance": "Substanz rausdoa",
-      "editSubstance": "Edit substance",
+      "editSubstance": "Gmisch bearbadn",
       "removeOption": "Suchoption wegmacha",
       "addOption": "Suchoption dazua doa",
       "resultsHeader": "Gfundne Sachan",
       "noResult": "Nix gfundn",
-      "customSubstance": "Custom",
-      "unsupportedProviderInfo": "not supported",
+      "customSubstance": "Eigner Scheiß",
+      "unsupportedProviderInfo": "kenn i ned, mog i ned",
       "error": "S'Programm wuit ned"
     },
     "substance": {
-      "edited": "Edited?",
+      "edited": "Rumgspuid?",
       "name": "Wia mas' ruaft",
       "needsName": "Du, ohne Nama gäds ned",
       "casNumber": "De Ammi-Numma",
@@ -82,20 +82,21 @@
       "noPPhrase": "Foische P-Numma",
       "removePPhrase": "P-Satz wegad doa",
       "addPPhrase": "P-Satz dazua doa",
-      "editingHint": "Click on substance to edit.",
+      "editingHint": "Auf's Gmisch drugga zum beabadn.",
       "ghsSymbolsAddOrRemoveInfo": "Wenns so a Buidl weg- oda dazuadoa megst, muast nur auf des Buidl drugga",
       "ghsSymbolsColorInfo": "Wenns grau is, dann hostas ned gnomma / Wenns bunt is, dann isses ogschoidn",
-      "addCustomSubstanceData": "Add custom substance"
+      "addCustomSubstanceData": "Eignen Scheiß dazua doa",
+      "dragAndDrop": "Ziang & Schiam"
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Des ko de Andan und der Umwelt bassiern:",
       "rulesOfConduct": "Auf des muast aufbassn und des muast macha:",
       "inCaseOfDanger": "Des muast macha, wenn wos bassiert:",
       "disposal": "Wia weads weggschmissn:",
-      "humanAndEnvironmentDangerShort": "Dangers",
-      "rulesOfConductShort": "Protection measures",
-      "inCaseOfDangerShort": "Hazard case",
-      "disposalShort": "Disposal",
+      "humanAndEnvironmentDangerShort": "Gfahren",
+      "rulesOfConductShort": "Sicherheitsgrampf",
+      "inCaseOfDangerShort": "Wenn's schiaf laft",
+      "disposalShort": "Weggschmeissn",
       "signatureFieldStudent": "Ich stä dazua, des ois glesn zum hom und duas so macha.",
       "signatureFieldAssistant": "I bass scho drauf auf, dass de Saubuam und -Madl koan Scheiß machan."
     },
@@ -139,9 +140,13 @@
     },
     "dialogs": {
       "unchangedValues": {
-        "title": "Unchanged values",
-        "content": ["The following values were not changed."],
-        "footer": ["Continue anyway?"]
+        "title": "Ned oglangt",
+        "content": [
+          "Des host vergessn"
+        ],
+        "footer": [
+          "Scheiß drauf?"
+        ]
       }
     }
   }
