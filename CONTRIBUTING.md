@@ -39,3 +39,14 @@ included in the next released version.
 ## Building
 
 See the [Readme](README.md)
+
+## Styleguide
+
+Imports are sorted, src contain frontend only, src-tauri contain backend only.
+
+## Release Cycle
+
+Before v1.0 there will be a release if needed.
+After v1.0 one release halve a year (bugfixes excluded).
+
+We use semantic versioning.
