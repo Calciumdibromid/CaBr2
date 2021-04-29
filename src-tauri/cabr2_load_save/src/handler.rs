@@ -48,7 +48,7 @@ pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Docume
     }
   }
 
-  if let Some(saver) = REGISTERED_SAVERS.lock().unwrap().get(file_type.as_str()) {
+  if let Some((_, saver)) = REGISTERED_SAVERS.lock().unwrap().get(file_type.as_str()) {
     return saver.save_document(filename, document);
   }
 
@@ -60,7 +60,7 @@ pub fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
 
   if let Some(extension) = filename.extension() {
     let extension = extension.to_str().unwrap();
-    if let Some(loader) = REGISTERED_LOADERS.lock().unwrap().get(extension) {
+    if let Some((_, loader)) = REGISTERED_LOADERS.lock().unwrap().get(extension) {
       return loader.load_document(filename);
     }
   }
