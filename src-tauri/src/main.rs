@@ -4,18 +4,21 @@ fn main() {
   // must be initialized first
   let logger = cabr2_logger::Logger::new();
 
-  let config = cabr2_config::Config;
+  let config = cabr2_config::Config::default();
   let search = cabr2_search::Search::new();
   let load_save = cabr2_load_save::LoadSave::new(search.get_provider_mapping());
 
   log::debug!("initializing tauri application...");
 
-  tauri::AppBuilder::new()
-    .plugin(config)
-    .plugin(load_save)
+  tauri::Builder::default()
     .plugin(logger)
+    .plugin(config)
     .plugin(search)
-    .setup(|_, s| log::debug!("tauri setup complete ({})", s))
-    .build()
-    .run();
+    .plugin(load_save)
+    .setup(|_| {
+      log::debug!("tauri setup complete");
+      Ok(())
+    })
+    .run(tauri::generate_context!())
+    .unwrap();
 }

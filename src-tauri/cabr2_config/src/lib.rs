@@ -5,117 +5,42 @@ mod error;
 mod handler;
 mod types;
 
-use std::env;
-
-use tauri::{self, plugin::Plugin};
-
-use cmd::Cmd;
+use tauri::{plugin::Plugin, InvokeMessage, Params, Window};
 
 pub use handler::{get_hazard_symbols, read_config, write_config, DATA_DIR, PROJECT_DIRS, TMP_DIR};
 pub use types::{BackendConfig, GHSSymbols};
 
-pub struct Config;
+pub struct Config<M: Params> {
+  invoke_handler: Box<dyn Fn(InvokeMessage<M>) + Send + Sync>,
+}
 
-impl Plugin for Config {
-  fn extend_api(&self, webview: &mut tauri::Webview, payload: &str) -> Result<bool, String> {
-    match serde_json::from_str(payload) {
-      Err(e) => Err(e.to_string()),
-      Ok(command) => {
-        log::trace!("command: {:?}", &command);
-        match command {
-          Cmd::GetProgramVersion { callback, error } => {
-            tauri::execute_promise(webview, move || Ok(env!("CARGO_PKG_VERSION")), callback, error);
-          }
-          Cmd::GetConfig { callback, error } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::get_config() {
-                Ok(res) => Ok(res),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-          Cmd::SaveConfig {
-            config,
-            callback,
-            error,
-          } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::save_config(config) {
-                Ok(_) => Ok(()),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-          Cmd::GetHazardSymbols { callback, error } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::get_hazard_symbols() {
-                Ok(res) => Ok(res),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-          Cmd::GetAvailableLanguages { callback, error } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::get_available_languages() {
-                Ok(res) => Ok(res),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-          Cmd::GetLocalizedStrings {
-            language,
-            callback,
-            error,
-          } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::get_localized_strings(language) {
-                Ok(res) => Ok(res),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-          Cmd::GetPromptHtml {
-            name,
-            callback,
-            error,
-          } => {
-            tauri::execute_promise(
-              webview,
-              move || match handler::get_prompt_html(name) {
-                Ok(res) => Ok(res),
-                Err(e) => Err(e.into()),
-              },
-              callback,
-              error,
-            );
-          }
-        }
-        // dispatch of async request should always succeed
-        Ok(true)
-      }
+impl<M: Params> std::default::Default for Config<M> {
+  fn default() -> Self {
+    use cmd::*;
+    Self {
+      invoke_handler: Box::new(tauri::generate_handler![
+        get_program_version,
+        get_config,
+        save_config,
+        get_hazard_symbols,
+        get_available_languages,
+        get_localized_strings,
+        get_prompt_html,
+      ]),
     }
   }
+}
 
-  fn created(&self, _: &mut tauri::Webview<'_>) {
-    log::trace!("plugin created");
+impl<M: Params> Plugin<M> for Config<M> {
+  fn name(&self) -> &'static str {
+    "cabr2_config"
   }
 
-  fn ready(&self, _: &mut tauri::Webview<'_>) {
-    log::trace!("plugin ready");
+  fn extend_api(&mut self, message: InvokeMessage<M>) {
+    (self.invoke_handler)(message)
+  }
+
+  fn created(&mut self, _: Window<M>) {
+    log::trace!("plugin created");
   }
 }

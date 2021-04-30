@@ -1,3 +1,4 @@
+use serde::{Serialize, Serializer};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -24,6 +25,15 @@ pub enum LoadSaveError {
   JsonError(#[from] serde_json::Error),
   #[error("io error: '{0}'")]
   IOError(#[from] std::io::Error),
+}
+
+impl Serialize for LoadSaveError {
+  fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+  where
+    S: Serializer,
+  {
+    serializer.serialize_str(self.to_string().as_str())
+  }
 }
 
 pub type Result<T> = std::result::Result<T, LoadSaveError>;

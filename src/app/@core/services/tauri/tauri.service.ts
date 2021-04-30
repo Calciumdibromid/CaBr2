@@ -1,15 +1,14 @@
 import { from, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import * as dialog from 'tauri/api/dialog';
-import * as tauri from 'tauri/api/tauri';
-import { open as tauriOpen } from 'tauri/api/window';
+import { dialog, shell, tauri } from '@tauri-apps/api/index.js';
+import { InvokeArgs } from '@tauri-apps/api/tauri';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TauriService {
-  openUrl = tauriOpen;
+  openUrl = shell.open;
 
   open(options?: dialog.OpenDialogOptions): Observable<string | string[]> {
     return from(dialog.open(options));
@@ -19,7 +18,11 @@ export class TauriService {
     return from(dialog.save(options));
   }
 
-  promisified<T>(args: any): Observable<T> {
-    return from(tauri.promisified<T>(args));
+  promisified<T>(cmd: string, args?: InvokeArgs): Observable<T> {
+    return from(tauri.invoke<T>(cmd, args));
   }
 }
+
+type DialogFilter = dialog.DialogFilter;
+
+export { DialogFilter };

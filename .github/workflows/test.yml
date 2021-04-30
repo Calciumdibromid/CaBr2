@@ -17,6 +17,9 @@ jobs:
       - name: Set Rust Toolchain
         run: rustup default stable
 
+      - name: Fix build
+        run: mkdir -p dist/CaBr2 && echo "Hello" > dist/CaBr2/index.html
+
       - name: Rust Linting
         run: ./contrib/for-each-cargo clippy -- -D warnings
       - name: Rust Tests
