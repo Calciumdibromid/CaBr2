@@ -1,7 +1,8 @@
 import { from, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import { dialog, shell, tauri } from '@tauri-apps/api';
+import { dialog, shell, tauri } from '@tauri-apps/api/index.js';
+import { InvokeArgs } from '@tauri-apps/api/tauri';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +18,8 @@ export class TauriService {
     return from(dialog.save(options));
   }
 
-  promisified<T>(args: any): Observable<T> {
-    return from(tauri.invoke<T>(args));
+  promisified<T>(cmd: string, args?: InvokeArgs): Observable<T> {
+    return from(tauri.invoke<T>(cmd, args));
   }
 }
 

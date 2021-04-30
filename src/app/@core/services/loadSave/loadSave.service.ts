@@ -10,8 +10,7 @@ export class LoadSaveService {
   constructor(private tauriService: TauriService) {}
 
   saveDocument(fileType: string, filename: string, document: CaBr2Document): Observable<string> {
-    return this.tauriService.promisified({
-      cmd: 'saveDocument',
+    return this.tauriService.promisified('plugin:cabr2_load_save|save_document', {
       fileType,
       filename,
       document,
@@ -19,15 +18,10 @@ export class LoadSaveService {
   }
 
   loadDocument(filename: string): Observable<CaBr2Document> {
-    return this.tauriService.promisified({
-      cmd: 'loadDocument',
-      filename,
-    });
+    return this.tauriService.promisified('plugin:cabr2_load_save|load_document', { filename });
   }
 
   getAvailableDocumentTypes(): Observable<DocumentTypes> {
-    return this.tauriService.promisified({
-      cmd: 'getAvailableDocumentTypes',
-    });
+    return this.tauriService.promisified('plugin:cabr2_load_save|get_available_document_types');
   }
 }
