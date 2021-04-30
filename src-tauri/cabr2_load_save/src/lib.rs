@@ -9,6 +9,8 @@ mod types;
 
 mod beryllium;
 mod cabr2;
+
+#[cfg(feature = "htmltopdf")]
 mod pdf;
 
 use tauri::{plugin::Plugin, InvokeMessage, Params, Window};
@@ -20,14 +22,15 @@ pub struct LoadSave<M: Params> {
 }
 
 impl<M: Params> LoadSave<M> {
-  pub fn new(provider_mapping: ProviderMapping) -> Self {
+  pub fn new(_provider_mapping: ProviderMapping) -> Self {
     let mut loaders = handler::REGISTERED_LOADERS.lock().unwrap();
     loaders.insert("cb2", ("CaBr2", Box::new(cabr2::CaBr2)));
     loaders.insert("be", ("Beryllium", Box::new(beryllium::Beryllium)));
 
     let mut savers = handler::REGISTERED_SAVERS.lock().unwrap();
     savers.insert("cb2", ("CaBr2", Box::new(cabr2::CaBr2)));
-    savers.insert("pdf", ("PDF", Box::new(pdf::PDF::new(provider_mapping))));
+    #[cfg(feature = "htmltopdf")]
+    savers.insert("pdf", ("PDF", Box::new(pdf::PDF::new(_provider_mapping))));
 
     use cmd::*;
     LoadSave {
