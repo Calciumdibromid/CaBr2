@@ -1,18 +1,17 @@
 #!/bin/bash
 
 cd "$(dirname "$0")/.."
+token=$CROWDIN_TOKEN
 
 # make config if not exist
 [ -f "crowdin.yml" ] || {
-  token=$1
   # make sure it exist
   [ -z "$token" ] && {
     echo "token not set"
     return 1
   }
-  sed "s/-TOKEN-/${token}/g" crowdin.example.yml > crowdin.yml
+  sed "s/-TOKEN-/${token}/g" crowdin.example.yml >crowdin.yml
 }
-
 
 # crowdin actions ...
 crowdin push
@@ -21,15 +20,14 @@ crowdin pull
 # normalize locales
 for i in $(ls translations/??_??.json); do
   file_old=$i
-  file_new=$(echo $file_old | tr '[:upper:]' '[:lower:]')
-  [ "$file_old" != "$file_new" ] && {
-    cat "$file_old" > "$file_new"
-    rm "$file_old"
+  file_new=$(echo "$file_old" | tr '[:upper:]' '[:lower:]')
+  [ "$file_old" == "$file_new" ] || {
+    cp -f "$file_old" "$file_new" && rm "$file_old"
   }
 done
 
 # default strings
-cat translations/de_de.json > src/assets/defaultStrings.json
+cp -f translations/de_de.json src/assets/defaultStrings.json
 yarn prettier -w src/assets/defaultStrings.json
 
 # git action only update existing ...
