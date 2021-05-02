@@ -1,21 +1,21 @@
 #!/bin/bash
 
 cd "$(dirname "$0")/.."
-token=$CROWDIN_TOKEN
+token="$1"
 
 # make config if not exist
 [ -f "crowdin.yml" ] || {
   # make sure it exist
   [ -z "$token" ] && {
     echo "token not set"
-    return 1
+    exit 1
   }
   sed "s/-TOKEN-/${token}/g" crowdin.example.yml >crowdin.yml
 }
 
 # crowdin actions ...
-crowdin push
-crowdin pull
+crowdin push || exit 1
+crowdin pull || exit 1
 
 # normalize locales
 for i in $(ls translations/??_??.json); do
@@ -26,11 +26,5 @@ for i in $(ls translations/??_??.json); do
   }
 done
 
-# default strings
-cp -f translations/de_de.json src/assets/defaultStrings.json
+# format default strings
 yarn prettier -w src/assets/defaultStrings.json
-
-# git action only update existing ...
-#git add -u translations/ src/assets/defaultStrings.json
-#git commit -m 'TODO'
-#git push

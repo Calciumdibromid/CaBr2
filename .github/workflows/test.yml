@@ -13,7 +13,7 @@ jobs:
     container: a6543/cabr2_ci:latest
     steps:
       - name: Checkout Project
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Set Rust Toolchain
         run: rustup default stable
 
