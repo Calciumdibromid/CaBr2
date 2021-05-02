@@ -14,8 +14,8 @@ token=$CROWDIN_TOKEN
 }
 
 # crowdin actions ...
-crowdin push
-crowdin pull
+crowdin push || exit 1
+crowdin pull || exit 1
 
 # normalize locales
 for i in $(ls translations/??_??.json); do
@@ -26,11 +26,5 @@ for i in $(ls translations/??_??.json); do
   }
 done
 
-# default strings
-cp -f translations/de_de.json src/assets/defaultStrings.json
+# format default strings
 yarn prettier -w src/assets/defaultStrings.json
-
-# git action only update existing ...
-#git add -u translations/ src/assets/defaultStrings.json
-#git commit -m 'TODO'
-#git push

@@ -1,0 +1,29 @@
+name: update-translations
+environment: update-translations
+
+on:
+  push:
+    branches: [ develop ]
+
+jobs:
+  backend:
+    runs-on: ubuntu-20.04
+    container: a6543/cabr2_ci_update-translations:latest
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v1
+
+      - name: install prettier
+        run: yarn install
+
+      - name: Run Crowdin Update
+        run: ./contrib/update-translations
+
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v7
+        with:
+          author_name: CaBr2 Bot
+          author_email: cabr2.info@gmail.com
+          message: 'Translation Updates'
+          add: '-u translations/'
+          branch: develop
