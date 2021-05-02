@@ -42,7 +42,31 @@ See the [Readme](README.md)
 
 ## Styleguide
 
-Imports are sorted, src contain frontend only, src-tauri contain backend only.
+## Frontend/Angular
+
+- all frontend-related code is in `src` folder
+- imports should be arranged like this with empty lines in between:
+  1. external libraries/browser builtins
+  2. own modules
+- imports should be sorted alphabetically
+- use style defined in prettierrc:
+  - always use trailing commas
+  - use singlequotes
+  - use 2 spaces to indent code
+  - ...
+
+## Backend/Rust
+
+- all backend-ralated code is in `src-tauri`
+- imports should be arranged like this with empty lines in between:
+  1. standard library (`std`)
+  2. external libraries
+  3. internal libraries (prefixed with `cabr2_`)
+  4. intra-library imports
+- use style defined in `rustfmt.toml`:
+  - always use trailing commas
+  - use 2 spaces to indent code
+  - ...
 
 ## Release Cycle
 
