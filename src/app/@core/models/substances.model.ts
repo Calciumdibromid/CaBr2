@@ -79,6 +79,15 @@ export class SubstanceData {
   }
 }
 
+/**
+ * If the Data object has a modified value set it returns this modified value
+ * else it returns the original value.
+ */
+// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
+function modifiedOrOriginal<T>(obj: Data<T>): T {
+  return obj.modifiedData ?? obj.originalData;
+}
+
 export interface Data<T> {
   modifiedData?: T;
   readonly originalData: T;
@@ -97,71 +106,137 @@ export interface Source {
 
 export interface Amount {
   value: string;
-  unit: Unit;
+  unit: Unit | CustomUnit;
+}
+
+export interface GroupMapping {
+  viewValue: string;
+  unitMappings: Unit[];
+}
+
+export interface CustomUnit {
+  readonly name: string;
 }
 
 export enum Unit {
-  LITRE = 'LITRE',
-  MILLILITER = 'MILLILITER',
-  MICROLITRE = 'MICROLITRE',
-  GRAM = 'GRAM',
-  MILLIGRAM = 'MILLIGRAM',
-  MICROGRAM = 'MICROGRAM',
-  PIECES = 'PIECES',
-  SOLUTIONRELATIVE = 'SOLUTIONRELATIVE',
-  SOLUTIONMOL = 'SOLUTIONMOL',
-  SOLUTIONMILLIMOL = 'SOLUTIONMILLIMOL',
-  SOLUTIONMICROMOL = 'SOLUTIONMICROMOL',
-  CUSTOM = 'CUSTOM', // needs String
+  LITRE,
+  MILLILITRE,
+  MICROLITRE,
+  GRAM,
+  MILLIGRAM,
+  MICROGRAM,
+  PIECES,
+  MOL,
+  MILLIMOL,
+
+  SOLUTION_RELATIVE,
+  SOLUTION_MOL,
+  SOLUTION_MILLIMOL,
+  SOLUTION_MICROMOL,
+  SOLUTION_GRAM,
+  SOLUTION_MILLIGRAM,
+
+  CUSTOM, // needs String, handle it accordingly
+
+  GRAM_PER_MOL,
+
+  MILLIGRAM_PER_KILOGRAM,
+  MILLIGRAM_PER_LITRE,
+
+  PARTS_PER_MILLION,
+
+  CELSIUS,
+  FAHRENHEIT,
 }
 
-export enum TemperatureUnit {
-  CELSIUS = 'CELSIUS',
-  FAHRENHEIT = 'FAHRENHEIT',
+// TODO move to i18n service
+const unitMapping = new Map<Unit, string>([
+  [Unit.LITRE, 'l'],
+  [Unit.MILLILITRE, 'ml'],
+  [Unit.MICROLITRE, 'µl'],
+  [Unit.GRAM, 'g'],
+  [Unit.MILLIGRAM, 'mg'],
+  [Unit.MICROGRAM, 'µg'],
+  [Unit.MOL, 'mol'],
+  [Unit.MILLIMOL, 'mmol'],
+  [Unit.PIECES, 'pcs.'], // TODO localize
+
+  [Unit.SOLUTION_RELATIVE, '% (v/v)'],
+  [Unit.SOLUTION_MOL, 'mol/l'],
+  [Unit.SOLUTION_MILLIMOL, 'mmol/l'],
+  [Unit.SOLUTION_MICROMOL, 'µmol/l'],
+  [Unit.SOLUTION_GRAM, 'g/l'],
+  [Unit.SOLUTION_MILLIGRAM, 'mg/l'],
+
+  [Unit.CUSTOM, 'Custom'], // custom units need special treatment
+
+  [Unit.GRAM_PER_MOL, 'g/mol'],
+
+  [Unit.MILLIGRAM_PER_KILOGRAM, 'mg/kg'],
+  [Unit.MILLIGRAM_PER_LITRE, 'mg/l'],
+
+  [Unit.PARTS_PER_MILLION, 'ppm'],
+
+  [Unit.CELSIUS, '°C'],
+  [Unit.FAHRENHEIT, 'F'],
+]);
+
+// TODO move to i18n service
+const getViewValue = (unit: Unit): string => {
+  const value = unitMapping.get(unit);
+
+  if (value === undefined) {
+    throw Error('unknown unit');
+  }
+
+  return value;
+};
+
+class UnitGroups {
+  public readonly substanceUnits = [
+    Unit.GRAM,
+    Unit.MILLIGRAM,
+    Unit.MICROGRAM,
+    Unit.LITRE,
+    Unit.MILLILITRE,
+    Unit.MICROLITRE,
+    Unit.MOL,
+    Unit.MILLIMOL,
+    Unit.PIECES,
+    // Unit.CUSTOM,
+  ];
+  public readonly solutionUnits = [
+    Unit.SOLUTION_MOL,
+    Unit.SOLUTION_MILLIMOL,
+    Unit.SOLUTION_MICROMOL,
+    Unit.SOLUTION_GRAM,
+    Unit.SOLUTION_MILLIGRAM,
+    // Unit.CUSTOM,
+  ];
+  public readonly temperatureUnits = [
+    Unit.CELSIUS,
+    Unit.FAHRENHEIT,
+    // Unit.CUSTOM,
+  ];
+  public readonly lethalUnits = [
+    Unit.MILLIGRAM_PER_KILOGRAM,
+    Unit.MILLIGRAM_PER_LITRE,
+    // Unit.CUSTOM,
+  ];
+  public readonly defaultUnitGroups: GroupMapping[] = [
+    // TODO i18n
+    { viewValue: 'Reine Substanz', unitMappings: this.substanceUnits },
+    { viewValue: 'Lösung', unitMappings: this.solutionUnits },
+    { viewValue: 'Custom', unitMappings: [Unit.CUSTOM] },
+  ];
 }
 
-export interface UnitMapping<T> {
-  viewValue: string;
-  value: T;
-}
+const unitGroups = new UnitGroups();
 
-export interface GroupMapping<T> {
-  viewValue: string;
-  unitMappings: UnitMapping<T>[];
-}
+export { unitMapping, unitGroups, getViewValue, modifiedOrOriginal };
 
-const unitMappings: GroupMapping<Unit>[] = [
-  {
-    viewValue: 'Reine Substanz',
-    unitMappings: [
-      { viewValue: 'l (Liter)', value: Unit.LITRE },
-      { viewValue: 'ml (Milliliter)', value: Unit.MILLILITER },
-      { viewValue: 'µl (Mikroliter)', value: Unit.MICROLITRE },
-      { viewValue: 'g (Gramm)', value: Unit.GRAM },
-      { viewValue: 'mg (Milligramm)', value: Unit.MILLIGRAM },
-      { viewValue: 'µg (Mikrogramm)', value: Unit.MICROGRAM },
-      { viewValue: 'Stück', value: Unit.PIECES },
-      { viewValue: 'Custom', value: Unit.CUSTOM }, // TODO implement custom type
-    ],
-  },
-  {
-    viewValue: 'Lösung',
-    unitMappings: [
-      { viewValue: '% (v/v)', value: Unit.SOLUTIONRELATIVE },
-      { viewValue: 'mol/l', value: Unit.SOLUTIONMOL },
-      { viewValue: 'mmol/l', value: Unit.SOLUTIONMILLIMOL },
-      { viewValue: 'µmol/l', value: Unit.SOLUTIONMICROMOL },
-    ],
-  },
-];
-
-const temperatureUnitMapping: UnitMapping<TemperatureUnit>[] = [
-  { viewValue: '°C', value: TemperatureUnit.CELSIUS },
-  { viewValue: 'F', value: TemperatureUnit.FAHRENHEIT },
-];
-
-export { unitMappings, temperatureUnitMapping };
-
-const EMPTY_STRING_DATA = () => ({ originalData: '' });
+// these are needed to create new objects every time and don't copy a reference
+// because otherwise every filed would reference the same values
 const EMPTY_DATA = () => ({ originalData: undefined });
+const EMPTY_STRING_DATA = () => ({ originalData: '' });
 const EMPTY_LIST_DATA = () => ({ originalData: [] });

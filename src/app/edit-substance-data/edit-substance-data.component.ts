@@ -7,11 +7,11 @@ import { Subscription } from 'rxjs';
 import {
   Amount,
   Data,
+  getViewValue,
+  modifiedOrOriginal,
   SubstanceData,
-  TemperatureUnit,
-  temperatureUnitMapping,
   Unit,
-  unitMappings,
+  unitGroups,
 } from '../@core/models/substances.model';
 import { compareArrays } from '../@core/utils/compare';
 import { GlobalModel } from '../@core/models/global.model';
@@ -34,13 +34,9 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
   addPPhraseHover = false;
 
-  unitMappings = unitMappings;
-
   unit = Unit;
 
-  temperatureUnitMappings = temperatureUnitMapping;
-
-  temperatureUnit = TemperatureUnit;
+  unitGroups = unitGroups;
 
   customUnitVisible = false;
 
@@ -48,6 +44,8 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   symbolKeys!: string[];
 
   customSubscription?: Subscription;
+
+  getViewValue = getViewValue;
 
   constructor(
     public dialogRef: MatDialogRef<EditSubstanceDataComponent>,
@@ -76,23 +74,23 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     const amount = this.data.amount ?? { value: '', unit: Unit.GRAM };
 
     const group = this.formBuilder.group({
-      name: [this.modifiedOrOriginal(this.data.name), Validators.required],
-      cas: this.modifiedOrOriginal(this.data.cas) ?? '',
-      molecularFormula: this.modifiedOrOriginal(this.data.molecularFormula),
-      molarMass: this.modifiedOrOriginal(this.data.molarMass) ?? '',
-      meltingPoint: this.modifiedOrOriginal(this.data.meltingPoint) ?? '',
-      boilingPoint: this.modifiedOrOriginal(this.data.boilingPoint) ?? '',
-      waterHazardClass: this.modifiedOrOriginal(this.data.waterHazardClass) ?? '',
+      name: [modifiedOrOriginal(this.data.name), Validators.required],
+      cas: modifiedOrOriginal(this.data.cas) ?? '',
+      molecularFormula: modifiedOrOriginal(this.data.molecularFormula),
+      molarMass: modifiedOrOriginal(this.data.molarMass) ?? '',
+      meltingPoint: modifiedOrOriginal(this.data.meltingPoint) ?? '',
+      boilingPoint: modifiedOrOriginal(this.data.boilingPoint) ?? '',
+      waterHazardClass: modifiedOrOriginal(this.data.waterHazardClass) ?? '',
       hPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal<[string, string][]>(this.data.hPhrases).map((hPhrase) => this.initHPhrases(hPhrase)),
+        modifiedOrOriginal<[string, string][]>(this.data.hPhrases).map((hPhrase) => this.initHPhrases(hPhrase)),
       ),
       pPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal<[string, string][]>(this.data.pPhrases).map((pPhrase) => this.initPPhrases(pPhrase)),
+        modifiedOrOriginal<[string, string][]>(this.data.pPhrases).map((pPhrase) => this.initPPhrases(pPhrase)),
       ),
-      signalWord: this.modifiedOrOriginal(this.data.signalWord) ?? '',
-      symbols: this.formBuilder.array(this.modifiedOrOriginal(this.data.symbols)),
-      lethalDose: this.modifiedOrOriginal(this.data.lethalDose) ?? '',
-      mak: this.modifiedOrOriginal(this.data.mak) ?? '',
+      signalWord: modifiedOrOriginal(this.data.signalWord) ?? '',
+      symbols: this.formBuilder.array(modifiedOrOriginal(this.data.symbols)),
+      lethalDose: modifiedOrOriginal(this.data.lethalDose) ?? '',
+      mak: modifiedOrOriginal(this.data.mak) ?? '',
       amount: this.formBuilder.group({
         value: amount.value,
         unit: amount.unit,
@@ -259,10 +257,5 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       return retData;
     }
     return currentData;
-  }
-
-  // TODO move to SubstanceData class
-  private modifiedOrOriginal<T>(obj: Data<T>): T {
-    return obj.modifiedData ?? obj.originalData;
   }
 }

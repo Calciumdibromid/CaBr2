@@ -66,17 +66,69 @@ pub struct Amount {
 #[serde(rename_all = "UPPERCASE")]
 pub enum Unit {
   Litre,
-  Milliliter,
+  Millilitre,
   Microlitre,
   Gram,
   Milligram,
   Microgram,
+  Mol,
+  Millimol,
   Pieces,
+
   SolutionRelative,
   SolutionMol,
   SolutionMillimol,
   SolutionMicromol,
+  SolutionGram,
+  SolutionMilligram,
+
   Custom(String),
+
+  GramPerMol,
+
+  MilligramPerKilogram,
+  MilligramPerLitre,
+
+  PartsPerMillion,
+
+  Celsius,
+  Fahrenheit,
+}
+
+impl std::convert::From<Unit> for std::string::String {
+  fn from(unit: Unit) -> Self {
+    use Unit::*;
+    match unit {
+      Litre => "l".into(),
+      Millilitre => "ml".into(),
+      Microlitre => "µl".into(),
+      Gram => "g".into(),
+      Milligram => "mg".into(),
+      Microgram => "µg".into(),
+      Mol => "mol".into(),
+      Millimol => "mmol".into(),
+      Pieces => "st".into(),
+
+      SolutionRelative => "% (v/v)".into(),
+      SolutionMol => "mol/l".into(),
+      SolutionMillimol => "mmol/l".into(),
+      SolutionMicromol => "µmol/l".into(),
+      SolutionGram => "g/l".into(),
+      SolutionMilligram => "mg/l".into(),
+
+      GramPerMol => "g/mol".into(),
+
+      MilligramPerKilogram => "mg/kg".into(),
+      MilligramPerLitre => "mg/l".into(),
+
+      PartsPerMillion => "ppm".into(),
+
+      Custom(name) => name,
+
+      Celsius => "°C".into(),
+      Fahrenheit => "F".into(),
+    }
+  }
 }
 
 pub type ProviderMapping = HashMap<String, String>;
