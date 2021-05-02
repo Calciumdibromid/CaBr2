@@ -1,27 +1,22 @@
 use std::path::PathBuf;
 
-use serde::Deserialize;
+use super::{
+  error::Result,
+  handler,
+  types::{CaBr2Document, DocumentTypes},
+};
 
-use super::types::CaBr2Document;
+#[tauri::command]
+pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Document) -> Result<()> {
+  handler::save_document(file_type, filename, document)
+}
 
-#[derive(Debug, Deserialize)]
-#[serde(tag = "cmd", rename_all = "camelCase")]
-pub enum Cmd {
-  #[serde(rename_all = "camelCase")]
-  SaveDocument {
-    file_type: String,
-    filename: PathBuf,
-    document: CaBr2Document,
-    callback: String,
-    error: String,
-  },
-  LoadDocument {
-    filename: PathBuf,
-    callback: String,
-    error: String,
-  },
-  GetAvailableDocumentTypes {
-    callback: String,
-    error: String,
-  },
+#[tauri::command]
+pub fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
+  handler::load_document(filename)
+}
+
+#[tauri::command]
+pub fn get_available_document_types() -> Result<DocumentTypes> {
+  handler::get_available_document_types()
 }

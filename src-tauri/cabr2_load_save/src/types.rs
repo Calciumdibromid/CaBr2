@@ -39,6 +39,12 @@ pub struct Header {
 
 #[derive(Debug, Serialize)]
 pub struct DocumentTypes {
-  pub load: Vec<String>,
-  pub save: Vec<String>,
+  pub load: Vec<DialogFilter>,
+  pub save: Vec<DialogFilter>,
+}
+
+#[derive(Debug, Serialize)]
+pub struct DialogFilter {
+  pub name: String,
+  pub extensions: Vec<String>,
 }

@@ -20,32 +20,21 @@ icon = [ "32x32.png", "128x128.png", "128x128@2x.png" ]
 category = "Education"
 resources = [ "ghs_symbols/*.png" ]
 
+[build-dependencies]
+tauri-build = { version = "1.0.0-beta-rc.0" }
+
 [dependencies]
 cabr2_config = { path = "./cabr2_config/" }
-cabr2_load_save = { path = "./cabr2_load_save/" }
+cabr2_load_save = { path = "./cabr2_load_save/", features = ["beryllium", "cabr2"] }
 cabr2_logger = { path = "./cabr2_logger/" }
 cabr2_search = { path = "./cabr2_search/", features = [ "tauri_plugin", "gestis" ] }
 log = "0.4.14"
-tauri = { version = "0.11", features = [
-  "event",
-  "notification",
-  "open-dialog",
-  "open",
-  "save-dialog"
-] }
-
-[target."cfg(windows)".build-dependencies]
-winres = "0.1"
+tauri = { version = "1.0.0-beta-rc.4", features =["api-all"]}
 
 [features]
-embedded-server = [ "tauri/embedded-server" ]
-no-server = [ "tauri/no-server" ]
+custom-protocol = [ "tauri/custom-protocol" ]
 portable = [ "cabr2_config/portable" ]
-default = [ "portable" ]
-
-[[bin]]
-name = "cabr2"
-path = "src/main.rs"
+default = [ "custom-protocol", "portable" ]
 
 [workspace]
 members = [

@@ -5,11 +5,7 @@
     "beforeDevCommand": "",
     "beforeBuildCommand": ""
   },
-  "ctx": {},
   "tauri": {
-    "embeddedServer": {
-      "active": true
-    },
     "bundle": {
       "active": true,
       "targets": "all",
@@ -31,33 +27,37 @@
         "depends": [],
         "useBootstrapper": false
       },
-      "osx": {
+      "macOS": {
         "frameworks": [],
         "minimumSystemVersion": "",
-        "useBootstrapper": false
+        "useBootstrapper": false,
+        "exceptionDomain": "",
+        "signingIdentity": null,
+        "entitlements": null
       },
-      "exceptionDomain": ""
+      "windows": {
+        "certificateThumbprint": null,
+        "digestAlgorithm": "sha256",
+        "timestampUrl": ""
+      }
+    },
+    "updater": {
+      "active": false
     },
     "allowlist": {
-      "all": false,
-      "event": true,
-      "notification": true,
-      "openDialog": true,
-      "open": true,
-      "saveDialog": true
+      "all": true
     },
-    "window": {
-      "title": "Calciumdibromid",
-      "width": 800,
-      "height": 600,
-      "resizable": true,
-      "fullscreen": false
-    },
+    "windows": [
+      {
+        "title": "Calciumdibromid",
+        "width": 800,
+        "height": 600,
+        "resizable": true,
+        "fullscreen": false
+      }
+    ],
     "security": {
       "csp": "default-src blob: data: filesystem: ws: http: https: 'unsafe-eval' 'unsafe-inline'"
-    },
-    "inliner": {
-      "active": true
     }
   }
 }

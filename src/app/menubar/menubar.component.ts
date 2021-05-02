@@ -3,6 +3,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { first, map, switchMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 
+import { DialogFilter, TauriService } from '../@core/services/tauri/tauri.service';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { compareArrays } from '../@core/utils/compare';
@@ -15,7 +16,6 @@ import Logger from '../@core/utils/logger';
 import { ManualComponent } from '../manual/manual.component';
 import { ReportBugComponent } from '../report-bug/report-bug.component';
 import { SettingsComponent } from '../settings/settings.component';
-import { TauriService } from '../@core/services/tauri/tauri.service';
 import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
 const logger = new Logger('menubar');
@@ -33,8 +33,8 @@ export class MenubarComponent implements OnInit {
 
   programmVersion!: string;
 
-  private loadFilter: string[] = [];
-  private saveFilter: string[] = [];
+  private loadFilter: DialogFilter[] = [];
+  private saveFilter: DialogFilter[] = [];
 
   constructor(
     public globals: GlobalModel,
@@ -50,10 +50,6 @@ export class MenubarComponent implements OnInit {
       (types) => {
         this.loadFilter = types.load;
         this.saveFilter = types.save;
-
-        // fix to set cb2 type as default
-        this.loadFilter.splice(this.loadFilter.indexOf('cb2'), 1);
-        this.loadFilter.unshift('cb2');
       },
       (err) => {
         logger.error('could not get document types:', err);
@@ -122,7 +118,7 @@ export class MenubarComponent implements OnInit {
     logger.trace('loadFile');
     this.tauriService
       .open({
-        filter: this.loadFilter.join(';'),
+        filters: this.loadFilter,
         multiple: false,
       })
       .pipe(first())
@@ -140,7 +136,7 @@ export class MenubarComponent implements OnInit {
       );
   }
 
-  exportFile(type: string): void {
+  exportFile(type: DialogFilter): void {
     logger.trace(`exportFile('${type}')`);
     this.modelToDocument()
       .pipe(first())
@@ -194,23 +190,26 @@ export class MenubarComponent implements OnInit {
     return unmodified;
   }
 
-  saveFile(type: string, document: CaBr2Document): void {
+  saveFile(type: DialogFilter, document: CaBr2Document): void {
     // check for development, should never occur in production
-    if (this.saveFilter.indexOf(type) < 0) {
+    if (this.saveFilter.includes(type)) {
       throw Error('unsupported file type');
     }
 
+    // there should always be exact one fileextension
+    const extension = type.extensions[0];
+
     this.tauriService
-      .save({ filter: type })
+      .save({ filters: [type] })
       .pipe(
-        switchMap((filename) => this.loadSaveService.saveDocument(type, filename as string, document)),
+        switchMap((filename) => this.loadSaveService.saveDocument(extension, filename as string, document)),
         first(),
       )
       .subscribe(
         (res) => {
           logger.debug(res);
 
-          switch (type) {
+          switch (extension) {
             case 'pdf':
               this.alertService.success(this.strings.success.exportPDF);
               break;
@@ -230,7 +229,7 @@ export class MenubarComponent implements OnInit {
             return;
           }
 
-          switch (type) {
+          switch (extension) {
             case 'pdf':
               this.alertService.error(this.strings.error.exportPDF);
               break;

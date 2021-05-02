@@ -51,9 +51,7 @@ export class ProviderService {
    * ```
    */
   getAvailableProviders(): Observable<Provider[]> {
-    return this.tauriService.promisified({
-      cmd: 'getAvailableProviders',
-    });
+    return this.tauriService.promisified('plugin:cabr2_search|get_available_providers');
   }
 
   /**
@@ -70,8 +68,7 @@ export class ProviderService {
    * ```
    */
   searchSuggestions(provider: string, searchType: SearchType, query: string): Observable<string[]> {
-    return this.tauriService.promisified({
-      cmd: 'searchSuggestions',
+    return this.tauriService.promisified('plugin:cabr2_search|search_suggestions', {
       provider,
       pattern: query,
       searchType,
@@ -98,8 +95,7 @@ export class ProviderService {
    * ```
    */
   search(provider: string, args: SearchArguments): Observable<SearchResult[]> {
-    return this.tauriService.promisified({
-      cmd: 'search',
+    return this.tauriService.promisified('plugin:cabr2_search|search', {
       provider,
       arguments: args,
     });
@@ -110,8 +106,7 @@ export class ProviderService {
    * stating the cause of the failure when parsing the data.
    */
   substanceData(provider: string, identifier: string): Observable<SubstanceData> {
-    return this.tauriService.promisified({
-      cmd: 'getSubstanceData',
+    return this.tauriService.promisified('plugin:cabr2_search|get_substance_data', {
       provider,
       identifier,
     });

@@ -1,4 +1,4 @@
-import { invoke } from 'tauri/api/tauri';
+import { invoke } from '@tauri-apps/api/tauri.js';
 
 export enum LogLevel {
   TRACE = 'TRACE',
@@ -9,12 +9,13 @@ export enum LogLevel {
 }
 
 const log = (level: LogLevel, path: string, ...messages: any[]): void => {
-  invoke({
-    cmd: 'log',
+  invoke('plugin:cabr2_logger|log', {
     level,
     path,
     messages,
-  });
+  })
+    .then((stuff) => console.log(stuff))
+    .catch((err) => console.error(err));
 };
 
 /**

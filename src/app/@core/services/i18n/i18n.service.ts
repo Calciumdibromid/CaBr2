@@ -20,18 +20,13 @@ export class I18nService {
   }
 
   getAvailableLanguages(): Observable<LocalizedStringsHeader[]> {
-    return this.tauriService.promisified({
-      cmd: 'getAvailableLanguages',
-    });
+    return this.tauriService.promisified('plugin:cabr2_config|get_available_languages');
   }
 
   getLocalizedStrings(language: string): Observable<LocalizedStrings> {
     return new Observable((sub) => {
       this.tauriService
-        .promisified<LocalizedStrings>({
-          cmd: 'getLocalizedStrings',
-          language,
-        })
+        .promisified<LocalizedStrings>('plugin:cabr2_config|get_localized_strings', { language })
         .subscribe(
           (strings) => {
             logger.trace('loading localized strings successful:', strings);

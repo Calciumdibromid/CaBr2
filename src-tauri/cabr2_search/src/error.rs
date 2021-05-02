@@ -1,3 +1,4 @@
+use serde::{Serialize, Serializer};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -42,6 +43,15 @@ impl From<roxmltree::Error> for SearchError {
   #[inline]
   fn from(e: roxmltree::Error) -> Self {
     SearchError::XmlError(e)
+  }
+}
+
+impl Serialize for SearchError {
+  fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
+  where
+    S: Serializer,
+  {
+    serializer.serialize_str(self.to_string().as_str())
   }
 }
 
