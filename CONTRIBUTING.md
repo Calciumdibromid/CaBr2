@@ -40,8 +40,6 @@ included in the next released version.
 
 See the [Readme](README.md)
 
-## Styleguide
-
 ## Frontend/Angular
 
 - all frontend-related code is in `src` folder
