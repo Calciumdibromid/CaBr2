@@ -49,3 +49,13 @@
 .svg {
   margin: -9%;
 }
+
+.buttons {
+  display: flex;
+  margin: 16px;
+
+  button {
+    margin-right: 16px;
+    padding: 5px 20px;
+  }
+}
