@@ -192,7 +192,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
           content: this.strings.substance.invalidFormsContent,
           listItems: this.checkForInvalidControls(),
           disableCancel: true,
-        }
+        },
       });
       return;
     }
@@ -246,8 +246,8 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       reasonForInvalid.push(this.strings.substance.name);
     }
 
-    const invalidHPhrases = this.hPhrases.controls.find(control => control.invalid);
-    const invalidPPhrases = this.pPhrases.controls.find(control => control.invalid);
+    const invalidHPhrases = this.hPhrases.controls.find((control) => control.invalid);
+    const invalidPPhrases = this.pPhrases.controls.find((control) => control.invalid);
 
     if (invalidHPhrases) {
       reasonForInvalid.push(this.strings.substance.invalidHPhrase);
