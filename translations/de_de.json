@@ -58,6 +58,8 @@
       "error": "Fehler beim Anfragen der Daten"
     },
     "substance": {
+      "invalidFormsTitle": "Etwas stimmt nicht",
+      "invalidFormsContent": ["Die Substanz hat an folgenden Stellen ungültige oder fehlende Daten:"],
       "edited": "Bearbeitet?",
       "name": "Name",
       "needsName": "Name benötigt",
@@ -76,10 +78,12 @@
       "customUnit": "Eigene Einheit",
       "hPhrases": "H-Sätze",
       "noHPhrase": "Ungültige H-Nummer",
+      "invalidHPhrase": "Ungültige H-Sätze",
       "removeHPhrase": "H-Satz entfernen",
       "addHPhrase": "H-Satz hinzufügen",
       "pPhrases": "P-Sätze",
       "noPPhrase": "Ungültige P-Nummer",
+      "invalidPPhrase": "Ungültige P-Sätze",
       "removePPhrase": "P-Satz entfernen",
       "addPPhrase": "P-Satz hinzufügen",
       "editingHint": "Zum Bearbeiten auf Substanz klicken.",
