@@ -52,7 +52,7 @@
         ],
         "max-len": ["error", 120],
         "object-curly-spacing": ["error", "always"],
-        "no-unused-vars": ["error", { "argsIgnorePattern": "_" }]
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "_" }]
       }
     },
     {
