@@ -66,8 +66,8 @@ pub struct Amount {
 #[serde(rename_all = "UPPERCASE")]
 pub enum Unit {
   Litre,
-  Millilitre,
-  Microlitre,
+  Milliliter,
+  Microliter,
   Gram,
   Milligram,
   Microgram,
@@ -87,7 +87,7 @@ pub enum Unit {
   GramPerMol,
 
   MilligramPerKilogram,
-  MilligramPerLitre,
+  MilligramPerLiter,
 
   PartsPerMillion,
 
@@ -100,8 +100,8 @@ impl std::convert::From<Unit> for std::string::String {
     use Unit::*;
     match unit {
       Litre => "l".into(),
-      Millilitre => "ml".into(),
-      Microlitre => "µl".into(),
+      Milliliter => "ml".into(),
+      Microliter => "µl".into(),
       Gram => "g".into(),
       Milligram => "mg".into(),
       Microgram => "µg".into(),
@@ -119,7 +119,7 @@ impl std::convert::From<Unit> for std::string::String {
       GramPerMol => "g/mol".into(),
 
       MilligramPerKilogram => "mg/kg".into(),
-      MilligramPerLitre => "mg/l".into(),
+      MilligramPerLiter => "mg/l".into(),
 
       PartsPerMillion => "ppm".into(),
 

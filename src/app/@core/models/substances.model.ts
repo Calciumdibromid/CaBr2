@@ -120,8 +120,8 @@ export interface CustomUnit {
 
 export enum Unit {
   LITRE,
-  MILLILITRE,
-  MICROLITRE,
+  MILLILITER,
+  MICROLITER,
   GRAM,
   MILLIGRAM,
   MICROGRAM,
@@ -141,7 +141,7 @@ export enum Unit {
   GRAM_PER_MOL,
 
   MILLIGRAM_PER_KILOGRAM,
-  MILLIGRAM_PER_LITRE,
+  MILLIGRAM_PER_LITER,
 
   PARTS_PER_MILLION,
 
@@ -152,8 +152,8 @@ export enum Unit {
 // TODO move to i18n service
 const unitMapping = new Map<Unit, string>([
   [Unit.LITRE, 'l'],
-  [Unit.MILLILITRE, 'ml'],
-  [Unit.MICROLITRE, 'µl'],
+  [Unit.MILLILITER, 'ml'],
+  [Unit.MICROLITER, 'µl'],
   [Unit.GRAM, 'g'],
   [Unit.MILLIGRAM, 'mg'],
   [Unit.MICROGRAM, 'µg'],
@@ -173,7 +173,7 @@ const unitMapping = new Map<Unit, string>([
   [Unit.GRAM_PER_MOL, 'g/mol'],
 
   [Unit.MILLIGRAM_PER_KILOGRAM, 'mg/kg'],
-  [Unit.MILLIGRAM_PER_LITRE, 'mg/l'],
+  [Unit.MILLIGRAM_PER_LITER, 'mg/l'],
 
   [Unit.PARTS_PER_MILLION, 'ppm'],
 
@@ -198,8 +198,8 @@ class UnitGroups {
     Unit.MILLIGRAM,
     Unit.MICROGRAM,
     Unit.LITRE,
-    Unit.MILLILITRE,
-    Unit.MICROLITRE,
+    Unit.MILLILITER,
+    Unit.MICROLITER,
     Unit.MOL,
     Unit.MILLIMOL,
     Unit.PIECES,
@@ -220,7 +220,7 @@ class UnitGroups {
   ];
   public readonly lethalUnits = [
     Unit.MILLIGRAM_PER_KILOGRAM,
-    Unit.MILLIGRAM_PER_LITRE,
+    Unit.MILLIGRAM_PER_LITER,
     // Unit.CUSTOM,
   ];
   public readonly defaultUnitGroups: GroupMapping[] = [
