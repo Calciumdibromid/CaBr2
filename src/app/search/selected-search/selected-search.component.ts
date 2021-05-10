@@ -121,16 +121,17 @@ export class SelectedSearchComponent {
         if (result === 'mane six') {
           this.load();
         }
-        this.providerService.searchSuggestions(this.providerIdentifier,
-          selectionGroup.get('searchOption')?.value, result).subscribe(
-          (response) => {
-            this.suggestionResults.set(selectionGroup.get('searchOption')?.value, response);
-          },
-          (err) => {
-            logger.error('loading search suggestions failed:', err);
-            this.alertService.error(this.strings.error.loadSearchSuggestions);
-          },
-        );
+        this.providerService
+          .searchSuggestions(this.providerIdentifier, selectionGroup.get('searchOption')?.value, result)
+          .subscribe(
+            (response) => {
+              this.suggestionResults.set(selectionGroup.get('searchOption')?.value, response);
+            },
+            (err) => {
+              logger.error('loading search suggestions failed:', err);
+              this.alertService.error(this.strings.error.loadSearchSuggestions);
+            },
+          );
       });
   }
 

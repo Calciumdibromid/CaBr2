@@ -1,7 +1,11 @@
 <mat-card class="onepager-mat-card">
   <mat-tab-group [(selectedIndex)]="index">
     <mat-tab *ngFor="let provider of providers" class="flex" [label]="provider.name">
-      <app-selected-search (triggerSearch)="openDialog(index)" [providerIdentifier]="provider.identifier" class="width-100"></app-selected-search>
+      <app-selected-search
+        (triggerSearch)="openDialog(index)"
+        [providerIdentifier]="provider.identifier"
+        class="width-100"
+      ></app-selected-search>
     </mat-tab>
   </mat-tab-group>
   <button class="button unselectable" mat-flat-button color="primary" (click)="openDialog(index)">

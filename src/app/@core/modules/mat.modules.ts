@@ -40,7 +40,7 @@ const modules = [
   MatTooltipModule,
   MatTableModule,
   DragDropModule,
-  MatTabsModule
+  MatTabsModule,
 ];
 
 @NgModule({
