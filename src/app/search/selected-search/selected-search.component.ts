@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
@@ -24,6 +24,9 @@ const logger = new Logger('selected-search');
 export class SelectedSearchComponent {
   @Output()
   triggerSearch = new EventEmitter();
+
+  @Input()
+  providerIdentifier!: string;
 
   strings!: LocalizedStrings;
 
@@ -95,7 +98,7 @@ export class SelectedSearchComponent {
     this.suggestionResults.forEach((value) => {
       value.splice(0, value.length);
     });
-    this.triggerSearch.emit();
+    this.triggerSearch.emit(this.providerIdentifier);
     return false;
   }
 
@@ -118,7 +121,8 @@ export class SelectedSearchComponent {
         if (result === 'mane six') {
           this.load();
         }
-        this.providerService.searchSuggestions('gestis', selectionGroup.get('searchOption')?.value, result).subscribe(
+        this.providerService.searchSuggestions(this.providerIdentifier,
+          selectionGroup.get('searchOption')?.value, result).subscribe(
           (response) => {
             this.suggestionResults.set(selectionGroup.get('searchOption')?.value, response);
           },
