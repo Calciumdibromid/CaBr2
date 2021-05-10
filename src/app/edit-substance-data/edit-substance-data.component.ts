@@ -96,7 +96,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       lethalDose: this.modifiedOrOriginal(this.data.lethalDose) ?? '',
       mak: this.modifiedOrOriginal(this.data.mak) ?? '',
       amount: this.formBuilder.group({
-        value: [amount.value, Validators.pattern('^\\d[\\d,\\.]*$')],
+        value: amount.value,
         unit: amount.unit,
       }),
     });
