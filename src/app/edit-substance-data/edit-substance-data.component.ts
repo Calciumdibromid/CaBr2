@@ -1,7 +1,7 @@
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import {
@@ -17,6 +17,7 @@ import { compareArrays } from '../@core/utils/compare';
 import { GlobalModel } from '../@core/models/global.model';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 import Logger from '../@core/utils/logger';
+import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
 const logger = new Logger('edit-substance-data');
 
@@ -55,6 +56,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: SubstanceData,
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
+    private dialog: MatDialog,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
 
@@ -183,6 +185,15 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     // if form is invalid do nothing
     if (this.form.invalid) {
+      this.dialog.open(YesNoDialogComponent, {
+        data: {
+          iconName: 'error',
+          title: this.strings.substance.invalidFormsTitle,
+          content: this.strings.substance.invalidFormsContent,
+          listItems: this.checkForInvalidControls(),
+          disableCancel: true,
+        },
+      });
       return;
     }
 
@@ -227,6 +238,23 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     } else {
       return this.data.amount;
     }
+  }
+
+  private checkForInvalidControls(): string[] {
+    const reasons = [];
+    if (this.form.get('name')?.invalid) {
+      reasons.push(this.strings.substance.name);
+    }
+
+    if (this.hPhrases.controls.some((control) => control.invalid)) {
+      reasons.push(this.strings.substance.invalidHPhrase);
+    }
+
+    if (this.pPhrases.controls.some((control) => control.invalid)) {
+      reasons.push(this.strings.substance.invalidPPhrase);
+    }
+
+    return reasons;
   }
 
   private evaluateForm<T>(formControlName: string, currentData: Data<T>): Data<T> {

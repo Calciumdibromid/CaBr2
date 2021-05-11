@@ -58,6 +58,8 @@
       "error": "An error occurred while retrieving data"
     },
     "substance": {
+      "invalidFormsTitle": "Something is wrong",
+      "invalidFormsContent": ["The substance has invalid or missing data on following items:"],
       "edited": "Edited?",
       "name": "Name",
       "needsName": "Name is required",
@@ -76,10 +78,12 @@
       "customUnit": "Custom unit",
       "hPhrases": "H-phrases",
       "noHPhrase": "Invalid H-number",
+      "invalidHPhrase": "Invalid H-Phrases",
       "removeHPhrase": "remove H-phrase",
       "addHPhrase": "add H-phrase",
       "pPhrases": "P-phrases",
       "noPPhrase": "Invalid P-number",
+      "invalidPPhrase": "Invalid P-Phrases",
       "removePPhrase": "remove P-phrase",
       "addPPhrase": "add P-phrase",
       "editingHint": "Click on substance to edit.",
