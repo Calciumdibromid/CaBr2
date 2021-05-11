@@ -59,7 +59,7 @@
     },
     "substance": {
       "invalidFormsTitle": "Something is wrong",
-      "invalidFormsContent": ["The substance has invalid data on following forms:"],
+      "invalidFormsContent": ["The substance has invalid or missing data on following items:"],
       "edited": "Edited?",
       "name": "Name",
       "needsName": "Name is required",

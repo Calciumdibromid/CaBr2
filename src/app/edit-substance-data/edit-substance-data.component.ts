@@ -241,23 +241,20 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   }
 
   private checkForInvalidControls(): string[] {
-    const reasonForInvalid = [];
+    const reasons = [];
     if (this.form.get('name')?.invalid) {
-      reasonForInvalid.push(this.strings.substance.name);
+      reasons.push(this.strings.substance.name);
     }
 
-    const invalidHPhrases = this.hPhrases.controls.find((control) => control.invalid);
-    const invalidPPhrases = this.pPhrases.controls.find((control) => control.invalid);
-
-    if (invalidHPhrases) {
-      reasonForInvalid.push(this.strings.substance.invalidHPhrase);
+    if (this.hPhrases.controls.some((control) => control.invalid)) {
+      reasons.push(this.strings.substance.invalidHPhrase);
     }
 
-    if (invalidPPhrases) {
-      reasonForInvalid.push(this.strings.substance.invalidPPhrase);
+    if (this.pPhrases.controls.some((control) => control.invalid)) {
+      reasons.push(this.strings.substance.invalidPPhrase);
     }
 
-    return reasonForInvalid;
+    return reasons;
   }
 
   private evaluateForm<T>(formControlName: string, currentData: Data<T>): Data<T> {
