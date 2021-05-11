@@ -6,10 +6,10 @@
     <mat-menu #menu="matMenu">
       <button mat-menu-item (click)="newDocument()">{{ strings.menu.newDocument }}</button>
       <button mat-menu-item (click)="loadFile()">{{ strings.menu.loadFile }}</button>
-      <button mat-menu-item (click)="exportFile({ name: 'CaBr2', extensions: ['cb2'] })">
+      <button mat-menu-item (click)="exportCab2File()">
         {{ strings.menu.saveFile }}
       </button>
-      <button mat-menu-item (click)="exportFile({ name: 'PDF', extensions: ['pdf'] })">
+      <button mat-menu-item (click)="exportPDFFile()">
         {{ strings.menu.exportPDF }}
       </button>
       <mat-divider></mat-divider>
@@ -77,7 +77,7 @@
         class="unselectable"
         mat-raised-button
         color="primary"
-        (click)="exportFile({ name: 'CaBr2', extensions: ['cb2'] })"
+        (click)="exportCab2File()"
       >
         {{ strings.menu.saveFile }}
       </button>
@@ -85,7 +85,7 @@
         class="unselectable"
         mat-raised-button
         color="primary"
-        (click)="exportFile({ name: 'PDF', extensions: ['pdf'] })"
+        (click)="exportPDFFile()"
       >
         {{ strings.menu.exportPDF }}
       </button>
