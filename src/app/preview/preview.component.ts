@@ -132,6 +132,7 @@ export class PreviewComponent implements OnInit {
   }
 
   unitToString(unit?: Unit | CustomUnit): string {
+    // if unit is undefined the type is object
     if ((typeof unit) === 'object') {
       if (unit !== null) {
         return (unit as CustomUnit).name;
@@ -139,11 +140,13 @@ export class PreviewComponent implements OnInit {
       return '';
     }
 
+    // unit must be defined because of the check above
     const name = unitMapping.get((unit as Unit));
     if (name) {
       return name;
     }
 
+    // should never occur, just for completeness
     throw new Error(`unknown unit: ${unit}`);
   }
 }
