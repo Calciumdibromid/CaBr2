@@ -32,8 +32,10 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ strings.substance.unit }}</mat-label>
-          <mat-select [value]="0" [disabled]="true">
-            <mat-option [value]="0">g/mol</mat-option>
+          <mat-select [value]="unit.GRAM_PER_MOL" [disabled]="true">
+            <mat-option [value]="unit.GRAM_PER_MOL">
+              {{ getViewValue(unit.GRAM_PER_MOL) }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -44,8 +46,10 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ strings.substance.unit }}</mat-label>
-          <mat-select [value]="0" [disabled]="true">
-            <mat-option [value]="0">mg/kg</mat-option>
+          <mat-select [value]="unit.MILLIGRAM_PER_KILOGRAM" [disabled]="true">
+            <mat-option *ngFor="let unit of unitGroups.lethalUnits" [value]="unit">
+              {{ getViewValue(unit) }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -55,8 +59,10 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>{{ strings.substance.unit }}</mat-label>
-        <mat-select [value]="0" [disabled]="true">
-          <mat-option [value]="0">ppm</mat-option>
+        <mat-select [value]="unit.PARTS_PER_MILLION" [disabled]="true">
+          <mat-option [value]="unit.PARTS_PER_MILLION">
+            {{ getViewValue(unit.PARTS_PER_MILLION) }}
+          </mat-option>
         </mat-select>
       </mat-form-field>
       <div>
@@ -66,9 +72,9 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ strings.substance.unit }}</mat-label>
-          <mat-select [value]="temperatureUnit.CELSIUS" [disabled]="true">
-            <mat-option *ngFor="let unit of temperatureUnitMappings" [value]="unit.value">
-              {{ unit.viewValue }}
+          <mat-select [value]="unit.CELSIUS" [disabled]="true">
+            <mat-option *ngFor="let unit of unitGroups.temperatureUnits" [value]="unit">
+              {{ getViewValue(unit) }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -80,9 +86,9 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ strings.substance.unit }}</mat-label>
-          <mat-select [value]="temperatureUnit.CELSIUS" [disabled]="true">
-            <mat-option *ngFor="let unit of temperatureUnitMappings" [value]="unit.value">
-              {{ unit.viewValue }}
+          <mat-select [value]="unit.CELSIUS" [disabled]="true">
+            <mat-option *ngFor="let unit of unitGroups.temperatureUnits" [value]="unit">
+              {{ getViewValue(unit) }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -95,13 +101,9 @@
         <mat-form-field>
           <mat-label>{{ strings.substance.unit }}</mat-label>
           <mat-select formControlName="unit">
-            <mat-optgroup *ngFor="let group of unitMappings" [label]="group.viewValue">
-              <mat-option
-                *ngFor="let option of group.unitMappings"
-                [value]="option.value"
-                [disabled]="option.value === unit.CUSTOM"
-              >
-                {{ option.viewValue }}
+            <mat-optgroup *ngFor="let group of unitGroups.defaultUnitGroups" [label]="group.viewValue">
+              <mat-option *ngFor="let option of group.unitMappings" [value]="option">
+                {{ getViewValue(option) }}
               </mat-option>
             </mat-optgroup>
           </mat-select>
