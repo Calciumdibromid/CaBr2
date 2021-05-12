@@ -46,7 +46,7 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ strings.substance.unit }}</mat-label>
-          <mat-select [value]="unit.MILLIGRAM_PER_KILOGRAM" [disabled]="false">
+          <mat-select [value]="unit.MILLIGRAM_PER_KILOGRAM" [disabled]="true">
             <mat-option *ngFor="let unit of unitGroups.lethalUnits" [value]="unit">
               {{ getViewValue(unit) }}
             </mat-option>
@@ -72,7 +72,7 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ strings.substance.unit }}</mat-label>
-          <mat-select [value]="unit.CELSIUS" [disabled]="false">
+          <mat-select [value]="unit.CELSIUS" [disabled]="true">
             <mat-option *ngFor="let unit of unitGroups.temperatureUnits" [value]="unit">
               {{ getViewValue(unit) }}
             </mat-option>
@@ -86,7 +86,7 @@
         </mat-form-field>
         <mat-form-field>
           <mat-label>{{ strings.substance.unit }}</mat-label>
-          <mat-select [value]="unit.CELSIUS" [disabled]="false">
+          <mat-select [value]="unit.CELSIUS" [disabled]="true">
             <mat-option *ngFor="let unit of unitGroups.temperatureUnits" [value]="unit">
               {{ getViewValue(unit) }}
             </mat-option>
