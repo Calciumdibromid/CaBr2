@@ -62,7 +62,7 @@
         </td>
         <td>{{ getPhraseNumber(data.hPhrases).join(', ') }}<br />{{ getPhraseNumber(data.pPhrases).join(', ') }}</td>
         <td>{{ data.mak }}<br />{{ data.waterHazardClass }}</td>
-        <td>{{ data.amount?.value }} {{ data.amount?.unit }}</td>
+        <td>{{ data.amount?.value }} {{ unitToString(data.amount?.unit) }}</td>
       </tr>
 
       <!-- h and p -->

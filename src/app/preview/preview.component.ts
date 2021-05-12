@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
 
-import { Amount } from '../@core/models/substances.model';
+import { Amount, CustomUnit, Unit, unitMapping } from '../@core/models/substances.model';
 import { GlobalModel } from '../@core/models/global.model';
 import { Header } from '../@core/interfaces/Header';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
@@ -129,5 +129,21 @@ export class PreviewComponent implements OnInit {
 
   getProviders(): string {
     return Array.from(this.sources.values()).join(', ');
+  }
+
+  unitToString(unit?: Unit | CustomUnit): string {
+    if ((typeof unit) === 'object') {
+      if (unit !== null) {
+        return (unit as CustomUnit).name;
+      }
+      return '';
+    }
+
+    const name = unitMapping.get((unit as Unit));
+    if (name) {
+      return name;
+    }
+
+    throw new Error(`unknown unit: ${unit}`);
   }
 }
