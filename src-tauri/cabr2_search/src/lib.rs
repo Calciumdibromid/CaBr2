@@ -3,7 +3,7 @@
 #![allow(clippy::upper_case_acronyms)]
 
 mod error;
-mod handler;
+pub mod handler;
 mod types;
 
 #[cfg(feature = "gestis")]

@@ -1,15 +1,12 @@
 use std::collections::HashMap;
 
 use tauri::{plugin::Plugin, InvokeMessage, Params, Window};
-use ureq::AgentBuilder;
 
 use cabr2_types::SubstanceData;
 
-#[cfg(feature = "gestis")]
-use crate::gestis;
 use crate::{
   error::Result,
-  handler,
+  handler::{self, init_providers},
   types::{ProviderInfo, SearchArguments, SearchResponse, SearchType},
 };
 
@@ -39,15 +36,7 @@ pub struct Search<M: Params> {
 
 impl<M: Params> Search<M> {
   pub fn new() -> Self {
-    let agent = AgentBuilder::new()
-      .user_agent(&format!("cabr2/v{}", env!("CARGO_PKG_VERSION")))
-      .build();
-
-    let mut providers = handler::REGISTERED_PROVIDERS.lock().unwrap();
-    #[cfg(feature = "gestis")]
-    providers.insert("gestis", Box::new(gestis::Gestis::new(agent)));
-
-    use super::plugin::*;
+    init_providers();
     Search {
       invoke_handler: Box::new(tauri::generate_handler![
         get_available_providers,
