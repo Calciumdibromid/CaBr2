@@ -52,7 +52,43 @@ export class SelectedSearchComponent {
     this.providerService.searchTypeMappingsObservable.subscribe((mapping) => (this.searchOptions = mapping));
   }
 
-  initSelectionForm(): FormGroup {
+  get selections(): FormArray {
+    return this.form?.get('selections') as FormArray;
+  }
+
+  addSearchOption(): void {
+    this.selections.push(this.initSelectionForm());
+  }
+
+  removeSearchOption(index: number): void {
+    this.selections.removeAt(index);
+  }
+
+  isDisabled(option: SearchType): boolean {
+    return this.selections.controls.some((selection) => selection.get('searchOption')?.value === option);
+  }
+
+  onEnter(event: any): boolean {
+    event.preventDefault();
+    this.suggestionResults.forEach((value) => {
+      value.splice(0, value.length);
+    });
+    this.triggerSearch.emit();
+    return false;
+  }
+
+  getSearchArguments(): SearchArgument[] {
+    return this.selections.controls.map<SearchArgument>((control) => ({
+      searchType: control.get('searchOption')?.value,
+      pattern: control.get('userInput')?.value,
+    }));
+  }
+
+  clear(): void {
+    this.selections.controls.map((control) => control.patchValue({ userInput: '' }));
+  }
+
+  private initSelectionForm(): FormGroup {
     let searchOption;
 
     for (const option of searchTypes) {
@@ -75,42 +111,6 @@ export class SelectedSearchComponent {
     this.registerValueChangeListener(selectionGroup);
 
     return selectionGroup;
-  }
-
-  get selections(): FormArray {
-    return this.form?.get('selections') as FormArray;
-  }
-
-  addSearchOption(): void {
-    this.selections.push(this.initSelectionForm());
-  }
-
-  removeSearchOption(index: number): void {
-    this.selections.removeAt(index);
-  }
-
-  isDisabled(option: SearchType): boolean {
-    return this.selections.controls.some((selection) => selection.get('searchOption')?.value === option);
-  }
-
-  onEnter(event: any): boolean {
-    event.preventDefault();
-    this.suggestionResults.forEach((value) => {
-      value.splice(0, value.length);
-    });
-    this.triggerSearch.emit(this.providerIdentifier);
-    return false;
-  }
-
-  onSubmit(): SearchArgument[] {
-    return this.selections.controls.map<SearchArgument>((control) => ({
-      searchType: control.get('searchOption')?.value,
-      pattern: control.get('userInput')?.value,
-    }));
-  }
-
-  clear(): void {
-    this.selections.controls.map((control) => control.patchValue({ userInput: '' }));
   }
 
   private registerValueChangeListener(selectionGroup: FormGroup): void {
@@ -153,7 +153,6 @@ export class SelectedSearchComponent {
   private loadScript(src: string): HTMLScriptElement {
     const sc = document.createElement('script');
     sc.setAttribute('async', 'async');
-    // sc.setAttribute('type', 'text/javascript');
     sc.src = src;
     const head = document.head || document.getElementsByTagName('head')[0];
     head.insertBefore(sc, head.firstChild);

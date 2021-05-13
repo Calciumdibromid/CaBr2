@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
@@ -27,8 +27,8 @@ const GESTIS_URL_RE = new RegExp('https:\\/\\/gestis-api\\.dguv\\.de\\/api\\/art
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
-  @ViewChild(SelectedSearchComponent)
-  selectedSearch: SelectedSearchComponent | undefined;
+  @ViewChildren(SelectedSearchComponent)
+  selectedSearchComponents!: QueryList<SelectedSearchComponent>;
 
   res: SearchArgument[] = [];
 
@@ -69,17 +69,25 @@ export class SearchComponent implements OnInit {
     });
   }
 
+  clearSearchArguments(): void {
+    this.selectedSearchComponents.forEach((selectedSearchComponent) => selectedSearchComponent.clear());
+  }
+
   openDialog(index: number): void {
+    const providerIdentifier = this.providers[index].identifier;
+    const searchArguments = this.selectedSearchComponents.toArray()[index].getSearchArguments();
+
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       data: {
-        arguments: this.selectedSearch?.onSubmit(),
+        arguments: searchArguments,
+        providerIdentifier,
       },
       panelClass: ['unselectable', 'undragable'],
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.providerService.substanceData(this.providers[index].identifier, result.zvgNumber).subscribe(
+        this.providerService.substanceData(providerIdentifier, result.zvgNumber).subscribe(
           (value) => {
             const cas = this.modifiedOrOriginal(value.cas);
             if (
@@ -100,7 +108,7 @@ export class SearchComponent implements OnInit {
           },
         );
 
-        this.selectedSearch?.clear();
+        this.clearSearchArguments();
       }
     });
   }
