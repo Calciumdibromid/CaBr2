@@ -6,7 +6,7 @@ use cabr2_types::logging::LogLevel;
 use crate::setup_logger;
 
 #[tauri::command]
-pub fn log_cmd(level: LogLevel, path: String, messages: Vec<Value>) -> Result<(), String> {
+pub fn log(level: LogLevel, path: String, messages: Vec<Value>) -> Result<(), String> {
   let mut formatted_messages = Vec::with_capacity(messages.len());
   for message in messages {
     match message {
@@ -39,7 +39,7 @@ impl<M: Params> Logger<M> {
     setup_logger().unwrap();
 
     Logger {
-      invoke_handler: Box::new(tauri::generate_handler![log_cmd]),
+      invoke_handler: Box::new(tauri::generate_handler![log]),
     }
   }
 }
