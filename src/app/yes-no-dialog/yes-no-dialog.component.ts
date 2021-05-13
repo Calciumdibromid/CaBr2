@@ -10,6 +10,7 @@ export interface YesNoDialogData {
   content: string[];
   listItems?: string[];
   footerText?: string[];
+  disableCancel?: boolean;
 }
 
 @Component({
@@ -23,7 +24,7 @@ export class YesNoDialogComponent {
   /**
    * To use this component you must inject `MatDialog`.
    *
-   * The value `iconName` is optional.
+   * The values `iconName`, `listItems` and `footerText` are optional.
    *
    * Get icon names from [here](https://material.io/resources/icons/?icon=info&style=baseline)
    * ```ts
@@ -32,6 +33,9 @@ export class YesNoDialogComponent {
    *    iconName: 'exampleIcon',
    *    title: 'Example title',
    *    content: 'Example content'
+   *    listItems: string[],
+   *    footerText: 'Footer text',
+   *    disableCancel: true
    *  },
    *  autofocus: false  // default is true
    * });

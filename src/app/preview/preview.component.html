@@ -3,6 +3,7 @@
     <b>{{ strings.preview.info }}</b>
   </h2>
   <div class="flex">
+    <!-- #region first page -->
     <table class="unselectable">
       <!-- header -->
       <tr>
@@ -61,7 +62,7 @@
         </td>
         <td>{{ getPhraseNumber(data.hPhrases).join(', ') }}<br />{{ getPhraseNumber(data.pPhrases).join(', ') }}</td>
         <td>{{ data.mak }}<br />{{ data.waterHazardClass }}</td>
-        <td>{{ data.amount?.value }} {{ data.amount?.unit }}</td>
+        <td>{{ data.amount?.value }} {{ unitToString(data.amount?.unit) }}</td>
       </tr>
 
       <!-- h and p -->
@@ -87,6 +88,11 @@
         </td>
       </tr>
     </table>
+
+    <!-- #endregion -->
+
+    <!-- #region second page -->
+
     <table class="print unselectable">
       <tr>
         <td colspan="2" class="top height-5cm9">
@@ -137,5 +143,6 @@
         </td>
       </tr>
     </table>
+    <!-- #endregion -->
   </div>
 </mat-card>

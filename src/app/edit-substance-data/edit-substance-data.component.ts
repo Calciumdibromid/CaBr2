@@ -1,22 +1,23 @@
 import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
 import {
   Amount,
   Data,
+  getViewValue,
+  modifiedOrOriginal,
   SubstanceData,
-  TemperatureUnit,
-  temperatureUnitMapping,
   Unit,
-  unitMappings,
+  unitGroups,
 } from '../@core/models/substances.model';
 import { compareArrays } from '../@core/utils/compare';
 import { GlobalModel } from '../@core/models/global.model';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
 import Logger from '../@core/utils/logger';
+import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
 const logger = new Logger('edit-substance-data');
 
@@ -34,13 +35,9 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
   addPPhraseHover = false;
 
-  unitMappings = unitMappings;
-
   unit = Unit;
 
-  temperatureUnitMappings = temperatureUnitMapping;
-
-  temperatureUnit = TemperatureUnit;
+  unitGroups = unitGroups;
 
   customUnitVisible = false;
 
@@ -49,12 +46,15 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
   customSubscription?: Subscription;
 
+  getViewValue = getViewValue;
+
   constructor(
     public dialogRef: MatDialogRef<EditSubstanceDataComponent>,
     public globals: GlobalModel,
     @Inject(MAT_DIALOG_DATA) public data: SubstanceData,
     private formBuilder: FormBuilder,
     private sanitizer: DomSanitizer,
+    private dialog: MatDialog,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
 
@@ -76,23 +76,23 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     const amount = this.data.amount ?? { value: '', unit: Unit.GRAM };
 
     const group = this.formBuilder.group({
-      name: [this.modifiedOrOriginal(this.data.name), Validators.required],
-      cas: this.modifiedOrOriginal(this.data.cas) ?? '',
-      molecularFormula: this.modifiedOrOriginal(this.data.molecularFormula),
-      molarMass: this.modifiedOrOriginal(this.data.molarMass) ?? '',
-      meltingPoint: this.modifiedOrOriginal(this.data.meltingPoint) ?? '',
-      boilingPoint: this.modifiedOrOriginal(this.data.boilingPoint) ?? '',
-      waterHazardClass: this.modifiedOrOriginal(this.data.waterHazardClass) ?? '',
+      name: [modifiedOrOriginal(this.data.name), Validators.required],
+      cas: modifiedOrOriginal(this.data.cas) ?? '',
+      molecularFormula: modifiedOrOriginal(this.data.molecularFormula),
+      molarMass: modifiedOrOriginal(this.data.molarMass) ?? '',
+      meltingPoint: modifiedOrOriginal(this.data.meltingPoint) ?? '',
+      boilingPoint: modifiedOrOriginal(this.data.boilingPoint) ?? '',
+      waterHazardClass: modifiedOrOriginal(this.data.waterHazardClass) ?? '',
       hPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal<[string, string][]>(this.data.hPhrases).map((hPhrase) => this.initHPhrases(hPhrase)),
+        modifiedOrOriginal<[string, string][]>(this.data.hPhrases).map((hPhrase) => this.initHPhrases(hPhrase)),
       ),
       pPhrases: this.formBuilder.array(
-        this.modifiedOrOriginal<[string, string][]>(this.data.pPhrases).map((pPhrase) => this.initPPhrases(pPhrase)),
+        modifiedOrOriginal<[string, string][]>(this.data.pPhrases).map((pPhrase) => this.initPPhrases(pPhrase)),
       ),
-      signalWord: this.modifiedOrOriginal(this.data.signalWord) ?? '',
-      symbols: this.formBuilder.array(this.modifiedOrOriginal(this.data.symbols)),
-      lethalDose: this.modifiedOrOriginal(this.data.lethalDose) ?? '',
-      mak: this.modifiedOrOriginal(this.data.mak) ?? '',
+      signalWord: modifiedOrOriginal(this.data.signalWord) ?? '',
+      symbols: this.formBuilder.array(modifiedOrOriginal(this.data.symbols)),
+      lethalDose: modifiedOrOriginal(this.data.lethalDose) ?? '',
+      mak: modifiedOrOriginal(this.data.mak) ?? '',
       amount: this.formBuilder.group({
         value: amount.value,
         unit: amount.unit,
@@ -183,6 +183,15 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     // if form is invalid do nothing
     if (this.form.invalid) {
+      this.dialog.open(YesNoDialogComponent, {
+        data: {
+          iconName: 'error',
+          title: this.strings.substance.invalidFormsTitle,
+          content: this.strings.substance.invalidFormsContent,
+          listItems: this.checkForInvalidControls(),
+          disableCancel: true,
+        },
+      });
       return;
     }
 
@@ -229,6 +238,23 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     }
   }
 
+  private checkForInvalidControls(): string[] {
+    const reasons = [];
+    if (this.form.get('name')?.invalid) {
+      reasons.push(this.strings.substance.name);
+    }
+
+    if (this.hPhrases.controls.some((control) => control.invalid)) {
+      reasons.push(this.strings.substance.invalidHPhrase);
+    }
+
+    if (this.pPhrases.controls.some((control) => control.invalid)) {
+      reasons.push(this.strings.substance.invalidPPhrase);
+    }
+
+    return reasons;
+  }
+
   private evaluateForm<T>(formControlName: string, currentData: Data<T>): Data<T> {
     const control = this.form?.get(formControlName);
 
@@ -259,10 +285,5 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       return retData;
     }
     return currentData;
-  }
-
-  // TODO move to SubstanceData class
-  private modifiedOrOriginal<T>(obj: Data<T>): T {
-    return obj.modifiedData ?? obj.originalData;
   }
 }
