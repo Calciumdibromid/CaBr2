@@ -38,6 +38,7 @@ default = [
   "cabr2",
   "pdf",
   "gestis",
+  "tauri_app",
 ]
 portable = [ "cabr2_config/portable" ]
 custom-protocol = [ "tauri/custom-protocol" ] # needed for tauri release builds
