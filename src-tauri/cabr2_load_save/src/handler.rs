@@ -6,11 +6,11 @@ use std::{
 
 use lazy_static::lazy_static;
 
-use crate::types::DialogFilter;
+use cabr2_types::ProviderMapping;
 
-use super::{
+use crate::{
   error::{LoadSaveError, Result},
-  types::{CaBr2Document, DocumentTypes, Loader, Saver},
+  types::{CaBr2Document, DialogFilter, DocumentTypes, Loader, Saver},
 };
 
 type LoadersMap = Arc<Mutex<HashMap<&'static str, (&'static str, Box<dyn Loader + Send + Sync>)>>>;
@@ -19,6 +19,20 @@ type SaversMap = Arc<Mutex<HashMap<&'static str, (&'static str, Box<dyn Saver + 
 lazy_static! {
   pub static ref REGISTERED_LOADERS: LoadersMap = Arc::new(Mutex::new(HashMap::new()));
   pub static ref REGISTERED_SAVERS: SaversMap = Arc::new(Mutex::new(HashMap::new()));
+}
+
+pub fn init_handlers(_provider_mapping: ProviderMapping) {
+  let mut _loaders = REGISTERED_LOADERS.lock().unwrap();
+  #[cfg(feature = "cabr2")]
+  _loaders.insert("cb2", ("CaBr2", Box::new(crate::cabr2::CaBr2)));
+  #[cfg(feature = "beryllium")]
+  _loaders.insert("be", ("Beryllium", Box::new(crate::beryllium::Beryllium)));
+
+  let mut _savers = REGISTERED_SAVERS.lock().unwrap();
+  #[cfg(feature = "cabr2")]
+  _savers.insert("cb2", ("CaBr2", Box::new(crate::cabr2::CaBr2)));
+  #[cfg(feature = "pdf")]
+  _savers.insert("pdf", ("PDF", Box::new(crate::pdf::PDF::new(_provider_mapping))));
 }
 
 pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Document) -> Result<()> {
