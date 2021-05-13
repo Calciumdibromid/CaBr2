@@ -11,6 +11,11 @@ import { ProviderService } from '../../@core/services/provider/provider.service'
 
 const logger = new Logger('search-dialog');
 
+interface Data {
+  arguments: SearchArgument[];
+  providerIdentifier: string;
+}
+
 @Component({
   selector: 'app-search-dialog',
   templateUrl: './search-dialog.component.html',
@@ -28,7 +33,7 @@ export class SearchDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<SearchDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { arguments: SearchArgument[] },
+    @Inject(MAT_DIALOG_DATA) public data: Data,
 
     private globals: GlobalModel,
     private providerService: ProviderService,
@@ -38,7 +43,7 @@ export class SearchDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscription = this.providerService.search('gestis', {
+    this.subscription = this.providerService.search(this.data.providerIdentifier, {
       arguments: this.data.arguments,
       exact: this.exactSearch,
     });
