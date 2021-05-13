@@ -4,7 +4,13 @@
     "devPath": "http://localhost:4200",
     "beforeDevCommand": "",
     "beforeBuildCommand": "",
-    "features": ["tauri_app"]
+    "features": [
+      "tauri_app",
+      "beryllium",
+      "cabr2",
+      "pdf",
+      "gestis"
+    ]
   },
   "tauri": {
     "bundle": {

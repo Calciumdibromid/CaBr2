@@ -44,7 +44,6 @@ portable = [ "cabr2_config/portable" ]
 custom-protocol = [ "tauri/custom-protocol" ] # needed for tauri release builds
 tauri_app = [
   "tauri",
-  "custom-protocol",
   "cabr2_logger",
   "cabr2_config/tauri_plugin",
   "cabr2_load_save/tauri_plugin",
