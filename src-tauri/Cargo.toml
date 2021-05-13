@@ -5,7 +5,7 @@ description = 'Generate "experiment wise safety sheets" in compliance to Europea
 authors = [
   "Epsilon_02 <epsilon_02@mailbox.org>",
   "crapStone <crapstone01@gmail.com>",
-  "6543 <6543@obermui.de>"
+  "6543 <6543@obermui.de>",
 ]
 license = "GPLv3+"
 repository = "https://github.com/Calciumdibromid/CaBr2/"
@@ -25,16 +25,40 @@ tauri-build = { version = "1.0.0-beta-rc.0" }
 
 [dependencies]
 cabr2_config = { path = "./cabr2_config/" }
-cabr2_load_save = { path = "./cabr2_load_save/", features = ["beryllium", "cabr2"] }
-cabr2_logger = { path = "./cabr2_logger/" }
-cabr2_search = { path = "./cabr2_search/", features = [ "tauri_plugin", "gestis" ] }
+cabr2_load_save = { path = "./cabr2_load_save/" }
+cabr2_logger = { path = "./cabr2_logger/", optional = true }
+cabr2_search = { path = "./cabr2_search/" }
 log = "0.4.14"
-tauri = { version = "1.0.0-beta-rc.4", features = ["api-all"] }
+tauri = { version = "1.0.0-beta-rc.4", features = ["api-all"], optional = true }
 
 [features]
-custom-protocol = [ "tauri/custom-protocol" ]
+default = [
+  "portable",
+  "beryllium",
+  "cabr2",
+  "pdf",
+  "gestis",
+  "tauri_app",
+]
 portable = [ "cabr2_config/portable" ]
-default = [ "custom-protocol", "portable" ]
+custom-protocol = [ "tauri/custom-protocol" ] # needed for tauri release builds
+tauri_app = [
+  "tauri",
+  "custom-protocol",
+  "cabr2_logger",
+  "cabr2_config/tauri_plugin",
+  "cabr2_load_save/tauri_plugin",
+  "cabr2_search/tauri_plugin",
+]
+webserver = [ ]
+
+# cabr2_load_save file types
+beryllium = [ "cabr2_load_save/beryllium" ]
+cabr2 = [ "cabr2_load_save/cabr2" ]
+pdf = [ "cabr2_load_save/pdf" ]
+
+# cabr2_search providers
+gestis = [ "cabr2_search/gestis" ]
 
 [workspace]
 members = [
@@ -42,7 +66,7 @@ members = [
   "cabr2_config",
   "cabr2_load_save",
   "cabr2_logger",
-  "cabr2_search"
+  "cabr2_search",
 ]
 
 [profile.release]

@@ -8,16 +8,25 @@ use lazy_static::lazy_static;
 
 use cabr2_types::SubstanceData;
 
-use crate::types::{ProviderInfo, SearchArguments, SearchResponse, SearchType};
-
-use super::{
+use crate::{
   error::{Result, SearchError},
-  types::Provider,
+  types::{Provider, ProviderInfo, SearchArguments, SearchResponse, SearchType},
 };
 
 lazy_static! {
   pub static ref REGISTERED_PROVIDERS: Arc<Mutex<HashMap<&'static str, Box<dyn Provider + Send + Sync>>>> =
     Arc::new(Mutex::new(HashMap::new()));
+}
+
+pub fn init_providers() {
+  #[cfg(feature = "gestis")]
+  let agent = ureq::AgentBuilder::new()
+    .user_agent(&format!("cabr2/v{}", env!("CARGO_PKG_VERSION")))
+    .build();
+
+  let mut _providers = REGISTERED_PROVIDERS.lock().unwrap();
+  #[cfg(feature = "gestis")]
+  _providers.insert("gestis", Box::new(crate::gestis::Gestis::new(agent)));
 }
 
 pub fn get_available_providers() -> Result<Vec<ProviderInfo>> {
