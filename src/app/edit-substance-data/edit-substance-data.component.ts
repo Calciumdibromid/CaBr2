@@ -180,6 +180,44 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     formArray.markAllAsTouched();
   }
 
+  resetToOriginalData(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const amount = this.data.amount ?? { value: '', unit: Unit.GRAM };
+
+    this.form.reset({
+      name: modifiedOrOriginal(this.data.name),
+      cas: modifiedOrOriginal(this.data.cas) ?? '',
+      molecularFormula: modifiedOrOriginal(this.data.molecularFormula),
+      molarMass: modifiedOrOriginal(this.data.molarMass) ?? '',
+      meltingPoint: modifiedOrOriginal(this.data.meltingPoint) ?? '',
+      boilingPoint: modifiedOrOriginal(this.data.boilingPoint) ?? '',
+      waterHazardClass: modifiedOrOriginal(this.data.waterHazardClass) ?? '',
+      signalWord: modifiedOrOriginal(this.data.signalWord) ?? '',
+      lethalDose: modifiedOrOriginal(this.data.lethalDose) ?? '',
+      mak: modifiedOrOriginal(this.data.mak) ?? '',
+      amount: {
+        value: amount.value,
+        unit: amount.unit,
+      },
+    });
+
+    // can't deduplicate this piece of code something with an undefined and formBuilder (don't ask)
+    // if you think you can solve this feel free and delete this comment after solving this problem
+    this.hPhrases.clear();
+    modifiedOrOriginal<[string, string][]>(this.data.hPhrases)
+      .map((hPhrase) => this.initHPhrases(hPhrase))
+      .forEach((phraseControl) => this.hPhrases.push(phraseControl));
+
+    this.pPhrases.clear();
+    modifiedOrOriginal<[string, string][]>(this.data.pPhrases)
+      .map((pPhrase) => this.initPPhrases(pPhrase))
+      .forEach((phraseControl) => this.pPhrases.push(phraseControl));
+
+    this.symbols.reset(modifiedOrOriginal(this.data.symbols));
+  }
+
   onSubmit(): void {
     // if form is invalid do nothing
     if (this.form.invalid) {

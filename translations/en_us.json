@@ -90,7 +90,8 @@
       "ghsSymbolsAddOrRemoveInfo": "To remove or add click on the symbol",
       "ghsSymbolsColorInfo": "gray: not selected / colorized: selected",
       "addCustomSubstanceData": "Add custom substance",
-      "dragAndDrop": "drag & drop"
+      "dragAndDrop": "drag & drop",
+      "resetTooltip": "Reset current substance to original values (will take some time)"
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Additional dangers for humans and environment (e.g. carcinogenic, teratogenic):",
