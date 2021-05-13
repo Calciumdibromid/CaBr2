@@ -32,9 +32,8 @@ log = "0.4.14"
 tauri = { version = "1.0.0-beta-rc.4", features =["api-all"], optional = true }
 
 [features]
-custom-protocol = [ "tauri/custom-protocol" ]
 portable = [ "cabr2_config/portable" ]
-tauri_app = [ "tauri", "custom-protocol", "cabr2_config/tauri_plugin", "cabr2_load_save/tauri_plugin", "cabr2_search/tauri_plugin" ]
+tauri_app = [ "tauri", "tauri/custom-protocol", "cabr2_config/tauri_plugin", "cabr2_load_save/tauri_plugin", "cabr2_search/tauri_plugin" ]
 default = [ "portable", "tauri_app" ]
 
 [workspace]
