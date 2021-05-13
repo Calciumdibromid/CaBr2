@@ -24,8 +24,13 @@ fn main() {
     .unwrap();
 }
 
-#[cfg(not(feature = "tauri_app"))]
-compile_error!("you must specify a feature!");
+#[cfg(not(any(feature = "tauri_app", feature = "webserver")))]
+compile_error!("you must specify one of these features: 'tauri_app', 'webserver'!");
 
-#[cfg(not(feature = "tauri_app"))]
-fn main() {}
+#[cfg(all(feature = "tauri_app", feature = "webserver"))]
+compile_error!("you can only use one of these features: 'tauri_app', 'webserver'!");
+
+#[cfg(feature = "webserver")]
+fn main() {
+  unimplemented!();
+}

@@ -3,7 +3,8 @@
     "distDir": "../dist/CaBr2",
     "devPath": "http://localhost:4200",
     "beforeDevCommand": "",
-    "beforeBuildCommand": ""
+    "beforeBuildCommand": "",
+    "features": ["tauri_app"]
   },
   "tauri": {
     "bundle": {
