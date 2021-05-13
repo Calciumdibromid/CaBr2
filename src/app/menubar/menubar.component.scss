@@ -51,8 +51,9 @@
 }
 
 .buttons {
+  float: right;
   display: flex;
-  margin: 16px;
+  margin-bottom: 16px;
 
   button {
     margin-right: 16px;
