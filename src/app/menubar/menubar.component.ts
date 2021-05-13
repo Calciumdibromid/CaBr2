@@ -136,33 +136,6 @@ export class MenubarComponent implements OnInit {
       );
   }
 
-  exportFile(type: DialogFilter): void {
-    logger.trace(`exportFile('${type}')`);
-    this.modelToDocument()
-      .pipe(first())
-      .subscribe((doc) => {
-        const unmodifiedStuff = this.checkUnmodified(doc);
-        if (unmodifiedStuff) {
-          this.dialog
-            .open(YesNoDialogComponent, {
-              data: {
-                iconName: 'warning',
-                title: this.strings.dialogs.unchangedValues.title,
-                content: this.strings.dialogs.unchangedValues.content,
-                listItems: unmodifiedStuff,
-                footerText: this.strings.dialogs.unchangedValues.footer,
-              },
-              panelClass: ['unselectable', 'undragable'],
-            })
-            .afterClosed()
-            .pipe(first())
-            .subscribe((res) => (res ? this.saveFile(type, doc) : undefined));
-        } else {
-          this.saveFile(type, doc);
-        }
-      });
-  }
-
   /**
    * Returns `true` if the `CaBr2Document has some unchecked default values
    */
@@ -258,5 +231,40 @@ export class MenubarComponent implements OnInit {
     dialogRef.componentInstance.darkModeSwitched.subscribe((checked: boolean) => {
       this.darkModeSwitched.emit(checked);
     });
+  }
+
+  exportCB2File(): void {
+    this.exportFile({ name: 'CaBr2', extensions: ['cb2'] });
+  }
+
+  exportPDFFile(): void {
+    this.exportFile({ name: 'PDF', extensions: ['pdf'] });
+  }
+
+  private exportFile(type: DialogFilter): void {
+    logger.trace(`exportFile('${type}')`);
+    this.modelToDocument()
+      .pipe(first())
+      .subscribe((doc) => {
+        const unmodifiedStuff = this.checkUnmodified(doc);
+        if (unmodifiedStuff) {
+          this.dialog
+            .open(YesNoDialogComponent, {
+              data: {
+                iconName: 'warning',
+                title: this.strings.dialogs.unchangedValues.title,
+                content: this.strings.dialogs.unchangedValues.content,
+                listItems: unmodifiedStuff,
+                footerText: this.strings.dialogs.unchangedValues.footer,
+              },
+              panelClass: ['unselectable', 'undragable'],
+            })
+            .afterClosed()
+            .pipe(first())
+            .subscribe((res) => (res ? this.saveFile(type, doc) : undefined));
+        } else {
+          this.saveFile(type, doc);
+        }
+      });
   }
 }
