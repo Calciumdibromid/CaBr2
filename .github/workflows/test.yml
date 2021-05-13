@@ -21,7 +21,7 @@ jobs:
         run: mkdir -p dist/CaBr2 && echo "Hello" > dist/CaBr2/index.html
 
       - name: Rust Linting
-        run: ./contrib/for-each-cargo clippy -- -D warnings
+        run: cd src-tauri && cargo clippy -- -D warnings
       - name: Rust Tests
         run: ./contrib/for-each-cargo test
 
