@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Data, Source, SubstanceData } from '../@core/models/substances.model';
-import { ProviderMapping, SearchArgument } from '../@core/services/provider/provider.model';
+import { Provider, ProviderMapping, SearchArgument } from '../@core/services/provider/provider.model';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { GlobalModel } from '../@core/models/global.model';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
@@ -27,8 +27,8 @@ const GESTIS_URL_RE = new RegExp('https:\\/\\/gestis-api\\.dguv\\.de\\/api\\/art
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit {
-  @ViewChild(SelectedSearchComponent)
-  selectedSearch: SelectedSearchComponent | undefined;
+  @ViewChildren(SelectedSearchComponent)
+  selectedSearchComponents!: QueryList<SelectedSearchComponent>;
 
   res: SearchArgument[] = [];
 
@@ -37,6 +37,10 @@ export class SearchComponent implements OnInit {
   strings!: LocalizedStrings;
 
   providerMapping!: ProviderMapping;
+
+  providers: Provider[] = [];
+
+  index!: number;
 
   substanceData: SubstanceData[] = [];
 
@@ -59,20 +63,28 @@ export class SearchComponent implements OnInit {
       this.dataSource = new MatTableDataSource(data);
     });
 
-    this.providerService.providerMappingsObservable.subscribe((providers) => (this.providerMapping = providers));
+    this.providerService.providerMappingsObservable.subscribe((providerMap) => {
+      this.providerMapping = providerMap;
+      this.providers = Array.from(providerMap.values()).filter((provider) => provider.identifier !== 'custom');
+    });
   }
 
-  openDialog(): void {
+  openDialog(index: number): void {
+    const providerIdentifier = this.providers[index].identifier;
+    const currentSearchComponent = this.selectedSearchComponents.find((_, i) => i === index);
+    const searchArguments = currentSearchComponent?.getSearchArguments();
+
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       data: {
-        arguments: this.selectedSearch?.onSubmit(),
+        arguments: searchArguments,
+        providerIdentifier,
       },
       panelClass: ['unselectable', 'undragable'],
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.providerService.substanceData('gestis', result.zvgNumber).subscribe(
+        this.providerService.substanceData(providerIdentifier, result.zvgNumber).subscribe(
           (value) => {
             const cas = this.modifiedOrOriginal(value.cas);
             if (
@@ -93,7 +105,7 @@ export class SearchComponent implements OnInit {
           },
         );
 
-        this.selectedSearch?.clear();
+        currentSearchComponent?.clear();
       }
     });
   }
@@ -148,6 +160,7 @@ export class SearchComponent implements OnInit {
     event.stopPropagation();
     const matches = source.url.match(GESTIS_URL_RE);
     if (matches) {
+      // TODO (#526) move the url to providers
       this.tauriService.openUrl(`https://gestis.dguv.de/data?name=${matches[2]}&lang=${matches[1]}`);
     }
   }
