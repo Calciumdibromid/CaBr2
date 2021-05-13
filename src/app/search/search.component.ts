@@ -65,17 +65,14 @@ export class SearchComponent implements OnInit {
 
     this.providerService.providerMappingsObservable.subscribe((providerMap) => {
       this.providerMapping = providerMap;
-      this.providers = Array.from(providerMap.values()).filter((provider) => provider.identifier !== 'custom');
+      this.providers = Array.from(providerMap.values()); //.filter((provider) => provider.identifier !== 'custom');
     });
-  }
-
-  clearSearchArguments(): void {
-    this.selectedSearchComponents.forEach((selectedSearchComponent) => selectedSearchComponent.clear());
   }
 
   openDialog(index: number): void {
     const providerIdentifier = this.providers[index].identifier;
-    const searchArguments = this.selectedSearchComponents.toArray()[index].getSearchArguments();
+    const currentSearchComponent = this.selectedSearchComponents.find((_, i) => i === index);
+    const searchArguments = currentSearchComponent?.getSearchArguments();
 
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       data: {
@@ -108,7 +105,7 @@ export class SearchComponent implements OnInit {
           },
         );
 
-        this.clearSearchArguments();
+        currentSearchComponent?.clear();
       }
     });
   }
@@ -163,7 +160,7 @@ export class SearchComponent implements OnInit {
     event.stopPropagation();
     const matches = source.url.match(GESTIS_URL_RE);
     if (matches) {
-      //TODO move the url to providers
+      // TODO (#526) move the url to providers
       this.tauriService.openUrl(`https://gestis.dguv.de/data?name=${matches[2]}&lang=${matches[1]}`);
     }
   }

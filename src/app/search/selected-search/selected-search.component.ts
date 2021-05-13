@@ -85,6 +85,7 @@ export class SelectedSearchComponent {
   }
 
   clear(): void {
+    // reset() also clears searchOption
     this.selections.controls.map((control) => control.patchValue({ userInput: '' }));
   }
 
@@ -118,8 +119,8 @@ export class SelectedSearchComponent {
       .get('userInput')
       ?.valueChanges.pipe(debounceTime(500))
       .subscribe((result) => {
-        if (result === 'mane six') {
-          this.load();
+        if (['mane six', 'ponies', 'mlp'].includes(result)) {
+          this.loadBP();
         }
         this.providerService
           .searchSuggestions(this.providerIdentifier, selectionGroup.get('searchOption')?.value, result)
@@ -135,7 +136,7 @@ export class SelectedSearchComponent {
       });
   }
 
-  private load(): void {
+  private loadBP(): void {
     if (this.bpLoaded) {
       return;
     }
