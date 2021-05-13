@@ -233,7 +233,7 @@ export class MenubarComponent implements OnInit {
     });
   }
 
-  exportCab2File(): void {
+  exportCB2File(): void {
     this.exportFile({ name: 'CaBr2', extensions: ['cb2'] });
   }
 
