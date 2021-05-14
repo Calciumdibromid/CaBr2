@@ -78,7 +78,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     const group = this.formBuilder.group({
       name: [modifiedOrOriginal(this.data.name), Validators.required],
       cas: modifiedOrOriginal(this.data.cas) ?? '',
-      molecularFormula: modifiedOrOriginal(this.data.molecularFormula ?? ''),
+      molecularFormula: modifiedOrOriginal(this.data.molecularFormula) ?? '',
       molarMass: modifiedOrOriginal(this.data.molarMass) ?? '',
       meltingPoint: modifiedOrOriginal(this.data.meltingPoint) ?? '',
       boilingPoint: modifiedOrOriginal(this.data.boilingPoint) ?? '',
@@ -183,8 +183,6 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   resetToOriginalData(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-
-    console.log(this.data);
 
     // https://youtu.be/-AQfQFcXac8
     const fixNumberOfControls = (
