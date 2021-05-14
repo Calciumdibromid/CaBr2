@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
@@ -25,6 +25,9 @@ export class SelectedSearchComponent {
   @Output()
   triggerSearch = new EventEmitter();
 
+  @Input()
+  providerIdentifier!: string;
+
   strings!: LocalizedStrings;
 
   searchOptions!: SearchTypeMapping[];
@@ -47,31 +50,6 @@ export class SelectedSearchComponent {
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
     this.providerService.searchTypeMappingsObservable.subscribe((mapping) => (this.searchOptions = mapping));
-  }
-
-  initSelectionForm(): FormGroup {
-    let searchOption;
-
-    for (const option of searchTypes) {
-      if (!this.selections?.controls.some((selection) => selection.get('searchOption')?.value === option)) {
-        searchOption = option;
-        break;
-      }
-    }
-
-    if (!searchOption) {
-      throw new Error('searchOption is undefined');
-    }
-
-    const selectionGroup = this.formBuilder.group({
-      searchOption,
-      userInput: '',
-      hover: false,
-    });
-
-    this.registerValueChangeListener(selectionGroup);
-
-    return selectionGroup;
   }
 
   get selections(): FormArray {
@@ -99,7 +77,7 @@ export class SelectedSearchComponent {
     return false;
   }
 
-  onSubmit(): SearchArgument[] {
+  getSearchArguments(): SearchArgument[] {
     return this.selections.controls.map<SearchArgument>((control) => ({
       searchType: control.get('searchOption')?.value,
       pattern: control.get('userInput')?.value,
@@ -107,7 +85,33 @@ export class SelectedSearchComponent {
   }
 
   clear(): void {
+    // reset() also clears searchOption
     this.selections.controls.map((control) => control.patchValue({ userInput: '' }));
+  }
+
+  private initSelectionForm(): FormGroup {
+    let searchOption;
+
+    for (const option of searchTypes) {
+      if (!this.selections?.controls.some((selection) => selection.get('searchOption')?.value === option)) {
+        searchOption = option;
+        break;
+      }
+    }
+
+    if (!searchOption) {
+      throw new Error('searchOption is undefined');
+    }
+
+    const selectionGroup = this.formBuilder.group({
+      searchOption,
+      userInput: '',
+      hover: false,
+    });
+
+    this.registerValueChangeListener(selectionGroup);
+
+    return selectionGroup;
   }
 
   private registerValueChangeListener(selectionGroup: FormGroup): void {
@@ -115,40 +119,48 @@ export class SelectedSearchComponent {
       .get('userInput')
       ?.valueChanges.pipe(debounceTime(500))
       .subscribe((result) => {
-        if (result === 'mane six') {
-          this.load();
+        if (['mane six', 'ponies', 'mlp'].includes(result)) {
+          this.loadBP();
         }
-        this.providerService.searchSuggestions('gestis', selectionGroup.get('searchOption')?.value, result).subscribe(
-          (response) => {
-            this.suggestionResults.set(selectionGroup.get('searchOption')?.value, response);
-          },
-          (err) => {
-            logger.error('loading search suggestions failed:', err);
-            this.alertService.error(this.strings.error.loadSearchSuggestions);
-          },
-        );
+        this.providerService
+          .searchSuggestions(this.providerIdentifier, selectionGroup.get('searchOption')?.value, result)
+          .subscribe(
+            (response) => {
+              this.suggestionResults.set(selectionGroup.get('searchOption')?.value, response);
+            },
+            (err) => {
+              logger.error('loading search suggestions failed:', err);
+              this.alertService.error(this.strings.error.loadSearchSuggestions);
+            },
+          );
       });
   }
 
-  private load(): void {
+  private loadBP(): void {
     if (this.bpLoaded) {
       return;
     }
-    const sc = this.loadScript('assets/bp/bp.js');
+    const sc = this.loadScript('assets/bp/bp');
     sc.onload = () => {
-      const ts = this.loadScript('assets/bp/config.js');
-      ts.onload = () => {
-        //@ts-ignore
-        BrowserPonies.start();
-        this.bpLoaded = true;
-      };
+      fetch('/assets/bp/config.json').then((res) =>
+        res.text().then((conf) => {
+          const bpConf = JSON.parse(conf);
+          //@ts-ignore
+          for (const c of bpConf) {
+            //@ts-ignore
+            BrowserPonies.loadConfig(c);
+          }
+          //@ts-ignore
+          BrowserPonies.start();
+          this.bpLoaded = true;
+        }),
+      );
     };
   }
 
   private loadScript(src: string): HTMLScriptElement {
     const sc = document.createElement('script');
     sc.setAttribute('async', 'async');
-    // sc.setAttribute('type', 'text/javascript');
     sc.src = src;
     const head = document.head || document.getElementsByTagName('head')[0];
     head.insertBefore(sc, head.firstChild);

@@ -1,6 +1,5 @@
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
@@ -41,9 +40,6 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
   customUnitVisible = false;
 
-  // TODO move that to some global thingy
-  symbolKeys!: string[];
-
   customSubscription?: Subscription;
 
   getViewValue = getViewValue;
@@ -53,7 +49,6 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     public globals: GlobalModel,
     @Inject(MAT_DIALOG_DATA) public data: SubstanceData,
     private formBuilder: FormBuilder,
-    private sanitizer: DomSanitizer,
     private dialog: MatDialog,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
@@ -62,7 +57,6 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.symbolKeys = Array.from(this.globals.ghsSymbols.keys());
     this.customSubscription = this.amount.get('unit')?.valueChanges.subscribe((value: Unit) => {
       this.customUnitVisible = value === Unit.CUSTOM;
     });
@@ -156,15 +150,6 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     } else {
       this.symbols.push(this.formBuilder.control(key));
     }
-  }
-
-  sanitizeImage(key: string): SafeResourceUrl | undefined {
-    const img = this.globals.ghsSymbols.get(key);
-    if (img) {
-      return this.sanitizer.bypassSecurityTrustResourceUrl(img);
-    }
-
-    return undefined;
   }
 
   addNewHPhrase(): void {

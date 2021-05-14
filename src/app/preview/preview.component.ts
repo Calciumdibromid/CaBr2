@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { map } from 'rxjs/operators';
 
 import { Amount, CustomUnit, Unit, unitMapping } from '../@core/models/substances.model';
@@ -42,7 +41,7 @@ export class PreviewComponent implements OnInit {
 
   sources: Set<string> = new Set();
 
-  constructor(public globals: GlobalModel, private providerService: ProviderService, private sanitizer: DomSanitizer) {
+  constructor(public globals: GlobalModel, private providerService: ProviderService) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
 
     this.providerService.providerMappingsObservable.subscribe((providers) => (this.providerMapping = providers));
@@ -104,15 +103,6 @@ export class PreviewComponent implements OnInit {
 
   getPhraseNumber(phrases: [string, string][]): string[] {
     return phrases.map((p) => p[0]);
-  }
-
-  sanitizeImage(key: string): SafeResourceUrl | undefined {
-    const img = this.globals.ghsSymbols.get(key);
-    if (img) {
-      return this.sanitizer.bypassSecurityTrustResourceUrl(img);
-    }
-
-    return undefined;
   }
 
   getHPhrases(): Set<string> {

@@ -151,10 +151,7 @@ impl std::convert::From<SubstanceData> for PDFSubstanceData {
       symbols: data.symbols.into(),
       lethal_dose: data.lethal_dose.into(),
       mak: data.mak.into(),
-      amount: match data.amount {
-        Some(amount) => Some(amount.into()),
-        None => None,
-      },
+      amount: data.amount.map(|value| value.into()),
       source: data.source,
     }
   }
