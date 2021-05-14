@@ -101,7 +101,10 @@
         <mat-form-field>
           <mat-label>{{ strings.substance.unit }}</mat-label>
           <mat-select formControlName="unit">
-            <mat-optgroup *ngFor="let group of unitGroups.defaultUnitGroups" [label]="localizeUnitGroup(group.viewValue)">
+            <mat-optgroup
+              *ngFor="let group of unitGroups.defaultUnitGroups"
+              [label]="localizeUnitGroup(group.viewValue)"
+            >
               <mat-option *ngFor="let option of group.unitMappings" [value]="option">
                 {{ localizeUnit(option) }}
               </mat-option>

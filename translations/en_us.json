@@ -59,9 +59,7 @@
     },
     "substance": {
       "invalidFormsTitle": "Something is wrong",
-      "invalidFormsContent": [
-        "The substance has invalid or missing data on following items:"
-      ],
+      "invalidFormsContent": ["The substance has invalid or missing data on following items:"],
       "edited": "Edited?",
       "name": "Name",
       "needsName": "Name is required",
@@ -157,12 +155,8 @@
     "dialogs": {
       "unchangedValues": {
         "title": "Unchanged values",
-        "content": [
-          "The following values were not changed."
-        ],
-        "footer": [
-          "Continue anyway?"
-        ]
+        "content": ["The following values were not changed."],
+        "footer": ["Continue anyway?"]
       }
     }
   }
