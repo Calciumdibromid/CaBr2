@@ -152,7 +152,7 @@ fn init_pdf_application() -> PDFChannels {
 
   thread::spawn(move || {
     log::debug!("[pdf_thread]: initializing pdf application");
-    let mut pdf_app = match PdfApplication::new() {
+    let pdf_app = match PdfApplication::new() {
       Ok(app) => app,
       Err(e) => {
         log::error!("[pdf_thread]: initialization of pdf application failed");

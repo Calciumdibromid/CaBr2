@@ -1,30 +1,14 @@
 #![allow(clippy::new_without_default)]
 
-mod cmd;
+pub mod plugin;
 
 use std::fs;
 
 use fern::Dispatch;
 use log::LevelFilter;
-use tauri::{plugin::Plugin, InvokeMessage, Params, Window};
 
 use cabr2_config::{read_config, BackendConfig, TMP_DIR};
 use cabr2_types::logging::LogLevel;
-
-pub struct Logger<M: Params> {
-  invoke_handler: Box<dyn Fn(InvokeMessage<M>) + Send + Sync>,
-}
-
-impl<M: Params> Logger<M> {
-  pub fn new() -> Self {
-    setup_logger().unwrap();
-
-    use cmd::*;
-    Logger {
-      invoke_handler: Box::new(tauri::generate_handler![log]),
-    }
-  }
-}
 
 fn setup_logger() -> Result<(), fern::InitError> {
   let mut log_file = TMP_DIR.clone();
@@ -69,19 +53,5 @@ fn convert_level(level: Option<LogLevel>) -> LevelFilter {
   match level {
     Some(level) => level.into(),
     None => LevelFilter::Error,
-  }
-}
-
-impl<M: Params> Plugin<M> for Logger<M> {
-  fn name(&self) -> &'static str {
-    "cabr2_logger"
-  }
-
-  fn extend_api(&mut self, message: InvokeMessage<M>) {
-    (self.invoke_handler)(message)
-  }
-
-  fn created(&mut self, _: Window<M>) {
-    log::trace!("plugin created");
   }
 }
