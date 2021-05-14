@@ -1,0 +1,34 @@
+name: backend
+
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+    paths:
+      - 'src-tauri/**'
+      - '.gitignore'
+
+jobs:
+  backend:
+    runs-on: ubuntu-20.04
+    container: a6543/cabr2_ci:latest
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+
+      - name: Set Rust Toolchain
+        run: rustup default stable
+
+      - name: Linting
+        run: cd src-tauri && cargo clippy -- -D warnings
+
+      - name: Fix Build
+        run: mkdir -p dist/CaBr2 && echo "Hello" > dist/CaBr2/index.html
+
+      - name: Build
+        run: cd src-tauri && cargo build
+
+      - name: Tests
+        run: ./contrib/for-each-cargo test

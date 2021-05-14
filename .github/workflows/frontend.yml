@@ -1,4 +1,4 @@
-name: test
+name: frontend
 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
@@ -6,31 +6,17 @@ on:
     branches: [master, develop]
   pull_request:
     branches: [master, develop]
+    paths-ignore:
+      - 'contrib/**'
+      - 'ghs_symbols/**'
+      - 'prompts/**'
+      - 'src-tauri/**'
+      - 'templates/**'
+      - 'translations/**'
+      - '*.md'
+      - '*.yml'
 
 jobs:
-  backend:
-    runs-on: ubuntu-20.04
-    container: a6543/cabr2_ci:latest
-    steps:
-      - name: Checkout Project
-        uses: actions/checkout@v2
-
-      - name: Set Rust Toolchain
-        run: rustup default stable
-
-      - name: Rust Linting
-        run: cd src-tauri && cargo clippy -- -D warnings
-
-      - name: Fix build
-        run: mkdir -p dist/CaBr2 && echo "Hello" > dist/CaBr2/index.html
-
-      # should be checked with cargo clippy
-      - name: Build Backend
-        run: cd src-tauri && cargo build
-
-      - name: Rust Tests
-        run: ./contrib/for-each-cargo test
-
   frontend:
     runs-on: ubuntu-20.04
     strategy:
