@@ -142,7 +142,7 @@ export class SelectedSearchComponent {
     }
     const sc = this.loadScript('assets/bp/bp');
     sc.onload = () => {
-      fetch('../../../assets/bp/config.json').then((res) =>
+      fetch('/assets/bp/config.json').then((res) =>
         res.text().then((conf) => {
           const bpConf = JSON.parse(conf);
           //@ts-ignore
