@@ -140,14 +140,21 @@ export class SelectedSearchComponent {
     if (this.bpLoaded) {
       return;
     }
-    const sc = this.loadScript('assets/bp/bp.js');
+    const sc = this.loadScript('assets/bp/bp');
     sc.onload = () => {
-      const ts = this.loadScript('assets/bp/config.js');
-      ts.onload = () => {
-        //@ts-ignore
-        BrowserPonies.start();
-        this.bpLoaded = true;
-      };
+      fetch('/assets/bp/config.json').then((res) =>
+        res.text().then((conf) => {
+          const bpConf = JSON.parse(conf);
+          //@ts-ignore
+          for (const c of bpConf) {
+            //@ts-ignore
+            BrowserPonies.loadConfig(c);
+          }
+          //@ts-ignore
+          BrowserPonies.start();
+          this.bpLoaded = true;
+        }),
+      );
     };
   }
 
