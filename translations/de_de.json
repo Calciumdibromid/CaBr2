@@ -91,7 +91,7 @@
       "ghsSymbolsColorInfo": "grau: nicht gewählt / farbig: gewählt",
       "addCustomSubstanceData": "Eigene Substanz hinzufügen",
       "dragAndDrop": "Drag & Drop",
-      "resetTooltip": "Auf originale Werte zurücksetzen (kann kurz dauern)"
+      "resetTooltip": "Auf originale Werte zurücksetzen"
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Gefahren für Mensch und Umwelt, die von den Ausgangsmaterialien bzw. den Produkten ausgehen, soweit sie nicht durch genannte Angaben abgedeckt sind (z.B. krebserregend, fruchtschädigend, hautresorptiv):",

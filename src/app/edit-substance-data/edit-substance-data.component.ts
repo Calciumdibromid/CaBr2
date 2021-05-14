@@ -1,4 +1,4 @@
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -78,7 +78,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     const group = this.formBuilder.group({
       name: [modifiedOrOriginal(this.data.name), Validators.required],
       cas: modifiedOrOriginal(this.data.cas) ?? '',
-      molecularFormula: modifiedOrOriginal(this.data.molecularFormula),
+      molecularFormula: modifiedOrOriginal(this.data.molecularFormula ?? ''),
       molarMass: modifiedOrOriginal(this.data.molarMass) ?? '',
       meltingPoint: modifiedOrOriginal(this.data.meltingPoint) ?? '',
       boilingPoint: modifiedOrOriginal(this.data.boilingPoint) ?? '',
@@ -184,38 +184,58 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     event.preventDefault();
     event.stopPropagation();
 
-    const amount = this.data.amount ?? { value: '', unit: Unit.GRAM };
+    console.log(this.data);
 
-    this.form.reset({
-      name: modifiedOrOriginal(this.data.name),
-      cas: modifiedOrOriginal(this.data.cas) ?? '',
-      molecularFormula: modifiedOrOriginal(this.data.molecularFormula),
-      molarMass: modifiedOrOriginal(this.data.molarMass) ?? '',
-      meltingPoint: modifiedOrOriginal(this.data.meltingPoint) ?? '',
-      boilingPoint: modifiedOrOriginal(this.data.boilingPoint) ?? '',
-      waterHazardClass: modifiedOrOriginal(this.data.waterHazardClass) ?? '',
-      signalWord: modifiedOrOriginal(this.data.signalWord) ?? '',
-      lethalDose: modifiedOrOriginal(this.data.lethalDose) ?? '',
-      mak: modifiedOrOriginal(this.data.mak) ?? '',
-      amount: {
-        value: amount.value,
-        unit: amount.unit,
-      },
+    // https://youtu.be/-AQfQFcXac8
+    const fixNumberOfControls = (
+      control: FormArray, needed: number, current: number, newCallback: () => AbstractControl
+    ) => {
+      const diff = needed - current;
+      if (diff > 0) {
+        for (let i = diff; i > 0; i--) {
+          control.push(newCallback());
+        }
+      } else if (diff < 0) {
+        for (let i = diff; i < 0; i++) {
+          control.removeAt(0);
+        }
+      }
+    };
+
+    fixNumberOfControls(
+      this.hPhrases, this.data.hPhrases.originalData.length, this.hPhrases.length, () => this.initHPhrases(['', ''])
+    );
+
+    fixNumberOfControls(
+      this.pPhrases, this.data.pPhrases.originalData.length, this.pPhrases.length, () => this.initPPhrases(['', ''])
+    );
+
+    fixNumberOfControls(
+      this.symbols, this.data.symbols.originalData.length, this.symbols.length, () => new FormControl()
+    );
+
+    this.form.patchValue({
+      name: this.data.name.originalData,
+      cas: this.data.cas.originalData ?? '',
+      molecularFormula: this.data.molecularFormula.originalData ?? '',
+      molarMass: this.data.molarMass.originalData ?? '',
+      meltingPoint: this.data.meltingPoint.originalData ?? '',
+      boilingPoint: this.data.boilingPoint.originalData ?? '',
+      waterHazardClass: this.data.waterHazardClass.originalData ?? '',
+      signalWord: this.data.signalWord.originalData ?? '',
+      lethalDose: this.data.lethalDose.originalData ?? '',
+      mak: this.data.mak.originalData ?? '',
+      amount: { value: '', unit: Unit.GRAM },
+      hPhrases: this.data.hPhrases.originalData.map(
+        phrase => ({ hNumber: phrase[0], hPhrase: phrase[1], hover: false })
+      ),
+      pPhrases: this.data.pPhrases.originalData.map(
+        phrase => ({ pNumber: phrase[0], pPhrase: phrase[1], hover: false })
+      ),
+      symbols: this.data.symbols.originalData,
     });
 
-    // can't deduplicate this piece of code something with an undefined and formBuilder (don't ask)
-    // if you think you can solve this feel free and delete this comment after solving this problem
-    this.hPhrases.clear();
-    modifiedOrOriginal<[string, string][]>(this.data.hPhrases)
-      .map((hPhrase) => this.initHPhrases(hPhrase))
-      .forEach((phraseControl) => this.hPhrases.push(phraseControl));
-
-    this.pPhrases.clear();
-    modifiedOrOriginal<[string, string][]>(this.data.pPhrases)
-      .map((pPhrase) => this.initPPhrases(pPhrase))
-      .forEach((phraseControl) => this.pPhrases.push(phraseControl));
-
-    this.symbols.reset(modifiedOrOriginal(this.data.symbols));
+    this.form.markAllAsTouched();
   }
 
   onSubmit(): void {
@@ -266,16 +286,6 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     this.dialogRef.close(returnData);
   }
 
-  /** Custom helper to evaluate wether amount was set or not */
-  private evaluateAmount(): Amount | undefined {
-    if (this.amount.dirty) {
-      const value = this.amount.get('value')?.value;
-      return value ? { value, unit: this.amount.get('unit')?.value } : undefined;
-    } else {
-      return this.data.amount;
-    }
-  }
-
   private checkForInvalidControls(): string[] {
     const reasons = [];
     if (this.form.get('name')?.invalid) {
@@ -293,10 +303,20 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     return reasons;
   }
 
+  /** Custom helper to evaluate wether amount was set or not */
+  private evaluateAmount(): Amount | undefined {
+    if (this.amount.dirty) {
+      const value = this.amount.get('value')?.value;
+      return value ? { value, unit: this.amount.get('unit')?.value } : undefined;
+    } else {
+      return this.data.amount;
+    }
+  }
+
   private evaluateForm<T>(formControlName: string, currentData: Data<T>): Data<T> {
     const control = this.form?.get(formControlName);
 
-    if (control?.dirty) {
+    if (control?.touched) {
       let retData: Data<T> = { originalData: currentData.originalData };
       // if new value is empty or still/again the original value don't set modified field
       if (control.value !== undefined && control.value !== currentData.originalData) {
