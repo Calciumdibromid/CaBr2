@@ -6,8 +6,23 @@ export const compareArrays = <T>(array1: Array<T>, array2: Array<T>) => {
     return false;
   }
 
-  for (let i = 0, l = array1.length; i < l; i++) {
-    if (array1[i] !== array2[i]) {
+  const array1sorted = array1.sort((a, b) => (a === b ? 0 : a > b ? 1 : -1));
+  const array2sorted = array2.sort((a, b) => (a === b ? 0 : a > b ? 1 : -1));
+
+  for (let i = 0, l = array1sorted.length; i < l; i++) {
+    const a1 = array1sorted[i];
+    const a2 = array2sorted[i];
+    if (a1 instanceof Array) {
+      if (a2 instanceof Array) {
+        // types are a hack, because we won't get any other types of multidimensional arrays
+        if (!compareArrays<string>(a1 as unknown as string[], a2 as unknown as string[])) {
+          return false;
+        }
+        // check next
+      } else {
+        return false;
+      }
+    } else if (a1 !== a2) {
       return false;
     }
   }
@@ -97,6 +112,33 @@ export const testComparer = () => {
   assert(!compareArrays(['one', 'two'], []), 'array strings first');
   assert(!compareArrays([], ['one', 'two']), 'array strings second');
   assert(compareArrays(['one', 'two'], ['one', 'two']), 'array strings');
+
+  assert(
+    !compareArrays(
+      [
+        ['d', 'c'],
+        ['b', 'a'],
+      ],
+      [
+        ['a', 'b'],
+        ['c', 'd'],
+      ],
+    ),
+    'two dimensional array reverted',
+  );
+  assert(
+    compareArrays(
+      [
+        ['a', 'b'],
+        ['c', 'd'],
+      ],
+      [
+        ['a', 'b'],
+        ['c', 'd'],
+      ],
+    ),
+    'two dimensional array',
+  );
 
   assert(compareObjects({}, {}), 'object empty');
 };

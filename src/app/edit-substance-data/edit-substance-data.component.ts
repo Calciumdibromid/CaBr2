@@ -188,7 +188,10 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
     // https://youtu.be/-AQfQFcXac8
     const fixNumberOfControls = (
-      control: FormArray, needed: number, current: number, newCallback: () => AbstractControl
+      control: FormArray,
+      needed: number,
+      current: number,
+      newCallback: () => AbstractControl,
     ) => {
       const diff = needed - current;
       if (diff > 0) {
@@ -202,16 +205,19 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       }
     };
 
-    fixNumberOfControls(
-      this.hPhrases, this.data.hPhrases.originalData.length, this.hPhrases.length, () => this.initHPhrases(['', ''])
+    fixNumberOfControls(this.hPhrases, this.data.hPhrases.originalData.length, this.hPhrases.length, () =>
+      this.initHPhrases(['', '']),
+    );
+
+    fixNumberOfControls(this.pPhrases, this.data.pPhrases.originalData.length, this.pPhrases.length, () =>
+      this.initPPhrases(['', '']),
     );
 
     fixNumberOfControls(
-      this.pPhrases, this.data.pPhrases.originalData.length, this.pPhrases.length, () => this.initPPhrases(['', ''])
-    );
-
-    fixNumberOfControls(
-      this.symbols, this.data.symbols.originalData.length, this.symbols.length, () => new FormControl()
+      this.symbols,
+      this.data.symbols.originalData.length,
+      this.symbols.length,
+      () => new FormControl(),
     );
 
     this.form.patchValue({
@@ -226,12 +232,16 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       lethalDose: this.data.lethalDose.originalData ?? '',
       mak: this.data.mak.originalData ?? '',
       amount: { value: '', unit: Unit.GRAM },
-      hPhrases: this.data.hPhrases.originalData.map(
-        phrase => ({ hNumber: phrase[0], hPhrase: phrase[1], hover: false })
-      ),
-      pPhrases: this.data.pPhrases.originalData.map(
-        phrase => ({ pNumber: phrase[0], pPhrase: phrase[1], hover: false })
-      ),
+      hPhrases: this.data.hPhrases.originalData.map((phrase) => ({
+        hNumber: phrase[0],
+        hPhrase: phrase[1],
+        hover: false,
+      })),
+      pPhrases: this.data.pPhrases.originalData.map((phrase) => ({
+        pNumber: phrase[0],
+        pPhrase: phrase[1],
+        hover: false,
+      })),
       symbols: this.data.symbols.originalData,
     });
 
@@ -318,6 +328,10 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
     if (control?.touched) {
       let retData: Data<T> = { originalData: currentData.originalData };
+      // if originalData was undefined and the current value is an empty string just return the original data
+      if (control.value === '' && currentData.originalData === null) {
+        return retData;
+      }
       // if new value is empty or still/again the original value don't set modified field
       if (control.value !== undefined && control.value !== currentData.originalData) {
         retData = { ...retData, modifiedData: control.value };
@@ -333,7 +347,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     currentData: Data<T[]>,
   ): Data<T[]> {
     if (formArray.touched) {
-      const newArray = formArray.controls.map(mapCallback).sort((a, b) => (a === b ? 0 : a > b ? 1 : -1));
+      const newArray = formArray.controls.map(mapCallback);
       let retData: Data<T[]> = { originalData: currentData.originalData };
       // if new value is still/again the original value don't set modified field
       // arrays won't be undefined, so we don't need the extra check here
