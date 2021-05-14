@@ -47,3 +47,11 @@ mat-form-field {
 .padder {
   height: 10px;
 }
+
+.mat-dialog-actions {
+  display: flex;
+
+  .mat-icon-button {
+    margin-left: auto;
+  }
+}
