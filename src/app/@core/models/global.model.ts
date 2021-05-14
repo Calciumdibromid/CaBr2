@@ -52,13 +52,9 @@ export class GlobalModel {
   setGHSSymbols(newSymbols: GHSSymbols) {
     // newSymbols is just an object
     new Map(Object.entries(newSymbols)).forEach((value, key) => {
-      this.ghsSymbols.set(key, this.sanitizeImage(value));
+      this.ghsSymbols.set(key, this.sanitizer.bypassSecurityTrustResourceUrl(value));
       this.ghsSymbolKeys.push(key);
     });
-  }
-
-  private sanitizeImage(value: string): SafeResourceUrl {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(value);
   }
 }
 
