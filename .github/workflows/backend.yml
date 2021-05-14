@@ -7,13 +7,16 @@ on:
   pull_request:
     branches: [master, develop]
     paths:
+      - '.github/workflows/**'
       - 'src-tauri/**'
       - '.gitignore'
 
 jobs:
-  backend:
+  default:
     runs-on: ubuntu-20.04
     container: a6543/cabr2_ci:latest
+    strategy:
+      fail-fast: true
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
@@ -21,11 +24,11 @@ jobs:
       - name: Set Rust Toolchain
         run: rustup default stable
 
-      - name: Linting
-        run: cd src-tauri && cargo clippy -- -D warnings
-
       - name: Fix Build
         run: mkdir -p dist/CaBr2 && echo "Hello" > dist/CaBr2/index.html
+
+      - name: Linting
+        run: cd src-tauri && cargo clippy -- -D warnings
 
       - name: Build
         run: cd src-tauri && cargo build

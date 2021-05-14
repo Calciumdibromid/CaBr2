@@ -17,7 +17,7 @@ on:
       - '*.yml'
 
 jobs:
-  frontend:
+  default:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: true
