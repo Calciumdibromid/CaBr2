@@ -1,6 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { I18nService, LocalizedStrings } from '../services/i18n/i18n.service';
 import { Header } from '../interfaces/Header';
 import { SearchResult } from '../services/provider/provider.model';
@@ -9,6 +10,7 @@ import { SubstanceData } from './substances.model';
 @Injectable()
 export class GlobalModel {
   ghsSymbols: GHSSymbols = new Map();
+  ghsSymbolKeys: string[] = [];
 
   localizedStringsSubject = new BehaviorSubject<LocalizedStrings>(I18nService.getDefaultStrings());
   localizedStringsObservable = this.localizedStringsSubject.asObservable();
@@ -45,10 +47,15 @@ export class GlobalModel {
   ghsSymbolsSubject = new BehaviorSubject<GHSSymbols>(new Map<string, string>());
   ghsSymbolsObservable = this.ghsSymbolsSubject.asObservable();
 
+  constructor(private sanitizer: DomSanitizer) {}
+
   setGHSSymbols(newSymbols: GHSSymbols) {
     // newSymbols is just an object
-    this.ghsSymbols = new Map(Object.entries(newSymbols));
+    new Map(Object.entries(newSymbols)).forEach((value, key) => {
+      this.ghsSymbols.set(key, this.sanitizer.bypassSecurityTrustResourceUrl(value));
+      this.ghsSymbolKeys.push(key);
+    });
   }
 }
 
-export type GHSSymbols = Map<string, string>;
+export type GHSSymbols = Map<string, SafeResourceUrl>;
