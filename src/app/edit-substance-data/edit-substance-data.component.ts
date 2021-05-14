@@ -1,4 +1,4 @@
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -72,7 +72,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     const group = this.formBuilder.group({
       name: [modifiedOrOriginal(this.data.name), Validators.required],
       cas: modifiedOrOriginal(this.data.cas) ?? '',
-      molecularFormula: modifiedOrOriginal(this.data.molecularFormula),
+      molecularFormula: modifiedOrOriginal(this.data.molecularFormula) ?? '',
       molarMass: modifiedOrOriginal(this.data.molarMass) ?? '',
       meltingPoint: modifiedOrOriginal(this.data.meltingPoint) ?? '',
       boilingPoint: modifiedOrOriginal(this.data.boilingPoint) ?? '',
@@ -165,6 +165,72 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     formArray.markAllAsTouched();
   }
 
+  resetToOriginalData(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    // https://youtu.be/-AQfQFcXac8
+    const fixNumberOfControls = (
+      control: FormArray,
+      needed: number,
+      current: number,
+      newCallback: () => AbstractControl,
+    ) => {
+      const diff = needed - current;
+      if (diff > 0) {
+        for (let i = diff; i > 0; i--) {
+          control.push(newCallback());
+        }
+      } else if (diff < 0) {
+        for (let i = diff; i < 0; i++) {
+          control.removeAt(0);
+        }
+      }
+    };
+
+    fixNumberOfControls(this.hPhrases, this.data.hPhrases.originalData.length, this.hPhrases.length, () =>
+      this.initHPhrases(['', '']),
+    );
+
+    fixNumberOfControls(this.pPhrases, this.data.pPhrases.originalData.length, this.pPhrases.length, () =>
+      this.initPPhrases(['', '']),
+    );
+
+    fixNumberOfControls(
+      this.symbols,
+      this.data.symbols.originalData.length,
+      this.symbols.length,
+      () => new FormControl(),
+    );
+
+    this.form.patchValue({
+      name: this.data.name.originalData,
+      cas: this.data.cas.originalData ?? '',
+      molecularFormula: this.data.molecularFormula.originalData ?? '',
+      molarMass: this.data.molarMass.originalData ?? '',
+      meltingPoint: this.data.meltingPoint.originalData ?? '',
+      boilingPoint: this.data.boilingPoint.originalData ?? '',
+      waterHazardClass: this.data.waterHazardClass.originalData ?? '',
+      signalWord: this.data.signalWord.originalData ?? '',
+      lethalDose: this.data.lethalDose.originalData ?? '',
+      mak: this.data.mak.originalData ?? '',
+      amount: { value: '', unit: Unit.GRAM },
+      hPhrases: this.data.hPhrases.originalData.map((phrase) => ({
+        hNumber: phrase[0],
+        hPhrase: phrase[1],
+        hover: false,
+      })),
+      pPhrases: this.data.pPhrases.originalData.map((phrase) => ({
+        pNumber: phrase[0],
+        pPhrase: phrase[1],
+        hover: false,
+      })),
+      symbols: this.data.symbols.originalData,
+    });
+
+    this.form.markAllAsTouched();
+  }
+
   onSubmit(): void {
     // if form is invalid do nothing
     if (this.form.invalid) {
@@ -213,16 +279,6 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     this.dialogRef.close(returnData);
   }
 
-  /** Custom helper to evaluate wether amount was set or not */
-  private evaluateAmount(): Amount | undefined {
-    if (this.amount.dirty) {
-      const value = this.amount.get('value')?.value;
-      return value ? { value, unit: this.amount.get('unit')?.value } : undefined;
-    } else {
-      return this.data.amount;
-    }
-  }
-
   private checkForInvalidControls(): string[] {
     const reasons = [];
     if (this.form.get('name')?.invalid) {
@@ -240,11 +296,25 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     return reasons;
   }
 
+  /** Custom helper to evaluate wether amount was set or not */
+  private evaluateAmount(): Amount | undefined {
+    if (this.amount.dirty) {
+      const value = this.amount.get('value')?.value;
+      return value ? { value, unit: this.amount.get('unit')?.value } : undefined;
+    } else {
+      return this.data.amount;
+    }
+  }
+
   private evaluateForm<T>(formControlName: string, currentData: Data<T>): Data<T> {
     const control = this.form?.get(formControlName);
 
-    if (control?.dirty) {
+    if (control?.touched) {
       let retData: Data<T> = { originalData: currentData.originalData };
+      // if originalData was undefined and the current value is an empty string just return the original data
+      if (control.value === '' && currentData.originalData === null) {
+        return retData;
+      }
       // if new value is empty or still/again the original value don't set modified field
       if (control.value !== undefined && control.value !== currentData.originalData) {
         retData = { ...retData, modifiedData: control.value };
@@ -260,7 +330,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     currentData: Data<T[]>,
   ): Data<T[]> {
     if (formArray.touched) {
-      const newArray = formArray.controls.map(mapCallback).sort((a, b) => (a === b ? 0 : a > b ? 1 : -1));
+      const newArray = formArray.controls.map(mapCallback);
       let retData: Data<T[]> = { originalData: currentData.originalData };
       // if new value is still/again the original value don't set modified field
       // arrays won't be undefined, so we don't need the extra check here
