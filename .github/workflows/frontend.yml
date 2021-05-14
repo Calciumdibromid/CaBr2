@@ -1,4 +1,4 @@
-name: frontend
+name: checks
 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
@@ -6,7 +6,10 @@ on:
     branches: [master, develop]
   pull_request:
     branches: [master, develop]
+    paths:
+      - '.github/workflows/frontend.yml'
     paths-ignore:
+      - '.github/**'
       - 'contrib/**'
       - 'ghs_symbols/**'
       - 'prompts/**'
@@ -17,7 +20,7 @@ on:
       - '*.yml'
 
 jobs:
-  default:
+  frontend:
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: true
