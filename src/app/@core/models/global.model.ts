@@ -55,6 +55,8 @@ export class GlobalModel {
       this.ghsSymbols.set(key, this.sanitizer.bypassSecurityTrustResourceUrl(value));
       this.ghsSymbolKeys.push(key);
     });
+
+    this.ghsSymbolKeys.sort();
   }
 }
 
