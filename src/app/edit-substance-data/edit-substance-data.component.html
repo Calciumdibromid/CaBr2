@@ -34,7 +34,7 @@
           <mat-label>{{ strings.substance.unit }}</mat-label>
           <mat-select [value]="unit.GRAM_PER_MOL" [disabled]="true">
             <mat-option [value]="unit.GRAM_PER_MOL">
-              {{ getViewValue(unit.GRAM_PER_MOL) }}
+              {{ localizeUnit(unit.GRAM_PER_MOL) }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -48,7 +48,7 @@
           <mat-label>{{ strings.substance.unit }}</mat-label>
           <mat-select [value]="unit.MILLIGRAM_PER_KILOGRAM" [disabled]="true">
             <mat-option *ngFor="let unit of unitGroups.lethalUnits" [value]="unit">
-              {{ getViewValue(unit) }}
+              {{ localizeUnit(unit) }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -61,7 +61,7 @@
         <mat-label>{{ strings.substance.unit }}</mat-label>
         <mat-select [value]="unit.PARTS_PER_MILLION" [disabled]="true">
           <mat-option [value]="unit.PARTS_PER_MILLION">
-            {{ getViewValue(unit.PARTS_PER_MILLION) }}
+            {{ localizeUnit(unit.PARTS_PER_MILLION) }}
           </mat-option>
         </mat-select>
       </mat-form-field>
@@ -74,7 +74,7 @@
           <mat-label>{{ strings.substance.unit }}</mat-label>
           <mat-select [value]="unit.CELSIUS" [disabled]="true">
             <mat-option *ngFor="let unit of unitGroups.temperatureUnits" [value]="unit">
-              {{ getViewValue(unit) }}
+              {{ localizeUnit(unit) }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -88,7 +88,7 @@
           <mat-label>{{ strings.substance.unit }}</mat-label>
           <mat-select [value]="unit.CELSIUS" [disabled]="true">
             <mat-option *ngFor="let unit of unitGroups.temperatureUnits" [value]="unit">
-              {{ getViewValue(unit) }}
+              {{ localizeUnit(unit) }}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -101,9 +101,9 @@
         <mat-form-field>
           <mat-label>{{ strings.substance.unit }}</mat-label>
           <mat-select formControlName="unit">
-            <mat-optgroup *ngFor="let group of unitGroups.defaultUnitGroups" [label]="group.viewValue">
+            <mat-optgroup *ngFor="let group of unitGroups.defaultUnitGroups" [label]="localizeUnitGroup(group.viewValue)">
               <mat-option *ngFor="let option of group.unitMappings" [value]="option">
-                {{ getViewValue(option) }}
+                {{ localizeUnit(option) }}
               </mat-option>
             </mat-optgroup>
           </mat-select>

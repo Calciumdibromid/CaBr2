@@ -42,8 +42,6 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
   customSubscription?: Subscription;
 
-  getViewValue = getViewValue;
-
   constructor(
     public dialogRef: MatDialogRef<EditSubstanceDataComponent>,
     public globals: GlobalModel,
@@ -163,6 +161,21 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   removePhrase(index: number, formArray: FormArray): void {
     formArray.removeAt(index);
     formArray.markAllAsTouched();
+  }
+
+  localizeUnitGroup(name: string): string {
+    return (this.strings.units.groups as any)[name];
+  }
+
+  localizeUnit(unit: Unit): string {
+    const name = getViewValue(unit);
+    const localizedName = (this.strings.units as any)[name];
+
+    if (localizedName) {
+      return localizedName;
+    } else {
+      return name;
+    }
   }
 
   resetToOriginalData(event: Event): void {

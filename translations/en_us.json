@@ -59,7 +59,9 @@
     },
     "substance": {
       "invalidFormsTitle": "Something is wrong",
-      "invalidFormsContent": ["The substance has invalid or missing data on following items:"],
+      "invalidFormsContent": [
+        "The substance has invalid or missing data on following items:"
+      ],
       "edited": "Edited?",
       "name": "Name",
       "needsName": "Name is required",
@@ -92,6 +94,15 @@
       "addCustomSubstanceData": "Add custom substance",
       "dragAndDrop": "drag & drop",
       "resetTooltip": "Reset current substance to original values"
+    },
+    "units": {
+      "groups": {
+        "rawSubstance": "Raw Substance",
+        "solution": "Solution",
+        "custom": "Custom"
+      },
+      "custom": "Custom",
+      "pcs.": "pcs."
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Additional dangers for humans and environment (e.g. carcinogenic, teratogenic):",
@@ -146,8 +157,12 @@
     "dialogs": {
       "unchangedValues": {
         "title": "Unchanged values",
-        "content": ["The following values were not changed."],
-        "footer": ["Continue anyway?"]
+        "content": [
+          "The following values were not changed."
+        ],
+        "footer": [
+          "Continue anyway?"
+        ]
       }
     }
   }
