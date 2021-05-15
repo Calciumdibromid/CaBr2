@@ -149,7 +149,6 @@ export enum Unit {
   FAHRENHEIT,
 }
 
-// TODO move to i18n service
 const unitMapping = new Map<Unit, string>([
   [Unit.LITRE, 'l'],
   [Unit.MILLILITER, 'ml'],
@@ -159,7 +158,7 @@ const unitMapping = new Map<Unit, string>([
   [Unit.MICROGRAM, 'µg'],
   [Unit.MOL, 'mol'],
   [Unit.MILLIMOL, 'mmol'],
-  [Unit.PIECES, 'pcs.'], // TODO localize
+  [Unit.PIECES, 'pcs.'],
 
   [Unit.SOLUTION_RELATIVE, '% (v/v)'],
   [Unit.SOLUTION_MOL, 'mol/l'],
@@ -168,7 +167,7 @@ const unitMapping = new Map<Unit, string>([
   [Unit.SOLUTION_GRAM, 'g/l'],
   [Unit.SOLUTION_MILLIGRAM, 'mg/l'],
 
-  [Unit.CUSTOM, 'Custom'], // custom units need special treatment
+  [Unit.CUSTOM, 'custom'],
 
   [Unit.GRAM_PER_MOL, 'g/mol'],
 
@@ -181,7 +180,6 @@ const unitMapping = new Map<Unit, string>([
   [Unit.FAHRENHEIT, 'F'],
 ]);
 
-// TODO move to i18n service
 const getViewValue = (unit: Unit): string => {
   const value = unitMapping.get(unit);
 
@@ -224,10 +222,9 @@ class UnitGroups {
     // Unit.CUSTOM,
   ];
   public readonly defaultUnitGroups: GroupMapping[] = [
-    // TODO i18n
-    { viewValue: 'Reine Substanz', unitMappings: this.substanceUnits },
-    { viewValue: 'Lösung', unitMappings: this.solutionUnits },
-    { viewValue: 'Custom', unitMappings: [Unit.CUSTOM] },
+    { viewValue: 'rawSubstance', unitMappings: this.substanceUnits },
+    { viewValue: 'solution', unitMappings: this.solutionUnits },
+    { viewValue: 'custom', unitMappings: [Unit.CUSTOM] },
   ];
 }
 
@@ -236,7 +233,7 @@ const unitGroups = new UnitGroups();
 export { unitMapping, unitGroups, getViewValue, modifiedOrOriginal };
 
 // these are needed to create new objects every time and don't copy a reference
-// because otherwise every filed would reference the same values
+// because otherwise every field would reference the same values
 const EMPTY_DATA = () => ({ originalData: undefined });
 const EMPTY_STRING_DATA = () => ({ originalData: '' });
 const EMPTY_LIST_DATA = () => ({ originalData: [] });

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { merge } from 'lodash';
 import { Observable } from 'rxjs';
 
 import { strings as DEFAULT_STRINGS } from '../../../../assets/defaultStrings.json';
@@ -30,11 +31,12 @@ export class I18nService {
         .subscribe(
           (strings) => {
             logger.trace('loading localized strings successful:', strings);
-            sub.next(strings);
+            const mergedStrings = { ...I18nService.getDefaultStrings() };
+            merge(mergedStrings, strings);
+            sub.next(mergedStrings);
           },
           (err) => {
             logger.error('loading localized strings failed:', err);
-            sub.next(I18nService.getDefaultStrings());
           },
         );
     });
