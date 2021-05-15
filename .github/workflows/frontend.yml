@@ -1,0 +1,45 @@
+name: checks
+
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+    paths:
+      - 'src'
+      - '!src/assets/defaultStrings.json'
+      - '*.json'
+      - '*.js'
+      - '.prettierignore'
+      - 'yarn.lock'
+      - '.github/workflows/frontend.yml'
+
+jobs:
+  frontend:
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        node-version:
+          - 14
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+
+      - name: Setup Nodejs
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Check Formatting
+        run: yarn prettier -c src
+
+      - name: Eslint
+        run: yarn lint
+
+      - name: Build Frontend
+        run: yarn ng build
