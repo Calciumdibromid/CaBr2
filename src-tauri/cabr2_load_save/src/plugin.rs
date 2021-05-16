@@ -40,20 +40,28 @@ pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Docume
 
   let res = handler::save_document(file_type.as_str(), document)?;
 
-  fs::write(filename, res)?;
+  let res = fs::write(&filename, res);
 
-  Ok(())
+  if res.is_err() {
+    log::warn!("failed to write file '{:?}': {:?}", filename, res);
+  }
+
+  Ok(res?)
 }
 
 #[tauri::command]
 pub fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
   log::debug!("filename: {:?}", filename);
 
-  let contents = fs::read(&filename)?;
+  let contents = fs::read(&filename);
+
+  if contents.is_err() {
+    log::warn!("failed to read file '{:?}': {:?}", filename, contents);
+  }
 
   handler::load_document(
     filename.extension().unwrap_or_default().to_str().unwrap_or_default(),
-    contents,
+    contents?,
   )
 }
 
