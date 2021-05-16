@@ -1,6 +1,5 @@
 use std::{
   collections::HashMap,
-  path::PathBuf,
   sync::{Arc, Mutex},
 };
 
@@ -35,48 +34,17 @@ pub fn init_handlers(_provider_mapping: ProviderMapping) {
   _savers.insert("pdf", ("PDF", Box::new(crate::pdf::PDF::new(_provider_mapping))));
 }
 
-pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Document) -> Result<()> {
-  log::debug!("type: {}", file_type);
-  log::debug!("filename: {:?}", filename);
-  log::trace!("doc: {:#?}", document);
-
-  let mut filename = filename;
-  let mut filename_changed = false;
-  if let Some(ext) = filename.extension() {
-    if ext.to_str().unwrap() != file_type {
-      let mut name = filename.file_name().unwrap().to_owned();
-      name.push(".");
-      name.push(&file_type);
-      filename = filename.with_file_name(&name);
-      filename_changed = true;
-    }
-  } else {
-    filename.set_extension(&file_type);
-    filename_changed = true;
-  }
-
-  if filename_changed {
-    log::debug!("filename changed: {:?}", filename);
-    if filename.exists() {
-      return Err(LoadSaveError::FileExists(filename.to_string_lossy().into()));
-    }
-  }
-
-  if let Some((_, saver)) = REGISTERED_SAVERS.lock().unwrap().get(file_type.as_str()) {
-    return saver.save_document(filename, document);
+pub fn save_document(file_type: &str, document: CaBr2Document) -> Result<Vec<u8>> {
+  if let Some((_, saver)) = REGISTERED_SAVERS.lock().unwrap().get(file_type) {
+    return saver.save_document(document);
   }
 
   Err(LoadSaveError::UnknownFileType)
 }
 
-pub fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
-  log::debug!("filename: {:?}", filename);
-
-  if let Some(extension) = filename.extension() {
-    let extension = extension.to_str().unwrap();
-    if let Some((_, loader)) = REGISTERED_LOADERS.lock().unwrap().get(extension) {
-      return loader.load_document(filename);
-    }
+pub fn load_document(file_type: &str, contents: Vec<u8>) -> Result<CaBr2Document> {
+  if let Some((_, loader)) = REGISTERED_LOADERS.lock().unwrap().get(file_type) {
+    return loader.load_document(contents);
   }
 
   Err(LoadSaveError::UnknownFileType)

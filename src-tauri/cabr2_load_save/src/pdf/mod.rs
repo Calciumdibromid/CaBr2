@@ -5,7 +5,6 @@ use std::{
   collections::HashMap,
   fs::OpenOptions,
   io::{BufReader, Read},
-  path::PathBuf,
   sync::{mpsc, Arc, Mutex},
   thread,
 };
@@ -41,7 +40,7 @@ impl PDF {
 }
 
 impl Saver for PDF {
-  fn save_document(&self, filename: PathBuf, document: CaBr2Document) -> Result<()> {
+  fn save_document(&self, document: CaBr2Document) -> Result<Vec<u8>> {
     lazy_static! {
       static ref PDF_THREAD_CHANNEL: PDFThreadChannels = Arc::new(Mutex::new(init_pdf_application()));
     }
@@ -72,9 +71,11 @@ impl Saver for PDF {
         }
 
         let mut merged_pdf = merge::merge_pdfs(documents)?;
-        merged_pdf.save(filename)?;
 
-        Ok(())
+        let mut buf = Vec::new();
+        merged_pdf.save_to(&mut buf)?;
+
+        Ok(buf)
       }
     }
   }
