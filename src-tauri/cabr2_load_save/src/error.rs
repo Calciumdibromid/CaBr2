@@ -32,6 +32,7 @@ pub enum LoadSaveError {
   #[cfg(feature = "cabr2")]
   #[error("parsing json failed: '{0}'")]
   JsonError(#[from] serde_json::Error),
+
   #[error("io error: '{0}'")]
   IOError(#[from] std::io::Error),
 }

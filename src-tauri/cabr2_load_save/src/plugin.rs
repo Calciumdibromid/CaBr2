@@ -1,23 +1,68 @@
-use std::path::PathBuf;
+use std::{fs, path::PathBuf};
 
 use tauri::{plugin::Plugin, InvokeMessage, Params, Window};
 
 use cabr2_types::ProviderMapping;
 
 use crate::{
-  error::Result,
+  error::{LoadSaveError, Result},
   handler::{self, init_handlers},
   types::{CaBr2Document, DocumentTypes},
 };
 
 #[tauri::command]
 pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Document) -> Result<()> {
-  handler::save_document(file_type, filename, document)
+  log::debug!("type: {}", file_type);
+  log::debug!("filename: {:?}", filename);
+  log::trace!("doc: {:#?}", document);
+
+  let mut filename = filename;
+  let mut filename_changed = false;
+  if let Some(ext) = filename.extension() {
+    if ext.to_str().unwrap() != file_type {
+      let mut name = filename.file_name().unwrap().to_owned();
+      name.push(".");
+      name.push(&file_type);
+      filename = filename.with_file_name(&name);
+      filename_changed = true;
+    }
+  } else {
+    filename.set_extension(&file_type);
+    filename_changed = true;
+  }
+
+  if filename_changed {
+    log::debug!("filename changed: {:?}", filename);
+    if filename.exists() {
+      return Err(LoadSaveError::FileExists(filename.to_string_lossy().into()));
+    }
+  }
+
+  let res = handler::save_document(file_type.as_str(), document)?;
+
+  let res = fs::write(&filename, res);
+
+  if res.is_err() {
+    log::warn!("failed to write file '{:?}': {:?}", filename, res);
+  }
+
+  Ok(res?)
 }
 
 #[tauri::command]
 pub fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
-  handler::load_document(filename)
+  log::debug!("filename: {:?}", filename);
+
+  let contents = fs::read(&filename);
+
+  if contents.is_err() {
+    log::warn!("failed to read file '{:?}': {:?}", filename, contents);
+  }
+
+  handler::load_document(
+    filename.extension().unwrap_or_default().to_str().unwrap_or_default(),
+    contents?,
+  )
 }
 
 #[tauri::command]

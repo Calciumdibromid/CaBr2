@@ -1,5 +1,3 @@
-use std::path::PathBuf;
-
 use serde::{Deserialize, Serialize};
 
 use cabr2_types::SubstanceData;
@@ -7,11 +5,11 @@ use cabr2_types::SubstanceData;
 use super::error::Result;
 
 pub trait Loader {
-  fn load_document(&self, filename: PathBuf) -> Result<CaBr2Document>;
+  fn load_document(&self, contents: Vec<u8>) -> Result<CaBr2Document>;
 }
 
 pub trait Saver {
-  fn save_document(&self, filename: PathBuf, document: CaBr2Document) -> Result<()>;
+  fn save_document(&self, document: CaBr2Document) -> Result<Vec<u8>>;
 }
 
 #[derive(Debug, Deserialize, Serialize)]
