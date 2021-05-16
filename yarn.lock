@@ -171,6 +171,13 @@
     aria-query "^4.2.2"
     axobject-query "^2.2.0"
 
+"@angular-eslint/eslint-plugin@12.0.0":
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin/-/eslint-plugin-12.0.0.tgz#47663c1b1101bcf07fb0f714f8287b3de3b3d7f7"
+  integrity sha512-osdJdMu8bYFv9WGhC04AwRcbeKq4sxCQnShV7NiF0xkgNG9KqDaStytVhPjJFn2Ja1QhfiTGlcFFk4D/9aruog==
+  dependencies:
+    "@typescript-eslint/experimental-utils" "4.23.0"
+
 "@angular-eslint/eslint-plugin@4.3.0":
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin/-/eslint-plugin-4.3.0.tgz#7855f2f697e1a832be63f91c9f4f8f6afa63239d"
