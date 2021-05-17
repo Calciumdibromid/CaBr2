@@ -17,4 +17,11 @@ ul {
 
 .cdk-drag-preview {
   @include mat-elevation(2);
+  margin-left: -20px !important;
+}
+
+mat-card {
+  @include mat-elevation(0);
+  padding-top: 0;
+  padding-bottom: 0;
 }
