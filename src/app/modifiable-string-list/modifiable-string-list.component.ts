@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -64,5 +65,9 @@ export class ModifiableStringListComponent implements OnInit {
 
   emitChange(): void {
     this.elementEmitter.emit(this.controlElements.controls.map((control) => control.get('value')?.value));
+  }
+
+  drop(event: CdkDragDrop<FormGroup[]>): void {
+    moveItemInArray(this.controlElements.controls, event.previousIndex, event.currentIndex);
   }
 }
