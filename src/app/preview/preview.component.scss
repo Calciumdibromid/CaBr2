@@ -1,3 +1,4 @@
+@use '~@angular/material' as mat;
 @import '../../styles/color';
 
 .flex {
@@ -81,5 +82,5 @@ img {
 .preview-text {
   display: flex;
   justify-content: center;
-  color: mat-color($ang-CaBr2-primary);
+  color: mat.get-color-from-palette($ang-CaBr2-primary);
 }
