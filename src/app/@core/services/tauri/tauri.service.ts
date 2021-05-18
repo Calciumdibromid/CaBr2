@@ -1,7 +1,10 @@
 import { from, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import { dialog, shell, tauri } from '@tauri-apps/api/index.js';
+import * as dialog from '@tauri-apps/api/dialog';
+import * as shell from '@tauri-apps/api/shell';
+import * as tauri from '@tauri-apps/api/tauri';
+
 import { InvokeArgs } from '@tauri-apps/api/tauri';
 
 @Injectable({

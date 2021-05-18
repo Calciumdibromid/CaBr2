@@ -1,4 +1,4 @@
-import { invoke } from '@tauri-apps/api/tauri.js';
+import { invoke } from '@tauri-apps/api/tauri';
 
 export enum LogLevel {
   TRACE = 'TRACE',

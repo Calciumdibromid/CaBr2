@@ -8,7 +8,6 @@ import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.serv
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { compareArrays } from '../@core/utils/compare';
 import { ConfigService } from '../@core/services/config/config.service';
-import { docsTemplate } from '../../assets/docsTemplate.json';
 import { GlobalModel } from '../@core/models/global.model';
 import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
@@ -16,9 +15,12 @@ import Logger from '../@core/utils/logger';
 import { ManualComponent } from '../manual/manual.component';
 import { ReportBugComponent } from '../report-bug/report-bug.component';
 import { SettingsComponent } from '../settings/settings.component';
+import TEMPLATES from '../../assets/docsTemplate.json';
 import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
 const logger = new Logger('menubar');
+
+const DOCS_TEMPLATE = TEMPLATES.docsTemplate;
 
 @Component({
   selector: 'app-menubar',
@@ -59,11 +61,11 @@ export class MenubarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.globals.headerSubject.next({ ...docsTemplate.header });
-    this.globals.humanAndEnvironmentDangerSubject.next(docsTemplate.humanAndEnvironmentDanger);
-    this.globals.rulesOfConductSubject.next(docsTemplate.rulesOfConduct);
-    this.globals.inCaseOfDangerSubject.next(docsTemplate.inCaseOfDanger);
-    this.globals.disposalSubject.next(docsTemplate.disposal);
+    this.globals.headerSubject.next({ ...DOCS_TEMPLATE.header });
+    this.globals.humanAndEnvironmentDangerSubject.next(DOCS_TEMPLATE.humanAndEnvironmentDanger);
+    this.globals.rulesOfConductSubject.next(DOCS_TEMPLATE.rulesOfConduct);
+    this.globals.inCaseOfDangerSubject.next(DOCS_TEMPLATE.inCaseOfDanger);
+    this.globals.disposalSubject.next(DOCS_TEMPLATE.disposal);
 
     this.globals.substanceDataSubject.next([]);
 
@@ -149,12 +151,12 @@ export class MenubarComponent implements OnInit {
     for (const section of [
       [
         document.humanAndEnvironmentDanger,
-        docsTemplate.humanAndEnvironmentDanger,
+        DOCS_TEMPLATE.humanAndEnvironmentDanger,
         [this.strings.descriptions.humanAndEnvironmentDangerShort],
       ],
-      [document.rulesOfConduct, docsTemplate.rulesOfConduct, [this.strings.descriptions.rulesOfConductShort]],
-      [document.inCaseOfDanger, docsTemplate.inCaseOfDanger, [this.strings.descriptions.inCaseOfDangerShort]],
-      [document.disposal, docsTemplate.disposal, [this.strings.descriptions.disposalShort]],
+      [document.rulesOfConduct, DOCS_TEMPLATE.rulesOfConduct, [this.strings.descriptions.rulesOfConductShort]],
+      [document.inCaseOfDanger, DOCS_TEMPLATE.inCaseOfDanger, [this.strings.descriptions.inCaseOfDangerShort]],
+      [document.disposal, DOCS_TEMPLATE.disposal, [this.strings.descriptions.disposalShort]],
     ]) {
       if (compareArrays(section[0], section[1])) {
         unmodified.push(section[2][0]);
