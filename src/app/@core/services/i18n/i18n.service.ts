@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { merge } from 'lodash';
 import { Observable } from 'rxjs';
 
-import DEFAULT_STRINGS from '../../../../assets/defaultStrings.json';
+import DEFAULT_LOCALIZATION from '../../../../assets/defaultStrings.json';
 import Logger from '../../utils/logger';
 import { TauriService } from '../tauri/tauri.service';
 
 const logger = new Logger('i18n-service');
 
-export type LocalizedStrings = typeof DEFAULT_STRINGS.strings;
+const DEFAULT_STRINGS = DEFAULT_LOCALIZATION.strings;
+export type LocalizedStrings = typeof DEFAULT_STRINGS;
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class I18nService {
   constructor(private tauriService: TauriService) {}
 
   static getDefaultStrings(): LocalizedStrings {
-    return DEFAULT_STRINGS.strings;
+    return DEFAULT_STRINGS;
   }
 
   getAvailableLanguages(): Observable<LocalizedStringsHeader[]> {

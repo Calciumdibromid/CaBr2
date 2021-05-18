@@ -15,10 +15,12 @@ import Logger from '../@core/utils/logger';
 import { ManualComponent } from '../manual/manual.component';
 import { ReportBugComponent } from '../report-bug/report-bug.component';
 import { SettingsComponent } from '../settings/settings.component';
-import templates from '../../assets/docsTemplate.json';
+import TEMPLATES from '../../assets/docsTemplate.json';
 import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
 const logger = new Logger('menubar');
+
+const DOCS_TEMPLATE = TEMPLATES.docsTemplate;
 
 @Component({
   selector: 'app-menubar',
@@ -59,11 +61,11 @@ export class MenubarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.globals.headerSubject.next({ ...templates.docsTemplate.header });
-    this.globals.humanAndEnvironmentDangerSubject.next(templates.docsTemplate.humanAndEnvironmentDanger);
-    this.globals.rulesOfConductSubject.next(templates.docsTemplate.rulesOfConduct);
-    this.globals.inCaseOfDangerSubject.next(templates.docsTemplate.inCaseOfDanger);
-    this.globals.disposalSubject.next(templates.docsTemplate.disposal);
+    this.globals.headerSubject.next({ ...DOCS_TEMPLATE.header });
+    this.globals.humanAndEnvironmentDangerSubject.next(DOCS_TEMPLATE.humanAndEnvironmentDanger);
+    this.globals.rulesOfConductSubject.next(DOCS_TEMPLATE.rulesOfConduct);
+    this.globals.inCaseOfDangerSubject.next(DOCS_TEMPLATE.inCaseOfDanger);
+    this.globals.disposalSubject.next(DOCS_TEMPLATE.disposal);
 
     this.globals.substanceDataSubject.next([]);
 
@@ -149,12 +151,12 @@ export class MenubarComponent implements OnInit {
     for (const section of [
       [
         document.humanAndEnvironmentDanger,
-        templates.docsTemplate.humanAndEnvironmentDanger,
+        DOCS_TEMPLATE.humanAndEnvironmentDanger,
         [this.strings.descriptions.humanAndEnvironmentDangerShort],
       ],
-      [document.rulesOfConduct, templates.docsTemplate.rulesOfConduct, [this.strings.descriptions.rulesOfConductShort]],
-      [document.inCaseOfDanger, templates.docsTemplate.inCaseOfDanger, [this.strings.descriptions.inCaseOfDangerShort]],
-      [document.disposal, templates.docsTemplate.disposal, [this.strings.descriptions.disposalShort]],
+      [document.rulesOfConduct, DOCS_TEMPLATE.rulesOfConduct, [this.strings.descriptions.rulesOfConductShort]],
+      [document.inCaseOfDanger, DOCS_TEMPLATE.inCaseOfDanger, [this.strings.descriptions.inCaseOfDangerShort]],
+      [document.disposal, DOCS_TEMPLATE.disposal, [this.strings.descriptions.disposalShort]],
     ]) {
       if (compareArrays(section[0], section[1])) {
         unmodified.push(section[2][0]);
