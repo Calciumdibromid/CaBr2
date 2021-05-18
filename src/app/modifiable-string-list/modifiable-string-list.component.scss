@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 ul {
   margin-left: 20px;
@@ -16,12 +16,12 @@ ul {
 }
 
 .cdk-drag-preview {
-  @include mat-elevation(2);
+  @include mat.elevation(2);
   margin-left: -20px !important;
 }
 
 mat-card {
-  @include mat-elevation(0);
+  @include mat.elevation(0);
   padding-top: 0;
   padding-bottom: 0;
 }
