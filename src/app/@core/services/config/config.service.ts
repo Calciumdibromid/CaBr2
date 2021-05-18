@@ -1,13 +1,15 @@
 import { ConfigModel } from '../../models/config.model';
 import { GHSSymbols } from '../../models/global.model';
+import { IConfigService } from './config.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ServiceModule } from '../service.module';
 import { TauriService } from '../tauri/tauri.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: ServiceModule,
 })
-export class ConfigService {
+export class ConfigService implements IConfigService {
   constructor(private tauriService: TauriService) {}
 
   getProgramVersion(): Observable<string> {

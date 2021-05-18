@@ -10,7 +10,8 @@
     "e2e": "ng e2e",
     "tauri": "tauri",
     "tauri-dev": "tauri dev",
-    "build-release": "ng build --prod && tauri build"
+    "build:web": "ng build --production,web",
+    "build:release": "ng build --prod && tauri build"
   },
   "private": true,
   "dependencies": {

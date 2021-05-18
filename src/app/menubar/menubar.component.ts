@@ -1,5 +1,5 @@
 import { combineLatest, Observable } from 'rxjs';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import { first, map, switchMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -7,10 +7,10 @@ import { DialogFilter, TauriService } from '../@core/services/tauri/tauri.servic
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { compareArrays } from '../@core/utils/compare';
-import { ConfigService } from '../@core/services/config/config.service';
 import { GlobalModel } from '../@core/models/global.model';
-import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
+import { IConfigService } from '../@core/services/config/config.interface';
+import { ILoadSaveService } from '../@core/services/loadSave/loadSave.interface';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.service.interface';
 import Logger from '../@core/utils/logger';
 import { ManualComponent } from '../manual/manual.component';
 import { ReportBugComponent } from '../report-bug/report-bug.component';
@@ -40,10 +40,10 @@ export class MenubarComponent implements OnInit {
 
   constructor(
     public globals: GlobalModel,
-    private loadSaveService: LoadSaveService,
+    @Inject('ILoadService') private loadSaveService: ILoadSaveService,
     private tauriService: TauriService,
     private alertService: AlertService,
-    private configService: ConfigService,
+    @Inject('IConfigService') private configService: IConfigService,
     private dialog: MatDialog,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));

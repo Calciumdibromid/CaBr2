@@ -1,12 +1,14 @@
 import { CaBr2Document, DocumentTypes } from './loadSave.model';
+import { ILoadSaveService } from './loadSave.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ServiceModule } from '../service.module';
 import { TauriService } from '../tauri/tauri.service';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: ServiceModule,
 })
-export class LoadSaveService {
+export class LoadSaveService implements ILoadSaveService {
   constructor(private tauriService: TauriService) {}
 
   saveDocument(fileType: string, filename: string, document: CaBr2Document): Observable<string> {
