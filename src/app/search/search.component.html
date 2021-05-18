@@ -81,6 +81,8 @@
         (click)="openEditDialog(row)"
         [cdkDragData]="row"
         cdkDrag
+        cdkDragLockAxis="y"
+        cdkDragBoundary="mat-table"
       ></mat-row>
     </mat-table>
   </div>
