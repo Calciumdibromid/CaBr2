@@ -52,7 +52,7 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
     AlertModule,
     ServiceModule,
   ],
-  providers: [GlobalModel],
+  providers: [GlobalModel, ServiceModule],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

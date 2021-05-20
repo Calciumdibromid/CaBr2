@@ -1,5 +1,6 @@
-import { II18nService, LocalizedStrings, LocalizedStringsHeader } from '../i18n.service.interface';
+import { II18nService, LocalizedStrings, LocalizedStringsHeader } from '../i18n.interface';
 import { Injectable } from '@angular/core';
+import Logger from 'src/app/@core/utils/logger';
 import { Observable } from 'rxjs';
 import { ServiceModule } from '../../service.module';
 

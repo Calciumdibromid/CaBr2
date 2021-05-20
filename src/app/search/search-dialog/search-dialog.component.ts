@@ -2,12 +2,12 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 
+import { IProviderService, PROVIDER_SERVICE } from '../../@core/services/provider/provider.interface';
 import { SearchArgument, SearchResult } from '../../@core/services/provider/provider.model';
 import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
 import { GlobalModel } from '../../@core/models/global.model';
-import { LocalizedStrings } from '../../@core/services/i18n/i18n.service';
+import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
 import Logger from '../../@core/utils/logger';
-import { ProviderService } from '../../@core/services/provider/provider.service';
 
 const logger = new Logger('search-dialog');
 
@@ -36,7 +36,7 @@ export class SearchDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: Data,
 
     private globals: GlobalModel,
-    private providerService: ProviderService,
+    @Inject(PROVIDER_SERVICE) private providerService: IProviderService,
     private alertService: AlertService,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));

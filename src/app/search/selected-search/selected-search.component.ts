@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
+import { IProviderService, PROVIDER_SERVICE } from '../../@core/services/provider/provider.interface';
 import {
   SearchArgument,
   SearchType,
@@ -10,9 +11,8 @@ import {
 } from '../../@core/services/provider/provider.model';
 import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
 import { GlobalModel } from '../../@core/models/global.model';
-import { LocalizedStrings } from '../../@core/services/i18n/i18n.service';
+import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
 import Logger from '../../@core/utils/logger';
-import { ProviderService } from '../../@core/services/provider/provider.service';
 
 const logger = new Logger('selected-search');
 
@@ -44,7 +44,7 @@ export class SelectedSearchComponent {
 
   constructor(
     private globals: GlobalModel,
-    private providerService: ProviderService,
+    @Inject(PROVIDER_SERVICE) private providerService: IProviderService,
     private alertService: AlertService,
     private formBuilder: FormBuilder,
   ) {

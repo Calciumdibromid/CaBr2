@@ -1,7 +1,15 @@
-import { Provider, SearchArguments, SearchResult, SearchType } from '../provider.model';
+import {
+  Provider,
+  ProviderMapping,
+  SearchArguments,
+  SearchResult,
+  SearchType,
+  SearchTypeMapping,
+} from '../provider.model';
+
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { IProviderService } from '../provider.interface';
-import { Observable } from 'rxjs';
 import { ServiceModule } from '../../service.module';
 import { SubstanceData } from 'src/app/@core/models/substances.model';
 
@@ -9,6 +17,12 @@ import { SubstanceData } from 'src/app/@core/models/substances.model';
   providedIn: ServiceModule,
 })
 export class ProviderService implements IProviderService {
+  searchTypeMappingsSubject = new BehaviorSubject<SearchTypeMapping[]>([]);
+  searchTypeMappingsObservable = this.searchTypeMappingsSubject.asObservable();
+
+  providerMappingsSubject = new BehaviorSubject<ProviderMapping>(new Map());
+  providerMappingsObservable = this.providerMappingsSubject.asObservable();
+
   getAvailableProviders(): Observable<Provider[]> {
     throw new Error('Method not implemented.');
   }

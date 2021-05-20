@@ -1,11 +1,16 @@
 import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
-import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Subscription } from 'rxjs';
 
 import { ConfigModel, configObservable } from '../@core/models/config.model';
-import { I18nService, LocalizedStrings, LocalizedStringsHeader } from '../@core/services/i18n/i18n.service';
+import {
+  I18N_SERVICE,
+  II18nService,
+  LocalizedStrings,
+  LocalizedStringsHeader,
+} from '../@core/services/i18n/i18n.interface';
 import { GlobalModel } from '../@core/models/global.model';
 
 @Component({
@@ -26,7 +31,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<SettingsComponent>,
     private globals: GlobalModel,
-    private i18nService: I18nService,
+    @Inject(I18N_SERVICE) private i18nService: II18nService,
     private formBuilder: FormBuilder,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));

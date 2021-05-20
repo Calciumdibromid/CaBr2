@@ -1,10 +1,10 @@
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Inject, Injectable } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { Injectable } from '@angular/core';
 
 import { GlobalModel } from '../../models/global.model';
 import { IProviderService } from './provider.interface';
-import { TauriService } from '../tauri/tauri.service';
+import { TauriService } from '../native/tauri.service';
 
 import {
   Provider,
@@ -15,12 +15,10 @@ import {
   SearchTypeMapping,
   searchTypes,
 } from './provider.model';
-import { ServiceModule } from '../service.module';
+import { NATIVE_SERVICE } from '../native/native.interface';
 import { SubstanceData } from '../../models/substances.model';
 
-@Injectable({
-  providedIn: ServiceModule,
-})
+@Injectable()
 export class ProviderService implements IProviderService {
   searchTypeMappingsSubject = new BehaviorSubject<SearchTypeMapping[]>([]);
   searchTypeMappingsObservable = this.searchTypeMappingsSubject.asObservable();
@@ -28,7 +26,7 @@ export class ProviderService implements IProviderService {
   providerMappingsSubject = new BehaviorSubject<ProviderMapping>(new Map());
   providerMappingsObservable = this.providerMappingsSubject.asObservable();
 
-  constructor(private tauriService: TauriService, private globals: GlobalModel) {
+  constructor(@Inject(NATIVE_SERVICE) private tauriService: TauriService, private globals: GlobalModel) {
     this.globals.localizedStringsObservable.subscribe((strings) =>
       this.searchTypeMappingsSubject.next(searchTypes.map((t) => ({ viewValue: strings.search.types[t], value: t }))),
     );

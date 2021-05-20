@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 import { Amount, CustomUnit, Unit, unitMapping } from '../@core/models/substances.model';
+import { IProviderService, PROVIDER_SERVICE } from '../@core/services/provider/provider.interface';
 import { GlobalModel } from '../@core/models/global.model';
 import { Header } from '../@core/interfaces/Header';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
 import { ProviderMapping } from '../@core/services/provider/provider.model';
-import { ProviderService } from '../@core/services/provider/provider.service';
 
 // TODO ViewSubstanceData and move
 interface SimpleSubstanceData {
@@ -41,7 +41,10 @@ export class PreviewComponent implements OnInit {
 
   sources: Set<string> = new Set();
 
-  constructor(public globals: GlobalModel, private providerService: ProviderService) {
+  constructor(
+    public globals: GlobalModel,
+    @Inject(PROVIDER_SERVICE) private providerService: IProviderService
+    ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
 
     this.providerService.providerMappingsObservable.subscribe((providers) => (this.providerMapping = providers));

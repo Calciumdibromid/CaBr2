@@ -1,17 +1,17 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, Inject, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Data, Source, SubstanceData } from '../@core/models/substances.model';
+import { INativeService, NATIVE_SERVICE } from '../@core/services/native/native.interface';
+import { IProviderService, PROVIDER_SERVICE } from '../@core/services/provider/provider.interface';
 import { Provider, ProviderMapping, SearchArgument } from '../@core/services/provider/provider.model';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { GlobalModel } from '../@core/models/global.model';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
 import Logger from '../@core/utils/logger';
-import { ProviderService } from '../@core/services/provider/provider.service';
-import { TauriService } from '../@core/services/tauri/tauri.service';
 
 import { EditSubstanceDataComponent } from '../edit-substance-data/edit-substance-data.component';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
@@ -49,8 +49,8 @@ export class SearchComponent implements OnInit {
   dataSource!: MatTableDataSource<SubstanceData>;
 
   constructor(
-    private providerService: ProviderService,
-    private tauriService: TauriService,
+    @Inject(PROVIDER_SERVICE) private providerService: IProviderService,
+    @Inject(NATIVE_SERVICE) private nativeService: INativeService,
     private alertService: AlertService,
     private dialog: MatDialog,
     public globals: GlobalModel,
@@ -161,7 +161,7 @@ export class SearchComponent implements OnInit {
     const matches = source.url.match(GESTIS_URL_RE);
     if (matches) {
       // TODO (#526) move the url to providers
-      this.tauriService.openUrl(`https://gestis.dguv.de/data?name=${matches[2]}&lang=${matches[1]}`);
+      this.nativeService.openUrl(`https://gestis.dguv.de/data?name=${matches[2]}&lang=${matches[1]}`);
     }
   }
 

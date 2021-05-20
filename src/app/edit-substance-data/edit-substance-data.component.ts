@@ -14,7 +14,7 @@ import {
 } from '../@core/models/substances.model';
 import { compareArrays } from '../@core/utils/compare';
 import { GlobalModel } from '../@core/models/global.model';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.service.interface';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
 import Logger from '../@core/utils/logger';
 import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 

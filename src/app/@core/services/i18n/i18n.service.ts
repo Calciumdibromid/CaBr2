@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { merge } from 'lodash';
 import { Observable } from 'rxjs';
 
@@ -7,10 +7,11 @@ import {
   II18nService,
   LocalizedStrings,
   LocalizedStringsHeader,
-} from './i18n.service.interface';
+} from './i18n.interface';
 import Logger from '../../utils/logger';
+import { NATIVE_SERVICE } from '../native/native.interface';
 import { ServiceModule } from '../service.module';
-import { TauriService } from '../tauri/tauri.service';
+import { TauriService } from '../native/tauri.service';
 
 const logger = new Logger('i18n-service');
 
@@ -18,7 +19,7 @@ const logger = new Logger('i18n-service');
   providedIn: ServiceModule,
 })
 export class I18nService implements II18nService {
-  constructor(private tauriService: TauriService) {}
+  constructor(@Inject(NATIVE_SERVICE) private tauriService: TauriService) {}
 
   getAvailableLanguages(): Observable<LocalizedStringsHeader[]> {
     return this.tauriService.promisified('plugin:cabr2_config|get_available_languages');

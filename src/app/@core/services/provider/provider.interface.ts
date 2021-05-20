@@ -1,9 +1,24 @@
-import { Provider, SearchArguments, SearchResult, SearchType } from './provider.model';
+import {
+  Provider,
+  ProviderMapping,
+  SearchArguments,
+  SearchResult,
+  SearchType,
+  SearchTypeMapping,
+} from './provider.model';
 
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { SubstanceData } from '../../models/substances.model';
 
+export const PROVIDER_SERVICE = 'IProviderService';
+
 export interface IProviderService {
+  searchTypeMappingsSubject: BehaviorSubject<SearchTypeMapping[]>;
+  searchTypeMappingsObservable: Observable<SearchTypeMapping[]>;
+
+  providerMappingsSubject: BehaviorSubject<ProviderMapping>;
+  providerMappingsObservable: Observable<ProviderMapping>;
+
   /**
    * Returns a Provider[] with the names and identifiers of the available Providers.
    *

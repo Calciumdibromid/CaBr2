@@ -1,16 +1,17 @@
+import { Inject, Injectable } from '@angular/core';
 import { ConfigModel } from '../../models/config.model';
 import { GHSSymbols } from '../../models/global.model';
 import { IConfigService } from './config.interface';
-import { Injectable } from '@angular/core';
+import { NATIVE_SERVICE } from '../native/native.interface';
 import { Observable } from 'rxjs';
 import { ServiceModule } from '../service.module';
-import { TauriService } from '../tauri/tauri.service';
+import { TauriService } from '../native/tauri.service';
 
 @Injectable({
   providedIn: ServiceModule,
 })
 export class ConfigService implements IConfigService {
-  constructor(private tauriService: TauriService) {}
+  constructor(@Inject(NATIVE_SERVICE) private tauriService: TauriService) {}
 
   getProgramVersion(): Observable<string> {
     return this.tauriService.promisified('plugin:cabr2_config|get_program_version');
