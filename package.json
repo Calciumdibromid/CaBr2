@@ -51,7 +51,7 @@
     "@typescript-eslint/parser": "4.24.0",
     "codelyzer": "^6.0.2",
     "eslint": "^7.26.0",
-    "eslint-plugin-import": "2.23.2",
+    "eslint-plugin-import": "2.23.3",
     "eslint-plugin-jsdoc": "34.8.2",
     "eslint-plugin-prefer-arrow": "1.2.3",
     "jasmine-core": "~3.7.1",
