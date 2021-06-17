@@ -11,12 +11,12 @@ import {
   configObservable,
 } from './@core/models/config.model';
 import { I18nService, LocalizedStrings } from './@core/services/i18n/i18n.service';
-import { name, version } from '../../package.json';
 import { AlertService } from './@core/services/alertsnackbar/altersnackbar.service';
 import { ConfigService } from './@core/services/config/config.service';
 import { ConsentComponent } from './consent/consent.component';
 import { GlobalModel } from './@core/models/global.model';
 import Logger from './@core/utils/logger';
+import packageInfo from '../../package.json';
 
 const logger = new Logger('main');
 
@@ -26,8 +26,8 @@ const logger = new Logger('main');
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
-  name = name;
-  version = version;
+  name = packageInfo.name;
+  version = packageInfo.version;
   strings!: LocalizedStrings;
 
   private config!: ConfigModel;

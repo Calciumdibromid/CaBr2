@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 @import '../../../styles/color';
 
 .viewport {
@@ -9,6 +9,6 @@
 }
 
 .empty {
-  color: mat-color($ang-CaBr2-warn);
+  color: mat.get-color-from-palette($ang-CaBr2-warn);
   margin-top: 20px;
 }
