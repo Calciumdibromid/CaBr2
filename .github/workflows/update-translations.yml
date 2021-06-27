@@ -28,3 +28,4 @@ jobs:
           author_email: cabr2.info@gmail.com
           message: 'Translation Updates'
           add: '-u translations/'
+          branch: update-translations
