@@ -1,10 +1,9 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Inject, Injectable } from '@angular/core';
 import { first } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
 
 import { GlobalModel } from '../../models/global.model';
 import { IProviderService } from './provider.interface';
-import { TauriService } from '../native/tauri.service';
 
 import {
   Provider,
@@ -15,7 +14,7 @@ import {
   SearchTypeMapping,
   searchTypes,
 } from './provider.model';
-import { NATIVE_SERVICE } from '../native/native.interface';
+import { INativeService } from '../native/native.interface';
 import { SubstanceData } from '../../models/substances.model';
 
 @Injectable()
@@ -26,7 +25,7 @@ export class ProviderService implements IProviderService {
   providerMappingsSubject = new BehaviorSubject<ProviderMapping>(new Map());
   providerMappingsObservable = this.providerMappingsSubject.asObservable();
 
-  constructor(@Inject(NATIVE_SERVICE) private tauriService: TauriService, private globals: GlobalModel) {
+  constructor(private nativeService: INativeService, private globals: GlobalModel) {
     this.globals.localizedStringsObservable.subscribe((strings) =>
       this.searchTypeMappingsSubject.next(searchTypes.map((t) => ({ viewValue: strings.search.types[t], value: t }))),
     );
@@ -37,11 +36,11 @@ export class ProviderService implements IProviderService {
   }
 
   getAvailableProviders(): Observable<Provider[]> {
-    return this.tauriService.promisified('plugin:cabr2_search|get_available_providers');
+    return this.nativeService.promisified('plugin:cabr2_search|get_available_providers');
   }
 
   searchSuggestions(provider: string, searchType: SearchType, query: string): Observable<string[]> {
-    return this.tauriService.promisified('plugin:cabr2_search|search_suggestions', {
+    return this.nativeService.promisified('plugin:cabr2_search|search_suggestions', {
       provider,
       pattern: query,
       searchType,
@@ -49,14 +48,14 @@ export class ProviderService implements IProviderService {
   }
 
   search(provider: string, args: SearchArguments): Observable<SearchResult[]> {
-    return this.tauriService.promisified('plugin:cabr2_search|search', {
+    return this.nativeService.promisified('plugin:cabr2_search|search', {
       provider,
       arguments: args,
     });
   }
 
   substanceData(provider: string, identifier: string): Observable<SubstanceData> {
-    return this.tauriService.promisified('plugin:cabr2_search|get_substance_data', {
+    return this.nativeService.promisified('plugin:cabr2_search|get_substance_data', {
       provider,
       identifier,
     });

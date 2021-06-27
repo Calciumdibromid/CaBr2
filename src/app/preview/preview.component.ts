@@ -1,10 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 import { Amount, CustomUnit, Unit, unitMapping } from '../@core/models/substances.model';
-import { IProviderService, PROVIDER_SERVICE } from '../@core/services/provider/provider.interface';
 import { GlobalModel } from '../@core/models/global.model';
 import { Header } from '../@core/interfaces/Header';
+import { IProviderService } from '../@core/services/provider/provider.interface';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
 import { ProviderMapping } from '../@core/services/provider/provider.model';
 
@@ -41,10 +41,7 @@ export class PreviewComponent implements OnInit {
 
   sources: Set<string> = new Set();
 
-  constructor(
-    public globals: GlobalModel,
-    @Inject(PROVIDER_SERVICE) private providerService: IProviderService
-    ) {
+  constructor(public globals: GlobalModel, private providerService: IProviderService) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
 
     this.providerService.providerMappingsObservable.subscribe((providers) => (this.providerMapping = providers));

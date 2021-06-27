@@ -1,15 +1,15 @@
-import { Component, Inject, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Data, Source, SubstanceData } from '../@core/models/substances.model';
-import { INativeService, NATIVE_SERVICE } from '../@core/services/native/native.interface';
-import { IProviderService, PROVIDER_SERVICE } from '../@core/services/provider/provider.interface';
 import { Provider, ProviderMapping, SearchArgument } from '../@core/services/provider/provider.model';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { GlobalModel } from '../@core/models/global.model';
+import { INativeService } from '../@core/services/native/native.interface';
+import { IProviderService } from '../@core/services/provider/provider.interface';
 import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
 import Logger from '../@core/utils/logger';
 
@@ -49,8 +49,8 @@ export class SearchComponent implements OnInit {
   dataSource!: MatTableDataSource<SubstanceData>;
 
   constructor(
-    @Inject(PROVIDER_SERVICE) private providerService: IProviderService,
-    @Inject(NATIVE_SERVICE) private nativeService: INativeService,
+    private providerService: IProviderService,
+    private nativeService: INativeService,
     private alertService: AlertService,
     private dialog: MatDialog,
     public globals: GlobalModel,

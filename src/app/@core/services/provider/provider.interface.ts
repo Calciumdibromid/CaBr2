@@ -10,14 +10,12 @@ import {
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SubstanceData } from '../../models/substances.model';
 
-export const PROVIDER_SERVICE = 'IProviderService';
+export abstract class IProviderService {
+  abstract searchTypeMappingsSubject: BehaviorSubject<SearchTypeMapping[]>;
+  abstract searchTypeMappingsObservable: Observable<SearchTypeMapping[]>;
 
-export interface IProviderService {
-  searchTypeMappingsSubject: BehaviorSubject<SearchTypeMapping[]>;
-  searchTypeMappingsObservable: Observable<SearchTypeMapping[]>;
-
-  providerMappingsSubject: BehaviorSubject<ProviderMapping>;
-  providerMappingsObservable: Observable<ProviderMapping>;
+  abstract providerMappingsSubject: BehaviorSubject<ProviderMapping>;
+  abstract providerMappingsObservable: Observable<ProviderMapping>;
 
   /**
    * Returns a Provider[] with the names and identifiers of the available Providers.
@@ -33,7 +31,7 @@ export interface IProviderService {
    * ]
    * ```
    */
-  getAvailableProviders(): Observable<Provider[]>;
+  abstract getAvailableProviders(): Observable<Provider[]>;
 
   /**
    * Returns a string[] with names to use in an search query.
@@ -48,7 +46,7 @@ export interface IProviderService {
    * ]
    * ```
    */
-  searchSuggestions(provider: string, searchType: SearchType, query: string): Observable<string[]>;
+  abstract searchSuggestions(provider: string, searchType: SearchType, query: string): Observable<string[]>;
 
   /**
    * Returns a SearchResult[] with objects!.
@@ -69,11 +67,11 @@ export interface IProviderService {
    * ]
    * ```
    */
-  search(provider: string, args: SearchArguments): Observable<SearchResult[]>;
+  abstract search(provider: string, args: SearchArguments): Observable<SearchResult[]>;
 
   /**
    * Returns the parsed data of a substance from the given provider or an error
    * stating the cause of the failure when parsing the data.
    */
-  substanceData(provider: string, identifier: string): Observable<SubstanceData>;
+  abstract substanceData(provider: string, identifier: string): Observable<SubstanceData>;
 }

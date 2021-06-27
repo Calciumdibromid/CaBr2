@@ -4,17 +4,17 @@ import { DOCUMENT } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 
-import { CONFIG_SERVICE, IConfigService } from './@core/services/config/config.interface';
 import {
   configChangeObservable,
   configLoadObservable,
   ConfigModel,
   configObservable,
 } from './@core/models/config.model';
-import { I18N_SERVICE, II18nService, LocalizedStrings } from './@core/services/i18n/i18n.interface';
+import { II18nService, LocalizedStrings } from './@core/services/i18n/i18n.interface';
 import { AlertService } from './@core/services/alertsnackbar/altersnackbar.service';
 import { ConsentComponent } from './consent/consent.component';
 import { GlobalModel } from './@core/models/global.model';
+import { IConfigService } from './@core/services/config/config.interface';
 import Logger from './@core/utils/logger';
 import packageInfo from '../../package.json';
 
@@ -39,9 +39,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
 
     private global: GlobalModel,
-    @Inject(CONFIG_SERVICE) private configService: IConfigService,
+    private configService: IConfigService,
     private alertService: AlertService,
-    @Inject(I18N_SERVICE) private i18nService: II18nService,
+    private i18nService: II18nService,
   ) {
     this.global.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
   }

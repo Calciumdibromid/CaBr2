@@ -7,11 +7,8 @@ import * as tauri from '@tauri-apps/api/tauri';
 
 import { INativeService } from './native.interface';
 import { InvokeArgs } from '@tauri-apps/api/tauri';
-import { ServiceModule } from '../service.module';
 
-@Injectable({
-  providedIn: ServiceModule,
-})
+@Injectable()
 export class TauriService implements INativeService {
   openUrl = shell.open;
 

@@ -1,17 +1,17 @@
 import { ConfigModel } from '../../models/config.model';
 import { GHSSymbols } from '../../models/global.model';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-export const CONFIG_SERVICE = 'IConfigService';
+@Injectable()
+export abstract class IConfigService {
+  abstract getProgramVersion(): Observable<string>;
 
-export interface IConfigService {
-  getProgramVersion(): Observable<string>;
+  abstract getConfig(): Observable<ConfigModel>;
 
-  getConfig(): Observable<ConfigModel>;
+  abstract saveConfig(config: ConfigModel): Observable<void>;
 
-  saveConfig(config: ConfigModel): Observable<void>;
+  abstract getHazardSymbols(): Observable<GHSSymbols>;
 
-  getHazardSymbols(): Observable<GHSSymbols>;
-
-  getPromptHtml(name: string): Observable<string>;
+  abstract getPromptHtml(name: string): Observable<string>;
 }

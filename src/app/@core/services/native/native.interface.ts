@@ -1,11 +1,13 @@
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-export const NATIVE_SERVICE = 'INativeService';
+@Injectable()
+export abstract class INativeService {
+  abstract openUrl(url: string, openWith?: string): Promise<void>;
 
-export interface INativeService {
-  openUrl(url: string, openWith?: string): Promise<void>;
+  abstract open(options?: any): Observable<string | string[]>;
 
-  open(options?: any): Observable<string | string[]>;
+  abstract save(options?: any): Observable<string | string[]>;
 
-  save(options?: any): Observable<string | string[]>;
+  abstract promisified<T>(cmd: string, args?: any): Observable<T>;
 }

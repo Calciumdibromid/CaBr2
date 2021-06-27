@@ -3,11 +3,10 @@ import { GHSSymbols } from 'src/app/@core/models/global.model';
 import { IConfigService } from '../config.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ServiceModule } from '../../service.module';
 
-@Injectable({
-  providedIn: ServiceModule,
-})
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// TODO use vars and remove this lines
+@Injectable()
 export class ConfigWebService implements IConfigService {
   getProgramVersion(): Observable<string> {
     throw new Error('Method not implemented.');
@@ -17,6 +16,7 @@ export class ConfigWebService implements IConfigService {
     throw new Error('Method not implemented.');
   }
 
+  //@typescript-eslint-disable-next-line no-unused-vars
   saveConfig(config: ConfigModel): Observable<void> {
     throw new Error('Method not implemented.');
   }

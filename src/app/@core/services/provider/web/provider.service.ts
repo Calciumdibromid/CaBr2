@@ -10,12 +10,11 @@ import {
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { IProviderService } from '../provider.interface';
-import { ServiceModule } from '../../service.module';
 import { SubstanceData } from 'src/app/@core/models/substances.model';
 
-@Injectable({
-  providedIn: ServiceModule,
-})
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// TODO use vars and remove this lines
+@Injectable()
 export class ProviderService implements IProviderService {
   searchTypeMappingsSubject = new BehaviorSubject<SearchTypeMapping[]>([]);
   searchTypeMappingsObservable = this.searchTypeMappingsSubject.asObservable();

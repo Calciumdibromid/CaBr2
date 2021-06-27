@@ -2,11 +2,11 @@ import { CaBr2Document, DocumentTypes } from '../loadSave.model';
 import { ILoadSaveService } from '../loadSave.interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { ServiceModule } from '../../service.module';
 
-@Injectable({
-  providedIn: ServiceModule,
-})
+/* eslint-disable @typescript-eslint/no-unused-vars */
+// TODO use vars and remove this lines
+
+@Injectable()
 export class LoadSaveService implements ILoadSaveService {
   saveDocument(fileType: string, filename: string, document: CaBr2Document): Observable<string> {
     throw new Error('Method not implemented.');
