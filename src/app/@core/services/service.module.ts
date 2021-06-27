@@ -85,5 +85,4 @@ const providerFactory = (nativeService: INativeService, globals: GlobalModel): I
     },
   ],
 })
-export class ServiceModule {
-}
+export class ServiceModule {}
