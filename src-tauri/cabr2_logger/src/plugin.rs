@@ -1,5 +1,5 @@
 use serde_json::{to_string_pretty, Value};
-use tauri::{plugin::Plugin, InvokeMessage, Params, Window};
+use tauri::{plugin::Plugin, Invoke, Params, Window};
 
 use cabr2_types::logging::LogLevel;
 
@@ -31,7 +31,7 @@ pub fn log(level: LogLevel, path: String, messages: Vec<Value>) -> Result<(), St
 }
 
 pub struct Logger<M: Params> {
-  invoke_handler: Box<dyn Fn(InvokeMessage<M>) + Send + Sync>,
+  invoke_handler: Box<dyn Fn(Invoke<M>) + Send + Sync>,
 }
 
 impl<M: Params> Logger<M> {
@@ -49,7 +49,7 @@ impl<M: Params> Plugin<M> for Logger<M> {
     "cabr2_logger"
   }
 
-  fn extend_api(&mut self, message: InvokeMessage<M>) {
+  fn extend_api(&mut self, message: Invoke<M>) {
     (self.invoke_handler)(message)
   }
 

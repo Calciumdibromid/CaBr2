@@ -1,6 +1,6 @@
 use std::{fs, path::PathBuf};
 
-use tauri::{plugin::Plugin, InvokeMessage, Params, Window};
+use tauri::{plugin::Plugin, Invoke, Params, Window};
 
 use cabr2_types::ProviderMapping;
 
@@ -71,7 +71,7 @@ pub fn get_available_document_types() -> Result<DocumentTypes> {
 }
 
 pub struct LoadSave<M: Params> {
-  invoke_handler: Box<dyn Fn(InvokeMessage<M>) + Send + Sync>,
+  invoke_handler: Box<dyn Fn(Invoke<M>) + Send + Sync>,
 }
 
 impl<M: Params> LoadSave<M> {
@@ -92,7 +92,7 @@ impl<M: Params> Plugin<M> for LoadSave<M> {
     "cabr2_load_save"
   }
 
-  fn extend_api(&mut self, message: InvokeMessage<M>) {
+  fn extend_api(&mut self, message: Invoke<M>) {
     (self.invoke_handler)(message)
   }
 

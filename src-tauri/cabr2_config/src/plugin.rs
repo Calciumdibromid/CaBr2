@@ -1,5 +1,5 @@
 use serde_json::Value;
-use tauri::{plugin::Plugin, InvokeMessage, Params, Window};
+use tauri::{plugin::Plugin, Invoke, Params, Window};
 
 use crate::{
   error::Result,
@@ -43,7 +43,7 @@ pub fn get_prompt_html(name: String) -> Result<String> {
 }
 
 pub struct Config<M: Params> {
-  invoke_handler: Box<dyn Fn(InvokeMessage<M>) + Send + Sync>,
+  invoke_handler: Box<dyn Fn(Invoke<M>) + Send + Sync>,
 }
 
 impl<M: Params> std::default::Default for Config<M> {
@@ -67,7 +67,7 @@ impl<M: Params> Plugin<M> for Config<M> {
     "cabr2_config"
   }
 
-  fn extend_api(&mut self, message: InvokeMessage<M>) {
+  fn extend_api(&mut self, message: Invoke<M>) {
     (self.invoke_handler)(message)
   }
 
