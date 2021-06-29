@@ -1470,7 +1470,7 @@
   resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.0.0-beta.4.tgz#f78e443b7d34c6ca637c95586686d23e4ab3122c"
   integrity sha512-PWO3ULlMVW8p70wFWjkHVCfkI/ewRX/CwSDX016nn4xSOrMwFICswPsqOcYBdQDPClagIm/4FuRuqkn8dEj0qg==
 
-"@tauri-apps/cli@1.0.0-beta.5":
+"@tauri-apps/cli@^1.0.0-beta.5":
   version "1.0.0-beta.5"
   resolved "https://registry.yarnpkg.com/@tauri-apps/cli/-/cli-1.0.0-beta.5.tgz#b71007a9fa18617ffe1671f339bb3b6cbf8549c2"
   integrity sha512-1FdeLKhqA0wNAUnkfgJRZ0pf9qxcjBs4xFCSvTLY+uB5LQjoeQ0R0olwaNdise5OHm4Aoj8MEMP+tGTQA/QZtw==
@@ -1642,15 +1642,10 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.4.tgz#f0ec25dbf2f0e4b18647313ac031134ca5b24b21"
   integrity sha512-1z8k4wzFnNjVK/tlxvrWuK5WMt6mydWWP7+zvH5eFep4oj+UkrfiJTRtjCeBXNpwaA/FYqqtb4/QS4ianFpIRA==
 
-"@types/node@*":
+"@types/node@*", "@types/node@>=10.0.0", "@types/node@^15.12.5":
   version "15.12.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-15.12.5.tgz#9a78318a45d75c9523d2396131bd3cca54b2d185"
   integrity sha512-se3yX7UHv5Bscf8f1ERKvQOD6sTyycH3hdaoozvaLxgUiY5lIGEeH37AD0G0Qi9kPqihPn0HOfd2yaIEN9VwEg==
-
-"@types/node@>=10.0.0", "@types/node@^15.12.4":
-  version "15.12.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.12.4.tgz#e1cf817d70a1e118e81922c4ff6683ce9d422e26"
-  integrity sha512-zrNj1+yqYF4WskCMOHwN+w9iuD12+dGm0rQ35HLl9/Ouuq52cEtd0CH9qMgrdNmi5ejC1/V7vKEXYubB+65DkA==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
