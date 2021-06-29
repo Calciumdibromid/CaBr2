@@ -10,6 +10,7 @@ on:
       - '.github/workflows/backend.yml'
       - 'src-tauri/**'
       - '.gitignore'
+      - 'contrib/for-each-cargo'
 
 jobs:
   backend:
