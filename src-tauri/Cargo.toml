@@ -21,7 +21,7 @@ category = "Education"
 resources = [ "ghs_symbols/*.png" ]
 
 [build-dependencies]
-tauri-build = { version = "1.0.0-beta-rc.0" }
+tauri-build = { version = "1.0.0-beta.2" }
 
 [dependencies]
 cabr2_config = { path = "./cabr2_config/" }
@@ -29,7 +29,7 @@ cabr2_load_save = { path = "./cabr2_load_save/" }
 cabr2_logger = { path = "./cabr2_logger/", optional = true }
 cabr2_search = { path = "./cabr2_search/" }
 log = "0.4.14"
-tauri = { version = "1.0.0-beta-rc.4", features = ["api-all"], optional = true }
+tauri = { version = "1.0.0-beta.4", features = ["api-all"], optional = true }
 
 [features]
 default = [

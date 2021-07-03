@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 import { GlobalModel } from '../@core/models/global.model';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
-import { TauriService } from '../@core/services/tauri/tauri.service';
+import { INativeService } from '../@core/services/native/native.interface';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
 
 @Component({
   selector: 'app-report-bug',
@@ -14,7 +14,7 @@ export class ReportBugComponent implements OnInit {
   strings!: LocalizedStrings;
 
   constructor(
-    private tauriService: TauriService,
+    private nativeService: INativeService,
     private globals: GlobalModel,
     public dialogRef: MatDialogRef<ReportBugComponent>,
   ) {
@@ -24,6 +24,6 @@ export class ReportBugComponent implements OnInit {
   ngOnInit(): void {}
 
   openMail(): void {
-    this.tauriService.openUrl('mailto:cabr2.help@gmail.com');
+    this.nativeService.openUrl('mailto:cabr2.help@gmail.com');
   }
 }

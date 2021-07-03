@@ -10,9 +10,9 @@ import {
 } from '../../@core/services/provider/provider.model';
 import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
 import { GlobalModel } from '../../@core/models/global.model';
-import { LocalizedStrings } from '../../@core/services/i18n/i18n.service';
+import { IProviderService } from '../../@core/services/provider/provider.interface';
+import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
 import Logger from '../../@core/utils/logger';
-import { ProviderService } from '../../@core/services/provider/provider.service';
 
 const logger = new Logger('selected-search');
 
@@ -44,7 +44,7 @@ export class SelectedSearchComponent {
 
   constructor(
     private globals: GlobalModel,
-    private providerService: ProviderService,
+    private providerService: IProviderService,
     private alertService: AlertService,
     private formBuilder: FormBuilder,
   ) {

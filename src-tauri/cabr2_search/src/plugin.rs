@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use tauri::{plugin::Plugin, InvokeMessage, Params, Window};
+use tauri::{plugin::Plugin, Invoke, Params, Window};
 
 use cabr2_types::SubstanceData;
 
@@ -31,7 +31,7 @@ pub fn get_substance_data(provider: String, identifier: String) -> Result<Substa
 }
 
 pub struct Search<M: Params> {
-  invoke_handler: Box<dyn Fn(InvokeMessage<M>) + Send + Sync>,
+  invoke_handler: Box<dyn Fn(Invoke<M>) + Send + Sync>,
 }
 
 impl<M: Params> Search<M> {
@@ -63,7 +63,7 @@ impl<M: Params> Plugin<M> for Search<M> {
     "cabr2_search"
   }
 
-  fn extend_api(&mut self, message: InvokeMessage<M>) {
+  fn extend_api(&mut self, message: Invoke<M>) {
     (self.invoke_handler)(message)
   }
 

@@ -3,14 +3,15 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { first, map, switchMap } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 
-import { DialogFilter, TauriService } from '../@core/services/tauri/tauri.service';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../@core/services/loadSave/loadSave.model';
 import { compareArrays } from '../@core/utils/compare';
-import { ConfigService } from '../@core/services/config/config.service';
+import { DialogFilter } from '../@core/services/native/tauri.service';
 import { GlobalModel } from '../@core/models/global.model';
-import { LoadSaveService } from '../@core/services/loadSave/loadSave.service';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
+import { IConfigService } from '../@core/services/config/config.interface';
+import { ILoadSaveService } from '../@core/services/loadSave/loadSave.interface';
+import { INativeService } from '../@core/services/native/native.interface';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
 import Logger from '../@core/utils/logger';
 import { ManualComponent } from '../manual/manual.component';
 import { ReportBugComponent } from '../report-bug/report-bug.component';
@@ -40,10 +41,10 @@ export class MenubarComponent implements OnInit {
 
   constructor(
     public globals: GlobalModel,
-    private loadSaveService: LoadSaveService,
-    private tauriService: TauriService,
+    private loadSaveService: ILoadSaveService,
+    private nativeService: INativeService,
     private alertService: AlertService,
-    private configService: ConfigService,
+    private configService: IConfigService,
     private dialog: MatDialog,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
@@ -118,7 +119,7 @@ export class MenubarComponent implements OnInit {
 
   loadFile(): void {
     logger.trace('loadFile');
-    this.tauriService
+    this.nativeService
       .open({
         filters: this.loadFilter,
         multiple: false,
@@ -174,7 +175,7 @@ export class MenubarComponent implements OnInit {
     // there should always be exact one fileextension
     const extension = type.extensions[0];
 
-    this.tauriService
+    this.nativeService
       .save({ filters: [type] })
       .pipe(
         switchMap((filename) => this.loadSaveService.saveDocument(extension, filename as string, document)),

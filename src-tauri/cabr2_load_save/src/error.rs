@@ -19,7 +19,7 @@ pub enum LoadSaveError {
 
   #[cfg(feature = "pdf")]
   #[error("creating template failed: '{0}'")]
-  TemplateError(#[from] handlebars::TemplateFileError),
+  TemplateError(#[from] handlebars::TemplateError),
 
   #[cfg(feature = "pdf")]
   #[error("rendering document failed: '{0}'")]

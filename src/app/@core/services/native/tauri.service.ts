@@ -5,12 +5,11 @@ import * as dialog from '@tauri-apps/api/dialog';
 import * as shell from '@tauri-apps/api/shell';
 import * as tauri from '@tauri-apps/api/tauri';
 
+import { INativeService } from './native.interface';
 import { InvokeArgs } from '@tauri-apps/api/tauri';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class TauriService {
+@Injectable()
+export class TauriService implements INativeService {
   openUrl = shell.open;
 
   open(options?: dialog.OpenDialogOptions): Observable<string | string[]> {
