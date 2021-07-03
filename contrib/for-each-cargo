@@ -7,6 +7,5 @@ echo "rust_root=$rust_root"
 find "$rust_root" -name Cargo.toml | while read line; do
   cd "$(dirname "$line")"
   echo "context: $(pwd)"
-  cargo clean
   cargo $1 $2 $3 $4 $5 || exit 1
 done
