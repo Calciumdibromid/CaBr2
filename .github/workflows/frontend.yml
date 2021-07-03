@@ -41,5 +41,8 @@ jobs:
       - name: Eslint
         run: yarn lint
 
-      - name: Build Frontend
+      - name: Build Tauri Frontend
         run: yarn ng build
+
+      - name: Build Web Frontend
+        run: yarn ng build -c production,web

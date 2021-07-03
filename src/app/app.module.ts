@@ -11,7 +11,7 @@ import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './header/header.component';
 import { LoadingComponent } from './loading/loading.component';
 import { ManualComponent } from './manual/manual.component';
-import { MatModules } from './@core/modules/mat.modules';
+import { MatModules } from './@core/modules/mat.module';
 import { MenubarComponent } from './menubar/menubar.component';
 import { ModifiableStringListComponent } from './modifiable-string-list/modifiable-string-list.component';
 import { PreviewComponent } from './preview/preview.component';
@@ -19,6 +19,7 @@ import { ReportBugComponent } from './report-bug/report-bug.component';
 import { SearchComponent } from './search/search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
+import { ServiceModule } from './@core/services/service.module';
 import { SettingsComponent } from './settings/settings.component';
 import { SubMolecularFormula } from './@core/pipes/molecularformula.pipe';
 import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
@@ -42,7 +43,15 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
     SubMolecularFormula,
     LoadingComponent,
   ],
-  imports: [BrowserModule, FormsModule, ReactiveFormsModule, BrowserAnimationsModule, MatModules, AlertModule],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+    MatModules,
+    AlertModule,
+    ServiceModule,
+  ],
   providers: [GlobalModel],
   bootstrap: [AppComponent],
 })

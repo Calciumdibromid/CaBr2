@@ -8,10 +8,10 @@ import { Data, Source, SubstanceData } from '../@core/models/substances.model';
 import { Provider, ProviderMapping, SearchArgument } from '../@core/services/provider/provider.model';
 import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
 import { GlobalModel } from '../@core/models/global.model';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
+import { INativeService } from '../@core/services/native/native.interface';
+import { IProviderService } from '../@core/services/provider/provider.interface';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
 import Logger from '../@core/utils/logger';
-import { ProviderService } from '../@core/services/provider/provider.service';
-import { TauriService } from '../@core/services/tauri/tauri.service';
 
 import { EditSubstanceDataComponent } from '../edit-substance-data/edit-substance-data.component';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
@@ -49,8 +49,8 @@ export class SearchComponent implements OnInit {
   dataSource!: MatTableDataSource<SubstanceData>;
 
   constructor(
-    private providerService: ProviderService,
-    private tauriService: TauriService,
+    private providerService: IProviderService,
+    private nativeService: INativeService,
     private alertService: AlertService,
     private dialog: MatDialog,
     public globals: GlobalModel,
@@ -161,7 +161,7 @@ export class SearchComponent implements OnInit {
     const matches = source.url.match(GESTIS_URL_RE);
     if (matches) {
       // TODO (#526) move the url to providers
-      this.tauriService.openUrl(`https://gestis.dguv.de/data?name=${matches[2]}&lang=${matches[1]}`);
+      this.nativeService.openUrl(`https://gestis.dguv.de/data?name=${matches[2]}&lang=${matches[1]}`);
     }
   }
 

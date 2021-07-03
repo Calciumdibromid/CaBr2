@@ -1,4 +1,4 @@
-import { DialogFilter } from '../tauri/tauri.service';
+import { DialogFilter } from '../native/tauri.service';
 import { Header } from '../../interfaces/Header';
 import { SubstanceData } from '../../models/substances.model';
 

@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { GlobalModel } from '../@core/models/global.model';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.service';
+import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
 
 @Component({
   selector: 'app-modifiable-string-list',

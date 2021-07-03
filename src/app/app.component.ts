@@ -10,11 +10,11 @@ import {
   ConfigModel,
   configObservable,
 } from './@core/models/config.model';
-import { I18nService, LocalizedStrings } from './@core/services/i18n/i18n.service';
+import { II18nService, LocalizedStrings } from './@core/services/i18n/i18n.interface';
 import { AlertService } from './@core/services/alertsnackbar/altersnackbar.service';
-import { ConfigService } from './@core/services/config/config.service';
 import { ConsentComponent } from './consent/consent.component';
 import { GlobalModel } from './@core/models/global.model';
+import { IConfigService } from './@core/services/config/config.interface';
 import Logger from './@core/utils/logger';
 import packageInfo from '../../package.json';
 
@@ -39,9 +39,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
 
     private global: GlobalModel,
-    private configService: ConfigService,
+    private configService: IConfigService,
     private alertService: AlertService,
-    private i18nService: I18nService,
+    private i18nService: II18nService,
   ) {
     this.global.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
   }
