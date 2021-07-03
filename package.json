@@ -4,13 +4,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:web": "ng serve -c web",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
-    "build:web": "ng build --production,web",
+    "build:web": "ng build -c production,web",
     "build:release": "ng build --prod && tauri build"
   },
   "private": true,

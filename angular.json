@@ -81,6 +81,9 @@
           "configurations": {
             "production": {
               "browserTarget": "CaBr2:build:production"
+            },
+            "web": {
+              "browserTarget": "CaBr2:build:web"
             }
           }
         },
