@@ -1,5 +1,6 @@
 #![allow(clippy::new_without_default)]
 
+#[cfg(feature = "tauri_plugin")]
 pub mod plugin;
 
 use std::fs;

@@ -21,8 +21,10 @@ tauri = { version = "1.0.0-beta.4", default-features = false, optional = true }
 thiserror = "1.0.26"
 tokio = { version = "1.9.0", features = ["fs", "io-util"] }
 toml = { version = "0.5.8", features = ["preserve_order"] }
+warp = { version = "0.3.1", optional = true }
 
 [features]
 portable = []
 tauri_plugin = ["tauri"]
+webserver = ["warp"]
 default = []
