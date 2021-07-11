@@ -13,13 +13,6 @@ default-run = "cabr2"
 edition = "2018"
 build = "src/build.rs"
 
-[package.metadata.bundle]
-name = "Calciumdibromid"
-identifier = "de.cabr2"
-icon = [ "32x32.png", "128x128.png", "128x128@2x.png" ]
-category = "Education"
-resources = [ "ghs_symbols/*.png" ]
-
 [build-dependencies]
 tauri-build = { version = "1.0.0-beta.2" }
 
