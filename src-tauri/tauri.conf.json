@@ -24,7 +24,12 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "resources": [],
+      "resources": [
+        "../ghs_symbols/",
+        "../prompts/",
+        "../templates/",
+        "../translations/"
+      ],
       "externalBin": [],
       "copyright": "",
       "category": "Education",
@@ -64,7 +69,7 @@
       }
     ],
     "security": {
-      "csp": "default-src blob: data: filesystem: ws: http: https: 'unsafe-eval' 'unsafe-inline'"
+      "csp": "default-src blob: data: filesystem: ws: wss: http: https: tauri: 'unsafe-eval' 'unsafe-inline' 'self' img-src: 'self'"
     }
   }
 }
