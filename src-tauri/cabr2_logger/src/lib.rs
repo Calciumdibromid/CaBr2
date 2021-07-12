@@ -14,7 +14,8 @@ fn setup_logger() -> Result<(), fern::InitError> {
   let mut log_file = TMP_DIR.clone();
   log_file.push(format!("cabr2_{}.log", chrono::Local::now().format("%F_%H.%M.%S")));
 
-  let config = read_config()
+  let config = tokio::runtime::Handle::current().block_on(read_config());
+  let config = config
     .unwrap_or_else(|e| {
       eprintln!("loading config failed: {}", e);
       eprintln!("continuing with default config");
