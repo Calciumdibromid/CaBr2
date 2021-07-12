@@ -6,7 +6,7 @@ use cabr2_types::SubstanceData;
 
 use crate::{
   error::Result,
-  handler::{self, init_providers},
+  handler,
   types::{ProviderInfo, SearchArguments, SearchResponse, SearchType},
 };
 
@@ -36,7 +36,7 @@ pub struct Search<M: Params> {
 
 impl<M: Params> Search<M> {
   pub fn new() -> Self {
-    init_providers();
+    handler::init_providers();
     Search {
       invoke_handler: Box::new(tauri::generate_handler![
         get_available_providers,
@@ -48,13 +48,7 @@ impl<M: Params> Search<M> {
   }
 
   pub fn get_provider_mapping(&self) -> HashMap<String, String> {
-    let providers = handler::REGISTERED_PROVIDERS.lock().unwrap();
-    let mut mapping = HashMap::new();
-    for (id, provider) in providers.iter() {
-      mapping.insert(id.to_string(), provider.get_name());
-    }
-
-    mapping
+    handler::get_provider_mapping()
   }
 }
 
