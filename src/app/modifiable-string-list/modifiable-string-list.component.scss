@@ -1,3 +1,5 @@
+@use '~@angular/material' as mat;
+
 ul {
   margin-left: 20px;
   padding: 0;
@@ -5,4 +7,21 @@ ul {
 
 .width-100 {
   width: 100%;
+}
+
+.cdk-drag-handle {
+  &:hover {
+    cursor: grab;
+  }
+}
+
+.cdk-drag-preview {
+  @include mat.elevation(2);
+  margin-left: -20px !important;
+}
+
+mat-card {
+  @include mat.elevation(0);
+  padding-top: 0;
+  padding-bottom: 0;
 }
