@@ -50,9 +50,9 @@ pub struct BackendConfig {
   pub logging: Logging,
 }
 
-impl std::convert::From<FrontendConfig> for BackendConfig {
-  fn from(config: FrontendConfig) -> Self {
-    let old_config = handler::read_config().unwrap();
+impl BackendConfig {
+  pub async fn convert(config: FrontendConfig) -> Self {
+    let old_config = handler::read_config().await.unwrap();
     BackendConfig {
       global: config.global.into(),
       logging: old_config.logging,
