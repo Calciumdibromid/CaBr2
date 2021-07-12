@@ -69,5 +69,6 @@ export class ModifiableStringListComponent implements OnInit {
 
   drop(event: CdkDragDrop<FormGroup[]>): void {
     moveItemInArray(this.controlElements.controls, event.previousIndex, event.currentIndex);
+    this.emitChange();
   }
 }
