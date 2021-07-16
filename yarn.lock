@@ -146,6 +146,13 @@
   dependencies:
     "@typescript-eslint/experimental-utils" "4.28.2"
 
+"@angular-eslint/eslint-plugin@12.3.1":
+  version "12.3.1"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin/-/eslint-plugin-12.3.1.tgz#00ac44d5986d86113d65a5373746e1fc22fd8702"
+  integrity sha512-KBm27onYggRcusA/BxuSkDGpVnIs8yG4ARio8ZAhe0H2XIRJTzJZ7oIBBjugDau03AGX3VMG6wAXailjJvsywg==
+  dependencies:
+    "@typescript-eslint/experimental-utils" "4.28.2"
+
 "@angular-eslint/schematics@12.3.0":
   version "12.3.0"
   resolved "https://registry.yarnpkg.com/@angular-eslint/schematics/-/schematics-12.3.0.tgz#8606ab713b58195bca108998efafa22ee9ef4589"
