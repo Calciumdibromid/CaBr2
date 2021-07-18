@@ -212,12 +212,16 @@ mod handlebar_helpers {
   use handlebars::{Handlebars, JsonRender, RenderError};
   use lazy_static::lazy_static;
 
-  use cabr2_config::{get_hazard_symbols, GHSSymbols};
+  use cabr2_config::GHSSymbols;
 
   use super::{types::PDFSubstanceData, PROVIDER_MAPPING};
 
   lazy_static! {
     static ref GHS_SYMBOLS: Arc<Mutex<GHSSymbols>> = Arc::new(Mutex::new(get_hazard_symbols().unwrap_or_default()));
+  }
+
+  fn get_hazard_symbols() -> Result<GHSSymbols, impl std::error::Error> {
+    tokio::runtime::Handle::current().block_on(cabr2_config::get_hazard_symbols())
   }
 
   /// Inlines the actual ghs-symbol-images from their keys as base64-encodes pngs
