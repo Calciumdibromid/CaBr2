@@ -352,6 +352,7 @@ dependencies = [
  "structopt",
  "tauri",
  "thiserror",
+ "tokio",
  "ureq",
 ]
 
