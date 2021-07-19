@@ -10,11 +10,12 @@ use log::LevelFilter;
 use cabr2_config::{read_config, BackendConfig, TMP_DIR};
 use cabr2_types::logging::LogLevel;
 
-fn setup_logger() -> Result<(), fern::InitError> {
+async fn setup_logger() -> Result<(), fern::InitError> {
   let mut log_file = TMP_DIR.clone();
   log_file.push(format!("cabr2_{}.log", chrono::Local::now().format("%F_%H.%M.%S")));
 
-  let config = read_config()
+  let config = read_config().await;
+  let config = config
     .unwrap_or_else(|e| {
       eprintln!("loading config failed: {}", e);
       eprintln!("continuing with default config");

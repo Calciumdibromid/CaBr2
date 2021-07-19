@@ -1,5 +1,5 @@
 use serde_json::{to_string_pretty, Value};
-use tauri::{plugin::Plugin, Invoke, Params, Window};
+use tauri::{async_runtime, plugin::Plugin, Invoke, Params, Window};
 
 use cabr2_types::logging::LogLevel;
 
@@ -36,7 +36,7 @@ pub struct Logger<M: Params> {
 
 impl<M: Params> Logger<M> {
   pub fn new() -> Self {
-    setup_logger().unwrap();
+    async_runtime::block_on(setup_logger()).unwrap();
 
     Logger {
       invoke_handler: Box::new(tauri::generate_handler![log]),

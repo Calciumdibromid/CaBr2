@@ -1,8 +1,9 @@
-use std::{fs, path::PathBuf};
+use std::path::PathBuf;
 
-use tauri::{plugin::Plugin, Invoke, Params, Window};
+use tauri::{async_runtime, plugin::Plugin, Invoke, Params, Window};
 
 use cabr2_types::ProviderMapping;
+use tokio::fs;
 
 use crate::{
   error::{LoadSaveError, Result},
@@ -11,7 +12,7 @@ use crate::{
 };
 
 #[tauri::command]
-pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Document) -> Result<()> {
+pub async fn save_document(file_type: String, filename: PathBuf, document: CaBr2Document) -> Result<()> {
   log::debug!("type: {}", file_type);
   log::debug!("filename: {:?}", filename);
   log::trace!("doc: {:#?}", document);
@@ -38,9 +39,9 @@ pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Docume
     }
   }
 
-  let res = handler::save_document(file_type.as_str(), document)?;
+  let res = handler::save_document(file_type.as_str(), document).await?;
 
-  let res = fs::write(&filename, res);
+  let res = fs::write(&filename, res).await;
 
   if res.is_err() {
     log::warn!("failed to write file '{:?}': {:?}", filename, res);
@@ -50,10 +51,10 @@ pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Docume
 }
 
 #[tauri::command]
-pub fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
+pub async fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
   log::debug!("filename: {:?}", filename);
 
-  let contents = fs::read(&filename);
+  let contents = fs::read(&filename).await;
 
   if contents.is_err() {
     log::warn!("failed to read file '{:?}': {:?}", filename, contents);
@@ -63,11 +64,12 @@ pub fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
     filename.extension().unwrap_or_default().to_str().unwrap_or_default(),
     contents?,
   )
+  .await
 }
 
 #[tauri::command]
-pub fn get_available_document_types() -> Result<DocumentTypes> {
-  handler::get_available_document_types()
+pub async fn get_available_document_types() -> Result<DocumentTypes> {
+  handler::get_available_document_types().await
 }
 
 pub struct LoadSave<M: Params> {
@@ -76,7 +78,7 @@ pub struct LoadSave<M: Params> {
 
 impl<M: Params> LoadSave<M> {
   pub fn new(_provider_mapping: ProviderMapping) -> Self {
-    init_handlers(_provider_mapping);
+    async_runtime::spawn(init_handlers(_provider_mapping));
     LoadSave {
       invoke_handler: Box::new(tauri::generate_handler![
         save_document,

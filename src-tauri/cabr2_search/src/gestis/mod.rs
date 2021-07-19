@@ -2,9 +2,9 @@ pub mod types;
 pub mod xml_parser;
 
 use cabr2_types::{Data, Source, SubstanceData};
-use types::GestisResponse;
 use ureq::Agent;
 
+use self::types::GestisResponse;
 use crate::{
   error::{Result, SearchError},
   types::{Provider, SearchArguments, SearchResponse, SearchType},
@@ -15,6 +15,7 @@ const SEARCH_SUGGESTIONS: &str = "search_suggestions";
 const SEARCH: &str = "search";
 const ARTICLE: &str = "article";
 
+// TODO: add runtime for async requests
 pub struct Gestis {
   agent: Agent,
 }
