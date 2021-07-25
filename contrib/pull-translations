@@ -1,5 +1,10 @@
 #!/bin/bash
 
+######################################
+# pull locale files from crowdin and #
+# create a pull if there are changes #
+######################################
+
 cd "$(dirname "$0")/.."
 token="$1"
 
@@ -13,8 +18,7 @@ token="$1"
   sed "s/-TOKEN-/${token}/g" crowdin.example.yml >crowdin.yml
 }
 
-# crowdin actions ...
-crowdin push || exit 1
+# crowdin action
 crowdin pull || exit 1
 
 # normalize locales

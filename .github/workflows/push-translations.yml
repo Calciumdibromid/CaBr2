@@ -1,4 +1,5 @@
-name: update-translations
+name: push-translations
+# push locale files to crowdin
 
 on:
   push:
@@ -19,13 +20,4 @@ jobs:
         shell: bash
         env:
           CROWDIN_TOKEN: ${{ secrets.CROWDIN_TOKEN }}
-        run: ./contrib/update-translations "$CROWDIN_TOKEN"
-
-      - name: Commit changes
-        uses: EndBug/add-and-commit@v7
-        with:
-          author_name: CaBr2 Bot
-          author_email: cabr2.info@gmail.com
-          message: 'Translation Updates'
-          add: '-u translations/'
-          branch: update-translations
+        run: ./contrib/push-translations "$CROWDIN_TOKEN"
