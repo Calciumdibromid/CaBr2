@@ -10,7 +10,7 @@ token="$1"
 
 # make config if not exist
 [ -f "crowdin.yml" ] || {
-  # make sure it exist
+  # make sure it exists
   [ -z "$token" ] && {
     echo "token not set"
     exit 1
