@@ -6,14 +6,11 @@ use cabr2_load_save::webserver::{CACHE_FOLDER, DOWNLOAD_FOLDER};
 
 #[tokio::main]
 pub async fn main() {
-  // all "cabr2-services" start with a underscore, because we don't use them, but their member variables are needed.
-  // Because of the `.await` in the last line of this function they will never be deallocated.
-
   // must be initialized first
-  cabr2_logger::setup_logger().unwrap();
+  cabr2_logger::setup_logger().await.unwrap();
 
-  let _search = cabr2_search::webserver::Search::new();
-  let _load_save = cabr2_load_save::webserver::LoadSave::new(_search.get_provider_mapping());
+  cabr2_search::webserver::init().await;
+  cabr2_load_save::webserver::init(cabr2_search::webserver::get_provider_mapping().await).await;
 
   // create tmp folders
   handle_result(fs::create_dir_all(DOWNLOAD_FOLDER));

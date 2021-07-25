@@ -11,7 +11,7 @@ use log::LevelFilter;
 use cabr2_config::{read_config, BackendConfig, TMP_DIR};
 use cabr2_types::logging::LogLevel;
 
-async fn setup_logger() -> Result<(), fern::InitError> {
+pub async fn setup_logger() -> Result<(), fern::InitError> {
   let mut log_file = TMP_DIR.clone();
   log_file.push(format!("cabr2_{}.log", chrono::Local::now().format("%F_%H.%M.%S")));
 

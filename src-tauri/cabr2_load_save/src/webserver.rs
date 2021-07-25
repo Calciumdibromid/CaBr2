@@ -14,17 +14,17 @@ use crate::{handler, types::CaBr2Document};
 pub const DOWNLOAD_FOLDER: &str = "/tmp/cabr2_server/created";
 pub const CACHE_FOLDER: &str = "/tmp/cabr2_server/cache";
 
-pub struct LoadSave;
+#[cfg(not(debug_assertions))]
+const SERVER_URL: &str = "https://api.cabr2.de";
+#[cfg(debug_assertions)]
+const SERVER_URL: &str = "http://localhost:3030";
 
-impl LoadSave {
-  pub fn new(provider_mapping: ProviderMapping) -> Self {
-    handler::init_handlers(provider_mapping);
-    LoadSave
-  }
+pub async fn init(provider_mapping: ProviderMapping) {
+  handler::init_handlers(provider_mapping).await;
 }
 
 pub async fn handle_available_document_types() -> Result<impl Reply, Infallible> {
-  match handler::get_available_document_types() {
+  match handler::get_available_document_types().await {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
     Err(err) => Ok(warp::reply::with_status(
       warp::reply::json(&Value::String(err.to_string())),
@@ -69,7 +69,9 @@ pub async fn handle_load_document(body: LoadDocumentBody) -> Result<impl Reply, 
     Ok(_) => match handler::load_document(
       path.extension().unwrap_or_default().to_str().unwrap_or_default(),
       contents.unwrap(),
-    ) {
+    )
+    .await
+    {
       Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
       Err(err) => Ok(warp::reply::with_status(
         warp::reply::json(&Value::String(err.to_string())),
@@ -120,7 +122,7 @@ pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, 
     }
   }
 
-  let contents = match handler::save_document(body.file_type.as_str(), body.document) {
+  let contents = match handler::save_document(body.file_type.as_str(), body.document).await {
     Ok(contents) => contents,
     Err(err) => {
       return Ok(warp::reply::with_status(
@@ -135,10 +137,7 @@ pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, 
   match res {
     Ok(_) => Ok(warp::reply::with_status(
       warp::reply::json(&SaveDocumentResponse {
-        #[cfg(not(debug_assertions))]
-        download_url: format!("https://api.cabr2.de/download/{}.{}", uuid_str, body.file_type),
-        #[cfg(debug_assertions)]
-        download_url: format!("http://localhost:3030/download/{}.{}", uuid_str, body.file_type),
+        download_url: format!("{}/download/{}.{}", SERVER_URL, uuid_str, body.file_type),
       }),
       StatusCode::CREATED,
     )),

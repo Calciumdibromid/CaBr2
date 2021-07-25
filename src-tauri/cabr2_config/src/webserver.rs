@@ -7,7 +7,7 @@ use warp::{hyper::StatusCode, Reply};
 use crate::handler;
 
 pub async fn handle_hazard_symbols() -> Result<impl Reply, Infallible> {
-  match handler::get_hazard_symbols() {
+  match handler::get_hazard_symbols().await {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
     Err(err) => Ok(warp::reply::with_status(
       warp::reply::json(&Value::String(err.to_string())),
@@ -24,7 +24,7 @@ pub async fn handle_program_version() -> Result<impl Reply, Infallible> {
 }
 
 pub async fn handle_prompt_html(body: PromptHtmlBody) -> Result<impl Reply, Infallible> {
-  match handler::get_prompt_html(body.name) {
+  match handler::get_prompt_html(body.name).await {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
     Err(err) => Ok(warp::reply::with_status(
       warp::reply::json(&Value::String(err.to_string())),
@@ -34,7 +34,7 @@ pub async fn handle_prompt_html(body: PromptHtmlBody) -> Result<impl Reply, Infa
 }
 
 pub async fn handle_available_languages() -> Result<impl Reply, Infallible> {
-  match handler::get_available_languages() {
+  match handler::get_available_languages().await {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
     Err(err) => Ok(warp::reply::with_status(
       warp::reply::json(&Value::String(err.to_string())),
@@ -44,7 +44,7 @@ pub async fn handle_available_languages() -> Result<impl Reply, Infallible> {
 }
 
 pub async fn handle_localized_strings(body: LocalizedStringsBody) -> Result<impl Reply, Infallible> {
-  match handler::get_localized_strings(body.language) {
+  match handler::get_localized_strings(body.language).await {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
     Err(err) => Ok(warp::reply::with_status(
       warp::reply::json(&Value::String(err.to_string())),
