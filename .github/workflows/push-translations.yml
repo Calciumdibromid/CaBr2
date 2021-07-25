@@ -3,7 +3,7 @@ name: push-translations
 
 on:
   push:
-    branches: [ develop ]
+    branches: [develop]
 
 jobs:
   crowdin:
