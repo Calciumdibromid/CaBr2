@@ -3,7 +3,7 @@ name: pull-translations
 
 on:
   schedule:
-    # exec each midnight
+    # exec every day at midnight
     - cron: '0 0 * * *'
 
 jobs:
