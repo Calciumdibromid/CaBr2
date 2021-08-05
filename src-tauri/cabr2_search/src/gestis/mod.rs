@@ -35,7 +35,7 @@ impl Gestis {
   fn make_request(&self, url: &str) -> Result<ureq::Response> {
     match self
       .agent
-      .get(&url)
+      .get(url)
       // don't ask, just leave it
       // https://gestis.dguv.de/search -> webpack:///./src/api.ts?
       .set("Authorization", "Bearer dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd")
