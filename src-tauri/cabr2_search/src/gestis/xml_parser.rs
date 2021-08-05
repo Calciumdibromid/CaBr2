@@ -27,7 +27,7 @@ pub fn parse_response(json: &GestisResponse) -> Result<ParsedData> {
   log::info!("extracting data for: {} [{}] ...", json.name, json.zvg_number);
 
   let h_p_signal_symbols_error;
-  let (h_phrases, p_phrases, signal_word, symbols) = match get_h_p_signal_symbols(&json) {
+  let (h_phrases, p_phrases, signal_word, symbols) = match get_h_p_signal_symbols(json) {
     Ok(inner) => {
       h_p_signal_symbols_error = None;
       inner
