@@ -23,7 +23,7 @@ cabr2_logger = { path = "./cabr2_logger/", optional = true }
 cabr2_search = { path = "./cabr2_search/" }
 log = "0.4.14"
 tauri = { version = "1.0.0-beta.4", features = ["api-all"], optional = true }
-tokio = { version = "1.8.1", features = ["macros", "rt-multi-thread"], optional = true }
+tokio = { version = "1.10.0", features = ["macros", "rt-multi-thread"], optional = true }
 warp = { version = "0.3.1", optional = true }
 
 [features]
