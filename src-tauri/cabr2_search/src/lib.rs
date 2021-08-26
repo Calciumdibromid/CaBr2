@@ -4,7 +4,7 @@
 
 mod error;
 pub mod handler;
-mod types;
+pub mod types;
 
 #[cfg(feature = "gestis")]
 mod gestis;
@@ -13,3 +13,5 @@ mod gestis;
 pub mod plugin;
 #[cfg(feature = "webserver")]
 pub mod webserver;
+#[cfg(feature = "wasm")]
+pub mod wasm;

@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use tauri::{async_runtime, plugin::Plugin, Invoke, Params, Window};
+use tauri::{plugin::Plugin, Invoke, Params, Window};
 
 use cabr2_types::ProviderMapping;
 use tokio::fs;
@@ -68,8 +68,8 @@ pub async fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
 }
 
 #[tauri::command]
-pub async fn get_available_document_types() -> Result<DocumentTypes> {
-  handler::get_available_document_types().await
+pub fn get_available_document_types() -> Result<DocumentTypes> {
+  handler::get_available_document_types()
 }
 
 pub struct LoadSave<M: Params> {
@@ -77,8 +77,8 @@ pub struct LoadSave<M: Params> {
 }
 
 impl<M: Params> LoadSave<M> {
-  pub fn new(_provider_mapping: ProviderMapping) -> Self {
-    async_runtime::spawn(init_handlers(_provider_mapping));
+  pub fn new(provider_mapping: ProviderMapping) -> Self {
+    init_handlers(provider_mapping);
     LoadSave {
       invoke_handler: Box::new(tauri::generate_handler![
         save_document,

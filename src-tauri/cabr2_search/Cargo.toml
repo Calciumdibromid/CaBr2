@@ -10,10 +10,13 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+async-trait = "0.1.50"
 cabr2_types = { path = "../cabr2_types/" }
 chrono = "0.4.19"
+futures = { version = "0.3.15", optional = true }
 lazy_static = "1.4.0"
 log = "0.4.14"
+reqwest = { version = "0.11.4", features = ["json", "native-tls"], default-features = false, optional = true }
 roxmltree = { version = "0.14.1", optional = true }
 serde = { version = "1.0.129", features = ["derive"] }
 serde_json = "1.0.66"
@@ -25,9 +28,10 @@ ureq = { version = "2.2.0", features = ["tls", "json"], optional = true }
 warp = { version = "0.3.1", optional = true }
 
 [features]
-gestis = [ "roxmltree", "ureq" ]
+gestis = [ "roxmltree", "reqwest" ]
 tauri_plugin = [ "tauri" ]
 webserver = [ "warp" ]
+wasm = []
 default = []
 
 [[bin]]

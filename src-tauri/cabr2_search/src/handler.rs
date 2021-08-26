@@ -1,7 +1,7 @@
-use std::{borrow::Borrow, collections::HashMap, sync::Arc};
+use std::{borrow::Borrow, collections::HashMap};
 
 use lazy_static::lazy_static;
-use tokio::sync::Mutex;
+use tokio::sync::RwLock;
 
 use cabr2_types::SubstanceData;
 
@@ -11,24 +11,42 @@ use crate::{
 };
 
 lazy_static! {
-  pub static ref REGISTERED_PROVIDERS: Arc<Mutex<HashMap<&'static str, Box<dyn Provider + Send + Sync>>>> =
-    Arc::new(Mutex::new(HashMap::new()));
+  pub static ref REGISTERED_PROVIDERS: RwLock<HashMap<&'static str, Box<dyn Provider + Send + Sync>>> =
+    RwLock::new(HashMap::new());
 }
 
-pub async fn init_providers() {
-  #[cfg(feature = "gestis")]
-  let agent = ureq::AgentBuilder::new()
-    .user_agent(&format!("cabr2/v{}", env!("CARGO_PKG_VERSION")))
-    .build();
+#[cfg(all(feature = "gestis", not(feature = "wasm")))]
+const USER_AGENT: &str = concat!("cabr2/v", env!("CARGO_PKG_VERSION"));
 
-  let mut _providers = REGISTERED_PROVIDERS.lock().await;
+pub async fn init_providers() -> Result<()> {
+  let mut _providers = REGISTERED_PROVIDERS.write().await;
+
   #[cfg(feature = "gestis")]
-  _providers.insert("gestis", Box::new(crate::gestis::Gestis::new(agent)));
+  {
+    #[cfg(not(feature = "wasm"))]
+    let agent = reqwest::ClientBuilder::new().user_agent(USER_AGENT).build()?;
+    #[cfg(feature = "wasm")]
+    let agent = reqwest::ClientBuilder::new().build()?;
+
+    _providers.insert("gestis", Box::new(crate::gestis::Gestis::new(agent)));
+  }
+
+  Ok(())
+}
+
+pub async fn get_provider_mapping() -> HashMap<String, String> {
+  let providers = REGISTERED_PROVIDERS.read().await;
+  let mut mapping = HashMap::new();
+  for (id, provider) in providers.iter() {
+    mapping.insert(id.to_string(), provider.get_name());
+  }
+
+  mapping
 }
 
 pub async fn get_available_providers() -> Result<Vec<ProviderInfo>> {
   let mut providers: Vec<ProviderInfo> = REGISTERED_PROVIDERS
-    .lock()
+    .read()
     .await
     .iter()
     .map(|(key, provider)| ProviderInfo {
@@ -36,6 +54,7 @@ pub async fn get_available_providers() -> Result<Vec<ProviderInfo>> {
       identifier: key.to_string(),
     })
     .collect();
+
   providers.push(ProviderInfo {
     identifier: "custom".into(),
     name: "Custom".into(),
@@ -53,8 +72,8 @@ pub async fn get_quick_search_suggestions(
     return Ok(vec![]);
   }
 
-  if let Some(provider) = REGISTERED_PROVIDERS.lock().await.get(&provider.borrow()) {
-    return provider.get_quick_search_suggestions(search_type, pattern);
+  if let Some(provider) = REGISTERED_PROVIDERS.read().await.get(&provider.borrow()) {
+    return provider.get_quick_search_suggestions(search_type, pattern).await;
   }
 
   Err(SearchError::UnknownProvider(provider))
@@ -74,16 +93,16 @@ pub async fn get_search_results(provider: String, arguments: SearchArguments) ->
     return Ok(vec![]);
   }
 
-  if let Some(provider) = REGISTERED_PROVIDERS.lock().await.get(&provider.borrow()) {
-    return provider.get_search_results(arguments);
+  if let Some(provider) = REGISTERED_PROVIDERS.read().await.get(&provider.borrow()) {
+    return provider.get_search_results(arguments).await;
   }
 
   Err(SearchError::UnknownProvider(provider))
 }
 
 pub async fn get_substance_data(provider: String, identifier: String) -> Result<SubstanceData> {
-  if let Some(provider) = REGISTERED_PROVIDERS.lock().await.get(&provider.borrow()) {
-    return provider.get_substance_data(identifier);
+  if let Some(provider) = REGISTERED_PROVIDERS.read().await.get(&provider.borrow()) {
+    return provider.get_substance_data(identifier).await;
   }
 
   Err(SearchError::UnknownProvider(provider))

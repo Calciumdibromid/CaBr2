@@ -4,15 +4,17 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start:web": "ng serve -c web",
+    "start:web": "ng serve --configuration web",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "tauri": "tauri",
     "tauri:dev": "tauri dev",
-    "build:web": "ng build -c production,web",
-    "build:release": "ng build --prod && tauri build"
+    "build:web": "ng build -configuration production,web",
+    "build:release": "ng build --configuration production && tauri build",
+    "wasm_lib:debug": "cd src-wasm && wasm-pack build --out-dir ../cabr2_wasm --dev -- --features debug_build",
+    "wasm_lib:release": "cd src-wasm && wasm-pack build --out-dir ../cabr2_wasm --release"
   },
   "private": true,
   "dependencies": {

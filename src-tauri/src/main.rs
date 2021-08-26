@@ -4,7 +4,6 @@
 mod tauri_app;
 #[cfg(feature = "webserver")]
 mod webserver;
-
 fn main() {
   #[cfg(feature = "tauri_app")]
   tauri_app::main();

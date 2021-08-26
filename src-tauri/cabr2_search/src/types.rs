@@ -1,14 +1,16 @@
 use serde::{Deserialize, Serialize};
+use async_trait::async_trait;
 
 use cabr2_types::SubstanceData;
 
 use super::error::Result;
 
+#[async_trait]
 pub trait Provider {
   fn get_name(&self) -> String;
-  fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> Result<Vec<String>>;
-  fn get_search_results(&self, arguments: SearchArguments) -> Result<Vec<SearchResponse>>;
-  fn get_substance_data(&self, identifier: String) -> Result<SubstanceData>;
+  async fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> Result<Vec<String>>;
+  async fn get_search_results(&self, arguments: SearchArguments) -> Result<Vec<SearchResponse>>;
+  async fn get_substance_data(&self, identifier: String) -> Result<SubstanceData>;
 }
 
 #[derive(Debug, Deserialize, Serialize)]

@@ -1,8 +1,11 @@
 pub mod types;
 pub mod xml_parser;
 
+use async_trait::async_trait;
+use reqwest::Client;
+use serde::de::DeserializeOwned;
+
 use cabr2_types::{Data, Source, SubstanceData};
-use ureq::Agent;
 
 use self::types::GestisResponse;
 use crate::{
@@ -17,55 +20,63 @@ const ARTICLE: &str = "article";
 
 // TODO: add runtime for async requests
 pub struct Gestis {
-  agent: Agent,
+  client: Client,
 }
 
 impl Gestis {
-  pub fn new(agent: Agent) -> Gestis {
-    Gestis { agent }
+  pub fn new(client: Client) -> Gestis {
+    Gestis { client }
   }
 
-  pub fn get_article(&self, identifier: String) -> Result<(GestisResponse, String)> {
+  async fn get_article(&self, identifier: String) -> Result<(GestisResponse, String)> {
     let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, identifier);
-    let res = self.make_request(&url)?;
+    let res = self.make_request(&url).await?;
 
-    Ok((res.into_json()?, url))
+    Ok((res, url))
   }
 
-  fn make_request(&self, url: &str) -> Result<ureq::Response> {
+  async fn make_request<T: DeserializeOwned>(&self, url: &str) -> Result<T> {
+    log::trace!("making request to: {}", url);
     match self
-      .agent
+      .client
       .get(url)
       // don't ask, just leave it
       // https://gestis.dguv.de/search -> webpack:///./src/api.ts?
-      .set("Authorization", "Bearer dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd")
-      .call()
+      .bearer_auth("dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd")
+      .send()
+      .await
     {
       Ok(response) => {
-        log::debug!("{} {} - {}", response.status(), response.status_text(), &url);
-        Ok(response)
-      }
-      Err(ureq::Error::Status(code, response)) => {
-        log::error!("{} {} - {}", code, response.status_text(), &url);
-        match code {
-          429 => Err(SearchError::RateLimit),
-          _ => Err(SearchError::RequestError(code)),
-        }
+        let code = response.status();
+        log::debug!(
+          "{} {} - {}",
+          code.as_u16(),
+          code.canonical_reason().unwrap_or_default(),
+          &url
+        );
+        Ok(response.json().await?)
       }
       Err(err) => {
         log::error!("error when requesting url: {} -> {:?}", &url, err);
+        if let Some(code) = err.status() {
+          return match code.as_u16() {
+            429 => Err(SearchError::RateLimit),
+            _ => Err(SearchError::RequestError(code.as_u16())),
+          };
+        }
         Err(SearchError::Logged)
       }
     }
   }
 }
 
+#[async_trait]
 impl Provider for Gestis {
   fn get_name(&self) -> String {
     "Gestis".into()
   }
 
-  fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> Result<Vec<String>> {
+  async fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> Result<Vec<String>> {
     let url = format!(
       "{}/{}/de?{}={}",
       BASE_URL,
@@ -73,12 +84,14 @@ impl Provider for Gestis {
       search_type.as_str(),
       pattern
     );
-    let res = self.make_request(&url)?;
+    log::trace!("trying to block");
+    let res = self.make_request(&url).await?;
+    log::trace!("blocking successful");
 
-    Ok(res.into_json()?)
+    Ok(res)
   }
 
-  fn get_search_results(&self, arguments: SearchArguments) -> Result<Vec<SearchResponse>> {
+  async fn get_search_results(&self, arguments: SearchArguments) -> Result<Vec<SearchResponse>> {
     let args: Vec<String> = arguments
       .arguments
       .into_iter()
@@ -92,13 +105,13 @@ impl Provider for Gestis {
       args.join("&"),
       arguments.exact,
     );
-    let res = self.make_request(&url)?;
+    let res = self.make_request(&url).await?;
 
-    Ok(res.into_json()?)
+    Ok(res)
   }
 
-  fn get_substance_data(&self, identifier: String) -> Result<cabr2_types::SubstanceData> {
-    let (json, url) = self.get_article(identifier)?;
+  async fn get_substance_data(&self, identifier: String) -> Result<cabr2_types::SubstanceData> {
+    let (json, url) = self.get_article(identifier).await?;
 
     let data = xml_parser::parse_response(&json)?;
 
@@ -149,47 +162,5 @@ impl SearchType {
       SearchType::Numbers => "nummern",
       SearchType::FullText => "volltextsuche",
     }
-  }
-}
-
-#[cfg(test)]
-mod tests {
-  use lazy_static::lazy_static;
-  use ureq::AgentBuilder;
-
-  use super::*;
-
-  lazy_static! {
-    static ref GESTIS: Gestis = Gestis::new(AgentBuilder::new().user_agent("cabr2/testing").build());
-  }
-
-  #[test]
-  fn test_suggestions_chemical_name() {
-    assert_eq!(
-      GESTIS
-        .get_quick_search_suggestions(SearchType::ChemicalName, "cobaltnit".into())
-        .unwrap(),
-      vec!["cobaltnitrat"]
-    );
-  }
-
-  #[test]
-  fn test_suggestions_chemical_formula() {
-    assert_eq!(
-      GESTIS
-        .get_quick_search_suggestions(SearchType::ChemicalFormula, "h2o".into())
-        .unwrap(),
-      vec!["h2o", "h2o2", "h2o2sr", "h2o2zn", "h2o3s", "h2o3se", "h2o4s", "h2o4se", "h2o4w", "h2o7s2"]
-    );
-  }
-
-  #[test]
-  fn test_suggestions_numbers() {
-    assert_eq!(
-      GESTIS
-        .get_quick_search_suggestions(SearchType::Numbers, "5340".into())
-        .unwrap(),
-      vec!["5340", "53404-28-7", "53408-94-9"]
-    );
   }
 }
