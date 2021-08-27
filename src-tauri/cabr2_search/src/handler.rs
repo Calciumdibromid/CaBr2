@@ -26,7 +26,7 @@ pub async fn init_providers() {
   _providers.insert("gestis", Box::new(crate::gestis::Gestis::new(agent)));
 }
 
-pub async fn get_available_providers() -> Result<Vec<ProviderInfo>> {
+pub async fn get_available_providers() -> Vec<ProviderInfo> {
   let mut providers: Vec<ProviderInfo> = REGISTERED_PROVIDERS
     .lock()
     .await
@@ -41,7 +41,7 @@ pub async fn get_available_providers() -> Result<Vec<ProviderInfo>> {
     name: "Custom".into(),
   });
 
-  Ok(providers)
+  providers
 }
 
 pub async fn get_quick_search_suggestions(

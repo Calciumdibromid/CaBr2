@@ -13,6 +13,8 @@ use cabr2_types::logging::LogLevel;
 
 pub async fn setup_logger() -> Result<(), fern::InitError> {
   let mut log_file = TMP_DIR.clone();
+  log_file.push("logs/");
+  fs::create_dir_all(&log_file).unwrap();
   log_file.push(format!("cabr2_{}.log", chrono::Local::now().format("%F_%H.%M.%S")));
 
   let config = read_config().await;

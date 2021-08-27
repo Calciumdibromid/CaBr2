@@ -18,7 +18,7 @@ use super::{
 lazy_static! {
   pub static ref PROJECT_DIRS: ProjectDirs = ProjectDirs::from("de", "Calciumdibromid", "CaBr2").unwrap();
   pub static ref DATA_DIR: PathBuf = get_program_data_dir();
-  pub static ref TMP_DIR: PathBuf = env::temp_dir();
+  pub static ref TMP_DIR: PathBuf = get_tmp_dir();
 }
 
 pub async fn get_frontend_config() -> Result<FrontendConfig> {
@@ -289,4 +289,15 @@ fn get_program_data_dir() -> PathBuf {
     program_path.push("../../../");
     program_path.canonicalize().unwrap()
   }
+}
+
+fn get_tmp_dir() -> PathBuf {
+  let mut tmp_dir = env::temp_dir();
+
+  #[cfg(feature = "webserver")]
+  tmp_dir.push("cabr2_server/");
+  #[cfg(not(feature = "webserver"))]
+  tmp_dir.push("cabr2/");
+
+  tmp_dir
 }

@@ -1,6 +1,7 @@
 #![allow(clippy::upper_case_acronyms)]
 
 pub mod logging;
+pub mod webserver;
 
 use std::collections::HashMap;
 
