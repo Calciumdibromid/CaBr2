@@ -18,6 +18,8 @@ import { ProviderService } from './provider/provider.service';
 import { TauriService } from './native/tauri.service';
 import { LoadSaveService as WebLoadSaveService } from './loadSave/web/loadSave.service';
 import { ProviderService as WebProviderService } from './provider/web/provider.service';
+import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
 
 const configFactory = (nativeService: INativeService, sanitizer: DomSanitizer): IConfigService => {
   if (environment.web) {
@@ -35,9 +37,9 @@ const i18nFactory = (nativeService: INativeService): II18nService => {
   }
 };
 
-const loadSaveFactory = (nativeService: INativeService): ILoadSaveService => {
+const loadSaveFactory = (nativeService: INativeService, httpClient: HttpClient, dialog: MatDialog): ILoadSaveService => {
   if (environment.web) {
-    return new WebLoadSaveService();
+    return new WebLoadSaveService(httpClient, dialog);
   } else {
     return new LoadSaveService(nativeService);
   }
@@ -73,7 +75,7 @@ const providerFactory = (nativeService: INativeService, globals: GlobalModel): I
     {
       provide: ILoadSaveService,
       useFactory: loadSaveFactory,
-      deps: [INativeService],
+      deps: [INativeService, HttpClient, MatDialog],
     },
     {
       provide: INativeService,

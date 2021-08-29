@@ -10,6 +10,7 @@ edition = "2018"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
+base64 = "0.13.0"
 cabr2_load_save = { path = "../src-tauri/cabr2_load_save/", features = ["wasm"] }
 cabr2_search = { path = "../src-tauri/cabr2_search/", features = ["wasm"] }
 cabr2_types = { path = "../src-tauri/cabr2_types/" }
@@ -21,7 +22,7 @@ wasm-bindgen = { version = "0.2.74", features = ["serde-serialize"] }
 wasm-bindgen-futures = "0.4.24"
 
 [features]
-default = ["cabr2_load_save/beryllium", "cabr2_search/gestis"]
+default = ["cabr2_load_save/beryllium", "cabr2_load_save/cabr2", "cabr2_search/gestis"]
 debug_build = ["console_error_panic_hook"]
 
 [profile.release]

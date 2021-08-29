@@ -184,7 +184,7 @@ export class MenubarComponent implements OnInit {
       )
       .subscribe(
         (res) => {
-          logger.debug(res);
+          logger.debug(res == undefined ? 'saving successful:' : 'saving not successful:', res);
 
           switch (extension) {
             case 'pdf':
@@ -198,7 +198,7 @@ export class MenubarComponent implements OnInit {
         },
         (err) => {
           logger.error(err);
-          // fix for an error that occurs only in windows
+          // fix for an error that occurs only on MS Windows (only needed with Tauri app)
           if (err === 'Could not initialize COM.') {
             logger.debug('ty windows -.- | attempting fix');
             this.loadFile();
@@ -246,7 +246,7 @@ export class MenubarComponent implements OnInit {
   }
 
   private exportFile(type: DialogFilter): void {
-    logger.trace(`exportFile('${type}')`);
+    logger.trace('exportFile', type);
     this.modelToDocument()
       .pipe(first())
       .subscribe((doc) => {

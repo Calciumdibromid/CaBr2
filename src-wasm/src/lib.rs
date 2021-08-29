@@ -1,5 +1,6 @@
 use std::env;
 
+use base64::encode;
 use log::Level;
 use wasm_bindgen::prelude::*;
 
@@ -30,11 +31,12 @@ pub async fn init() {
   cabr2_load_save::wasm::init(cabr2_search::wasm::get_provider_mapping().await).await;
 }
 
-/// Converts a CaBr2Document into a binary array that can be saved by the client.
+/// Converts a `CaBr2Document` into a `base64` encoded `string` that can be saved by the client.
 ///
 /// May throw errors.
 #[wasm_bindgen]
 pub async fn save_document(file_type: String, document: String) -> Result<String> {
+  // TODO change back to original signature when it is supported by `wasm-bindgen`
   // pub async fn save_document(file_type: String, document: String) -> Result<Vec<u8>> {
   let document: CaBr2Document = match serde_json::from_str(&document) {
     Ok(document) => document,
@@ -42,8 +44,7 @@ pub async fn save_document(file_type: String, document: String) -> Result<String
   };
 
   match cabr2_load_save::wasm::save_document(file_type, document).await {
-    Ok(res) => Ok(format!("Test: {}", res.len())),
-    // Ok(res) => Ok(res),
+    Ok(res) => Ok(encode(res)),
     Err(err) => Err(JsValue::from(err.to_string())),
   }
 }

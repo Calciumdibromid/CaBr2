@@ -63,6 +63,7 @@ dependencies = [
  "quick-xml",
  "regex",
  "serde",
+ "serde_json",
  "thiserror",
 ]
 
@@ -96,6 +97,7 @@ dependencies = [
 name = "cabr2_wasm_lib"
 version = "0.3.0"
 dependencies = [
+ "base64",
  "cabr2_load_save",
  "cabr2_search",
  "cabr2_types",

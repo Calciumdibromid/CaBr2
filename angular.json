@@ -79,7 +79,47 @@
               "assets": [
                 "src/favicon.ico",
                 "src/assets",
-                "src/ghs_symbols"
+                {
+                  "glob": "**/*",
+                  "input": "ghs_symbols/",
+                  "output": "/ghs_symbols/"
+                }
+              ]
+            },
+            "webProd": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.web.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "1mb",
+                  "maximumError": "2mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "assets": [
+                "src/favicon.ico",
+                "src/assets",
+                {
+                  "glob": "**/*",
+                  "input": "ghs_symbols/",
+                  "output": "/ghs_symbols/"
+                }
               ]
             }
           }
@@ -95,6 +135,9 @@
             },
             "web": {
               "browserTarget": "CaBr2:build:web"
+            },
+            "webProd": {
+              "browserTarget": "CaBr2:build:webProd"
             }
           }
         },
@@ -139,6 +182,12 @@
           "configurations": {
             "production": {
               "devServerTarget": "CaBr2:serve:production"
+            },
+            "web": {
+              "devServerTarget": "CaBr2:serve:web"
+            },
+            "webProd": {
+              "devServerTarget": "CaBr2:serve:webProd"
             }
           }
         }

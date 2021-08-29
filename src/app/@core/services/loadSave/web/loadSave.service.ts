@@ -1,17 +1,72 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { first } from 'rxjs/operators';
+import { Observable, Subscriber } from 'rxjs';
 
 import { CaBr2Document, DocumentTypes } from '../loadSave.model';
-import { get_available_document_types, load_document } from 'cabr2_wasm';
+import { get_available_document_types, load_document, save_document } from 'cabr2_wasm';
 import { ILoadSaveService } from '../loadSave.interface';
+import Logger from 'src/app/@core/utils/logger';
+import { environment } from 'src/environments/environment';
+import { ProgressDialogComponent } from 'src/app/progress-dialog/progress-dialog.component';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 // TODO use vars and remove this lines
 
+const logger = new Logger("loadSaveService.web");
+
+const SERVER_URL = function (): string {
+  if (environment.production) {
+    return "https://api.cabr2.de/";
+  } else {
+    return "http://localhost:3030/";
+  }
+}() + 'api/v1/';
+
 @Injectable()
 export class LoadSaveService implements ILoadSaveService {
-  saveDocument(fileType: string, filename: string, document: CaBr2Document): Observable<string> {
-    throw new Error('Method not implemented.');
+  constructor(
+    private httpClient: HttpClient,
+    private dialog: MatDialog
+  ) { }
+
+  saveDocument(fileType: string, _: string, document: CaBr2Document): Observable<string> {
+    return new Observable((sub) => {
+      switch (fileType) {
+        case 'pdf':
+          const download = this.httpClient
+            .post<SaveDocumentResponse>(SERVER_URL + 'loadSave/saveDocument', {
+              fileType,
+              document: document,
+            })
+            .pipe(first());
+
+          this.dialog.open(ProgressDialogComponent, {
+            panelClass: ['unselectable', 'undragable'],
+            data: {
+              download,
+              subscriber: sub,
+            },
+          });
+          break;
+
+        case 'cb2':
+          const blob = new Blob([JSON.stringify(document)], { type: 'text/plain' });
+          downloadFile(blob, fileType, sub);
+          break;
+
+        default:
+          logger.debug("saving file with wasm:", fileType);
+          save_document(fileType, JSON.stringify(document))
+            .then((contents: string) => {
+              const blob = new Blob([atob(contents)], { type: 'application/octet-stream' });
+              downloadFile(blob, fileType, sub);
+            })
+            .catch((err: any) => sub.error(err));
+          break;
+      }
+    });
   }
 
   loadDocument(filename: string): Observable<CaBr2Document> {
@@ -28,11 +83,13 @@ export class LoadSaveService implements ILoadSaveService {
         });
 
       default:
+        logger.debug("opening file with wasm: ", file.name);
         return new Observable((sub) => {
           reader.onload = () => {
             const res = reader.result as ArrayBuffer;
-            const contents = load_document(fileType, new Uint8Array(res));
-            sub.next(JSON.parse(contents));
+            load_document(fileType, new Uint8Array(res))
+              .then((contents: string) => sub.next(JSON.parse(contents)))
+              .catch((err: any) => sub.error(err));
           };
           reader.readAsArrayBuffer(file);
         });
@@ -52,6 +109,15 @@ const getFileType = (file: File): string => {
   const fileTypeSplit = file.name.split('.');
   return fileTypeSplit[fileTypeSplit.length - 1];
 };
+
+const downloadFile = (contents: Blob, fileType: string, sub: Subscriber<string>) => {
+  const anchor = document.createElement('a');
+  anchor.download = 'Unbenannt.' + fileType;
+  anchor.href = (window.webkitURL || window.URL).createObjectURL(contents);
+  anchor.dataset.downloadurl = [contents.type, anchor.download, anchor.href].join(':');
+  anchor.click();
+  sub.next();
+}
 
 interface SaveDocumentResponse {
   downloadUrl: string;

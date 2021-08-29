@@ -23,6 +23,8 @@ import { ServiceModule } from './@core/services/service.module';
 import { SettingsComponent } from './settings/settings.component';
 import { SubMolecularFormula } from './@core/pipes/molecularformula.pipe';
 import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
+import { ProgressDialogComponent } from './progress-dialog/progress-dialog.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
     ConsentComponent,
     SubMolecularFormula,
     LoadingComponent,
+    ProgressDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,8 +54,9 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
     MatModules,
     AlertModule,
     ServiceModule,
+    HttpClientModule,
   ],
   providers: [GlobalModel],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
