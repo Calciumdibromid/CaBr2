@@ -1,6 +1,10 @@
+#[cfg(feature = "wasm")]
+use std::sync::RwLock;
 use std::{borrow::Borrow, collections::HashMap};
 
+use cfg_if::cfg_if;
 use lazy_static::lazy_static;
+#[cfg(not(feature = "wasm"))]
 use tokio::sync::RwLock;
 
 use cabr2_types::SubstanceData;
@@ -19,7 +23,14 @@ lazy_static! {
 const USER_AGENT: &str = concat!("cabr2/v", env!("CARGO_PKG_VERSION"));
 
 pub async fn init_providers() -> Result<()> {
-  let mut _providers = REGISTERED_PROVIDERS.write().await;
+  let mut _providers;
+  cfg_if! {
+    if #[cfg(not(feature = "wasm"))]{
+      _providers = REGISTERED_PROVIDERS.write().await;
+    } else {
+      _providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+    }
+  }
 
   #[cfg(feature = "gestis")]
   {
@@ -35,7 +46,15 @@ pub async fn init_providers() -> Result<()> {
 }
 
 pub async fn get_provider_mapping() -> HashMap<String, String> {
-  let providers = REGISTERED_PROVIDERS.read().await;
+  let providers;
+  cfg_if! {
+    if #[cfg(not(feature = "wasm"))]{
+      providers = REGISTERED_PROVIDERS.write().await;
+    } else {
+      providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+    }
+  }
+
   let mut mapping = HashMap::new();
   for (id, provider) in providers.iter() {
     mapping.insert(id.to_string(), provider.get_name());
@@ -44,10 +63,17 @@ pub async fn get_provider_mapping() -> HashMap<String, String> {
   mapping
 }
 
-pub async fn get_available_providers() -> Result<Vec<ProviderInfo>> {
-  let mut providers: Vec<ProviderInfo> = REGISTERED_PROVIDERS
-    .read()
-    .await
+pub async fn get_available_providers() -> Vec<ProviderInfo> {
+  let providers;
+  cfg_if! {
+    if #[cfg(not(feature = "wasm"))]{
+      providers = REGISTERED_PROVIDERS.write().await;
+    } else {
+      providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+    }
+  }
+
+  let mut providers: Vec<ProviderInfo> = providers
     .iter()
     .map(|(key, provider)| ProviderInfo {
       name: provider.get_name(),
@@ -60,7 +86,7 @@ pub async fn get_available_providers() -> Result<Vec<ProviderInfo>> {
     name: "Custom".into(),
   });
 
-  Ok(providers)
+  providers
 }
 
 pub async fn get_quick_search_suggestions(
@@ -72,7 +98,16 @@ pub async fn get_quick_search_suggestions(
     return Ok(vec![]);
   }
 
-  if let Some(provider) = REGISTERED_PROVIDERS.read().await.get(&provider.borrow()) {
+  let providers;
+  cfg_if! {
+    if #[cfg(not(feature = "wasm"))]{
+      providers = REGISTERED_PROVIDERS.write().await;
+    } else {
+      providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+    }
+  }
+
+  if let Some(provider) = providers.get(&provider.borrow()) {
     return provider.get_quick_search_suggestions(search_type, pattern).await;
   }
 
@@ -93,7 +128,16 @@ pub async fn get_search_results(provider: String, arguments: SearchArguments) ->
     return Ok(vec![]);
   }
 
-  if let Some(provider) = REGISTERED_PROVIDERS.read().await.get(&provider.borrow()) {
+  let providers;
+  cfg_if! {
+    if #[cfg(not(feature = "wasm"))]{
+      providers = REGISTERED_PROVIDERS.write().await;
+    } else {
+      providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+    }
+  }
+
+  if let Some(provider) = providers.get(&provider.borrow()) {
     return provider.get_search_results(arguments).await;
   }
 
@@ -101,7 +145,16 @@ pub async fn get_search_results(provider: String, arguments: SearchArguments) ->
 }
 
 pub async fn get_substance_data(provider: String, identifier: String) -> Result<SubstanceData> {
-  if let Some(provider) = REGISTERED_PROVIDERS.read().await.get(&provider.borrow()) {
+  let providers;
+  cfg_if! {
+    if #[cfg(not(feature = "wasm"))]{
+      providers = REGISTERED_PROVIDERS.write().await;
+    } else {
+      providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+    }
+  }
+
+  if let Some(provider) = providers.get(&provider.borrow()) {
     return provider.get_substance_data(identifier).await;
   }
 

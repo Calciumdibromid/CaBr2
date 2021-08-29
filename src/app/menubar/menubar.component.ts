@@ -51,6 +51,7 @@ export class MenubarComponent implements OnInit {
 
     this.loadSaveService.getAvailableDocumentTypes().subscribe(
       (types) => {
+        logger.debug(types);
         this.loadFilter = types.load;
         this.saveFilter = types.save;
       },

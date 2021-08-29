@@ -87,6 +87,7 @@ export class SearchComponent implements OnInit {
       if (result) {
         this.providerService.substanceData(providerIdentifier, result.zvgNumber).subscribe(
           (value) => {
+            logger.debug(value);
             const cas = this.modifiedOrOriginal(value.cas);
             if (
               cas &&

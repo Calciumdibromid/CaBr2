@@ -40,7 +40,7 @@ const createLog = () => {
           break;
       }
 
-      fn(prefix, path, ...messages);
+      fn(prefix, `[${path}]`, ...messages);
     };
   }
   else {

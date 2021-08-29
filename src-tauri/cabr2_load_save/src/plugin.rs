@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use tauri::{plugin::Plugin, Invoke, Params, Window};
+use tauri::{async_runtime, plugin::Plugin, Invoke, Runtime, Window};
 
 use cabr2_types::ProviderMapping;
 use tokio::fs;
@@ -68,17 +68,17 @@ pub async fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
 }
 
 #[tauri::command]
-pub fn get_available_document_types() -> Result<DocumentTypes> {
-  handler::get_available_document_types()
+pub async fn get_available_document_types() -> Result<DocumentTypes> {
+  handler::get_available_document_types().await
 }
 
-pub struct LoadSave<M: Params> {
-  invoke_handler: Box<dyn Fn(Invoke<M>) + Send + Sync>,
+pub struct LoadSave<R: Runtime> {
+  invoke_handler: Box<dyn Fn(Invoke<R>) + Send + Sync>,
 }
 
-impl<M: Params> LoadSave<M> {
+impl<R: Runtime> LoadSave<R> {
   pub fn new(provider_mapping: ProviderMapping) -> Self {
-    init_handlers(provider_mapping);
+    async_runtime::block_on(init_handlers(provider_mapping));
     LoadSave {
       invoke_handler: Box::new(tauri::generate_handler![
         save_document,
@@ -89,16 +89,16 @@ impl<M: Params> LoadSave<M> {
   }
 }
 
-impl<M: Params> Plugin<M> for LoadSave<M> {
+impl<R: Runtime> Plugin<R> for LoadSave<R> {
   fn name(&self) -> &'static str {
     "cabr2_load_save"
   }
 
-  fn extend_api(&mut self, message: Invoke<M>) {
+  fn extend_api(&mut self, message: Invoke<R>) {
     (self.invoke_handler)(message)
   }
 
-  fn created(&mut self, _: Window<M>) {
+  fn created(&mut self, _: Window<R>) {
     log::trace!("plugin created");
   }
 }

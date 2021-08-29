@@ -1,11 +1,12 @@
-use serde::{Deserialize, Serialize};
 use async_trait::async_trait;
+use serde::{Deserialize, Serialize};
 
 use cabr2_types::SubstanceData;
 
 use super::error::Result;
 
-#[async_trait]
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 pub trait Provider {
   fn get_name(&self) -> String;
   async fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> Result<Vec<String>>;

@@ -4,7 +4,7 @@ use log::Level;
 use wasm_bindgen::prelude::*;
 
 use cabr2_load_save::wasm::CaBr2Document;
-use cabr2_search::types::SearchType;
+use cabr2_search::types::{SearchArguments, SearchType};
 
 type Result<T> = std::result::Result<T, JsValue>;
 
@@ -25,9 +25,9 @@ pub async fn init() {
   log::debug!("Initializing WASM implementation...");
 
   // must be initialized first
-  cabr2_search::wasm::init();
+  cabr2_search::wasm::init().await;
 
-  cabr2_load_save::wasm::init(cabr2_search::wasm::get_provider_mapping());
+  cabr2_load_save::wasm::init(cabr2_search::wasm::get_provider_mapping().await).await;
 }
 
 /// Converts a CaBr2Document into a binary array that can be saved by the client.
@@ -69,8 +69,8 @@ pub async fn load_document(file_type: String, doc: Vec<u8>) -> Result<String> {
 ///
 /// May throw errors.
 #[wasm_bindgen]
-pub fn get_available_document_types() -> Result<String> {
-  let types = match cabr2_load_save::wasm::get_available_document_types() {
+pub async fn get_available_document_types() -> Result<String> {
+  let types = match cabr2_load_save::wasm::get_available_document_types().await {
     Ok(types) => types,
     Err(err) => return Err(JsValue::from(err.to_string())),
   };
@@ -87,11 +87,8 @@ pub fn get_program_version() -> String {
 }
 
 #[wasm_bindgen]
-pub fn get_available_providers() -> Result<String> {
-  let providers = match cabr2_search::wasm::get_available_providers() {
-    Ok(providers) => providers,
-    Err(err) => return Err(JsValue::from(err.to_string())),
-  };
+pub async fn get_available_providers() -> Result<String> {
+  let providers = cabr2_search::wasm::get_available_providers().await;
 
   match serde_json::to_string(&providers) {
     Ok(res) => Ok(res),
@@ -112,6 +109,37 @@ pub async fn search_suggestions(provider: String, pattern: String, search_type: 
   };
 
   match serde_json::to_string(&suggestions) {
+    Ok(res) => Ok(res),
+    Err(err) => Err(JsValue::from(err.to_string())),
+  }
+}
+
+#[wasm_bindgen]
+pub async fn search_results(provider: String, arguments_: String) -> Result<String> {
+  let arguments: SearchArguments = match serde_json::from_str(&arguments_) {
+    Ok(res) => res,
+    Err(err) => return Err(JsValue::from(err.to_string())),
+  };
+
+  let results = match cabr2_search::wasm::search_results(provider, arguments).await {
+    Ok(results) => results,
+    Err(err) => return Err(JsValue::from(err.to_string())),
+  };
+
+  match serde_json::to_string(&results) {
+    Ok(res) => Ok(res),
+    Err(err) => Err(JsValue::from(err.to_string())),
+  }
+}
+
+#[wasm_bindgen]
+pub async fn substance_data(provider: String, identifier: String) -> Result<String> {
+  let substance_data = match cabr2_search::wasm::get_substance_data(provider, identifier).await {
+    Ok(substance_data) => substance_data,
+    Err(err) => return Err(JsValue::from(err.to_string())),
+  };
+
+  match serde_json::to_string(&substance_data) {
     Ok(res) => Ok(res),
     Err(err) => Err(JsValue::from(err.to_string())),
   }

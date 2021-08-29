@@ -16,7 +16,7 @@ pub async fn get_provider_mapping() -> HashMap<String, String> {
   handler::get_provider_mapping().await
 }
 
-pub async fn get_available_providers() -> Result<Vec<ProviderInfo>> {
+pub async fn get_available_providers() -> Vec<ProviderInfo> {
   handler::get_available_providers().await
 }
 
@@ -24,7 +24,7 @@ pub async fn search_suggestions(provider: String, pattern: String, search_type: 
   handler::get_quick_search_suggestions(provider, search_type, pattern).await
 }
 
-pub async fn search(provider: String, arguments: SearchArguments) -> Result<Vec<SearchResponse>> {
+pub async fn search_results(provider: String, arguments: SearchArguments) -> Result<Vec<SearchResponse>> {
   handler::get_search_results(provider, arguments).await
 }
 

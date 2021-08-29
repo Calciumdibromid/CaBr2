@@ -41,10 +41,11 @@ export class LoadSaveService implements ILoadSaveService {
 
   getAvailableDocumentTypes(): Observable<DocumentTypes> {
     return new Observable((sub) => {
-      sub.next(JSON.parse(get_available_document_types()));
+      get_available_document_types()
+        .then((types: string) => sub.next(JSON.parse(types)))
+        .catch((err: any) => sub.error(err));
     });
   }
-
 }
 
 const getFileType = (file: File): string => {

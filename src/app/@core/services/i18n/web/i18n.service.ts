@@ -29,5 +29,4 @@ export class I18nWebService implements II18nService {
         });
     });
   }
-
 }

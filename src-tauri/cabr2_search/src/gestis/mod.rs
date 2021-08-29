@@ -37,15 +37,14 @@ impl Gestis {
 
   async fn make_request<T: DeserializeOwned>(&self, url: &str) -> Result<T> {
     log::trace!("making request to: {}", url);
-    match self
+    let req = self
       .client
       .get(url)
       // don't ask, just leave it
       // https://gestis.dguv.de/search -> webpack:///./src/api.ts?
-      .bearer_auth("dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd")
-      .send()
-      .await
-    {
+      .bearer_auth("dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd");
+
+    match req.send().await {
       Ok(response) => {
         let code = response.status();
         log::debug!(
@@ -54,7 +53,13 @@ impl Gestis {
           code.canonical_reason().unwrap_or_default(),
           &url
         );
-        Ok(response.json().await?)
+        match response.json().await {
+          Ok(json) => Ok(json),
+          Err(err) => {
+            log::error!("{:?}", err);
+            return Err(SearchError::JsonError);
+          }
+        }
       }
       Err(err) => {
         log::error!("error when requesting url: {} -> {:?}", &url, err);
@@ -64,13 +69,14 @@ impl Gestis {
             _ => Err(SearchError::RequestError(code.as_u16())),
           };
         }
-        Err(SearchError::Logged)
+        return Err(SearchError::Logged);
       }
     }
   }
 }
 
-#[async_trait]
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 impl Provider for Gestis {
   fn get_name(&self) -> String {
     "Gestis".into()
@@ -84,11 +90,8 @@ impl Provider for Gestis {
       search_type.as_str(),
       pattern
     );
-    log::trace!("trying to block");
-    let res = self.make_request(&url).await?;
-    log::trace!("blocking successful");
 
-    Ok(res)
+    Ok(self.make_request(&url).await?)
   }
 
   async fn get_search_results(&self, arguments: SearchArguments) -> Result<Vec<SearchResponse>> {
@@ -111,6 +114,8 @@ impl Provider for Gestis {
   }
 
   async fn get_substance_data(&self, identifier: String) -> Result<cabr2_types::SubstanceData> {
+    use chrono::TimeZone;
+
     let (json, url) = self.get_article(identifier).await?;
 
     let data = xml_parser::parse_response(&json)?;
@@ -143,7 +148,8 @@ impl Provider for Gestis {
       source: Source {
         provider: "gestis".into(),
         url,
-        last_updated: chrono::Utc::now(),
+        last_updated: chrono::Utc.ymd(1970, 1, 1).and_hms(0, 0, 0),
+        // last_updated: chrono::Utc::now(),
       },
 
       checked: false,

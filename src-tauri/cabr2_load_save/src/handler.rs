@@ -20,7 +20,7 @@ lazy_static! {
   pub static ref REGISTERED_SAVERS: SaversMap = Arc::new(Mutex::new(HashMap::new()));
 }
 
-pub fn init_handlers(_provider_mapping: ProviderMapping) {
+pub async fn init_handlers(_provider_mapping: ProviderMapping) {
   let mut _loaders = REGISTERED_LOADERS.lock().expect("failed to lock loaders");
   #[cfg(feature = "cabr2")]
   _loaders.insert("cb2", ("CaBr2", Box::new(crate::cabr2::CaBr2)));
@@ -64,7 +64,7 @@ pub async fn load_document(file_type: &str, contents: Vec<u8>) -> Result<CaBr2Do
   Err(LoadSaveError::UnknownFileType)
 }
 
-pub fn get_available_document_types() -> Result<DocumentTypes> {
+pub async fn get_available_document_types() -> Result<DocumentTypes> {
   let mut load: Vec<DialogFilter> = REGISTERED_LOADERS
     .lock()
     .expect("failed to lock loaders")
