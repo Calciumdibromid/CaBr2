@@ -9,12 +9,14 @@ import { ConsentComponent } from './consent/consent.component';
 import { EditSubstanceDataComponent } from './edit-substance-data/edit-substance-data.component';
 import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './header/header.component';
+import { HttpClientModule } from '@angular/common/http';
 import { LoadingComponent } from './loading/loading.component';
 import { ManualComponent } from './manual/manual.component';
 import { MatModules } from './@core/modules/mat.module';
 import { MenubarComponent } from './menubar/menubar.component';
 import { ModifiableStringListComponent } from './modifiable-string-list/modifiable-string-list.component';
 import { PreviewComponent } from './preview/preview.component';
+import { ProgressDialogComponent } from './progress-dialog/progress-dialog.component';
 import { ReportBugComponent } from './report-bug/report-bug.component';
 import { SearchComponent } from './search/search.component';
 import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
@@ -23,8 +25,6 @@ import { ServiceModule } from './@core/services/service.module';
 import { SettingsComponent } from './settings/settings.component';
 import { SubMolecularFormula } from './@core/pipes/molecularformula.pipe';
 import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
-import { ProgressDialogComponent } from './progress-dialog/progress-dialog.component';
-import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -59,4 +59,4 @@ import { HttpClientModule } from '@angular/common/http';
   providers: [GlobalModel],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

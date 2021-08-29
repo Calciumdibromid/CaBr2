@@ -1,7 +1,8 @@
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
+import { get_available_providers, search_results, search_suggestions, substance_data } from 'cabr2_wasm';
 import {
   Provider,
   ProviderMapping,
@@ -11,7 +12,6 @@ import {
   SearchTypeMapping,
   searchTypes,
 } from '../provider.model';
-import { get_available_providers, search_suggestions, search_results, substance_data } from 'cabr2_wasm';
 import { GlobalModel } from 'src/app/@core/models/global.model';
 import { IProviderService } from '../provider.interface';
 import { SubstanceData } from 'src/app/@core/models/substances.model';
@@ -40,7 +40,7 @@ export class ProviderService implements IProviderService {
     return new Observable((sub) =>
       get_available_providers()
         .then((providers: string) => sub.next(JSON.parse(providers)))
-        .catch((err: any) => sub.error(err))
+        .catch((err: any) => sub.error(err)),
     );
   }
 
@@ -50,7 +50,7 @@ export class ProviderService implements IProviderService {
         .then((res: string) => sub.next(JSON.parse(res)))
         .catch((err: string) => {
           console.error(err);
-          sub.error(err)
+          sub.error(err);
         });
     });
   }
@@ -61,7 +61,7 @@ export class ProviderService implements IProviderService {
         .then((res: string) => sub.next(JSON.parse(res)))
         .catch((err: string) => {
           console.error(err);
-          sub.error(err)
+          sub.error(err);
         });
     });
   }
@@ -72,7 +72,7 @@ export class ProviderService implements IProviderService {
         .then((res: string) => sub.next(JSON.parse(res)))
         .catch((err: string) => {
           console.error(err);
-          sub.error(err)
+          sub.error(err);
         });
     });
   }

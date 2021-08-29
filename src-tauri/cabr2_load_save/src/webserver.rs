@@ -48,7 +48,7 @@ pub async fn handle_load_document(body: LoadDocumentBody) -> Result<impl Reply, 
   let mut path;
   loop {
     path = TMP.clone();
-    path.push(&serde_json::to_string(&Uuid::new_v4()).unwrap().replace('"', ""));
+    path.push(Uuid::new_v4().to_hyphenated().to_string());
     let path = path.with_extension(&body.file_type);
 
     if !path.exists() {
@@ -113,7 +113,7 @@ pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, 
   let mut uuid_str;
   loop {
     path = TMP.clone();
-    uuid_str = serde_json::to_string(&Uuid::new_v4()).unwrap().replace('"', "");
+    uuid_str = Uuid::new_v4().to_hyphenated().to_string();
     path.push(&uuid_str);
     let path = path.with_extension(&body.file_type);
 

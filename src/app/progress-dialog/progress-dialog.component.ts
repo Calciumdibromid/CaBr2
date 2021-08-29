@@ -3,9 +3,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscriber } from 'rxjs';
 
 import { GlobalModel } from '../@core/models/global.model';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
 import { INativeService } from '../@core/services/native/native.interface';
-
+import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
 
 interface SaveDocumentResponse {
   downloadUrl: string;

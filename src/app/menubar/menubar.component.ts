@@ -184,7 +184,7 @@ export class MenubarComponent implements OnInit {
       )
       .subscribe(
         (res) => {
-          logger.debug(res == undefined ? 'saving successful:' : 'saving not successful:', res);
+          logger.debug(res === undefined ? 'saving successful:' : 'saving not successful:', res);
 
           switch (extension) {
             case 'pdf':

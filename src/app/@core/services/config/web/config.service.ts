@@ -54,5 +54,4 @@ export class ConfigWebService implements IConfigService {
   getPromptHtml(name: string): Observable<string> {
     throw new Error('Method not implemented.');
   }
-
 }

@@ -6,6 +6,7 @@ import { ConfigService } from './config/config.service';
 import { ConfigWebService } from './config/web/config.service';
 import { environment } from 'src/environments/environment';
 import { GlobalModel } from '../models/global.model';
+import { HttpClient } from '@angular/common/http';
 import { I18nService } from './i18n/i18n.service';
 import { I18nWebService } from './i18n/web/i18n.service';
 import { IConfigService } from './config/config.interface';
@@ -14,12 +15,11 @@ import { ILoadSaveService } from './loadSave/loadSave.interface';
 import { INativeService } from './native/native.interface';
 import { IProviderService } from './provider/provider.interface';
 import { LoadSaveService } from './loadSave/loadSave.service';
+import { MatDialog } from '@angular/material/dialog';
 import { ProviderService } from './provider/provider.service';
 import { TauriService } from './native/tauri.service';
 import { LoadSaveService as WebLoadSaveService } from './loadSave/web/loadSave.service';
 import { ProviderService as WebProviderService } from './provider/web/provider.service';
-import { HttpClient } from '@angular/common/http';
-import { MatDialog } from '@angular/material/dialog';
 
 const configFactory = (nativeService: INativeService, sanitizer: DomSanitizer): IConfigService => {
   if (environment.web) {
@@ -37,7 +37,11 @@ const i18nFactory = (nativeService: INativeService): II18nService => {
   }
 };
 
-const loadSaveFactory = (nativeService: INativeService, httpClient: HttpClient, dialog: MatDialog): ILoadSaveService => {
+const loadSaveFactory = (
+  nativeService: INativeService,
+  httpClient: HttpClient,
+  dialog: MatDialog,
+): ILoadSaveService => {
   if (environment.web) {
     return new WebLoadSaveService(httpClient, dialog);
   } else {
@@ -88,4 +92,4 @@ const providerFactory = (nativeService: INativeService, globals: GlobalModel): I
     },
   ],
 })
-export class ServiceModule { }
+export class ServiceModule {}

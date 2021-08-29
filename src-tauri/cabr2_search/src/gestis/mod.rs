@@ -57,7 +57,7 @@ impl Gestis {
           Ok(json) => Ok(json),
           Err(err) => {
             log::error!("{:?}", err);
-            return Err(SearchError::JsonError);
+            Err(SearchError::JsonError)
           }
         }
       }
@@ -69,7 +69,7 @@ impl Gestis {
             _ => Err(SearchError::RequestError(code.as_u16())),
           };
         }
-        return Err(SearchError::Logged);
+        Err(SearchError::Logged)
       }
     }
   }

@@ -42,23 +42,21 @@ const createLog = () => {
 
       fn(prefix, `[${path}]`, ...messages);
     };
-  }
-  else {
+  } else {
     let invoke = async (cmd: string, args: any): Promise<any> => {
       // defer actual logging until module finished loading
       setTimeout(() => {
         invoke(cmd, args).catch((err) => console.error(err));
       }, 1);
     };
-    import('@tauri-apps/api/tauri').then((tauri) => invoke = tauri.invoke);
+    import('@tauri-apps/api/tauri').then((tauri) => (invoke = tauri.invoke));
 
     return (level: LogLevel, path: string, ...messages: any[]) => {
       invoke('plugin:cabr2_logger|log', {
         level,
         path,
         messages,
-      })
-        .catch((err) => console.error(err));
+      }).catch((err) => console.error(err));
     };
   }
 };
