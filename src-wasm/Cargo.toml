@@ -22,7 +22,7 @@ wasm-bindgen = { version = "0.2.74", features = ["serde-serialize"] }
 wasm-bindgen-futures = "0.4.24"
 
 [features]
-default = ["cabr2_load_save/beryllium", "cabr2_load_save/cabr2", "cabr2_search/gestis"]
+default = ["cabr2_load_save/beryllium", "cabr2_search/gestis"]
 debug_build = ["console_error_panic_hook"]
 
 [profile.release]

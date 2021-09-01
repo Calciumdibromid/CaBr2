@@ -1,6 +1,8 @@
 #![allow(clippy::upper_case_acronyms)]
 
 pub mod logging;
+#[cfg(feature = "webserver")]
+pub mod webserver;
 
 use std::collections::HashMap;
 

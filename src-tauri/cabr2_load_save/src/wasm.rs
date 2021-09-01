@@ -18,6 +18,6 @@ pub async fn load_document(file_type: String, doc: Vec<u8>) -> Result<CaBr2Docum
   handler::load_document(&file_type, doc).await
 }
 
-pub async fn get_available_document_types() -> Result<DocumentTypes> {
+pub async fn get_available_document_types() -> DocumentTypes {
   handler::get_available_document_types().await
 }

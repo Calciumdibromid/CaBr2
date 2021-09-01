@@ -71,10 +71,7 @@ pub async fn load_document(file_type: String, doc: Vec<u8>) -> Result<String> {
 /// May throw errors.
 #[wasm_bindgen]
 pub async fn get_available_document_types() -> Result<String> {
-  let types = match cabr2_load_save::wasm::get_available_document_types().await {
-    Ok(types) => types,
-    Err(err) => return Err(JsValue::from(err.to_string())),
-  };
+  let types = cabr2_load_save::wasm::get_available_document_types().await;
 
   match serde_json::to_string(&types) {
     Ok(res) => Ok(res),

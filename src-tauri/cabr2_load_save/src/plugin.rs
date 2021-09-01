@@ -68,7 +68,7 @@ pub async fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
 }
 
 #[tauri::command]
-pub async fn get_available_document_types() -> Result<DocumentTypes> {
+pub async fn get_available_document_types() -> DocumentTypes {
   handler::get_available_document_types().await
 }
 

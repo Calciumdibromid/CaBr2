@@ -1,10 +1,12 @@
 use std::{collections::HashMap, convert::Infallible};
 
 use serde::Deserialize;
-use serde_json::Value;
 use warp::{hyper::StatusCode, Reply};
 
+use cabr2_types::webserver::generate_error_reply;
+
 use crate::{
+  error::SearchError,
   handler,
   types::{SearchArgument, SearchArguments},
 };
@@ -24,13 +26,11 @@ pub async fn get_provider_mapping() -> HashMap<String, String> {
 }
 
 pub async fn handle_available_providers() -> Result<impl Reply, Infallible> {
-  Ok(warp::reply::with_status(
-    warp::reply::json(&handler::get_available_providers().await),
-    StatusCode::OK,
-  ))
+  let res = handler::get_available_providers().await;
+  Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK))
 }
 
-pub async fn handle_suggestions(body: SuggenstionBody) -> Result<impl Reply, Infallible> {
+pub async fn handle_suggestions(body: SuggestionBody) -> Result<impl Reply, Infallible> {
   match handler::get_quick_search_suggestions(
     body.provider,
     body.search_argument.search_type,
@@ -39,30 +39,54 @@ pub async fn handle_suggestions(body: SuggenstionBody) -> Result<impl Reply, Inf
   .await
   {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
-    Err(err) => Ok(warp::reply::with_status(
-      warp::reply::json(&Value::String(err.to_string())),
-      StatusCode::BAD_REQUEST,
-    )),
+    Err(SearchError::UnknownProvider(provider)) => {
+      let message = format!("unknown provider: {}", provider);
+      log::error!("{}", message);
+      Ok(generate_error_reply(StatusCode::BAD_REQUEST, message))
+    }
+    Err(err) => {
+      log::error!("{:?}", err);
+      Ok(generate_error_reply(
+        StatusCode::INTERNAL_SERVER_ERROR,
+        "failed to get suggestions".to_string(),
+      ))
+    }
   }
 }
 
 pub async fn handle_results(body: ResultBody) -> Result<impl Reply, Infallible> {
   match handler::get_search_results(body.provider, body.search_arguments).await {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
-    Err(err) => Ok(warp::reply::with_status(
-      warp::reply::json(&Value::String(err.to_string())),
-      StatusCode::BAD_REQUEST,
-    )),
+    Err(SearchError::UnknownProvider(provider)) => {
+      let message = format!("unknown provider: {}", provider);
+      log::error!("{}", message);
+      Ok(generate_error_reply(StatusCode::BAD_REQUEST, message))
+    }
+    Err(err) => {
+      log::error!("{:?}", err);
+      Ok(generate_error_reply(
+        StatusCode::INTERNAL_SERVER_ERROR,
+        "failed to get search results".to_string(),
+      ))
+    }
   }
 }
 
 pub async fn handle_substances(body: SubstanceBody) -> Result<impl Reply, Infallible> {
   match handler::get_substance_data(body.provider, body.identifier).await {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
-    Err(err) => Ok(warp::reply::with_status(
-      warp::reply::json(&Value::String(err.to_string())),
-      StatusCode::BAD_REQUEST,
-    )),
+    Err(SearchError::UnknownProvider(provider)) => {
+      let message = format!("unknown provider: {}", provider);
+      log::error!("{}", message);
+      Ok(generate_error_reply(StatusCode::BAD_REQUEST, message))
+    }
+    Err(err) => {
+      log::error!("{:?}", err);
+      Ok(generate_error_reply(
+        StatusCode::INTERNAL_SERVER_ERROR,
+        "failed to get substance data".to_string(),
+      ))
+    }
   }
 }
 
@@ -70,7 +94,7 @@ pub async fn handle_substances(body: SubstanceBody) -> Result<impl Reply, Infall
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct SuggenstionBody {
+pub struct SuggestionBody {
   provider: String,
   search_argument: SearchArgument,
 }
