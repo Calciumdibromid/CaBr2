@@ -4,7 +4,7 @@ use thiserror::Error;
 #[derive(Error, Debug)]
 pub enum LoadSaveError {
   #[error("unknown file type")]
-  UnknownFileType,
+  UnknownFileType(String),
 
   #[cfg(feature = "beryllium")]
   #[error("failed to load file: '{0}'")]

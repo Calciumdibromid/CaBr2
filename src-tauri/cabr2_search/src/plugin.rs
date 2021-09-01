@@ -11,7 +11,7 @@ use crate::{
 };
 
 #[tauri::command]
-pub async fn get_available_providers() -> Result<Vec<ProviderInfo>> {
+pub async fn get_available_providers() -> Vec<ProviderInfo> {
   handler::get_available_providers().await
 }
 

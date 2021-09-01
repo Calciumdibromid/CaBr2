@@ -39,7 +39,7 @@ pub async fn save_document(file_type: &str, document: CaBr2Document) -> Result<V
     return tokio::task::block_in_place(|| saver.save_document(document));
   }
 
-  Err(LoadSaveError::UnknownFileType)
+  Err(LoadSaveError::UnknownFileType(file_type.to_string()))
 }
 
 pub async fn load_document(file_type: &str, contents: Vec<u8>) -> Result<CaBr2Document> {
@@ -49,10 +49,10 @@ pub async fn load_document(file_type: &str, contents: Vec<u8>) -> Result<CaBr2Do
     return tokio::task::block_in_place(|| loader.load_document(contents));
   }
 
-  Err(LoadSaveError::UnknownFileType)
+  Err(LoadSaveError::UnknownFileType(file_type.to_string()))
 }
 
-pub async fn get_available_document_types() -> Result<DocumentTypes> {
+pub async fn get_available_document_types() -> DocumentTypes {
   let mut load: Vec<DialogFilter> = REGISTERED_LOADERS
     .lock()
     .await
@@ -81,5 +81,5 @@ pub async fn get_available_document_types() -> Result<DocumentTypes> {
     })
     .collect();
 
-  Ok(DocumentTypes { load, save })
+  DocumentTypes { load, save }
 }

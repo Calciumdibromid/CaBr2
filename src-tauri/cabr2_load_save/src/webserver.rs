@@ -2,14 +2,13 @@ use std::{convert::Infallible, path::PathBuf, time::Duration};
 
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use tokio::fs;
 use uuid::Uuid;
 use warp::{hyper::StatusCode, Reply};
 
-use cabr2_types::ProviderMapping;
+use cabr2_types::{webserver::generate_error_reply, ProviderMapping};
 
-use crate::{handler, types::CaBr2Document};
+use crate::{error::LoadSaveError, handler, types::CaBr2Document};
 
 pub const DOWNLOAD_FOLDER: &str = "/tmp/cabr2_server/created";
 pub const CACHE_FOLDER: &str = "/tmp/cabr2_server/cache";
@@ -24,71 +23,35 @@ pub async fn init(provider_mapping: ProviderMapping) {
 }
 
 pub async fn handle_available_document_types() -> Result<impl Reply, Infallible> {
-  match handler::get_available_document_types().await {
-    Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
-    Err(err) => Ok(warp::reply::with_status(
-      warp::reply::json(&Value::String(err.to_string())),
-      StatusCode::BAD_REQUEST,
-    )),
-  }
+  Ok(warp::reply::with_status(
+    warp::reply::json(&handler::get_available_document_types().await),
+    StatusCode::OK,
+  ))
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LoadDocumentBody {
   file_type: String,
-  document: String,
+  document: Vec<u8>,
 }
 
 pub async fn handle_load_document(body: LoadDocumentBody) -> Result<impl Reply, Infallible> {
-  lazy_static! {
-    static ref TMP: PathBuf = PathBuf::from(CACHE_FOLDER);
-  }
-
-  let mut path;
-  loop {
-    path = TMP.clone();
-    path.push(&serde_json::to_string(&Uuid::new_v4()).unwrap().replace('"', ""));
-    let path = path.with_extension(&body.file_type);
-
-    if !path.exists() {
-      break;
+  match handler::load_document(&body.file_type, body.document).await {
+    Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
+    Err(LoadSaveError::UnknownFileType(filetype)) => {
+      let message = format!("unknown file type: {}", filetype);
+      log::error!("{}", message);
+      Ok(generate_error_reply(StatusCode::BAD_REQUEST, message))
+    }
+    Err(err) => {
+      log::error!("{:?}", err);
+      Ok(generate_error_reply(
+        StatusCode::INTERNAL_SERVER_ERROR,
+        "failed to load document".to_string(),
+      ))
     }
   }
-
-  let contents = fs::read(&path).await;
-
-  if contents.is_err() {
-    return Ok(warp::reply::with_status(
-      warp::reply::json(&Value::String(contents.err().unwrap().to_string())),
-      StatusCode::INTERNAL_SERVER_ERROR,
-    ));
-  }
-
-  let reply = match fs::write(&path, body.document).await {
-    Ok(_) => match handler::load_document(
-      path.extension().unwrap_or_default().to_str().unwrap_or_default(),
-      contents.unwrap(),
-    )
-    .await
-    {
-      Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
-      Err(err) => Ok(warp::reply::with_status(
-        warp::reply::json(&Value::String(err.to_string())),
-        StatusCode::BAD_REQUEST,
-      )),
-    },
-    Err(err) => Ok(warp::reply::with_status(
-      warp::reply::json(&Value::String(err.to_string())),
-      StatusCode::INTERNAL_SERVER_ERROR,
-    )),
-  };
-
-  fs::remove_file(&path)
-    .await
-    .unwrap_or_else(|err| log::error!("removing file '{:?}' failed: {}", path, err.to_string()));
-
-  reply
 }
 
 #[derive(Debug, Deserialize)]
@@ -114,8 +77,7 @@ pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, 
   loop {
     path = TMP.clone();
     uuid_str = serde_json::to_string(&Uuid::new_v4()).unwrap().replace('"', "");
-    path.push(&uuid_str);
-    let path = path.with_extension(&body.file_type);
+    path.push(format!("{}.{}", uuid_str, body.file_type));
 
     if !path.exists() {
       break;
@@ -124,27 +86,34 @@ pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, 
 
   let contents = match handler::save_document(body.file_type.as_str(), body.document).await {
     Ok(contents) => contents,
+    Err(LoadSaveError::UnknownFileType(filetype)) => {
+      let message = format!("unknown file type: {}", filetype);
+      log::error!("{}", message);
+      return Ok(generate_error_reply(StatusCode::BAD_REQUEST, message));
+    }
     Err(err) => {
-      return Ok(warp::reply::with_status(
-        warp::reply::json(&Value::String(err.to_string())),
+      log::error!("{:?}", err);
+      return Ok(generate_error_reply(
         StatusCode::INTERNAL_SERVER_ERROR,
-      ))
+        "failed to convert document".to_string(),
+      ));
     }
   };
 
-  let res = fs::write(&path, contents).await;
-
-  match res {
+  match fs::write(&path, contents).await {
     Ok(_) => Ok(warp::reply::with_status(
       warp::reply::json(&SaveDocumentResponse {
         download_url: format!("{}/download/{}.{}", SERVER_URL, uuid_str, body.file_type),
       }),
       StatusCode::CREATED,
     )),
-    Err(err) => Ok(warp::reply::with_status(
-      warp::reply::json(&Value::String(err.to_string())),
-      StatusCode::BAD_REQUEST,
-    )),
+    Err(err) => {
+      log::error!("{:?}", err);
+      Ok(generate_error_reply(
+        StatusCode::INTERNAL_SERVER_ERROR,
+        "failed to create download file".to_string(),
+      ))
+    }
   }
 }
 

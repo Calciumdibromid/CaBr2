@@ -26,6 +26,7 @@ warp = { version = "0.3.1", optional = true }
 
 [features]
 gestis = [ "roxmltree", "ureq" ]
+gestis_helper = [ "gestis" ]
 tauri_plugin = [ "tauri" ]
 webserver = [ "warp" ]
 default = []
@@ -33,4 +34,4 @@ default = []
 [[bin]]
 name = "gestis_helper"
 path = "contrib/gestis/helper.rs"
-required-features = [ "structopt", "gestis" ]
+required-features = [ "structopt", "gestis_helper" ]
