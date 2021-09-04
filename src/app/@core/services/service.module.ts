@@ -15,11 +15,20 @@ import { ILoadSaveService } from './loadSave/loadSave.interface';
 import { INativeService } from './native/native.interface';
 import { IProviderService } from './provider/provider.interface';
 import { LoadSaveService } from './loadSave/loadSave.service';
+import Logger from '../utils/logger';
 import { MatDialog } from '@angular/material/dialog';
 import { ProviderService } from './provider/provider.service';
 import { TauriService } from './native/tauri.service';
 import { LoadSaveService as WebLoadSaveService } from './loadSave/web/loadSave.service';
 import { ProviderService as WebProviderService } from './provider/web/provider.service';
+
+const logger = new Logger('service.module');
+
+if (environment.web) {
+  logger.trace('loading services for web environment');
+} else {
+  logger.trace('loading services for tauri environment');
+}
 
 const configFactory = (nativeService: INativeService, sanitizer: DomSanitizer): IConfigService => {
   if (environment.web) {

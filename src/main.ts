@@ -7,8 +7,8 @@ import Logger from './app/@core/utils/logger';
 
 const logger = new Logger('bootstrap');
 
-console.log('environment.production:', environment.production);
-console.log('environment.web:', environment.web);
+logger.debug('environment.production:', environment.production);
+logger.debug('environment.web:', environment.web);
 
 if (environment.production) {
   enableProdMode();
