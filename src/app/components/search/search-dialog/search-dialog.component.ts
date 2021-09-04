@@ -2,12 +2,12 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 
-import { SearchArgument, SearchResult } from '../../@core/services/provider/provider.model';
-import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
-import { GlobalModel } from '../../@core/models/global.model';
-import { IProviderService } from '../../@core/services/provider/provider.interface';
-import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
-import Logger from '../../@core/utils/logger';
+import { SearchArgument, SearchResult } from '../../../@core/services/provider/provider.model';
+import { AlertService } from '../../../@core/services/alertsnackbar/altersnackbar.service';
+import { GlobalModel } from '../../../@core/models/global.model';
+import { IProviderService } from '../../../@core/services/provider/provider.interface';
+import { LocalizedStrings } from '../../../@core/services/i18n/i18n.interface';
+import Logger from '../../../@core/utils/logger';
 
 const logger = new Logger('search-dialog');
 

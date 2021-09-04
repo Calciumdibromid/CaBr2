@@ -1,8 +1,8 @@
-import { Alert, AlertType } from '../@core/services/alertsnackbar/altersnackbar.model';
+import { Alert, AlertType } from '../../@core/services/alertsnackbar/altersnackbar.model';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
-import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
-import Logger from '../@core/utils/logger';
+import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
+import Logger from '../../@core/utils/logger';
 import { Subscription } from 'rxjs';
 
 const logger = new Logger('alertsnackbar');

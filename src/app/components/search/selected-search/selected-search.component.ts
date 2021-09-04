@@ -7,12 +7,12 @@ import {
   SearchType,
   SearchTypeMapping,
   searchTypes,
-} from '../../@core/services/provider/provider.model';
-import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
-import { GlobalModel } from '../../@core/models/global.model';
-import { IProviderService } from '../../@core/services/provider/provider.interface';
-import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
-import Logger from '../../@core/utils/logger';
+} from '../../../@core/services/provider/provider.model';
+import { AlertService } from '../../../@core/services/alertsnackbar/altersnackbar.service';
+import { GlobalModel } from '../../../@core/models/global.model';
+import { IProviderService } from '../../../@core/services/provider/provider.interface';
+import { LocalizedStrings } from '../../../@core/services/i18n/i18n.interface';
+import Logger from '../../../@core/utils/logger';
 
 const logger = new Logger('selected-search');
 

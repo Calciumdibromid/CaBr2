@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { GlobalModel } from '../@core/models/global.model';
-import { Header } from '../@core/interfaces/Header';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
+import { GlobalModel } from '../../@core/models/global.model';
+import { Header } from '../../@core/interfaces/Header';
+import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
 
 @Component({
   selector: 'app-header',

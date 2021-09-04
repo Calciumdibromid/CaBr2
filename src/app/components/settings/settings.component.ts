@@ -4,9 +4,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Subscription } from 'rxjs';
 
-import { ConfigModel, configObservable } from '../@core/models/config.model';
-import { II18nService, LocalizedStrings, LocalizedStringsHeader } from '../@core/services/i18n/i18n.interface';
-import { GlobalModel } from '../@core/models/global.model';
+import { ConfigModel, configObservable } from '../../@core/models/config.model';
+import { II18nService, LocalizedStrings, LocalizedStringsHeader } from '../../@core/services/i18n/i18n.interface';
+import { GlobalModel } from '../../@core/models/global.model';
 
 @Component({
   selector: 'app-settings',

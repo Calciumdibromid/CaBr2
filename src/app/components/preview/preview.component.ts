@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 
-import { Amount, CustomUnit, Unit, unitMapping } from '../@core/models/substances.model';
-import { GlobalModel } from '../@core/models/global.model';
-import { Header } from '../@core/interfaces/Header';
-import { IProviderService } from '../@core/services/provider/provider.interface';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
-import { ProviderMapping } from '../@core/services/provider/provider.model';
+import { Amount, CustomUnit, Unit, unitMapping } from '../../@core/models/substances.model';
+import { GlobalModel } from '../../@core/models/global.model';
+import { Header } from '../../@core/interfaces/Header';
+import { IProviderService } from '../../@core/services/provider/provider.interface';
+import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
+import { ProviderMapping } from '../../@core/services/provider/provider.model';
 
 // TODO ViewSubstanceData and move
 interface SimpleSubstanceData {

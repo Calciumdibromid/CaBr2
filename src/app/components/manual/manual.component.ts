@@ -1,8 +1,8 @@
 import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { GlobalModel } from '../@core/models/global.model';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
+import { GlobalModel } from '../../@core/models/global.model';
+import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
 
 @Component({
   selector: 'app-manual',

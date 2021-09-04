@@ -3,8 +3,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
-import { GlobalModel } from '../@core/models/global.model';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
+import { GlobalModel } from '../../@core/models/global.model';
+import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
 
 @Component({
   selector: 'app-modifiable-string-list',

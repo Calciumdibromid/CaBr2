@@ -4,14 +4,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Data, Source, SubstanceData } from '../@core/models/substances.model';
-import { Provider, ProviderMapping, SearchArgument } from '../@core/services/provider/provider.model';
-import { AlertService } from '../@core/services/alertsnackbar/altersnackbar.service';
-import { GlobalModel } from '../@core/models/global.model';
-import { INativeService } from '../@core/services/native/native.interface';
-import { IProviderService } from '../@core/services/provider/provider.interface';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
-import Logger from '../@core/utils/logger';
+import { Data, Source, SubstanceData } from '../../@core/models/substances.model';
+import { Provider, ProviderMapping, SearchArgument } from '../../@core/services/provider/provider.model';
+import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
+import { GlobalModel } from '../../@core/models/global.model';
+import { INativeService } from '../../@core/services/native/native.interface';
+import { IProviderService } from '../../@core/services/provider/provider.interface';
+import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
+import Logger from '../../@core/utils/logger';
 
 import { EditSubstanceDataComponent } from '../edit-substance-data/edit-substance-data.component';
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
