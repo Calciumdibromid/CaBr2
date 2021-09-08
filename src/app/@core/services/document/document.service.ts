@@ -1,26 +1,24 @@
 import { combineLatest, Observable } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
-import { GlobalModel } from '../models/global.model';
+import { GlobalModel } from '../../models/global.model';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
-import { AlertService } from './alertsnackbar/altersnackbar.service';
-import { CaBr2Document } from './loadSave/loadSave.model';
-import { compareArrays } from '../utils/compare';
+import { AlertService } from '../alertsnackbar/altersnackbar.service';
+import { CaBr2Document } from '../loadSave/loadSave.model';
+import { compareArrays } from '../../utils/compare';
 import { DialogFilter } from '@tauri-apps/api/dialog';
-import DocsTemplate from '../interfaces/DocTemplate';
-import { ILoadSaveService } from './loadSave/loadSave.interface';
-import { INativeService } from './native/native.interface';
-import { LocalizedStrings } from './i18n/i18n.interface';
-import Logger from '../utils/logger';
+import DocsTemplate from '../../interfaces/DocTemplate';
+import { ILoadSaveService } from '../loadSave/loadSave.interface';
+import { INativeService } from '../native/native.interface';
+import { LocalizedStrings } from '../i18n/i18n.interface';
+import Logger from '../../utils/logger';
 import { YesNoDialogComponent } from 'src/app/components/yes-no-dialog/yes-no-dialog.component';
 
-const logger = new Logger('functionService');
+const logger = new Logger('documentService');
 
-@Injectable({
-  providedIn: 'root',
-})
-export default class FunctionsService {
+@Injectable()
+export default class DocumentService {
   strings!: LocalizedStrings;
 
   private loadFilter: DialogFilter[] = [];

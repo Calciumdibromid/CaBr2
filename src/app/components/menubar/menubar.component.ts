@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { CaBr2Document } from '../../@core/services/loadSave/loadSave.model';
 import { DialogFilter } from '../../@core/services/native/tauri.service';
-import FunctionsService from 'src/app/@core/services/file-functions';
+import DocumentService from 'src/app/@core/services/document/document.service';
 import { GlobalModel } from '../../@core/models/global.model';
 import { IConfigService } from '../../@core/services/config/config.interface';
 import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
@@ -32,7 +32,7 @@ export class MenubarComponent implements OnInit {
     public globals: GlobalModel,
     private configService: IConfigService,
     private dialog: MatDialog,
-    private functionService: FunctionsService,
+    private functionService: DocumentService,
   ) {
     this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
   }
