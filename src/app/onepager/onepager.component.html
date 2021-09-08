@@ -1,0 +1,33 @@
+<mat-sidenav-container autosize>
+  <mat-sidenav class="navbar-flex unselectable fixed" mode="side" opened disableClose>
+    <div class="top">
+      <app-navbar-menu (darkModeSwitched)="darkModeSwitched.emit($event)"></app-navbar-menu>
+
+      <app-scrollbutton [target]="headerTarget" iconFilePath="assets/icons/flask.svg"></app-scrollbutton>
+      <app-scrollbutton [target]="search" iconFilePath="assets/icons/magnifier.svg"></app-scrollbutton>
+      <app-scrollbutton [target]="securitythings" iconFilePath="assets/icons/puzzle.svg"></app-scrollbutton>
+      <app-scrollbutton [target]="preview" iconFilePath="assets/icons/arrow.svg"></app-scrollbutton>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content class="smooth-scroll unselectable">
+    <div #headerTarget>
+      <app-header></app-header>
+    </div>
+
+    <div #search>
+      <app-search></app-search>
+    </div>
+
+    <div #securitythings>
+      <app-security-things></app-security-things>
+    </div>
+
+    <div #preview>
+      <app-preview></app-preview>
+    </div>
+
+    <div class="buttons">
+      <app-export-buttons [docsTemplate]="DOCS_TEMPLATE"></app-export-buttons>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
