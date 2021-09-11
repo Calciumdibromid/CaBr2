@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserService } from './native/web/browser.service';
 import { ConfigService } from './config/config.service';
 import { ConfigWebService } from './config/web/config.service';
+import DocumentService from './document/document.service';
 import { environment } from 'src/environments/environment';
 import { GlobalModel } from '../models/global.model';
 import { I18nService } from './i18n/i18n.service';
@@ -83,6 +84,7 @@ const providerFactory = (nativeService: INativeService, globals: GlobalModel): I
       useFactory: providerFactory,
       deps: [INativeService, GlobalModel],
     },
+    DocumentService,
   ],
 })
 export class ServiceModule {}

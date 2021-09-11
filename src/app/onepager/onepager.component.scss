@@ -1,0 +1,43 @@
+.fixed {
+  position: fixed;
+  // windoof -.-
+  width: 72px;
+  padding-left: 10px;
+}
+
+.top {
+  position: absolute;
+  top: 0;
+}
+
+::ng-deep .mat-drawer-inner-container {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh !important;
+}
+
+.down {
+  margin-top: auto;
+}
+
+.version {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.hamburger {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  width: 50px;
+  height: 50px;
+  border-radius: 0;
+}
+
+.buttons {
+  float: right;
+  display: flex;
+  margin-bottom: 16px;
+}

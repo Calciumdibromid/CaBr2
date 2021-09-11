@@ -12,7 +12,7 @@ import {
 } from './@core/models/config.model';
 import { II18nService, LocalizedStrings } from './@core/services/i18n/i18n.interface';
 import { AlertService } from './@core/services/alertsnackbar/altersnackbar.service';
-import { ConsentComponent } from './consent/consent.component';
+import { ConsentComponent } from './components/consent/consent.component';
 import { GlobalModel } from './@core/models/global.model';
 import { IConfigService } from './@core/services/config/config.interface';
 import Logger from './@core/utils/logger';
