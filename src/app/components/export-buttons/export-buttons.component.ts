@@ -5,7 +5,6 @@ import DocumentService from 'src/app/@core/services/document/document.service';
 import { GlobalModel } from 'src/app/@core/models/global.model';
 import { LocalizedStrings } from 'src/app/@core/services/i18n/i18n.interface';
 
-
 @Component({
   selector: 'app-export-buttons',
   templateUrl: './export-buttons.component.html',

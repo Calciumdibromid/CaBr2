@@ -8,9 +8,8 @@ describe('OnepagerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OnePagerComponent ]
-    })
-    .compileComponents();
+      declarations: [OnePagerComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
