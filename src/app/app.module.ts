@@ -29,6 +29,7 @@ import { SelectedSearchComponent } from './components/search/selected-search/sel
 import { ServiceModule } from './@core/services/service.module';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SubMolecularFormula } from './@core/pipes/molecularformula.pipe';
+import { TranslocoRootModule } from './transloco-root.module';
 import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.component';
 
 @NgModule({
@@ -65,6 +66,7 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
     AlertModule,
     ServiceModule,
     HttpClientModule,
+    TranslocoRootModule,
   ],
   providers: [GlobalModel],
   bootstrap: [AppComponent],

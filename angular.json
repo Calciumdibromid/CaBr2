@@ -77,6 +77,11 @@
                   "glob": "**/*",
                   "input": "ghs_symbols/",
                   "output": "/ghs_symbols/"
+                },
+                {
+                  "glob": "**/**",
+                  "input": "translations",
+                  "output": "/translations/"
                 }
               ]
             },
@@ -113,6 +118,11 @@
                   "glob": "**/*",
                   "input": "ghs_symbols/",
                   "output": "/ghs_symbols/"
+                },
+                {
+                  "glob": "**/**",
+                  "input": "translations",
+                  "output": "/translations/"
                 }
               ]
             }

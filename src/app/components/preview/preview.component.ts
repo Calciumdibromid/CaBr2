@@ -5,7 +5,6 @@ import { Amount, CustomUnit, Unit, unitMapping } from '../../@core/models/substa
 import { GlobalModel } from '../../@core/models/global.model';
 import { Header } from '../../@core/interfaces/Header';
 import { IProviderService } from '../../@core/services/provider/provider.interface';
-import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
 import { ProviderMapping } from '../../@core/services/provider/provider.model';
 
 // TODO ViewSubstanceData and move
@@ -32,8 +31,6 @@ interface SimpleSubstanceData {
   styleUrls: ['./preview.component.scss'],
 })
 export class PreviewComponent implements OnInit {
-  strings!: LocalizedStrings;
-
   header!: Header;
 
   substanceData!: SimpleSubstanceData[];
@@ -42,8 +39,6 @@ export class PreviewComponent implements OnInit {
   sources: Set<string> = new Set();
 
   constructor(public globals: GlobalModel, private providerService: IProviderService) {
-    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-
     this.providerService.providerMappingsObservable.subscribe((providers) => (this.providerMapping = providers));
   }
 

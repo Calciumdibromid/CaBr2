@@ -2,6 +2,7 @@ import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { translate } from '@ngneat/transloco';
 
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Data, Source, SubstanceData } from '../../@core/models/substances.model';
@@ -10,7 +11,6 @@ import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.s
 import { GlobalModel } from '../../@core/models/global.model';
 import { INativeService } from '../../@core/services/native/native.interface';
 import { IProviderService } from '../../@core/services/provider/provider.interface';
-import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
 import Logger from '../../@core/utils/logger';
 
 import { EditSubstanceDataComponent } from '../edit-substance-data/edit-substance-data.component';
@@ -34,13 +34,11 @@ export class SearchComponent implements OnInit {
 
   addButtonHover = false;
 
-  strings!: LocalizedStrings;
-
   providerMapping!: ProviderMapping;
 
   providers: Provider[] = [];
 
-  index!: number;
+  index = 0;
 
   substanceData: SubstanceData[] = [];
 
@@ -54,9 +52,7 @@ export class SearchComponent implements OnInit {
     private alertService: AlertService,
     private dialog: MatDialog,
     public globals: GlobalModel,
-  ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-  }
+  ) {}
 
   ngOnInit(): void {
     this.globals.substanceDataObservable.subscribe((data) => {
@@ -94,7 +90,7 @@ export class SearchComponent implements OnInit {
               this.globals.substanceDataSubject.getValue().some((s) => cas === this.modifiedOrOriginal(s.cas))
             ) {
               logger.warning('substance with same cas number already present:', cas);
-              this.alertService.error(this.strings.error.substanceWithCASExist);
+              this.alertService.error(translate('error.substanceWithCASExist'));
               return;
             }
             const data = [...this.globals.substanceDataSubject.getValue(), value];
@@ -103,7 +99,7 @@ export class SearchComponent implements OnInit {
           },
           (err) => {
             logger.error('could not get substance information:', err);
-            this.alertService.error(this.strings.error.substanceLoadData);
+            this.alertService.error(translate('error.substanceLoadData'));
           },
         );
 
@@ -136,7 +132,7 @@ export class SearchComponent implements OnInit {
         },
         (err) => {
           logger.error('editing substance failed:', err);
-          this.alertService.error(this.strings.error.editSubstance);
+          this.alertService.error(translate('error.editSubstance'));
         },
       );
   }
@@ -179,10 +175,10 @@ export class SearchComponent implements OnInit {
 
   getProviderName(source: Source): string {
     if (source.provider === 'custom') {
-      return this.strings.search.customSubstance;
+      return translate('search.customSubstance');
     } else {
       const provider = this.providerMapping.get(source.provider);
-      return provider ? provider.name : `${source.provider} (${this.strings.search.unsupportedProviderInfo})`;
+      return provider ? provider.name : `${source.provider} (${translate('search.unsupportedProviderInfo')})`;
     }
   }
 

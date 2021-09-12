@@ -14,8 +14,7 @@
 }
 
 .version-number {
-  display: inline-flex;
-  align-items: center;
-  margin-left: 10px;
+  display: flex;
+  justify-content: center;
   margin-bottom: 5px;
 }

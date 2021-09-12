@@ -2,9 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscriber } from 'rxjs';
 
-import { GlobalModel } from '../@core/models/global.model';
 import { INativeService } from '../@core/services/native/native.interface';
-import { LocalizedStrings } from '../@core/services/i18n/i18n.interface';
 
 interface SaveDocumentResponse {
   downloadUrl: string;
@@ -21,8 +19,6 @@ export interface ProgressDialogData {
   styleUrls: ['./progress-dialog.component.scss'],
 })
 export class ProgressDialogComponent implements OnInit {
-  strings!: LocalizedStrings;
-
   pdfUrl?: string;
 
   finished = false;
@@ -33,11 +29,8 @@ export class ProgressDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<ProgressDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ProgressDialogData,
 
-    private globals: GlobalModel,
     private nativeService: INativeService,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-
     data.download.subscribe(
       (res) => {
         this.setPdfUrl(res.downloadUrl);

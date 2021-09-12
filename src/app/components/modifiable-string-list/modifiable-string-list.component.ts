@@ -3,9 +3,6 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 
-import { GlobalModel } from '../../@core/models/global.model';
-import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
-
 @Component({
   selector: 'app-modifiable-string-list',
   templateUrl: './modifiable-string-list.component.html',
@@ -25,11 +22,7 @@ export class ModifiableStringListComponent implements OnInit {
 
   addHover = false;
 
-  strings!: LocalizedStrings;
-
-  constructor(private globals: GlobalModel, private formBuilder: FormBuilder) {
-    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-
+  constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({});
   }
 

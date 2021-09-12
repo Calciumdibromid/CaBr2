@@ -20,7 +20,9 @@
 </p>
 <mat-divider></mat-divider>
 <mat-dialog-actions>
-  <button (click)="dialogRef.close()" [disabled]="timer > 0" mat-raised-button>
-    {{ strings.base.ok }} {{ timer > 0 ? '(' + timer + ')' : '' }}
-  </button>
+  <ng-container *transloco="let t; read: 'base'">
+    <button (click)="dialogRef.close()" [disabled]="timer > 0" mat-raised-button>
+      {{ t('ok') }} {{ timer > 0 ? '(' + timer + ')' : '' }}
+    </button>
+  </ng-container>
 </mat-dialog-actions>

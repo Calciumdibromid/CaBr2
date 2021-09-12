@@ -1,4 +1,5 @@
 import { DomSanitizer } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { BrowserService } from './native/web/browser.service';
@@ -7,7 +8,6 @@ import { ConfigWebService } from './config/web/config.service';
 import DocumentService from './document/document.service';
 import { environment } from 'src/environments/environment';
 import { GlobalModel } from '../models/global.model';
-import { HttpClient } from '@angular/common/http';
 import { I18nService } from './i18n/i18n.service';
 import { I18nWebService } from './i18n/web/i18n.service';
 import { IConfigService } from './config/config.interface';
@@ -39,9 +39,9 @@ const configFactory = (nativeService: INativeService, sanitizer: DomSanitizer): 
   }
 };
 
-const i18nFactory = (nativeService: INativeService): II18nService => {
+const i18nFactory = (nativeService: INativeService, http: HttpClient): II18nService => {
   if (environment.web) {
-    return new I18nWebService();
+    return new I18nWebService(http);
   } else {
     return new I18nService(nativeService);
   }
@@ -69,7 +69,7 @@ const nativeFactory = (): INativeService => {
 
 const providerFactory = (nativeService: INativeService, globals: GlobalModel): IProviderService => {
   if (environment.web) {
-    return new WebProviderService(globals);
+    return new WebProviderService();
   } else {
     return new ProviderService(nativeService, globals);
   }
@@ -84,7 +84,7 @@ const providerFactory = (nativeService: INativeService, globals: GlobalModel): I
     {
       provide: II18nService,
       useFactory: i18nFactory,
-      deps: [INativeService],
+      deps: [INativeService, HttpClient],
     },
     {
       provide: ILoadSaveService,

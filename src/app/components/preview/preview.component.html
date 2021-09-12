@@ -1,6 +1,6 @@
 <mat-card class="onepager-mat-card">
   <h2 class="mat-h2 preview-text">
-    <b>{{ strings.preview.info }}</b>
+    <b>{{ 'preview.info' | transloco }}</b>
   </h2>
   <div class="flex">
     <!-- #region first page -->
@@ -15,39 +15,41 @@
       <tr>
         <th colspan="8">{{ header.labCourse }}</th>
       </tr>
-      <tr>
-        <td colspan="3">
-          {{ strings.header.name }}<br />
-          {{ header.name }}
-        </td>
-        <td colspan="2">
-          {{ strings.header.place }}<br />
-          {{ header.place }}
-        </td>
-        <td colspan="3">
-          {{ strings.header.assistant }}<br />
-          {{ header.assistant }}
-        </td>
-      </tr>
-      <tr>
-        <td colspan="8">
-          {{ strings.header.preparation }}<br />
-          <b>{{ header.preparation }}</b>
-        </td>
-      </tr>
+      <ng-container *transloco="let t; read: 'header'">
+        <tr>
+          <td colspan="3">
+            {{ t('name') }}<br />
+            {{ header.name }}
+          </td>
+          <td colspan="2">
+            {{ t('place') }}<br />
+            {{ header.place }}
+          </td>
+          <td colspan="3">
+            {{ t('assistant') }}<br />
+            {{ header.assistant }}
+          </td>
+        </tr>
+        <tr>
+          <td colspan="8">
+            {{ t('preparation') }}<br />
+            <b>{{ header.preparation }}</b>
+          </td>
+        </tr>
+      </ng-container>
 
       <!-- ingredients -->
-      <tr>
-        <td colspan="2">{{ strings.preview.tableSubstanceTitleHeader }}</td>
-        <td>
-          {{ strings.preview.tableMolarMassHeader.mw }}<br />{{ strings.preview.tableMolarMassHeader.grammPerMol }}
-        </td>
-        <td>{{ strings.preview.tableBoilingHeader }}<br />{{ strings.preview.tableMeltingHeader }}</td>
-        <td>{{ strings.preview.tableGHSSymbolHeader }}</td>
-        <td>{{ strings.preview.tableHPPhrasesHeader }}<br />{{ strings.preview.tableHPPhrasesNumberHeader }}</td>
-        <td>{{ strings.preview.tableMAKHeader }}<br />{{ strings.preview.tableWHCHeader }}</td>
-        <td>{{ strings.preview.tableAmountHeader }}</td>
-      </tr>
+      <ng-container *transloco="let t; read: 'preview'">
+        <tr>
+          <td colspan="2">{{ t('tableSubstanceTitleHeader') }}</td>
+          <td>{{ t('tableMolarMassHeader').mw }}<br />{{ t('tableMolarMassHeader').grammPerMol }}</td>
+          <td>{{ t('tableBoilingHeader') }}<br />{{ t('tableMeltingHeader') }}</td>
+          <td>{{ t('tableGHSSymbolHeader') }}</td>
+          <td>{{ t('tableHPPhrasesHeader') }}<br />{{ t('tableHPPhrasesNumberHeader') }}</td>
+          <td>{{ t('tableMAKHeader') }}<br />{{ t('tableWHCHeader') }}</td>
+          <td>{{ t('tableAmountHeader') }}</td>
+        </tr>
+      </ng-container>
 
       <tr *ngFor="let data of substanceData">
         <td class="min-width-5cm" colspan="2">
@@ -65,28 +67,30 @@
         <td>{{ data.amount?.value }} {{ unitToString(data.amount?.unit) }}</td>
       </tr>
 
-      <!-- h and p -->
-      <tr>
-        <td class="center" colspan="8">{{ strings.preview.tableHPPhrasesTitle }}</td>
-      </tr>
-      <tr>
-        <td colspan="4" class="full-height top">
-          <div class="phrase" *ngFor="let phrase of getHPhrases()">
-            {{ phrase }}
-          </div>
-        </td>
-        <td colspan="4" class="full-height top">
-          <div class="phrase" *ngFor="let phrase of getPPhrases()">
-            {{ phrase }}
-          </div>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="8">
-          <b>{{ strings.preview.sources }}:</b>
-          {{ getProviders() }}
-        </td>
-      </tr>
+      <ng-container *transloco="let t; read: 'preview'">
+        <!-- h and p -->
+        <tr>
+          <td class="center" colspan="8">{{ t('tableHPPhrasesTitle') }}</td>
+        </tr>
+        <tr>
+          <td colspan="4" class="full-height top">
+            <div class="phrase" *ngFor="let phrase of getHPhrases()">
+              {{ phrase }}
+            </div>
+          </td>
+          <td colspan="4" class="full-height top">
+            <div class="phrase" *ngFor="let phrase of getPPhrases()">
+              {{ phrase }}
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="8">
+            <b>{{ t('sources') }}:</b>
+            {{ getProviders() }}
+          </td>
+        </tr>
+      </ng-container>
     </table>
 
     <!-- #endregion -->
@@ -94,54 +98,56 @@
     <!-- #region second page -->
 
     <table class="print unselectable">
-      <tr>
-        <td colspan="2" class="top height-5cm9">
-          <b>{{ strings.descriptions.humanAndEnvironmentDanger }}</b>
-          <ul *ngFor="let entry of globals.humanAndEnvironmentDangerObservable | async">
-            <li *ngIf="entry">
-              {{ entry }}
-            </li>
-          </ul>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2" class="top height-5cm9">
-          <b>{{ strings.descriptions.rulesOfConduct }}</b>
-          <ul *ngFor="let entry of globals.rulesOfConductObservable | async">
-            <li *ngIf="entry">
-              {{ entry }}
-            </li>
-          </ul>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2" class="top height-5cm9">
-          <b>{{ strings.descriptions.inCaseOfDanger }}</b>
-          <ul *ngFor="let entry of globals.inCaseOfDangerObservable | async">
-            <li *ngIf="entry">
-              {{ entry }}
-            </li>
-          </ul>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="2" class="top height-5cm9">
-          <b>{{ strings.descriptions.disposal }}</b>
-          <ul *ngFor="let entry of globals.disposalObservable | async">
-            <li *ngIf="entry">
-              {{ entry }}
-            </li>
-          </ul>
-        </td>
-      </tr>
-      <tr>
-        <td class="top height-2cm">
-          {{ strings.descriptions.signatureFieldStudent }}
-        </td>
-        <td class="top height-2cm">
-          {{ strings.descriptions.signatureFieldAssistant }}
-        </td>
-      </tr>
+      <ng-container *transloco="let t; read: 'descriptions'">
+        <tr>
+          <td colspan="2" class="top height-5cm9">
+            <b>{{ t('humanAndEnvironmentDanger') }}</b>
+            <ul *ngFor="let entry of globals.humanAndEnvironmentDangerObservable | async">
+              <li *ngIf="entry">
+                {{ entry }}
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="top height-5cm9">
+            <b>{{ t('rulesOfConduct') }}</b>
+            <ul *ngFor="let entry of globals.rulesOfConductObservable | async">
+              <li *ngIf="entry">
+                {{ entry }}
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="top height-5cm9">
+            <b>{{ t('inCaseOfDanger') }}</b>
+            <ul *ngFor="let entry of globals.inCaseOfDangerObservable | async">
+              <li *ngIf="entry">
+                {{ entry }}
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" class="top height-5cm9">
+            <b>{{ t('disposal') }}</b>
+            <ul *ngFor="let entry of globals.disposalObservable | async">
+              <li *ngIf="entry">
+                {{ entry }}
+              </li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="top height-2cm">
+            {{ t('signatureFieldStudent') }}
+          </td>
+          <td class="top height-2cm">
+            {{ t('signatureFieldAssistant') }}
+          </td>
+        </tr>
+      </ng-container>
     </table>
     <!-- #endregion -->
   </div>

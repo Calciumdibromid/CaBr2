@@ -1,5 +1,6 @@
 import { Component, HostBinding, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { first, switchMap } from 'rxjs/operators';
+import { translate, TranslocoService } from '@ngneat/transloco';
 import { DOCUMENT } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
@@ -10,7 +11,6 @@ import {
   ConfigModel,
   configObservable,
 } from './@core/models/config.model';
-import { II18nService, LocalizedStrings } from './@core/services/i18n/i18n.interface';
 import { AlertService } from './@core/services/alertsnackbar/altersnackbar.service';
 import { ConsentComponent } from './components/consent/consent.component';
 import { GlobalModel } from './@core/models/global.model';
@@ -28,7 +28,6 @@ const logger = new Logger('main');
 export class AppComponent implements OnInit, OnDestroy {
   name = packageInfo.name;
   version = packageInfo.version;
-  strings!: LocalizedStrings;
 
   private config!: ConfigModel;
   private subscriptions: Subscription[] = [];
@@ -41,10 +40,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private global: GlobalModel,
     private configService: IConfigService,
     private alertService: AlertService,
-    private i18nService: II18nService,
-  ) {
-    this.global.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-  }
+    private translocoService: TranslocoService,
+  ) {}
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
@@ -58,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
         (newConfig) => ConfigModel.setLoadedConfig(newConfig),
         (err) => {
           logger.error('loading config failed:', err);
-          this.alertService.error(this.strings.error.configLoad);
+          this.alertService.error(translate('error.configLoad'));
         },
       );
 
@@ -67,23 +64,14 @@ export class AppComponent implements OnInit, OnDestroy {
         () => logger.info('config saved'),
         (err) => {
           logger.error('saving config failed:', err);
-          this.alertService.error(this.strings.error.configSave);
+          this.alertService.error(translate('error.configSave'));
         },
       ),
 
       configObservable.subscribe((config) => {
         // config is undefined before first call of this function
         if (!(this.config?.globalSection.language === config.globalSection.language)) {
-          this.i18nService
-            .getLocalizedStrings(config.globalSection.language)
-            .pipe(first())
-            .subscribe(
-              (strings) => this.global.localizedStringsSubject.next(strings),
-              (err) => {
-                logger.error(err);
-                this.alertService.error(this.strings.error.localeLoading);
-              },
-            );
+          this.translocoService.setActiveLang(config.globalSection.language);
         }
 
         this.switchMode(config.globalSection.darkTheme);
@@ -95,7 +83,7 @@ export class AppComponent implements OnInit, OnDestroy {
         (symbols) => this.global.setGHSSymbols(symbols),
         (err) => {
           logger.error('loading ghs-symbols failed:', err);
-          this.alertService.error(this.strings.error.getHazardSymbols);
+          this.alertService.error(translate('error.getHazardSymbols'));
         },
       ),
     );
@@ -119,7 +107,7 @@ export class AppComponent implements OnInit, OnDestroy {
                 () => logger.info('config saved'),
                 (err) => {
                   logger.error('saving config failed:', err);
-                  this.alertService.error(this.strings.error.configSave);
+                  this.alertService.error(translate('error.configSave'));
                 },
               );
           });

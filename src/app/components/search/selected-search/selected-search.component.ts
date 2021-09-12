@@ -2,17 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
-import {
-  SearchArgument,
-  SearchType,
-  SearchTypeMapping,
-  searchTypes,
-} from '../../../@core/services/provider/provider.model';
+import { SearchArgument, SearchType, searchTypes } from '../../../@core/services/provider/provider.model';
 import { AlertService } from '../../../@core/services/alertsnackbar/altersnackbar.service';
-import { GlobalModel } from '../../../@core/models/global.model';
 import { IProviderService } from '../../../@core/services/provider/provider.interface';
-import { LocalizedStrings } from '../../../@core/services/i18n/i18n.interface';
 import Logger from '../../../@core/utils/logger';
+import { translate } from '@ngneat/transloco';
 
 const logger = new Logger('selected-search');
 
@@ -28,9 +22,7 @@ export class SelectedSearchComponent {
   @Input()
   providerIdentifier!: string;
 
-  strings!: LocalizedStrings;
-
-  searchOptions!: SearchTypeMapping[];
+  searchOptions = searchTypes;
 
   form: FormGroup = this.formBuilder.group({
     selections: this.formBuilder.array([this.initSelectionForm()]),
@@ -43,14 +35,10 @@ export class SelectedSearchComponent {
   bpLoaded = false;
 
   constructor(
-    private globals: GlobalModel,
     private providerService: IProviderService,
     private alertService: AlertService,
     private formBuilder: FormBuilder,
-  ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-    this.providerService.searchTypeMappingsObservable.subscribe((mapping) => (this.searchOptions = mapping));
-  }
+  ) {}
 
   get selections(): FormArray {
     return this.form?.get('selections') as FormArray;
@@ -130,7 +118,7 @@ export class SelectedSearchComponent {
             },
             (err) => {
               logger.error('loading search suggestions failed:', err);
-              this.alertService.error(this.strings.error.loadSearchSuggestions);
+              this.alertService.error(translate('loadSearchSuggestions'));
             },
           );
       });

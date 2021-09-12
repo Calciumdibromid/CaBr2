@@ -2,6 +2,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
+import { translate } from '@ngneat/transloco';
 
 import {
   Amount,
@@ -14,7 +15,6 @@ import {
 } from '../../@core/models/substances.model';
 import { compareArrays } from '../../@core/utils/compare';
 import { GlobalModel } from '../../@core/models/global.model';
-import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
 import Logger from '../../@core/utils/logger';
 import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
@@ -27,8 +27,6 @@ const logger = new Logger('edit-substance-data');
 })
 export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   form: FormGroup;
-
-  strings!: LocalizedStrings;
 
   addHPhraseHover = false;
 
@@ -49,8 +47,6 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-
     this.form = this.initControls();
   }
 
@@ -163,13 +159,9 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     formArray.markAllAsTouched();
   }
 
-  localizeUnitGroup(name: string): string {
-    return (this.strings.units.groups as any)[name];
-  }
-
   localizeUnit(unit: Unit): string {
     const name = getViewValue(unit);
-    const localizedName = (this.strings.units as any)[name];
+    const localizedName = translate('units')[name];
 
     if (localizedName) {
       return localizedName;
@@ -250,8 +242,8 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       this.dialog.open(YesNoDialogComponent, {
         data: {
           iconName: 'error',
-          title: this.strings.substance.invalidFormsTitle,
-          content: this.strings.substance.invalidFormsContent,
+          title: translate('substance.invalidFormsTitle'),
+          content: translate('substance.invalidFormsContent'),
           listItems: this.checkForInvalidControls(),
           disableCancel: true,
         },
@@ -295,15 +287,15 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   private checkForInvalidControls(): string[] {
     const reasons = [];
     if (this.form.get('name')?.invalid) {
-      reasons.push(this.strings.substance.name);
+      reasons.push(translate('substance.name'));
     }
 
     if (this.hPhrases.controls.some((control) => control.invalid)) {
-      reasons.push(this.strings.substance.invalidHPhrase);
+      reasons.push(translate('substance.invalidHPhrase'));
     }
 
     if (this.pPhrases.controls.some((control) => control.invalid)) {
-      reasons.push(this.strings.substance.invalidPPhrase);
+      reasons.push(translate('substance.invalidPPhrase'));
     }
 
     return reasons;

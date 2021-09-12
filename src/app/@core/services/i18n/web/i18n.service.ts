@@ -1,32 +1,25 @@
-import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Translation } from '@ngneat/transloco';
+
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
+import { II18nService } from '../i18n.interface';
 import Logger from 'src/app/@core/utils/logger';
-
-import { II18nService, LocalizedStrings, LocalizedStringsHeader } from '../i18n.interface';
 
 const logger = new Logger('i18n-service-web');
 
 @Injectable()
 export class I18nWebService implements II18nService {
-  getAvailableLanguages(): Observable<LocalizedStringsHeader[]> {
-    return of([
-      { name: 'Boarisch', locale: 'de_by' },
-      { name: 'Deutsch', locale: 'de_de' },
-      { name: 'English', locale: 'en_us' },
-      { name: 'Hrvatski', locale: 'hr_hr' },
-      { name: 'Русский', locale: 'ru_ru' },
-    ]);
-  }
+  constructor(private http: HttpClient) {}
 
-  getLocalizedStrings(language: string): Observable<LocalizedStrings> {
-    return new Observable((sub) => {
-      import(`translations/${language}.json`)
-        .then((lang) => sub.next(lang.strings))
-        .catch((err) => {
-          sub.error(err);
-          logger.error(err);
-        });
-    });
+  getTranslation(language: string): Observable<Translation> {
+    return this.http.get<Translation>(`translations/${language}.json`).pipe(
+      map((translation) => translation.strings),
+      tap(() => {
+        logger.trace('loading translation successful:', language);
+      }),
+    );
   }
 }

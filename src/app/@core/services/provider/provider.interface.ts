@@ -1,19 +1,9 @@
-import {
-  Provider,
-  ProviderMapping,
-  SearchArguments,
-  SearchResult,
-  SearchType,
-  SearchTypeMapping,
-} from './provider.model';
+import { Provider, ProviderMapping, SearchArguments, SearchResult, SearchType } from './provider.model';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SubstanceData } from '../../models/substances.model';
 
 export abstract class IProviderService {
-  abstract searchTypeMappingsSubject: BehaviorSubject<SearchTypeMapping[]>;
-  abstract searchTypeMappingsObservable: Observable<SearchTypeMapping[]>;
-
   abstract providerMappingsSubject: BehaviorSubject<ProviderMapping>;
   abstract providerMappingsObservable: Observable<ProviderMapping>;
 
