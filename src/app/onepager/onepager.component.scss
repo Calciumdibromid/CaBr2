@@ -5,11 +5,6 @@
   padding-left: 10px;
 }
 
-.top {
-  position: absolute;
-  top: 0;
-}
-
 ::ng-deep .mat-drawer-inner-container {
   display: flex;
   flex-flow: column nowrap;
@@ -20,12 +15,6 @@
 
 .down {
   margin-top: auto;
-}
-
-.version {
-  display: inline-flex;
-  align-items: center;
-  margin-left: 10px;
 }
 
 .hamburger {

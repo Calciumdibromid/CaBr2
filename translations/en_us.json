@@ -26,7 +26,8 @@
     },
     "bugreport": {
       "title": "Report a bug",
-      "sentence": "Report a bug on following email:"
+      "sentence": "Report a bug on following email:",
+      "githubSentence": "Alternatively you can open an issue in Github:"
     },
     "header": {
       "docTitle": "Document title:",

@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 
 import { AlertModule } from './@core/modules/alert.module';
 import { AppComponent } from './app.component';
+import { BugReportButtonComponent } from './components/bug-report-button/bug-report-button.component';
 import { ConsentComponent } from './components/consent/consent.component';
 import { EditSubstanceDataComponent } from './components/edit-substance-data/edit-substance-data.component';
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
@@ -53,6 +54,7 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
     ScrollbuttonComponent,
     SecurityThingsComponent,
     ExportButtonsComponent,
+    BugReportButtonComponent,
   ],
   imports: [
     BrowserModule,
