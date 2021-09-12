@@ -58,6 +58,10 @@
       "error": "S'Programm wuit ned"
     },
     "substance": {
+      "invalidFormsTitle": "Irgendwos stimmt ned",
+      "invalidFormsContent": [
+        "Da Stoff hod foische Sachan bei den Dingan:"
+      ],
       "edited": "Rumgspuid?",
       "name": "Wia mas' ruaft",
       "needsName": "Du, ohne Nama gäds ned",
@@ -76,17 +80,29 @@
       "customUnit": "Woibadinga",
       "hPhrases": "H-Satzal",
       "noHPhrase": "Foische H-Numma",
+      "invalidHPhrase": "Foische H-Satzal",
       "removeHPhrase": "H-Satz wegmacha",
       "addHPhrase": "H-Satz dazua doa",
       "pPhrases": "P-Satzal",
       "noPPhrase": "Foische P-Numma",
+      "invalidPPhrase": "Foische P-Satzal",
       "removePPhrase": "P-Satz wegad doa",
       "addPPhrase": "P-Satz dazua doa",
       "editingHint": "Auf's Gmisch drugga zum beabadn.",
       "ghsSymbolsAddOrRemoveInfo": "Wenns so a Buidl weg- oda dazuadoa megst, muast nur auf des Buidl drugga",
       "ghsSymbolsColorInfo": "Wenns grau is, dann hostas ned gnomma / Wenns bunt is, dann isses ogschoidn",
       "addCustomSubstanceData": "Eignen Scheiß dazua doa",
-      "dragAndDrop": "Ziang & Loslossn"
+      "dragAndDrop": "Ziang & Loslossn",
+      "resetTooltip": "Den friaran Stand vom Stof zruck bringa"
+    },
+    "units": {
+      "groups": {
+        "rawSubstance": "Ohne wos",
+        "solution": "Gmisch",
+        "custom": "Eigner Scheiß"
+      },
+      "custom": "Eigner Scheiß",
+      "pcs.": "Stk."
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Des ko de Andan und der Umwelt bassiern:",
@@ -147,6 +163,11 @@
         "footer": [
           "Scheiß drauf?"
         ]
+      },
+      "pdfGeneration": {
+        "generatingPdf": "Duad PDF zam baun...",
+        "downloadPdf": "PDF Runterladn",
+        "download": "Runterladn"
       }
     }
   }

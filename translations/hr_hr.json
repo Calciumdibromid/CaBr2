@@ -58,6 +58,10 @@
       "error": "Došlo je do pogreške prilikom dohvaćanja podataka"
     },
     "substance": {
+      "invalidFormsTitle": "Something is wrong",
+      "invalidFormsContent": [
+        "The substance has invalid or missing data on following items:"
+      ],
       "edited": "Uređeno?",
       "name": "Ime",
       "needsName": "Ime je obavezno",
@@ -76,17 +80,29 @@
       "customUnit": "Prilagođena jedinica",
       "hPhrases": "H-izrazi",
       "noHPhrase": "H-Broj nije valjan",
+      "invalidHPhrase": "Invalid H-Phrases",
       "removeHPhrase": "ukloni H-izraze",
       "addHPhrase": "dodaj H-izraze",
       "pPhrases": "P-izrazi",
       "noPPhrase": "P-Broj nije valjan",
+      "invalidPPhrase": "Invalid P-Phrases",
       "removePPhrase": "ukloni P-izraze",
       "addPPhrase": "dodaj P-izraze",
       "editingHint": "Klikni na supstancu za uređivanje.",
       "ghsSymbolsAddOrRemoveInfo": "Za ukloniti ili dodati kliknite na simbol",
       "ghsSymbolsColorInfo": "sivo: nije odabrano / u boji: odabrano",
       "addCustomSubstanceData": "Dodaj prilagođenu supstancu",
-      "dragAndDrop": "drag & drop"
+      "dragAndDrop": "drag & drop",
+      "resetTooltip": "Reset current substance to original values"
+    },
+    "units": {
+      "groups": {
+        "rawSubstance": "Raw Substance",
+        "solution": "Solution",
+        "custom": "Custom"
+      },
+      "custom": "Custom",
+      "pcs.": "pcs."
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Dodatne opasnosti za ljude i okoliš (npr. kancerogene, teratogene):",
@@ -147,6 +163,11 @@
         "footer": [
           "Svejedno nastavi?"
         ]
+      },
+      "pdfGeneration": {
+        "generatingPdf": "Generating PDF...",
+        "downloadPdf": "Download PDF",
+        "download": "Download"
       }
     }
   }

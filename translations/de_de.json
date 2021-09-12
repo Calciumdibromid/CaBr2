@@ -59,7 +59,9 @@
     },
     "substance": {
       "invalidFormsTitle": "Etwas stimmt nicht",
-      "invalidFormsContent": ["Die Substanz hat an folgenden Stellen ungültige oder fehlende Daten:"],
+      "invalidFormsContent": [
+        "Der Stoff hat ungültige oder fehlende Daten für folgende Elemente:"
+      ],
       "edited": "Bearbeitet?",
       "name": "Name",
       "needsName": "Name benötigt",
@@ -91,7 +93,16 @@
       "ghsSymbolsColorInfo": "grau: nicht gewählt / farbig: gewählt",
       "addCustomSubstanceData": "Eigene Substanz hinzufügen",
       "dragAndDrop": "Drag & Drop",
-      "resetTooltip": "Auf originale Werte zurücksetzen"
+      "resetTooltip": "Aktuellen Stoff auf Originalwerte zurücksetzen"
+    },
+    "units": {
+      "groups": {
+        "rawSubstance": "Stoff direkt",
+        "solution": "Lösung",
+        "custom": "Benutzerdefiniert"
+      },
+      "custom": "Benutzerdefiniert",
+      "pcs.": "Stk."
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Gefahren für Mensch und Umwelt, die von den Ausgangsmaterialien bzw. den Produkten ausgehen, soweit sie nicht durch genannte Angaben abgedeckt sind (z.B. krebserregend, fruchtschädigend, hautresorptiv):",
@@ -106,7 +117,7 @@
       "signatureFieldAssistant": "Präparat zur Synthese mit den auf der Vorderseite berechneten Chemikalienmengen freigegeben."
     },
     "preview": {
-      "info": "Dies is eine Vorschau. Die tatsächliche, generierte PDF kann minimale Unterschiede aufweisen!",
+      "info": "Dies ist eine Vorschau. Die tatsächliche, generierte PDF kann minimale Unterschiede aufweisen!",
       "tableSubstanceTitleHeader": "Eingesetzte Stoffe und Produkte",
       "tableMolarMassHeader": {
         "mw": "MG",
@@ -146,8 +157,17 @@
     "dialogs": {
       "unchangedValues": {
         "title": "Unveränderte Werte",
-        "content": ["Folgende Werte wurden nicht verändert."],
-        "footer": ["Trotzdem fortfahren?"]
+        "content": [
+          "Folgende Werte wurden nicht verändert."
+        ],
+        "footer": [
+          "Trotzdem fortfahren?"
+        ]
+      },
+      "pdfGeneration": {
+        "generatingPdf": "PDF Generierung...",
+        "downloadPdf": "PDF herunterladen",
+        "download": "Herunterladen"
       }
     }
   }
