@@ -1,10 +1,14 @@
+use tauri::async_runtime;
+
 pub fn main() {
   // must be initialized first
   let logger = cabr2_logger::plugin::Logger::new();
 
   let config = cabr2_config::plugin::Config::default();
-  let search = cabr2_search::plugin::Search::new();
-  let load_save = cabr2_load_save::plugin::LoadSave::new(search.get_provider_mapping());
+  let search = async_runtime::block_on(cabr2_search::plugin::Search::new());
+
+  let provider_mapping = async_runtime::block_on(cabr2_search::plugin::get_provider_mapping());
+  let load_save = async_runtime::block_on(cabr2_load_save::plugin::LoadSave::new(provider_mapping));
 
   log::debug!("initializing tauri application...");
 

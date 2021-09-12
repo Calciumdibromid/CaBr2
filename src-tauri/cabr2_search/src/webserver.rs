@@ -12,11 +12,11 @@ use crate::{
 };
 
 pub async fn init() {
-  handler::init_providers().await;
+  handler::init_providers().await.unwrap();
 }
 
 pub async fn get_provider_mapping() -> HashMap<String, String> {
-  let providers = handler::REGISTERED_PROVIDERS.lock().await;
+  let providers = handler::REGISTERED_PROVIDERS.read().await;
   let mut mapping = HashMap::new();
   for (id, provider) in providers.iter() {
     mapping.insert(id.to_string(), provider.get_name());

@@ -76,7 +76,7 @@ pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, 
   let mut uuid_str;
   loop {
     path = TMP.clone();
-    uuid_str = serde_json::to_string(&Uuid::new_v4()).unwrap().replace('"', "");
+    uuid_str = Uuid::new_v4().to_hyphenated().to_string();
     path.push(format!("{}.{}", uuid_str, body.file_type));
 
     if !path.exists() {

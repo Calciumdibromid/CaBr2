@@ -10,6 +10,8 @@ mod types;
 pub mod plugin;
 #[cfg(feature = "webserver")]
 pub mod webserver;
+#[cfg(feature = "wasm")]
+pub mod wasm;
 
 #[cfg(feature = "beryllium")]
 mod beryllium;

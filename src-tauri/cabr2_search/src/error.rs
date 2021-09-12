@@ -16,6 +16,9 @@ pub enum SearchError {
   #[error("request error: {0}")]
   RequestError(u16),
 
+  #[error("parsing json failed")]
+  JsonError,
+
   #[error("no xml found")]
   NoXML,
 
@@ -29,8 +32,9 @@ pub enum SearchError {
   #[error("more values than expected")]
   Multiple(String),
 
-  #[error("parsing json failed")]
-  JsonError(#[from] serde_json::Error),
+  #[cfg(feature = "gestis")]
+  #[error("reqwest error")]
+  ReqwestError(#[from] reqwest::Error),
   #[cfg(feature = "gestis")]
   #[error("parsing xml failed")]
   XmlError(roxmltree::Error),

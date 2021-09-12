@@ -1,37 +1,48 @@
+import { BehaviorSubject, from, Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+
+import * as wasm from 'cabr2_wasm';
 import {
   Provider,
   ProviderMapping,
   SearchArguments,
   SearchResult,
   SearchType,
-  SearchTypeMapping,
 } from '../provider.model';
-
-import { BehaviorSubject, Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
 import { IProviderService } from '../provider.interface';
 import { SubstanceData } from 'src/app/@core/models/substances.model';
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// TODO use vars and remove this lines
 @Injectable()
 export class ProviderService implements IProviderService {
-  searchTypeMappingsSubject = new BehaviorSubject<SearchTypeMapping[]>([]);
-  searchTypeMappingsObservable = this.searchTypeMappingsSubject.asObservable();
-
   providerMappingsSubject = new BehaviorSubject<ProviderMapping>(new Map());
   providerMappingsObservable = this.providerMappingsSubject.asObservable();
 
+  constructor() {
+    this.getAvailableProviders()
+      .pipe(first())
+      .subscribe((providers) => this.providerMappingsSubject.next(new Map(providers.map((p) => [p.identifier, p]))));
+  }
+
   getAvailableProviders(): Observable<Provider[]> {
-    throw new Error('Method not implemented.');
+    return from(wasm.get_available_providers() as Promise<string>).pipe(map((providers) => JSON.parse(providers)));
   }
+
   searchSuggestions(provider: string, searchType: SearchType, query: string): Observable<string[]> {
-    throw new Error('Method not implemented.');
+    return from(wasm.search_suggestions(provider, query, JSON.stringify(searchType)) as Promise<string>).pipe(
+      map((suggestions) => JSON.parse(suggestions)),
+    );
   }
+
   search(provider: string, args: SearchArguments): Observable<SearchResult[]> {
-    throw new Error('Method not implemented.');
+    return from(wasm.search_results(provider, JSON.stringify(args)) as Promise<string>).pipe(
+      map((results) => JSON.parse(results)),
+    );
   }
+
   substanceData(provider: string, identifier: string): Observable<SubstanceData> {
-    throw new Error('Method not implemented.');
+    return from(wasm.substance_data(provider, identifier) as Promise<string>).pipe(
+      map((substance) => JSON.parse(substance)),
+    );
   }
 }

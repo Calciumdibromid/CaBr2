@@ -1,41 +1,93 @@
-use std::{borrow::Borrow, collections::HashMap, sync::Arc};
-
-use lazy_static::lazy_static;
-use tokio::sync::Mutex;
+use std::{borrow::Borrow, collections::HashMap};
 
 use cabr2_types::SubstanceData;
+use cfg_if::cfg_if;
+use lazy_static::lazy_static;
 
 use crate::{
   error::{Result, SearchError},
   types::{Provider, ProviderInfo, SearchArguments, SearchResponse, SearchType},
 };
 
-lazy_static! {
-  pub static ref REGISTERED_PROVIDERS: Arc<Mutex<HashMap<&'static str, Box<dyn Provider + Send + Sync>>>> =
-    Arc::new(Mutex::new(HashMap::new()));
+// because tokio doesn't fully support wasm we have to use two different implementations for these locks
+cfg_if! {
+  if #[cfg(feature = "wasm")] {
+    use std::sync::RwLock;
+  } else {
+    use tokio::sync::RwLock;
+  }
 }
 
-pub async fn init_providers() {
-  #[cfg(feature = "gestis")]
-  let agent = ureq::AgentBuilder::new()
-    .user_agent(&format!("cabr2/v{}", env!("CARGO_PKG_VERSION")))
-    .build();
+lazy_static! {
+  pub static ref REGISTERED_PROVIDERS: RwLock<HashMap<&'static str, Box<dyn Provider + Send + Sync>>> =
+    RwLock::new(HashMap::new());
+}
 
-  let mut _providers = REGISTERED_PROVIDERS.lock().await;
+#[cfg(all(feature = "gestis", not(feature = "wasm")))]
+const USER_AGENT: &str = concat!("cabr2/v", env!("CARGO_PKG_VERSION"));
+
+pub async fn init_providers() -> Result<()> {
+  log::trace!("initializing providers");
+  // let mut _providers;
+  cfg_if! {
+    if #[cfg(feature = "wasm")] {
+      let mut _providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+    } else {
+      let mut _providers = REGISTERED_PROVIDERS.write().await;
+    }
+  }
+
   #[cfg(feature = "gestis")]
-  _providers.insert("gestis", Box::new(crate::gestis::Gestis::new(agent)));
+  {
+    cfg_if! {
+      if #[cfg(feature = "wasm")] {
+        let agent = reqwest::ClientBuilder::new().build()?;
+      } else {
+        let agent = reqwest::ClientBuilder::new().user_agent(USER_AGENT).build()?;
+      }
+    }
+
+    _providers.insert("gestis", Box::new(crate::gestis::Gestis::new(agent)));
+  }
+
+  log::trace!("dropping provider lock...");
+  Ok(())
+}
+
+pub async fn get_provider_mapping() -> HashMap<String, String> {
+  cfg_if! {
+    if #[cfg(feature = "wasm")] {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
+    } else {
+      let providers = REGISTERED_PROVIDERS.read().await;
+    }
+  }
+
+  let mut mapping = HashMap::new();
+  for (id, provider) in providers.iter() {
+    mapping.insert(id.to_string(), provider.get_name());
+  }
+
+  mapping
 }
 
 pub async fn get_available_providers() -> Vec<ProviderInfo> {
-  let mut providers: Vec<ProviderInfo> = REGISTERED_PROVIDERS
-    .lock()
-    .await
+  cfg_if! {
+    if #[cfg(feature = "wasm")] {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
+    } else {
+      let providers = REGISTERED_PROVIDERS.read().await;
+    }
+  }
+
+  let mut providers: Vec<ProviderInfo> = providers
     .iter()
     .map(|(key, provider)| ProviderInfo {
       name: provider.get_name(),
       identifier: key.to_string(),
     })
     .collect();
+
   providers.push(ProviderInfo {
     identifier: "custom".into(),
     name: "Custom".into(),
@@ -53,8 +105,16 @@ pub async fn get_quick_search_suggestions(
     return Ok(vec![]);
   }
 
-  if let Some(provider) = REGISTERED_PROVIDERS.lock().await.get(&provider.borrow()) {
-    return provider.get_quick_search_suggestions(search_type, pattern);
+  cfg_if! {
+    if #[cfg(feature = "wasm")] {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
+    } else {
+      let providers = REGISTERED_PROVIDERS.read().await;
+    }
+  }
+
+  if let Some(provider) = providers.get(&provider.borrow()) {
+    return provider.get_quick_search_suggestions(search_type, pattern).await;
   }
 
   Err(SearchError::UnknownProvider(provider))
@@ -74,16 +134,32 @@ pub async fn get_search_results(provider: String, arguments: SearchArguments) ->
     return Ok(vec![]);
   }
 
-  if let Some(provider) = REGISTERED_PROVIDERS.lock().await.get(&provider.borrow()) {
-    return provider.get_search_results(arguments);
+  cfg_if! {
+    if #[cfg(feature = "wasm")] {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
+    } else {
+      let providers = REGISTERED_PROVIDERS.read().await;
+    }
+  }
+
+  if let Some(provider) = providers.get(&provider.borrow()) {
+    return provider.get_search_results(arguments).await;
   }
 
   Err(SearchError::UnknownProvider(provider))
 }
 
 pub async fn get_substance_data(provider: String, identifier: String) -> Result<SubstanceData> {
-  if let Some(provider) = REGISTERED_PROVIDERS.lock().await.get(&provider.borrow()) {
-    return provider.get_substance_data(identifier);
+  cfg_if! {
+    if #[cfg(feature = "wasm")] {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
+    } else {
+      let providers = REGISTERED_PROVIDERS.read().await;
+    }
+  }
+
+  if let Some(provider) = providers.get(&provider.borrow()) {
+    return provider.get_substance_data(identifier).await;
   }
 
   Err(SearchError::UnknownProvider(provider))

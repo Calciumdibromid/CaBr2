@@ -58,6 +58,10 @@
       "error": "Ошибка при получении данных"
     },
     "substance": {
+      "invalidFormsTitle": "Something is wrong",
+      "invalidFormsContent": [
+        "The substance has invalid or missing data on following items:"
+      ],
       "edited": "Переработанный?",
       "name": "Название",
       "needsName": "Введите имя",
@@ -76,17 +80,29 @@
       "customUnit": "Нестандартная единица",
       "hPhrases": "Заявления об опасности",
       "noHPhrase": "Недействительный Предупреждения об опасности",
+      "invalidHPhrase": "Invalid H-Phrases",
       "removeHPhrase": "удалить Предупреждения об опасности",
       "addHPhrase": "добавить Предупреждение об опасности",
       "pPhrases": "Предупрежение о безопасности",
       "noPPhrase": "Недействительный Предупреждения о безопасности",
+      "invalidPPhrase": "Invalid P-Phrases",
       "removePPhrase": "удалить Предупреждения о безопасности",
       "addPPhrase": "добавить Предупреждение о безопасности",
       "editingHint": "Нажмите на субстанцу, чтобы изменить ее.",
       "ghsSymbolsAddOrRemoveInfo": "Нажмите на символ для удаления или добавления",
       "ghsSymbolsColorInfo": "серый: не выбрано / раскрашено: выбрано",
       "addCustomSubstanceData": "Добавить обычай субстанция",
-      "dragAndDrop": "drag & drop"
+      "dragAndDrop": "drag & drop",
+      "resetTooltip": "Reset current substance to original values"
+    },
+    "units": {
+      "groups": {
+        "rawSubstance": "Raw Substance",
+        "solution": "Solution",
+        "custom": "Custom"
+      },
+      "custom": "Custom",
+      "pcs.": "pcs."
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Дополнительные Опасность для людей и окружающей среды (например: канцерогенная, тератогенная опасность):",
@@ -147,6 +163,11 @@
         "footer": [
           "Все равно продолжайте?"
         ]
+      },
+      "pdfGeneration": {
+        "generatingPdf": "Generating PDF...",
+        "downloadPdf": "Download PDF",
+        "download": "Download"
       }
     }
   }

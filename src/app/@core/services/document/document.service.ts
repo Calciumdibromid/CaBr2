@@ -31,6 +31,7 @@ export default class DocumentService {
   ) {
     this.loadSaveService.getAvailableDocumentTypes().subscribe(
       (types) => {
+        logger.debug(types);
         this.loadFilter = types.load;
         this.saveFilter = types.save;
       },
@@ -51,7 +52,7 @@ export default class DocumentService {
       .pipe(first())
       .subscribe(
         (path) => {
-          this.loadSaveService.loadDocument(path as string).subscribe(
+          this.loadSaveService.loadDocument(path).subscribe(
             (res) => this.documentToModel(res),
             (err) => {
               logger.error('loading file failed:', err);
@@ -80,7 +81,7 @@ export default class DocumentService {
       )
       .subscribe(
         (res) => {
-          logger.debug(res);
+          logger.debug(res === undefined ? 'saving successful:' : 'saving not successful:', res);
 
           switch (extension) {
             case 'pdf':
@@ -94,7 +95,7 @@ export default class DocumentService {
         },
         (err) => {
           logger.error(err);
-          // fix for an error that occurs only in windows
+          // fix for an error that occurs only on MS Windows (only needed with Tauri app)
           if (err === 'Could not initialize COM.') {
             logger.debug('ty windows -.- | attempting fix');
             this.loadFile();
