@@ -13,6 +13,7 @@
     "tauri:dev": "tauri dev",
     "build:web": "ng build --configuration webProd",
     "build:release": "ng build --configuration production && tauri build",
+    "build:server": "cd src-tauri && cargo build --features webserver --release",
     "wasm_lib:debug": "cd src-wasm && wasm-pack build --out-dir ../cabr2_wasm --dev -- --features debug_build",
     "wasm_lib:release": "cd src-wasm && wasm-pack build --out-dir ../cabr2_wasm --release"
   },
