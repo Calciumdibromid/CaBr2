@@ -6,11 +6,7 @@
           <mat-form-field class="select">
             <mat-label>{{ t('option') }}</mat-label>
             <mat-select formControlName="searchOption">
-              <mat-option
-                *ngFor="let option of searchOptions"
-                [value]="option"
-                [disabled]="isDisabled(option)"
-              >
+              <mat-option *ngFor="let option of searchOptions" [value]="option" [disabled]="isDisabled(option)">
                 {{ t('types.' + option) }}
               </mat-option>
             </mat-select>

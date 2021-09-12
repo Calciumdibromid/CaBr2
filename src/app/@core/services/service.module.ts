@@ -1,4 +1,3 @@
-
 import { DomSanitizer } from '@angular/platform-browser';
 import { HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -40,10 +39,7 @@ const configFactory = (nativeService: INativeService, sanitizer: DomSanitizer): 
   }
 };
 
-const i18nFactory = (
-  nativeService: INativeService,
-  http: HttpClient,
-): II18nService => {
+const i18nFactory = (nativeService: INativeService, http: HttpClient): II18nService => {
   if (environment.web) {
     return new I18nWebService(http);
   } else {

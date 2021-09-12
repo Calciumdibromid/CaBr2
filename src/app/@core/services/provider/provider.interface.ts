@@ -1,10 +1,4 @@
-import {
-  Provider,
-  ProviderMapping,
-  SearchArguments,
-  SearchResult,
-  SearchType,
-} from './provider.model';
+import { Provider, ProviderMapping, SearchArguments, SearchResult, SearchType } from './provider.model';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 import { SubstanceData } from '../../models/substances.model';

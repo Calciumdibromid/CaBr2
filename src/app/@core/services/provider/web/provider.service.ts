@@ -3,13 +3,7 @@ import { first, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
 import * as wasm from 'cabr2_wasm';
-import {
-  Provider,
-  ProviderMapping,
-  SearchArguments,
-  SearchResult,
-  SearchType,
-} from '../provider.model';
+import { Provider, ProviderMapping, SearchArguments, SearchResult, SearchType } from '../provider.model';
 import { IProviderService } from '../provider.interface';
 import { SubstanceData } from 'src/app/@core/models/substances.model';
 

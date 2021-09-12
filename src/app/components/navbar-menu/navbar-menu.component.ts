@@ -24,8 +24,7 @@ export class NavbarMenuComponent implements OnInit {
     private documentService: DocumentService,
     private configService: IConfigService,
     private dialog: MatDialog,
-  ) {
-  }
+  ) {}
 
   ngOnInit(): void {
     this.newDocument();

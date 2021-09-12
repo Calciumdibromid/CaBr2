@@ -39,7 +39,6 @@ export class PreviewComponent implements OnInit {
   sources: Set<string> = new Set();
 
   constructor(public globals: GlobalModel, private providerService: IProviderService) {
-
     this.providerService.providerMappingsObservable.subscribe((providers) => (this.providerMapping = providers));
   }
 

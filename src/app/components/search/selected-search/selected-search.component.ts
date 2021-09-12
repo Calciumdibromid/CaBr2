@@ -2,11 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
-import {
-  SearchArgument,
-  SearchType,
-  searchTypes,
-} from '../../../@core/services/provider/provider.model';
+import { SearchArgument, SearchType, searchTypes } from '../../../@core/services/provider/provider.model';
 import { AlertService } from '../../../@core/services/alertsnackbar/altersnackbar.service';
 import { IProviderService } from '../../../@core/services/provider/provider.interface';
 import Logger from '../../../@core/utils/logger';

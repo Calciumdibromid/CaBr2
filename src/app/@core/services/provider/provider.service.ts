@@ -5,13 +5,7 @@ import { Injectable } from '@angular/core';
 import { GlobalModel } from '../../models/global.model';
 import { IProviderService } from './provider.interface';
 
-import {
-  Provider,
-  ProviderMapping,
-  SearchArguments,
-  SearchResult,
-  SearchType,
-} from './provider.model';
+import { Provider, ProviderMapping, SearchArguments, SearchResult, SearchType } from './provider.model';
 import { INativeService } from '../native/native.interface';
 import { SubstanceData } from '../../models/substances.model';
 
