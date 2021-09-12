@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Translation } from '@ngneat/transloco';
 
-export interface AvailableLang {
+export interface AvailableLanguage {
   id: string;
   label: string;
 }

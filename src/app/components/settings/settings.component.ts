@@ -5,7 +5,7 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Subscription } from 'rxjs';
 
 import { ConfigModel, configObservable } from '../../@core/models/config.model';
-import { AvailableLang } from '../../@core/services/i18n/i18n.interface';
+import { AvailableLanguage } from '../../@core/services/i18n/i18n.interface';
 import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
@@ -16,7 +16,7 @@ import { TranslocoService } from '@ngneat/transloco';
 export class SettingsComponent implements OnInit, OnDestroy {
   readonly darkModeSwitched = new EventEmitter<boolean>();
 
-  langs!: AvailableLang[];
+  langs!: AvailableLanguage[];
   form: FormGroup;
   subscriptions: Subscription[] = [];
 
@@ -38,7 +38,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.langs = this.translocoService.getAvailableLangs() as AvailableLang[];
+    this.langs = this.translocoService.getAvailableLangs() as AvailableLanguage[];
 
     this.subscriptions.push(
       configObservable.subscribe((config) => {
