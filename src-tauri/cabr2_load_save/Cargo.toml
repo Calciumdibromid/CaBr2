@@ -10,8 +10,10 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cabr2_config = { path = "../cabr2_config/" }
+async-trait = "0.1.51"
+cabr2_config = { path = "../cabr2_config/", optional = true }
 cabr2_types = { path = "../cabr2_types/" }
+cfg-if = "1.0.0"
 chrono = { version = "0.4.19", optional = true }
 handlebars = { version = "4.1.2", optional = true }
 lazy_static = "1.4.0"
@@ -21,7 +23,7 @@ quick-xml = { version = "0.22.0", features = ["serialize"], optional = true }
 regex = { version = "1.4.6", optional = true }
 serde = { version = "1.0.130", features = ["derive"] }
 serde_json = { version = "1.0.67", optional = true }
-tauri = { version = "1.0.0-beta.4", default-features = false, optional = true }
+tauri = { version = "1.0.0-beta.8", default-features = false, optional = true }
 thiserror = "1.0.28"
 tokio = { version = "1.11.0", features = ["fs"], optional = true }
 uuid = { version = "0.8.2", features = ["serde", "v4"], optional = true }
@@ -31,7 +33,8 @@ wkhtmltopdf = { version = "0.4.0", optional = true }
 [features]
 beryllium = ["chrono", "quick-xml", "regex"]
 cabr2 = ["serde_json"]
-pdf = ["chrono", "handlebars", "lopdf", "serde_json", "wkhtmltopdf"]
-tauri_plugin = ["serde_json", "tauri", "tokio"]
-webserver = ["tokio", "uuid", "warp"]
+pdf = ["cabr2_config", "tokio", "chrono", "handlebars", "lopdf", "serde_json", "wkhtmltopdf"]
+tauri_plugin = ["tauri", "serde_json", "tokio"]
+webserver = ["tokio", "uuid", "warp", "cabr2_types/webserver"]
+wasm = []
 default = []

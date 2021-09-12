@@ -1,5 +1,5 @@
 use serde_json::Value;
-use tauri::{plugin::Plugin, Invoke, Params, Window};
+use tauri::{plugin::Plugin, Invoke, Runtime, Window};
 
 use crate::{
   error::Result,
@@ -42,11 +42,11 @@ pub async fn get_prompt_html(name: String) -> Result<String> {
   handler::get_prompt_html(name).await
 }
 
-pub struct Config<M: Params> {
-  invoke_handler: Box<dyn Fn(Invoke<M>) + Send + Sync>,
+pub struct Config<R: Runtime> {
+  invoke_handler: Box<dyn Fn(Invoke<R>) + Send + Sync>,
 }
 
-impl<M: Params> std::default::Default for Config<M> {
+impl<R: Runtime> std::default::Default for Config<R> {
   fn default() -> Self {
     Self {
       invoke_handler: Box::new(tauri::generate_handler![
@@ -62,16 +62,16 @@ impl<M: Params> std::default::Default for Config<M> {
   }
 }
 
-impl<M: Params> Plugin<M> for Config<M> {
+impl<R: Runtime> Plugin<R> for Config<R> {
   fn name(&self) -> &'static str {
     "cabr2_config"
   }
 
-  fn extend_api(&mut self, message: Invoke<M>) {
+  fn extend_api(&mut self, message: Invoke<R>) {
     (self.invoke_handler)(message)
   }
 
-  fn created(&mut self, _: Window<M>) {
+  fn created(&mut self, _: Window<R>) {
     log::trace!("plugin created");
   }
 }

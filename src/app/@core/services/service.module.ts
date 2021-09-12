@@ -1,3 +1,4 @@
+import { DomSanitizer } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
 import { BrowserService } from './native/web/browser.service';
@@ -6,6 +7,7 @@ import { ConfigWebService } from './config/web/config.service';
 import DocumentService from './document/document.service';
 import { environment } from 'src/environments/environment';
 import { GlobalModel } from '../models/global.model';
+import { HttpClient } from '@angular/common/http';
 import { I18nService } from './i18n/i18n.service';
 import { I18nWebService } from './i18n/web/i18n.service';
 import { IConfigService } from './config/config.interface';
@@ -14,16 +16,26 @@ import { ILoadSaveService } from './loadSave/loadSave.interface';
 import { INativeService } from './native/native.interface';
 import { IProviderService } from './provider/provider.interface';
 import { LoadSaveService } from './loadSave/loadSave.service';
+import Logger from '../utils/logger';
+import { MatDialog } from '@angular/material/dialog';
 import { ProviderService } from './provider/provider.service';
 import { TauriService } from './native/tauri.service';
 import { LoadSaveService as WebLoadSaveService } from './loadSave/web/loadSave.service';
 import { ProviderService as WebProviderService } from './provider/web/provider.service';
 
-const configFactory = (nativeService: INativeService): IConfigService => {
+const logger = new Logger('service.module');
+
+if (environment.web) {
+  logger.trace('loading services for web environment');
+} else {
+  logger.trace('loading services for tauri environment');
+}
+
+const configFactory = (nativeService: INativeService, sanitizer: DomSanitizer): IConfigService => {
   if (environment.web) {
     return new ConfigWebService();
   } else {
-    return new ConfigService(nativeService);
+    return new ConfigService(nativeService, sanitizer);
   }
 };
 
@@ -35,9 +47,13 @@ const i18nFactory = (nativeService: INativeService): II18nService => {
   }
 };
 
-const loadSaveFactory = (nativeService: INativeService): ILoadSaveService => {
+const loadSaveFactory = (
+  nativeService: INativeService,
+  httpClient: HttpClient,
+  dialog: MatDialog,
+): ILoadSaveService => {
   if (environment.web) {
-    return new WebLoadSaveService();
+    return new WebLoadSaveService(httpClient, dialog);
   } else {
     return new LoadSaveService(nativeService);
   }
@@ -53,7 +69,7 @@ const nativeFactory = (): INativeService => {
 
 const providerFactory = (nativeService: INativeService, globals: GlobalModel): IProviderService => {
   if (environment.web) {
-    return new WebProviderService();
+    return new WebProviderService(globals);
   } else {
     return new ProviderService(nativeService, globals);
   }
@@ -63,7 +79,7 @@ const providerFactory = (nativeService: INativeService, globals: GlobalModel): I
     {
       provide: IConfigService,
       useFactory: configFactory,
-      deps: [INativeService],
+      deps: [INativeService, DomSanitizer],
     },
     {
       provide: II18nService,
@@ -73,7 +89,7 @@ const providerFactory = (nativeService: INativeService, globals: GlobalModel): I
     {
       provide: ILoadSaveService,
       useFactory: loadSaveFactory,
-      deps: [INativeService],
+      deps: [INativeService, HttpClient, MatDialog],
     },
     {
       provide: INativeService,

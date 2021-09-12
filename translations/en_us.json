@@ -157,6 +157,11 @@
         "title": "Unchanged values",
         "content": ["The following values were not changed."],
         "footer": ["Continue anyway?"]
+      },
+      "pdfGeneration": {
+        "generatingPdf": "Generating PDF...",
+        "downloadPdf": "Download PDF",
+        "download": "Download"
       }
     }
   }

@@ -1,15 +1,20 @@
+use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
 use cabr2_types::SubstanceData;
 
 use super::error::Result;
 
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 pub trait Loader {
-  fn load_document(&self, contents: Vec<u8>) -> Result<CaBr2Document>;
+  async fn load_document(&self, contents: Vec<u8>) -> Result<CaBr2Document>;
 }
 
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 pub trait Saver {
-  fn save_document(&self, document: CaBr2Document) -> Result<Vec<u8>>;
+  async fn save_document(&self, document: CaBr2Document) -> Result<Vec<u8>>;
 }
 
 #[derive(Debug, Deserialize, Serialize)]

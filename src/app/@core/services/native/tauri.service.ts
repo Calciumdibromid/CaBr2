@@ -12,11 +12,11 @@ import { InvokeArgs } from '@tauri-apps/api/tauri';
 export class TauriService implements INativeService {
   openUrl = shell.open;
 
-  open(options?: dialog.OpenDialogOptions): Observable<string | string[]> {
-    return from(dialog.open(options));
+  open(options?: dialog.OpenDialogOptions): Observable<string> {
+    return from(dialog.open(options) as Promise<string>);
   }
 
-  save(options?: dialog.SaveDialogOptions): Observable<string | string[]> {
+  save(options?: dialog.SaveDialogOptions): Observable<string> {
     return from(dialog.save(options));
   }
 

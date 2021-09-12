@@ -5,9 +5,9 @@ import { Observable } from 'rxjs';
 export abstract class INativeService {
   abstract openUrl(url: string, openWith?: string): Promise<void>;
 
-  abstract open(options?: any): Observable<string | string[]>;
+  abstract open(options?: any): Observable<string | File>;
 
-  abstract save(options?: any): Observable<string | string[]>;
+  abstract save(options?: any): Observable<string>;
 
   abstract promisified<T>(cmd: string, args?: any): Observable<T>;
 }

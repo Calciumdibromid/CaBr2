@@ -1,5 +1,5 @@
 use serde_json::{to_string_pretty, Value};
-use tauri::{async_runtime, plugin::Plugin, Invoke, Params, Window};
+use tauri::{async_runtime, plugin::Plugin, Invoke, Runtime, Window};
 
 use cabr2_types::logging::LogLevel;
 
@@ -30,11 +30,11 @@ pub fn log(level: LogLevel, path: String, messages: Vec<Value>) -> Result<(), St
   Ok(())
 }
 
-pub struct Logger<M: Params> {
-  invoke_handler: Box<dyn Fn(Invoke<M>) + Send + Sync>,
+pub struct Logger<R: Runtime> {
+  invoke_handler: Box<dyn Fn(Invoke<R>) + Send + Sync>,
 }
 
-impl<M: Params> Logger<M> {
+impl<R: Runtime> Logger<R> {
   pub fn new() -> Self {
     async_runtime::block_on(setup_logger()).unwrap();
 
@@ -44,16 +44,16 @@ impl<M: Params> Logger<M> {
   }
 }
 
-impl<M: Params> Plugin<M> for Logger<M> {
+impl<R: Runtime> Plugin<R> for Logger<R> {
   fn name(&self) -> &'static str {
     "cabr2_logger"
   }
 
-  fn extend_api(&mut self, message: Invoke<M>) {
+  fn extend_api(&mut self, message: Invoke<R>) {
     (self.invoke_handler)(message)
   }
 
-  fn created(&mut self, _: Window<M>) {
+  fn created(&mut self, _: Window<R>) {
     log::trace!("plugin created");
   }
 }

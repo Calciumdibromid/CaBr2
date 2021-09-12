@@ -4,6 +4,7 @@ use chrono::TimeZone;
 use lazy_static::lazy_static;
 use quick_xml::de::from_reader;
 use regex::Regex;
+use async_trait::async_trait;
 
 use cabr2_types::{Amount, Data, Source, SubstanceData, Unit};
 
@@ -15,8 +16,10 @@ use types::{BerylliumDocument, TemplateCategory};
 
 pub struct Beryllium;
 
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 impl Loader for Beryllium {
-  fn load_document(&self, contents: Vec<u8>) -> Result<CaBr2Document> {
+  async fn load_document(&self, contents: Vec<u8>) -> Result<CaBr2Document> {
     lazy_static! {
       static ref BEGINNING_OF_TIME: chrono::DateTime<chrono::Utc> = chrono::Utc.ymd(1970, 1, 1).and_hms(0, 0, 0);
       static ref GESTIS_URL_RE: Regex =
@@ -91,7 +94,7 @@ impl Loader for Beryllium {
                 let mut value = None;
                 if let Some(su) = substance.setting_up {
                   if su.volumina.unwrap_or_default() {
-                    unit = Some(Unit::Litre);
+                    unit = Some(Unit::Liter);
                   } else if su.mass.unwrap_or_default() {
                     unit = Some(Unit::Gram);
                   }

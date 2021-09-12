@@ -18,19 +18,16 @@ on:
 jobs:
   frontend:
     runs-on: ubuntu-20.04
+    container: a6543/cabr2_ci:latest
     strategy:
       fail-fast: true
-      matrix:
-        node-version:
-          - 14
+  
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
-
-      - name: Setup Nodejs
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
+      
+      - name: Set Rust Toolchain
+        run: rustup default stable
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
@@ -40,9 +37,12 @@ jobs:
 
       - name: Eslint
         run: yarn lint
+      
+      - name: Build WASM binary
+        run: yarn wasm_lib:release
 
       - name: Build Tauri Frontend
-        run: yarn ng build
+        run: yarn ng build --configuration production
 
       - name: Build Web Frontend
-        run: yarn ng build -c production,web
+        run: yarn ng build --configuration webProd
