@@ -5,32 +5,35 @@ import { NgModule } from '@angular/core';
 
 import { AlertModule } from './@core/modules/alert.module';
 import { AppComponent } from './app.component';
-import { ConsentComponent } from './consent/consent.component';
-import { EditSubstanceDataComponent } from './edit-substance-data/edit-substance-data.component';
+import { ConsentComponent } from './components/consent/consent.component';
+import { EditSubstanceDataComponent } from './components/edit-substance-data/edit-substance-data.component';
+import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
 import { GlobalModel } from './@core/models/global.model';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent } from './components/header/header.component';
 import { HttpClientModule } from '@angular/common/http';
-import { LoadingComponent } from './loading/loading.component';
-import { ManualComponent } from './manual/manual.component';
+import { LoadingComponent } from './components/loading/loading.component';
+import { ManualComponent } from './components/manual/manual.component';
 import { MatModules } from './@core/modules/mat.module';
-import { MenubarComponent } from './menubar/menubar.component';
-import { ModifiableStringListComponent } from './modifiable-string-list/modifiable-string-list.component';
-import { PreviewComponent } from './preview/preview.component';
+import { ModifiableStringListComponent } from './components/modifiable-string-list/modifiable-string-list.component';
+import { NavbarMenuComponent } from './components/navbar-menu/navbar-menu.component';
+import { OnePagerComponent } from './onepager/onepager.component';
+import { PreviewComponent } from './components/preview/preview.component';
 import { ProgressDialogComponent } from './progress-dialog/progress-dialog.component';
-import { ReportBugComponent } from './report-bug/report-bug.component';
-import { SearchComponent } from './search/search.component';
-import { SearchDialogComponent } from './search/search-dialog/search-dialog.component';
-import { SelectedSearchComponent } from './search/selected-search/selected-search.component';
+import { ReportBugComponent } from './components/report-bug/report-bug.component';
+import { ScrollbuttonComponent } from './components/scrollbutton/scrollbutton.component';
+import { SearchComponent } from './components/search/search.component';
+import { SearchDialogComponent } from './components/search/search-dialog/search-dialog.component';
+import { SecurityThingsComponent } from './components/security-things/security-things.component';
+import { SelectedSearchComponent } from './components/search/selected-search/selected-search.component';
 import { ServiceModule } from './@core/services/service.module';
-import { SettingsComponent } from './settings/settings.component';
+import { SettingsComponent } from './components/settings/settings.component';
 import { SubMolecularFormula } from './@core/pipes/molecularformula.pipe';
-import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
+import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    MenubarComponent,
     SearchComponent,
     ModifiableStringListComponent,
     PreviewComponent,
@@ -45,6 +48,11 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
     SubMolecularFormula,
     LoadingComponent,
     ProgressDialogComponent,
+    OnePagerComponent,
+    NavbarMenuComponent,
+    ScrollbuttonComponent,
+    SecurityThingsComponent,
+    ExportButtonsComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,4 +67,4 @@ import { YesNoDialogComponent } from './yes-no-dialog/yes-no-dialog.component';
   providers: [GlobalModel],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

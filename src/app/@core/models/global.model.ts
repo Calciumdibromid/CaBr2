@@ -1,8 +1,9 @@
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { getDefaultStrings, LocalizedStrings } from '../services/i18n/i18n.interface';
+import DocsTemplate from '../interfaces/DocTemplate';
 import { Header } from '../interfaces/Header';
 import { SearchResult } from '../services/provider/provider.model';
 import { SubstanceData } from './substances.model';
@@ -54,6 +55,16 @@ export class GlobalModel {
     this.ghsSymbolKeys = Array.from(newSymbols.keys());
 
     this.ghsSymbolKeys.sort();
+  }
+
+  loadTemplate(docsTemplate: DocsTemplate): void {
+    this.headerSubject.next({ ...docsTemplate.header });
+    this.humanAndEnvironmentDangerSubject.next(docsTemplate.humanAndEnvironmentDanger);
+    this.rulesOfConductSubject.next(docsTemplate.rulesOfConduct);
+    this.inCaseOfDangerSubject.next(docsTemplate.inCaseOfDanger);
+    this.disposalSubject.next(docsTemplate.disposal);
+
+    this.substanceDataSubject.next([]);
   }
 }
 
