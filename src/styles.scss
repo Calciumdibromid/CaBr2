@@ -125,3 +125,22 @@ body {
 .undragable {
   -webkit-user-drag: none;
 }
+
+.center-splashscreen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.splashscreen {
+  height: 30vh;
+
+  position: absolute;
+  top: 50%;
+  transform: translateY(100%);
+
+  img {
+    height: inherit;
+  }
+}
