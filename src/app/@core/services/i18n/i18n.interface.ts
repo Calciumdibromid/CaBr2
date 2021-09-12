@@ -1,21 +1,13 @@
-import DEFAULT_LOCALIZATION from '../../../../assets/defaultStrings.json';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Translation } from '@ngneat/transloco';
 
-const DEFAULT_STRINGS = DEFAULT_LOCALIZATION.strings;
-export type LocalizedStrings = typeof DEFAULT_STRINGS;
+export interface AvailableLang {
+  id: string;
+  label: string;
+}
 
 @Injectable()
 export abstract class II18nService {
-  abstract getAvailableLanguages(): Observable<LocalizedStringsHeader[]>;
-
-  abstract getLocalizedStrings(language: string): Observable<LocalizedStrings>;
+  abstract getTranslation(language: string): Observable<Translation>;
 }
-
-export interface LocalizedStringsHeader {
-  name: string;
-  locale: string;
-}
-
-const getDefaultStrings = () => DEFAULT_STRINGS;
-export { getDefaultStrings };

@@ -4,7 +4,6 @@ import { MatDialog } from '@angular/material/dialog';
 import DocumentService from 'src/app/@core/services/document/document.service';
 import { GlobalModel } from 'src/app/@core/models/global.model';
 import { IConfigService } from 'src/app/@core/services/config/config.interface';
-import { LocalizedStrings } from 'src/app/@core/services/i18n/i18n.interface';
 import { ManualComponent } from '../manual/manual.component';
 import { SettingsComponent } from '../settings/settings.component';
 import TEMPLATES from '../../../assets/docsTemplate.json';
@@ -20,15 +19,12 @@ export class NavbarMenuComponent implements OnInit {
   @Output()
   readonly darkModeSwitched = new EventEmitter<boolean>();
 
-  strings!: LocalizedStrings;
-
   constructor(
     public globals: GlobalModel,
     private documentService: DocumentService,
     private configService: IConfigService,
     private dialog: MatDialog,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
   }
 
   ngOnInit(): void {

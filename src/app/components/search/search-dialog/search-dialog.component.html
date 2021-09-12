@@ -1,35 +1,37 @@
-<h2>{{ strings.search.resultsHeader }}</h2>
-<mat-divider class="divider"></mat-divider>
-<section>
-  <mat-checkbox [(ngModel)]="exactSearch" (ngModelChange)="toggleExactSearch()">
-    <p class="unselectable undragable">{{ strings.search.exact }}</p>
-  </mat-checkbox>
-</section>
-<div *ngIf="searchFinished; else loading">
-  <div *ngIf="searchResults.length > 0; else empty">
-    <mat-selection-list [multiple]="false" dense>
-      <cdk-virtual-scroll-viewport itemSize="50" class="viewport">
-        <mat-list-option
-          *cdkVirtualFor="let result of searchResults"
-          (click)="setSelected(result)"
-          (dblclick)="close(false)"
-        >
-          {{ result.casNumber }} {{ result.name }}
-        </mat-list-option>
-      </cdk-virtual-scroll-viewport>
-    </mat-selection-list>
+<ng-container *transloco="let t">
+  <h2>{{ t('search.resultsHeader') }}</h2>
+  <mat-divider class="divider"></mat-divider>
+  <section>
+    <mat-checkbox [(ngModel)]="exactSearch" (ngModelChange)="toggleExactSearch()">
+      <p class="unselectable undragable">{{ t('search.exact') }}</p>
+    </mat-checkbox>
+  </section>
+  <div *ngIf="searchFinished; else loading">
+    <div *ngIf="searchResults.length > 0; else empty">
+      <mat-selection-list [multiple]="false" dense>
+        <cdk-virtual-scroll-viewport itemSize="50" class="viewport">
+          <mat-list-option
+            *cdkVirtualFor="let result of searchResults"
+            (click)="setSelected(result)"
+            (dblclick)="close(false)"
+          >
+            {{ result.casNumber }} {{ result.name }}
+          </mat-list-option>
+        </cdk-virtual-scroll-viewport>
+      </mat-selection-list>
+    </div>
   </div>
-</div>
-<ng-template #loading>
-  <app-loading width="100%"></app-loading>
-</ng-template>
-<ng-template #empty>
-  <p class="viewport empty">
-    <b>{{ searchFailed ? strings.search.error : strings.search.noResult }}</b>
-  </p>
-</ng-template>
-<mat-divider class="divider"></mat-divider>
-<div mat-dialog-actions>
-  <button mat-button (click)="close(true)">{{ strings.base.cancel }}</button>
-  <button mat-button (click)="close(false)" [disabled]="selected === undefined">{{ strings.base.ok }}</button>
-</div>
+  <ng-template #loading>
+    <app-loading width="100%"></app-loading>
+  </ng-template>
+  <ng-template #empty>
+    <p class="viewport empty">
+      <b>{{ searchFailed ? t('search.error') : t('search.noResult') }}</b>
+    </p>
+  </ng-template>
+  <mat-divider class="divider"></mat-divider>
+  <div mat-dialog-actions>
+    <button mat-button (click)="close(true)">{{ t('base.cancel') }}</button>
+    <button mat-button (click)="close(false)" [disabled]="selected === undefined">{{ t('base.ok') }}</button>
+  </div>
+</ng-container>

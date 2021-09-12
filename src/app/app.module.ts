@@ -10,6 +10,7 @@ import { EditSubstanceDataComponent } from './components/edit-substance-data/edi
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
 import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './components/header/header.component';
+import { HttpClientModule } from '@angular/common/http';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ManualComponent } from './components/manual/manual.component';
 import { MatModules } from './@core/modules/mat.module';
@@ -26,6 +27,7 @@ import { SelectedSearchComponent } from './components/search/selected-search/sel
 import { ServiceModule } from './@core/services/service.module';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SubMolecularFormula } from './@core/pipes/molecularformula.pipe';
+import { TranslocoRootModule } from './transloco-root.module';
 import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.component';
 
 @NgModule({
@@ -59,6 +61,8 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
     MatModules,
     AlertModule,
     ServiceModule,
+    HttpClientModule,
+    TranslocoRootModule,
   ],
   providers: [GlobalModel],
   bootstrap: [AppComponent],

@@ -1,12 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
+import { translate } from '@ngneat/transloco';
 
 import { SearchArgument, SearchResult } from '../../../@core/services/provider/provider.model';
 import { AlertService } from '../../../@core/services/alertsnackbar/altersnackbar.service';
-import { GlobalModel } from '../../../@core/models/global.model';
 import { IProviderService } from '../../../@core/services/provider/provider.interface';
-import { LocalizedStrings } from '../../../@core/services/i18n/i18n.interface';
 import Logger from '../../../@core/utils/logger';
 
 const logger = new Logger('search-dialog');
@@ -26,21 +25,16 @@ export class SearchDialogComponent implements OnInit {
   searchFinished = false;
   searchFailed = false;
   exactSearch = false;
-  subscription: Observable<SearchResult[]> | undefined;
-  selected: SearchResult | undefined;
-
-  strings!: LocalizedStrings;
+  subscription?: Observable<SearchResult[]>;
+  selected?: SearchResult;
 
   constructor(
     public dialogRef: MatDialogRef<SearchDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Data,
 
-    private globals: GlobalModel,
     private providerService: IProviderService,
     private alertService: AlertService,
-  ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-  }
+  ) {}
 
   ngOnInit(): void {
     this.subscription = this.providerService.search(this.data.providerIdentifier, {
@@ -60,7 +54,7 @@ export class SearchDialogComponent implements OnInit {
         this.searchFinished = true;
         this.searchFailed = true;
         logger.error('loading search results failed:', err);
-        this.alertService.error(this.strings.error.loadSearchResults);
+        this.alertService.error(translate('loadSearchResults'));
       },
     );
   }

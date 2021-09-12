@@ -11,25 +11,16 @@ import {
   SearchArguments,
   SearchResult,
   SearchType,
-  SearchTypeMapping,
-  searchTypes,
 } from './provider.model';
 import { INativeService } from '../native/native.interface';
 import { SubstanceData } from '../../models/substances.model';
 
 @Injectable()
 export class ProviderService implements IProviderService {
-  searchTypeMappingsSubject = new BehaviorSubject<SearchTypeMapping[]>([]);
-  searchTypeMappingsObservable = this.searchTypeMappingsSubject.asObservable();
-
   providerMappingsSubject = new BehaviorSubject<ProviderMapping>(new Map());
   providerMappingsObservable = this.providerMappingsSubject.asObservable();
 
   constructor(private nativeService: INativeService, private globals: GlobalModel) {
-    this.globals.localizedStringsObservable.subscribe((strings) =>
-      this.searchTypeMappingsSubject.next(searchTypes.map((t) => ({ viewValue: strings.search.types[t], value: t }))),
-    );
-
     this.getAvailableProviders()
       .pipe(first())
       .subscribe((providers) => this.providerMappingsSubject.next(new Map(providers.map((p) => [p.identifier, p]))));

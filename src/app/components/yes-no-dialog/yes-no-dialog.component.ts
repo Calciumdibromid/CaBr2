@@ -1,9 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
-import { GlobalModel } from '../../@core/models/global.model';
-import { LocalizedStrings } from '../../@core/services/i18n/i18n.interface';
-
 export interface YesNoDialogData {
   iconName?: string;
   title: string;
@@ -19,8 +16,6 @@ export interface YesNoDialogData {
   styleUrls: ['./yes-no-dialog.component.scss'],
 })
 export class YesNoDialogComponent {
-  strings!: LocalizedStrings;
-
   /**
    * To use this component you must inject `MatDialog`.
    *
@@ -44,9 +39,5 @@ export class YesNoDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<YesNoDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: YesNoDialogData,
-
-    private globals: GlobalModel,
-  ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-  }
+  ) {}
 }

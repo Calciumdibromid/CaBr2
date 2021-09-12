@@ -3,6 +3,7 @@ import { first, map, switchMap } from 'rxjs/operators';
 import { GlobalModel } from '../../models/global.model';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { translate } from '@ngneat/transloco';
 
 import { AlertService } from '../alertsnackbar/altersnackbar.service';
 import { CaBr2Document } from '../loadSave/loadSave.model';
@@ -11,7 +12,6 @@ import { DialogFilter } from '@tauri-apps/api/dialog';
 import DocsTemplate from '../../interfaces/DocTemplate';
 import { ILoadSaveService } from '../loadSave/loadSave.interface';
 import { INativeService } from '../native/native.interface';
-import { LocalizedStrings } from '../i18n/i18n.interface';
 import Logger from '../../utils/logger';
 import { YesNoDialogComponent } from 'src/app/components/yes-no-dialog/yes-no-dialog.component';
 
@@ -19,8 +19,6 @@ const logger = new Logger('documentService');
 
 @Injectable()
 export default class DocumentService {
-  strings!: LocalizedStrings;
-
   private loadFilter: DialogFilter[] = [];
   private saveFilter: DialogFilter[] = [];
 
@@ -31,8 +29,6 @@ export default class DocumentService {
     private alertService: AlertService,
     private dialog: MatDialog,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
-
     this.loadSaveService.getAvailableDocumentTypes().subscribe(
       (types) => {
         this.loadFilter = types.load;
@@ -40,7 +36,7 @@ export default class DocumentService {
       },
       (err) => {
         logger.error('could not get document types:', err);
-        this.alertService.error(this.strings.error.getAvailableDocumentTypes);
+        this.alertService.error(translate('error.getAvailableDocumentTypes'));
       },
     );
   }
@@ -59,7 +55,7 @@ export default class DocumentService {
             (res) => this.documentToModel(res),
             (err) => {
               logger.error('loading file failed:', err);
-              this.alertService.error(this.strings.error.loadFile);
+              this.alertService.error(translate('error.loadFile'));
             },
           );
         },
@@ -88,11 +84,11 @@ export default class DocumentService {
 
           switch (extension) {
             case 'pdf':
-              this.alertService.success(this.strings.success.exportPDF);
+              this.alertService.success(translate('success.exportPDF'));
               break;
 
             default:
-              this.alertService.success(this.strings.success.saveFile);
+              this.alertService.success(translate('success.saveFile'));
               break;
           }
         },
@@ -108,11 +104,11 @@ export default class DocumentService {
 
           switch (extension) {
             case 'pdf':
-              this.alertService.error(this.strings.error.exportPDF);
+              this.alertService.error(translate('error.exportPDF'));
               break;
 
             default:
-              this.alertService.error(this.strings.error.saveFile);
+              this.alertService.error(translate('error.saveFile'));
               break;
           }
         },
@@ -130,10 +126,10 @@ export default class DocumentService {
             .open(YesNoDialogComponent, {
               data: {
                 iconName: 'warning',
-                title: this.strings.dialogs.unchangedValues.title,
-                content: this.strings.dialogs.unchangedValues.content,
+                title: translate('dialogs.unchangedValues.title'),
+                content: translate('dialogs.unchangedValues.content'),
                 listItems: unmodifiedStuff,
-                footerText: this.strings.dialogs.unchangedValues.footer,
+                footerText: translate('dialogs.unchangedValues.footer'),
               },
               panelClass: ['unselectable', 'undragable'],
             })
@@ -189,11 +185,11 @@ export default class DocumentService {
       [
         document.humanAndEnvironmentDanger,
         docsTemplate.humanAndEnvironmentDanger,
-        [this.strings.descriptions.humanAndEnvironmentDangerShort],
+        [translate('descriptions.humanAndEnvironmentDangerShort')],
       ],
-      [document.rulesOfConduct, docsTemplate.rulesOfConduct, [this.strings.descriptions.rulesOfConductShort]],
-      [document.inCaseOfDanger, docsTemplate.inCaseOfDanger, [this.strings.descriptions.inCaseOfDangerShort]],
-      [document.disposal, docsTemplate.disposal, [this.strings.descriptions.disposalShort]],
+      [document.rulesOfConduct, docsTemplate.rulesOfConduct, [translate('descriptions.rulesOfConductShort')]],
+      [document.inCaseOfDanger, docsTemplate.inCaseOfDanger, [translate('descriptions.inCaseOfDangerShort')]],
+      [document.disposal, docsTemplate.disposal, [translate('descriptions.disposalShort')]],
     ]) {
       if (compareArrays(section[0], section[1])) {
         unmodified.push(section[2][0]);

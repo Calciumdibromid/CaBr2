@@ -5,8 +5,8 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Subscription } from 'rxjs';
 
 import { ConfigModel, configObservable } from '../../@core/models/config.model';
-import { II18nService, LocalizedStrings, LocalizedStringsHeader } from '../../@core/services/i18n/i18n.interface';
-import { GlobalModel } from '../../@core/models/global.model';
+import { AvailableLang } from '../../@core/services/i18n/i18n.interface';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-settings',
@@ -16,8 +16,7 @@ import { GlobalModel } from '../../@core/models/global.model';
 export class SettingsComponent implements OnInit, OnDestroy {
   readonly darkModeSwitched = new EventEmitter<boolean>();
 
-  strings!: LocalizedStrings;
-  languages!: LocalizedStringsHeader[];
+  langs!: AvailableLang[];
   form: FormGroup;
   subscriptions: Subscription[] = [];
 
@@ -25,11 +24,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<SettingsComponent>,
-    private globals: GlobalModel,
-    private i18nService: II18nService,
+    private translocoService: TranslocoService,
     private formBuilder: FormBuilder,
   ) {
-    this.globals.localizedStringsObservable.subscribe((strings) => (this.strings = strings));
     this.form = this.formBuilder.group({
       language: '',
       theme: '',
@@ -41,9 +38,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.i18nService.getAvailableLanguages().subscribe((languages) => (this.languages = languages)),
+    this.langs = this.translocoService.getAvailableLangs() as AvailableLang[];
 
+    this.subscriptions.push(
       configObservable.subscribe((config) => {
         this.form.patchValue(
           {
@@ -59,6 +56,7 @@ export class SettingsComponent implements OnInit, OnDestroy {
 
       this.f.language.valueChanges.subscribe((change) => {
         this.config.setLanguage(change);
+        this.translocoService.setActiveLang(change);
       }),
     );
   }

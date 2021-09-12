@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
 import { BrowserService } from './native/web/browser.service';
@@ -27,9 +28,12 @@ const configFactory = (nativeService: INativeService): IConfigService => {
   }
 };
 
-const i18nFactory = (nativeService: INativeService): II18nService => {
+const i18nFactory = (
+  nativeService: INativeService,
+  http: HttpClient,
+): II18nService => {
   if (environment.web) {
-    return new I18nWebService();
+    return new I18nWebService(http);
   } else {
     return new I18nService(nativeService);
   }
@@ -68,7 +72,7 @@ const providerFactory = (nativeService: INativeService, globals: GlobalModel): I
     {
       provide: II18nService,
       useFactory: i18nFactory,
-      deps: [INativeService],
+      deps: [INativeService, HttpClient],
     },
     {
       provide: ILoadSaveService,
