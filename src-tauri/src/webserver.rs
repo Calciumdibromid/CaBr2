@@ -51,12 +51,6 @@ pub async fn main() {
     .and(warp::get())
     .and_then(cabr2_config::webserver::handle_hazard_symbols);
 
-  let config_prompt_html = warp::path("promptHtml")
-    .and(warp::path::end())
-    .and(warp::post())
-    .and(warp::body::json())
-    .and_then(cabr2_config::webserver::handle_prompt_html);
-
   let config_available_languages = warp::path("availableLanguages")
     .and(warp::path::end())
     .and(warp::get())
@@ -68,10 +62,8 @@ pub async fn main() {
     .and(warp::body::json())
     .and_then(cabr2_config::webserver::handle_localized_strings);
 
-  let config = warp::path("config").and(
-    config_programversion
-      .or(config_hazard_symbols.or(config_prompt_html.or(config_available_languages.or(config_localized_strings)))),
-  );
+  let config = warp::path("config")
+    .and(config_programversion.or(config_hazard_symbols.or(config_available_languages.or(config_localized_strings))));
 
   let load_save_available_document_types = warp::path("availableDocumentTypes")
     .and(warp::path::end())

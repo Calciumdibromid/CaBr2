@@ -3,8 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import DocumentService from 'src/app/@core/services/document/document.service';
 import { GlobalModel } from 'src/app/@core/models/global.model';
-import { IConfigService } from 'src/app/@core/services/config/config.interface';
-import { ManualComponent } from '../manual/manual.component';
+import { INativeService } from 'src/app/@core/services/native/native.interface';
 import { SettingsComponent } from '../settings/settings.component';
 import TEMPLATES from '../../../assets/docsTemplate.json';
 
@@ -21,8 +20,8 @@ export class NavbarMenuComponent implements OnInit {
 
   constructor(
     public globals: GlobalModel,
+    private nativeService: INativeService,
     private documentService: DocumentService,
-    private configService: IConfigService,
     private dialog: MatDialog,
   ) {}
 
@@ -55,12 +54,6 @@ export class NavbarMenuComponent implements OnInit {
   }
 
   openManualDialog(): void {
-    this.configService.getPromptHtml('gettingStarted').subscribe((html) => {
-      this.dialog.open(ManualComponent, {
-        data: {
-          content: html,
-        },
-      });
-    });
+    this.nativeService.openUrl('http://cabr2.de/anleitung.html');
   }
 }

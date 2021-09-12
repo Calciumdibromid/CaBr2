@@ -174,32 +174,12 @@ pub async fn get_localized_strings(language: String) -> Result<Value> {
   Err(ConfigError::LocalizationNotFound(language))
 }
 
-pub async fn get_prompt_html(name: String) -> Result<String> {
-  // TODO embed images
-  let mut folder = get_prompt_folder();
-  match name.as_str() {
-    "gettingStarted" => {
-      folder.push("getting-started.html");
-      Ok(fs::read_to_string(folder).await?)
-    }
-    _ => Err(ConfigError::NoPromptHtml(name)),
-  }
-}
-
 #[inline]
 fn get_translation_folder() -> PathBuf {
   let mut translation_folder = DATA_DIR.clone();
   translation_folder.push("translations");
 
   translation_folder
-}
-
-#[inline]
-fn get_prompt_folder() -> PathBuf {
-  let mut prompt_folder = DATA_DIR.clone();
-  prompt_folder.push("prompts");
-
-  prompt_folder
 }
 
 #[cfg(not(debug_assertions))]

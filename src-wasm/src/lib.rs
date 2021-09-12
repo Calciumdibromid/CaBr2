@@ -126,6 +126,6 @@ where
       Ok(res) => Ok(res),
       Err(err) => Err(JsValue::from(err.to_string())),
     },
-    Err(err) => return Err(JsValue::from(err.to_string())),
+    Err(err) => Err(JsValue::from(err.to_string())),
   }
 }

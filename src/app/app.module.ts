@@ -19,7 +19,7 @@ import { ModifiableStringListComponent } from './components/modifiable-string-li
 import { NavbarMenuComponent } from './components/navbar-menu/navbar-menu.component';
 import { OnePagerComponent } from './onepager/onepager.component';
 import { PreviewComponent } from './components/preview/preview.component';
-import { ProgressDialogComponent } from './progress-dialog/progress-dialog.component';
+import { ProgressDialogComponent } from './components/progress-dialog/progress-dialog.component';
 import { ReportBugComponent } from './components/report-bug/report-bug.component';
 import { ScrollbuttonComponent } from './components/scrollbutton/scrollbutton.component';
 import { SearchComponent } from './components/search/search.component';

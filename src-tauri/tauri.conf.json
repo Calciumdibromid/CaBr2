@@ -26,7 +26,6 @@
       ],
       "resources": [
         "../ghs_symbols/",
-        "../prompts/",
         "../templates/",
         "../translations/"
       ],
