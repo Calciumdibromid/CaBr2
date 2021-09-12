@@ -1,16 +1,14 @@
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import Logger from 'src/app/@core/utils/logger';
 import * as wasm from 'cabr2_wasm';
+import Logger from 'src/app/@core/utils/logger';
 
 import { INativeService } from '../native.interface';
 
 const logger = new Logger('service.browser');
 
 wasm.init();
-
-const logCall = (name: string) => logger.error('called inaccessible tauri service: [', name, ']');
 
 @Injectable()
 export class BrowserService implements INativeService {
@@ -41,8 +39,9 @@ export class BrowserService implements INativeService {
     return of(options.filter ?? 'cb2');
   }
 
-  // this function should never be used
-  promisified<T>(cmd: string, args?: any): Observable<T> {
-    throw new Error('Method not implemented.');
+  /** This function should never be used! */
+  promisified<T>(cmd: string, _: any): Observable<T> {
+    logger.error('called inaccessible tauri service: [', cmd, ']');
+    throw new Error('Method not available.');
   }
 }

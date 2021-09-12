@@ -13,7 +13,7 @@ export class TauriService implements INativeService {
   openUrl = shell.open;
 
   open(options?: dialog.OpenDialogOptions): Observable<string> {
-    return from(dialog.open(options)) as Observable<string>;
+    return from(dialog.open(options) as Promise<string>);
   }
 
   save(options?: dialog.SaveDialogOptions): Observable<string> {

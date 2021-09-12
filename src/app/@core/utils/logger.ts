@@ -30,7 +30,7 @@ const logImplWeb = (level: LogLevel, path: string, ...messages: any[]) => {
 };
 
 const logImplTauri = (() => {
-  let cachedCalls: [string, any][] = [];
+  const cachedCalls: [string, any][] = [];
   let invoke = async (cmd: string, args: any): Promise<any> => {
     // defer actual logging until module finished loading
     cachedCalls.push([cmd, args]);

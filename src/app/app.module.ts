@@ -67,4 +67,4 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
   providers: [GlobalModel],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

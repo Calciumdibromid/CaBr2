@@ -56,6 +56,7 @@ export class ProgressDialogComponent implements OnInit {
 
   downloadPdf() {
     // if this function can be called the url has been set
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.nativeService.openUrl(this.pdfUrl!);
   }
 
