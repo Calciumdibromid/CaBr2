@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 import { Translation } from '@ngneat/transloco';
 
 import { Injectable } from '@angular/core';

@@ -1,9 +1,9 @@
 import { Component, HostBinding, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { first, switchMap } from 'rxjs/operators';
+import { translate, TranslocoService } from '@ngneat/transloco';
 import { DOCUMENT } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { translate } from '@ngneat/transloco';
 
 import {
   configChangeObservable,
@@ -40,8 +40,8 @@ export class AppComponent implements OnInit, OnDestroy {
     private global: GlobalModel,
     private configService: IConfigService,
     private alertService: AlertService,
-  ) {
-  }
+    private translocoService: TranslocoService,
+  ) {}
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
@@ -69,6 +69,11 @@ export class AppComponent implements OnInit, OnDestroy {
       ),
 
       configObservable.subscribe((config) => {
+        // config is undefined before first call of this function
+        if (!(this.config?.globalSection.language === config.globalSection.language)) {
+          this.translocoService.setActiveLang(config.globalSection.language);
+        }
+
         this.switchMode(config.globalSection.darkTheme);
 
         this.config = config;
