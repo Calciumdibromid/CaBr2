@@ -24,7 +24,7 @@ regex = { version = "1.4.6", optional = true }
 serde = { version = "1.0.130", features = ["derive"] }
 serde_json = { version = "1.0.67", optional = true }
 tauri = { version = "1.0.0-beta.8", default-features = false, optional = true }
-thiserror = "1.0.28"
+thiserror = "1.0.29"
 tokio = { version = "1.11.0", features = ["fs"], optional = true }
 uuid = { version = "0.8.2", features = ["serde", "v4"], optional = true }
 warp = { version = "0.3.1", features = [], optional = true }
