@@ -1,15 +1,17 @@
 <h1 mat-dialog-title>
   <mat-icon>picture_as_pdf</mat-icon>
-  <div *ngIf="!finished" class="title">PDF wird generiert...</div>
-  <div *ngIf="finished" class="title">PDF herunterladen</div>
+  <div *ngIf="!finished" class="title">{{ strings.dialogs.pdfGeneration.generatingPdf }}</div>
+  <div *ngIf="finished" class="title">{{ strings.dialogs.pdfGeneration.downloadPdf }}</div>
 </h1>
 
 <div *ngIf="finished; else loading">
-  <button mat-raised-button class="margin-bottom" (click)="downloadPdf()">Download</button>
+  <button mat-raised-button class="margin-bottom" (click)="downloadPdf()">
+    {{ strings.dialogs.pdfGeneration.download }}
+  </button>
 </div>
 
 <ng-template #loading>
-  <mat-spinner class="margin-bottom"></mat-spinner>
+  <app-loading class="margin-bottom"></app-loading>
 </ng-template>
 
 <mat-divider></mat-divider>

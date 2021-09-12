@@ -1,8 +1,7 @@
-import { BehaviorSubject, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { BehaviorSubject, from, Observable } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
-import { get_available_providers, search_results, search_suggestions, substance_data } from 'cabr2_wasm';
 import {
   Provider,
   ProviderMapping,
@@ -15,9 +14,8 @@ import {
 import { GlobalModel } from 'src/app/@core/models/global.model';
 import { IProviderService } from '../provider.interface';
 import { SubstanceData } from 'src/app/@core/models/substances.model';
+import * as wasm from 'cabr2_wasm';
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// TODO use vars and remove this lines
 @Injectable()
 export class ProviderService implements IProviderService {
   searchTypeMappingsSubject = new BehaviorSubject<SearchTypeMapping[]>([]);
@@ -37,43 +35,22 @@ export class ProviderService implements IProviderService {
   }
 
   getAvailableProviders(): Observable<Provider[]> {
-    return new Observable((sub) =>
-      get_available_providers()
-        .then((providers: string) => sub.next(JSON.parse(providers)))
-        .catch((err: any) => sub.error(err)),
-    );
+    return from(wasm.get_available_providers() as Promise<string>)
+      .pipe(map((providers) => JSON.parse(providers)));
   }
 
   searchSuggestions(provider: string, searchType: SearchType, query: string): Observable<string[]> {
-    return new Observable((sub) => {
-      search_suggestions(provider, query, JSON.stringify(searchType))
-        .then((res: string) => sub.next(JSON.parse(res)))
-        .catch((err: string) => {
-          console.error(err);
-          sub.error(err);
-        });
-    });
+    return from(wasm.search_suggestions(provider, query, JSON.stringify(searchType)) as Promise<string>)
+      .pipe(map((suggestions) => JSON.parse(suggestions)));
   }
 
   search(provider: string, args: SearchArguments): Observable<SearchResult[]> {
-    return new Observable((sub) => {
-      search_results(provider, JSON.stringify(args))
-        .then((res: string) => sub.next(JSON.parse(res)))
-        .catch((err: string) => {
-          console.error(err);
-          sub.error(err);
-        });
-    });
+    return from(wasm.search_results(provider, JSON.stringify(args)) as Promise<string>)
+      .pipe(map((results) => JSON.parse(results)));
   }
 
   substanceData(provider: string, identifier: string): Observable<SubstanceData> {
-    return new Observable((sub) => {
-      substance_data(provider, identifier)
-        .then((res: string) => sub.next(JSON.parse(res)))
-        .catch((err: string) => {
-          console.error(err);
-          sub.error(err);
-        });
-    });
+    return from(wasm.substance_data(provider, identifier) as Promise<string>)
+      .pipe(map((substance) => JSON.parse(substance)));
   }
 }

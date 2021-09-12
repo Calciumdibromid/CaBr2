@@ -67,7 +67,7 @@ pub struct Amount {
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum Unit {
-  Litre,
+  Liter,
   Milliliter,
   Microliter,
   Gram,
@@ -101,7 +101,7 @@ impl std::convert::From<Unit> for std::string::String {
   fn from(unit: Unit) -> Self {
     use Unit::*;
     match unit {
-      Litre => "l".into(),
+      Liter => "l".into(),
       Milliliter => "ml".into(),
       Microliter => "µl".into(),
       Gram => "g".into(),

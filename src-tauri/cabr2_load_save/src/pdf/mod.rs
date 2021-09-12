@@ -9,7 +9,7 @@ use std::{
   thread,
 };
 
-use cabr2_types::ProviderMapping;
+use async_trait::async_trait;
 use handlebars::Handlebars;
 use lazy_static::lazy_static;
 use lopdf::Document;
@@ -17,6 +17,7 @@ use serde::Serialize;
 use wkhtmltopdf::{Orientation, PageSize, PdfApplication, Size};
 
 use cabr2_config::DATA_DIR;
+use cabr2_types::ProviderMapping;
 
 use self::types::PDFCaBr2Document;
 use super::{
@@ -39,14 +40,18 @@ impl PDF {
   }
 }
 
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 impl Saver for PDF {
-  fn save_document(&self, document: CaBr2Document) -> Result<Vec<u8>> {
+  async fn save_document(&self, document: CaBr2Document) -> Result<Vec<u8>> {
     lazy_static! {
       static ref PDF_THREAD_CHANNEL: PDFThreadChannels = Arc::new(Mutex::new(init_pdf_application()));
     }
 
     let title = document.header.document_title.clone();
-    match render_doc(document.into()) {
+    // PDF generation may be a long running, cpu intensive task. This informs the runtime to move other waiting tasks
+    // to different threads.
+    match tokio::task::block_in_place(|| render_doc(document.into())) {
       Err(e) => Err(e),
       Ok(pages) => {
         let channels = PDF_THREAD_CHANNEL.lock().unwrap();
@@ -221,6 +226,7 @@ mod handlebar_helpers {
   }
 
   fn get_hazard_symbols() -> Result<GHSSymbols, impl std::error::Error> {
+    // calling `block_on` is possible, because we set the current thread to block at the beginning of the PDF generation.
     tokio::runtime::Handle::current().block_on(cabr2_config::get_hazard_symbols())
   }
 

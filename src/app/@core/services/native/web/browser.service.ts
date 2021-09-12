@@ -1,14 +1,14 @@
 import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import { init } from 'cabr2_wasm';
 import Logger from 'src/app/@core/utils/logger';
+import * as wasm from 'cabr2_wasm';
 
 import { INativeService } from '../native.interface';
 
 const logger = new Logger('service.browser');
 
-init();
+wasm.init();
 
 const logCall = (name: string) => logger.error('called inaccessible tauri service: [', name, ']');
 
@@ -19,7 +19,7 @@ export class BrowserService implements INativeService {
     return Promise.resolve();
   }
 
-  open(_?: any): Observable<string | string[]> {
+  open(_?: any): Observable<File> {
     const inputField = document.createElement('input');
     inputField.type = 'file';
     inputField.style.display = 'none';
@@ -37,12 +37,12 @@ export class BrowserService implements INativeService {
     });
   }
 
-  save(options?: any): Observable<string | string[]> {
+  save(options?: any): Observable<string> {
     return of(options.filter ?? 'cb2');
   }
 
-  promisified<T>(_cmd: string, _args?: any): Observable<T> {
-    logCall('promisified');
-    return new Observable();
+  // this function should never be used
+  promisified<T>(cmd: string, args?: any): Observable<T> {
+    throw new Error('Method not implemented.');
   }
 }

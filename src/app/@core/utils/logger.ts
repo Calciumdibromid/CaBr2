@@ -8,60 +8,58 @@ export enum LogLevel {
   ERROR = 'ERROR',
 }
 
-const createLog = () => {
-  if (environment.web) {
-    return (level: LogLevel, path: string, ...messages: any[]) => {
-      let fn;
-      let prefix;
-      switch (level) {
-        case LogLevel.TRACE:
-          fn = console.log;
-          prefix = '[TRACE]';
-          break;
+const logImplWeb = (level: LogLevel, path: string, ...messages: any[]) => {
+  let fn;
+  switch (level) {
+    case LogLevel.TRACE:
+    case LogLevel.DEBUG:
+    case LogLevel.INFO:
+      fn = console.log;
+      break;
 
-        case LogLevel.DEBUG:
-          fn = console.log;
-          prefix = '[DEBUG]';
-          break;
+    case LogLevel.WARNING:
+      fn = console.warn;
+      break;
 
-        case LogLevel.INFO:
-          fn = console.log;
-          prefix = '[INFO]';
-          break;
-
-        case LogLevel.WARNING:
-          fn = console.warn;
-          prefix = '[WARNING]';
-          break;
-
-        case LogLevel.ERROR:
-          fn = console.error;
-          prefix = '[ERROR]';
-          break;
-      }
-
-      fn(prefix, `[${path}]`, ...messages);
-    };
-  } else {
-    let invoke = async (cmd: string, args: any): Promise<any> => {
-      // defer actual logging until module finished loading
-      setTimeout(() => {
-        invoke(cmd, args).catch((err) => console.error(err));
-      }, 1);
-    };
-    import('@tauri-apps/api/tauri').then((tauri) => (invoke = tauri.invoke));
-
-    return (level: LogLevel, path: string, ...messages: any[]) => {
-      invoke('plugin:cabr2_logger|log', {
-        level,
-        path,
-        messages,
-      }).catch((err) => console.error(err));
-    };
+    case LogLevel.ERROR:
+      fn = console.error;
+      break;
   }
+
+  fn(`[${level}]`, `[${path}]`, ...messages);
 };
 
-const log = createLog();
+const logImplTauri = (() => {
+  let cachedCalls: [string, any][] = [];
+  let invoke = async (cmd: string, args: any): Promise<any> => {
+    // defer actual logging until module finished loading
+    cachedCalls.push([cmd, args]);
+  };
+  import('@tauri-apps/api/tauri').then((tauri) => {
+    invoke = tauri.invoke;
+    cachedCalls.forEach(([cmd, args]) => {
+      invoke(cmd, args);
+    });
+  });
+
+  return (level: LogLevel, path: string, ...messages: any[]) => {
+    invoke('plugin:cabr2_logger|log', {
+      level,
+      path,
+      messages,
+    }).catch((err) => {
+      console.error(err);
+    });
+  };
+})();
+
+const log = (() => {
+  if (environment.web) {
+    return logImplWeb;
+  } else {
+    return logImplTauri;
+  }
+})();
 
 /**
  * This class provides methods that call the logging functions in the backend.

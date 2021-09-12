@@ -23,7 +23,7 @@ export interface ProgressDialogData {
 export class ProgressDialogComponent implements OnInit {
   strings!: LocalizedStrings;
 
-  pdfUrl: string | undefined;
+  pdfUrl?: string;
 
   finished = false;
 
@@ -55,9 +55,8 @@ export class ProgressDialogComponent implements OnInit {
   }
 
   downloadPdf() {
-    if (this.pdfUrl) {
-      this.nativeService.openUrl(this.pdfUrl);
-    }
+    // if this function can be called the url has been set
+    this.nativeService.openUrl(this.pdfUrl!);
   }
 
   setPdfUrl(url: string) {

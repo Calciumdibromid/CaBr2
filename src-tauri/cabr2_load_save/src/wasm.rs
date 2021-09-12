@@ -11,11 +11,11 @@ pub async fn init(provider_mapping: ProviderMapping) {
 }
 
 pub async fn save_document(file_type: String, document: CaBr2Document) -> Result<Vec<u8>> {
-  handler::save_document(file_type.as_str(), document).await
+  handler::save_document(&file_type, document).await
 }
 
-pub async fn load_document(file_type: String, doc: Vec<u8>) -> Result<CaBr2Document> {
-  handler::load_document(&file_type, doc).await
+pub async fn load_document(file_type: String, file: Vec<u8>) -> Result<CaBr2Document> {
+  handler::load_document(&file_type, file).await
 }
 
 pub async fn get_available_document_types() -> DocumentTypes {

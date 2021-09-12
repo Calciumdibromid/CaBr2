@@ -1,15 +1,15 @@
-import { Observable, Subscriber } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { from, Observable, Subscriber } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { CaBr2Document, DocumentTypes } from '../loadSave.model';
-import { get_available_document_types, load_document, save_document } from 'cabr2_wasm';
 import { environment } from 'src/environments/environment';
 import { ILoadSaveService } from '../loadSave.interface';
 import Logger from 'src/app/@core/utils/logger';
 import { ProgressDialogComponent } from 'src/app/progress-dialog/progress-dialog.component';
+import * as wasm from 'cabr2_wasm';
 
 const logger = new Logger('loadSaveService.web');
 
@@ -24,7 +24,7 @@ const SERVER_URL =
 
 @Injectable()
 export class LoadSaveService implements ILoadSaveService {
-  constructor(private httpClient: HttpClient, private dialog: MatDialog) {}
+  constructor(private httpClient: HttpClient, private dialog: MatDialog) { }
 
   saveDocument(fileType: string, _: string, document: CaBr2Document): Observable<string> {
     return new Observable((sub) => {
@@ -48,15 +48,19 @@ export class LoadSaveService implements ILoadSaveService {
 
         case 'cb2':
           const blob = new Blob([JSON.stringify(document)], { type: 'text/plain' });
-          downloadFile(blob, fileType, sub);
+          downloadFile(blob, fileType);
+          sub.next();
           break;
 
         default:
           logger.debug('saving file with wasm:', fileType);
-          save_document(fileType, JSON.stringify(document))
+          wasm.save_document(fileType, JSON.stringify(document))
             .then((contents: string) => {
+              // `atob` is deprecated but `Buffer.from()` results in optimization problems with Angular.
+              // I'm pretty sure `atob` won't be removed from browsers in the forseeable future so it should be ok ^^.
               const blob2 = new Blob([atob(contents)], { type: 'application/octet-stream' });
-              downloadFile(blob2, fileType, sub);
+              downloadFile(blob2, fileType);
+              sub.next();
             })
             .catch((err: any) => sub.error(err));
           break;
@@ -64,8 +68,7 @@ export class LoadSaveService implements ILoadSaveService {
     });
   }
 
-  loadDocument(filename: string): Observable<CaBr2Document> {
-    const file = filename as unknown as File;
+  loadDocument(file: File): Observable<CaBr2Document> {
     const fileType = getFileType(file);
 
     const reader = new FileReader();
@@ -78,11 +81,11 @@ export class LoadSaveService implements ILoadSaveService {
         });
 
       default:
-        logger.debug('opening file with wasm: ', file.name);
+        logger.debug('opening file with wasm:', file.name);
         return new Observable((sub) => {
           reader.onload = () => {
             const res = reader.result as ArrayBuffer;
-            load_document(fileType, new Uint8Array(res))
+            wasm.load_document(fileType, new Uint8Array(res))
               .then((contents: string) => sub.next(JSON.parse(contents)))
               .catch((err: any) => sub.error(err));
           };
@@ -92,11 +95,8 @@ export class LoadSaveService implements ILoadSaveService {
   }
 
   getAvailableDocumentTypes(): Observable<DocumentTypes> {
-    return new Observable((sub) => {
-      get_available_document_types()
-        .then((types: string) => sub.next(JSON.parse(types)))
-        .catch((err: any) => sub.error(err));
-    });
+    return from(wasm.get_available_document_types() as Promise<string>)
+      .pipe(map((types) => JSON.parse(types)));
   }
 }
 
@@ -105,13 +105,12 @@ const getFileType = (file: File): string => {
   return fileTypeSplit[fileTypeSplit.length - 1];
 };
 
-const downloadFile = (contents: Blob, fileType: string, sub: Subscriber<string>) => {
+const downloadFile = (contents: Blob, fileType: string) => {
   const anchor = document.createElement('a');
   anchor.download = 'Unbenannt.' + fileType;
   anchor.href = (window.webkitURL || window.URL).createObjectURL(contents);
   anchor.dataset.downloadurl = [contents.type, anchor.download, anchor.href].join(':');
   anchor.click();
-  sub.next();
 };
 
 interface SaveDocumentResponse {

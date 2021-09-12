@@ -69,7 +69,7 @@ members = [
   "cabr2_search",
 ]
 
-# [profile.release]
-# panic = "abort"
-# codegen-units = 1
-# lto = true
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true

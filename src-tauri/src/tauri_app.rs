@@ -6,8 +6,9 @@ pub fn main() {
 
   let config = cabr2_config::plugin::Config::default();
   let search = async_runtime::block_on(cabr2_search::plugin::Search::new());
-  let load_save =
-    cabr2_load_save::plugin::LoadSave::new(async_runtime::block_on(cabr2_search::plugin::get_provider_mapping()));
+
+  let provider_mapping = async_runtime::block_on(cabr2_search::plugin::get_provider_mapping());
+  let load_save = async_runtime::block_on(cabr2_load_save::plugin::LoadSave::new(provider_mapping));
 
   log::debug!("initializing tauri application...");
 

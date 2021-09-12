@@ -32,7 +32,7 @@ gestis = [ "roxmltree", "reqwest" ]
 gestis_helper = [ "gestis" ]
 tauri_plugin = [ "tauri", "tokio" ]
 webserver = [ "warp", "tokio", "cabr2_types/webserver" ]
-wasm = []
+wasm = [ "chrono/wasmbind" ]
 default = []
 
 [[bin]]

@@ -128,7 +128,7 @@ export class MenubarComponent implements OnInit {
       .pipe(first())
       .subscribe(
         (path) => {
-          this.loadSaveService.loadDocument(path as string).subscribe(
+          this.loadSaveService.loadDocument(path).subscribe(
             (res) => this.documentToModel(res),
             (err) => {
               logger.error('loading file failed:', err);

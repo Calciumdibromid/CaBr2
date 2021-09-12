@@ -14,9 +14,11 @@ base64 = "0.13.0"
 cabr2_load_save = { path = "../src-tauri/cabr2_load_save/", features = ["wasm"] }
 cabr2_search = { path = "../src-tauri/cabr2_search/", features = ["wasm"] }
 cabr2_types = { path = "../src-tauri/cabr2_types/" }
+cfg-if = "1.0.0"
 console_error_panic_hook = {version = "0.1.6", optional = true}
 console_log = { version = "0.2.0", features = ["color"] }
 log = "0.4.14"
+serde = "1.0.130"
 serde_json = "1.0.64"
 wasm-bindgen = { version = "0.2.74", features = ["serde-serialize"] }
 wasm-bindgen-futures = "0.4.24"

@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use tauri::{async_runtime, plugin::Plugin, Invoke, Runtime, Window};
+use tauri::{plugin::Plugin, Invoke, Runtime, Window};
 
 use cabr2_types::ProviderMapping;
 use tokio::fs;
@@ -77,8 +77,8 @@ pub struct LoadSave<R: Runtime> {
 }
 
 impl<R: Runtime> LoadSave<R> {
-  pub fn new(provider_mapping: ProviderMapping) -> Self {
-    async_runtime::block_on(init_handlers(provider_mapping));
+  pub async fn new(provider_mapping: ProviderMapping) -> Self {
+    init_handlers(provider_mapping).await;
     LoadSave {
       invoke_handler: Box::new(tauri::generate_handler![
         save_document,

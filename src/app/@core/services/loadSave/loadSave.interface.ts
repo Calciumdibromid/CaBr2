@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 export abstract class ILoadSaveService {
   abstract saveDocument(fileType: string, filename: string, document: CaBr2Document): Observable<string>;
 
-  abstract loadDocument(filename: string): Observable<CaBr2Document>;
+  abstract loadDocument(filename: string | File): Observable<CaBr2Document>;
 
   abstract getAvailableDocumentTypes(): Observable<DocumentTypes>;
 }

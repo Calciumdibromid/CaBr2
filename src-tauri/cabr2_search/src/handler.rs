@@ -1,18 +1,22 @@
-#[cfg(feature = "wasm")]
-use std::sync::RwLock;
 use std::{borrow::Borrow, collections::HashMap};
 
+use cabr2_types::SubstanceData;
 use cfg_if::cfg_if;
 use lazy_static::lazy_static;
-#[cfg(not(feature = "wasm"))]
-use tokio::sync::RwLock;
-
-use cabr2_types::SubstanceData;
 
 use crate::{
   error::{Result, SearchError},
   types::{Provider, ProviderInfo, SearchArguments, SearchResponse, SearchType},
 };
+
+// because tokio doesn't fully support wasm we have to use two different implementations for these locks
+cfg_if! {
+  if #[cfg(feature = "wasm")] {
+    use std::sync::RwLock;
+  } else {
+    use tokio::sync::RwLock;
+  }
+}
 
 lazy_static! {
   pub static ref REGISTERED_PROVIDERS: RwLock<HashMap<&'static str, Box<dyn Provider + Send + Sync>>> =
@@ -23,35 +27,39 @@ lazy_static! {
 const USER_AGENT: &str = concat!("cabr2/v", env!("CARGO_PKG_VERSION"));
 
 pub async fn init_providers() -> Result<()> {
-  let mut _providers;
+  log::trace!("initializing providers");
+  // let mut _providers;
   cfg_if! {
-    if #[cfg(not(feature = "wasm"))]{
-      _providers = REGISTERED_PROVIDERS.write().await;
+    if #[cfg(feature = "wasm")] {
+      let mut _providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
     } else {
-      _providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+      let mut _providers = REGISTERED_PROVIDERS.write().await;
     }
   }
 
   #[cfg(feature = "gestis")]
   {
-    #[cfg(not(feature = "wasm"))]
-    let agent = reqwest::ClientBuilder::new().user_agent(USER_AGENT).build()?;
-    #[cfg(feature = "wasm")]
-    let agent = reqwest::ClientBuilder::new().build()?;
+    cfg_if! {
+      if #[cfg(feature = "wasm")] {
+        let agent = reqwest::ClientBuilder::new().build()?;
+      } else {
+        let agent = reqwest::ClientBuilder::new().user_agent(USER_AGENT).build()?;
+      }
+    }
 
     _providers.insert("gestis", Box::new(crate::gestis::Gestis::new(agent)));
   }
 
+  log::trace!("dropping provider lock...");
   Ok(())
 }
 
 pub async fn get_provider_mapping() -> HashMap<String, String> {
-  let providers;
   cfg_if! {
-    if #[cfg(not(feature = "wasm"))]{
-      providers = REGISTERED_PROVIDERS.write().await;
+    if #[cfg(feature = "wasm")] {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
     } else {
-      providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+      let providers = REGISTERED_PROVIDERS.read().await;
     }
   }
 
@@ -64,12 +72,11 @@ pub async fn get_provider_mapping() -> HashMap<String, String> {
 }
 
 pub async fn get_available_providers() -> Vec<ProviderInfo> {
-  let providers;
   cfg_if! {
-    if #[cfg(not(feature = "wasm"))]{
-      providers = REGISTERED_PROVIDERS.write().await;
+    if #[cfg(feature = "wasm")] {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
     } else {
-      providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+      let providers = REGISTERED_PROVIDERS.read().await;
     }
   }
 
@@ -98,12 +105,11 @@ pub async fn get_quick_search_suggestions(
     return Ok(vec![]);
   }
 
-  let providers;
   cfg_if! {
-    if #[cfg(not(feature = "wasm"))]{
-      providers = REGISTERED_PROVIDERS.write().await;
+    if #[cfg(feature = "wasm")] {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
     } else {
-      providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+      let providers = REGISTERED_PROVIDERS.read().await;
     }
   }
 
@@ -128,12 +134,11 @@ pub async fn get_search_results(provider: String, arguments: SearchArguments) ->
     return Ok(vec![]);
   }
 
-  let providers;
   cfg_if! {
-    if #[cfg(not(feature = "wasm"))]{
-      providers = REGISTERED_PROVIDERS.write().await;
+    if #[cfg(feature = "wasm")] {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
     } else {
-      providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+      let providers = REGISTERED_PROVIDERS.read().await;
     }
   }
 
@@ -145,12 +150,11 @@ pub async fn get_search_results(provider: String, arguments: SearchArguments) ->
 }
 
 pub async fn get_substance_data(provider: String, identifier: String) -> Result<SubstanceData> {
-  let providers;
   cfg_if! {
-    if #[cfg(not(feature = "wasm"))]{
-      providers = REGISTERED_PROVIDERS.write().await;
+    if #[cfg(feature = "wasm")] {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
     } else {
-      providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+      let providers = REGISTERED_PROVIDERS.read().await;
     }
   }
 

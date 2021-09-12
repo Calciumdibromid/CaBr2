@@ -114,8 +114,6 @@ impl Provider for Gestis {
   }
 
   async fn get_substance_data(&self, identifier: String) -> Result<cabr2_types::SubstanceData> {
-    use chrono::TimeZone;
-
     let (json, url) = self.get_article(identifier).await?;
 
     let data = xml_parser::parse_response(&json)?;
@@ -148,8 +146,7 @@ impl Provider for Gestis {
       source: Source {
         provider: "gestis".into(),
         url,
-        last_updated: chrono::Utc.ymd(1970, 1, 1).and_hms(0, 0, 0),
-        // last_updated: chrono::Utc::now(),
+        last_updated: chrono::Utc::now(),
       },
 
       checked: false,
