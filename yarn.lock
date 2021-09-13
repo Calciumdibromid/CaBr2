@@ -1409,10 +1409,10 @@
     cosmiconfig "6.0.0"
     tslib "^1.9.0"
 
-"@ngneat/transloco@2.23.1":
-  version "2.23.1"
-  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-2.23.1.tgz#b8a51aee02071a81ea3bcdf7217b8c0dbc174559"
-  integrity sha512-q6Q67vrpbomOH/mjYCElhYB8h+TqwT3tNbtYLDISr6TzhPnw4qZi0klrqN+cMYqlL6pS9x5gssoYJOKT2VDxfg==
+"@ngneat/transloco@2.23.2":
+  version "2.23.2"
+  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-2.23.2.tgz#791496e73c8cce1ef7f97edff5a174adec820f30"
+  integrity sha512-qzGKJJCOuz+JeAJyEnMEzf77zW5WCRGnbvdDqMmjtqDYMQNdyluJn7MG3S7/EvBr9gkUpu5MJTeXDjE+fzw8AA==
   dependencies:
     "@ngneat/transloco-utils" "^1.0.6"
     flat "5.0.2"
@@ -7263,7 +7263,6 @@ minipass-fetch@^1.3.0, minipass-fetch@^1.3.2:
   resolved "https://registry.yarnpkg.com/minipass-fetch/-/minipass-fetch-1.3.3.tgz#34c7cea038c817a8658461bf35174551dce17a0a"
   integrity sha512-akCrLDWfbdAWkMLBxJEeWTdNsjML+dt5YgOI4gJ53vuO0vrmYQkUPxa6j6V65s9CcePIr2SSWqjT2EcrNseryQ==
   dependencies:
-    encoding "^0.1.12"
     minipass "^3.1.0"
     minipass-sized "^1.0.3"
     minizlib "^2.0.0"
