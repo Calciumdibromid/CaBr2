@@ -11,6 +11,12 @@
       "save": "Save",
       "close": "Close"
     },
+    "tooltips": {
+      "header": "Header of the safety sheet",
+      "search": "Search and selected substances",
+      "securitythings": "Editing of the back of the safety sheet",
+      "preview": "Preview of the safety sheet"
+    },
     "menu": {
       "newDocument": "New safety datasheet",
       "loadFile": "Open safety datasheet",
