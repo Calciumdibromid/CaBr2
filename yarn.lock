@@ -1409,10 +1409,10 @@
     cosmiconfig "6.0.0"
     tslib "^1.9.0"
 
-"@ngneat/transloco@2.23.1":
-  version "2.23.1"
-  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-2.23.1.tgz#b8a51aee02071a81ea3bcdf7217b8c0dbc174559"
-  integrity sha512-q6Q67vrpbomOH/mjYCElhYB8h+TqwT3tNbtYLDISr6TzhPnw4qZi0klrqN+cMYqlL6pS9x5gssoYJOKT2VDxfg==
+"@ngneat/transloco@2.23.2":
+  version "2.23.2"
+  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-2.23.2.tgz#791496e73c8cce1ef7f97edff5a174adec820f30"
+  integrity sha512-qzGKJJCOuz+JeAJyEnMEzf77zW5WCRGnbvdDqMmjtqDYMQNdyluJn7MG3S7/EvBr9gkUpu5MJTeXDjE+fzw8AA==
   dependencies:
     "@ngneat/transloco-utils" "^1.0.6"
     flat "5.0.2"
