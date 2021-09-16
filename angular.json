@@ -68,6 +68,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.web.ts"
+                },
+                {
+                  "replace": "src/app/@core/services/service.module.ts",
+                  "with": "src/app/@core/services/web.service.module.ts"
                 }
               ],
               "assets": [
@@ -90,6 +94,10 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.web.prod.ts"
+                },
+                {
+                  "replace": "src/app/@core/services/service.module.ts",
+                  "with": "src/app/@core/services/web.service.module.ts"
                 }
               ],
               "optimization": true,
