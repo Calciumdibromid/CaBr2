@@ -12,6 +12,4 @@ export abstract class IConfigService {
   abstract saveConfig(config: ConfigModel): Observable<void>;
 
   abstract getHazardSymbols(): Observable<GHSSymbols>;
-
-  abstract getPromptHtml(name: string): Observable<string>;
 }

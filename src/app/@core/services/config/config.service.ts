@@ -39,8 +39,4 @@ export class ConfigService implements IConfigService {
       }),
     );
   }
-
-  getPromptHtml(name: string): Observable<string> {
-    return this.nativeService.promisified('plugin:cabr2_config|get_prompt_html', { name });
-  }
 }

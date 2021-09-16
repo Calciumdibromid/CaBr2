@@ -27,19 +27,6 @@ pub async fn handle_program_version() -> Result<impl Reply, Infallible> {
   ))
 }
 
-pub async fn handle_prompt_html(body: PromptHtmlBody) -> Result<impl Reply, Infallible> {
-  match handler::get_prompt_html(body.name).await {
-    Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
-    Err(err) => {
-      log::error!("{:?}", err);
-      Ok(generate_error_reply(
-        StatusCode::INTERNAL_SERVER_ERROR,
-        "failed to load prompt".to_string(),
-      ))
-    }
-  }
-}
-
 pub async fn handle_available_languages() -> Result<impl Reply, Infallible> {
   match handler::get_available_languages().await {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),

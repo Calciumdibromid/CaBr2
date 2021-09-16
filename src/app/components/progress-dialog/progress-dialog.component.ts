@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscriber } from 'rxjs';
 
-import { INativeService } from '../@core/services/native/native.interface';
+import { INativeService } from '../../@core/services/native/native.interface';
 
 interface SaveDocumentResponse {
   downloadUrl: string;

@@ -7,8 +7,6 @@ import { GHSSymbols } from 'src/app/@core/models/global.model';
 
 import { IConfigService } from '../config.interface';
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// TODO use vars and remove this lines
 @Injectable()
 export class ConfigWebService implements IConfigService {
   getProgramVersion(): Observable<string> {
@@ -42,9 +40,5 @@ export class ConfigWebService implements IConfigService {
         ['ghs09', 'ghs_symbols/ghs09.png'],
       ]),
     );
-  }
-
-  getPromptHtml(name: string): Observable<string> {
-    throw new Error('Method not implemented.');
   }
 }

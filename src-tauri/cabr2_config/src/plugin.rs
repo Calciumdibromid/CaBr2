@@ -37,11 +37,6 @@ pub async fn get_localized_strings(language: String) -> Result<Value> {
   handler::get_localized_strings(language).await
 }
 
-#[tauri::command]
-pub async fn get_prompt_html(name: String) -> Result<String> {
-  handler::get_prompt_html(name).await
-}
-
 pub struct Config<R: Runtime> {
   invoke_handler: Box<dyn Fn(Invoke<R>) + Send + Sync>,
 }
@@ -56,7 +51,6 @@ impl<R: Runtime> std::default::Default for Config<R> {
         get_hazard_symbols,
         get_available_languages,
         get_localized_strings,
-        get_prompt_html,
       ]),
     }
   }

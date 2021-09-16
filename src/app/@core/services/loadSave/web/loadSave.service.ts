@@ -9,7 +9,7 @@ import { CaBr2Document, DocumentTypes } from '../loadSave.model';
 import { environment } from 'src/environments/environment';
 import { ILoadSaveService } from '../loadSave.interface';
 import Logger from 'src/app/@core/utils/logger';
-import { ProgressDialogComponent } from 'src/app/progress-dialog/progress-dialog.component';
+import { ProgressDialogComponent } from 'src/app/components/progress-dialog/progress-dialog.component';
 
 const logger = new Logger('loadSaveService.web');
 
