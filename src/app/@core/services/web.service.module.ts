@@ -1,49 +1,47 @@
-import { DomSanitizer } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
-import { ConfigService } from './config/config.service';
+import { BrowserService } from './native/web/browser.service';
+import { ConfigWebService } from './config/web/config.service';
 import DocumentService from './document/document.service';
-import { GlobalModel } from '../models/global.model';
-import { I18nService } from './i18n/i18n.service';
+import { I18nWebService } from './i18n/web/i18n.service';
 import { IConfigService } from './config/config.interface';
 import { II18nService } from './i18n/i18n.interface';
 import { ILoadSaveService } from './loadSave/loadSave.interface';
 import { INativeService } from './native/native.interface';
 import { IProviderService } from './provider/provider.interface';
-import { LoadSaveService } from './loadSave/loadSave.service';
+import { LoadSaveService } from './loadSave/web/loadSave.service';
 import Logger from '../utils/logger';
-import { ProviderService } from './provider/provider.service';
-import { TauriService } from './native/tauri.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ProviderService } from './provider/web/provider.service';
 
 const logger = new Logger('service.module');
 
-logger.trace('loading services for tauri environment');
+logger.trace('loading services for web environment');
 
 @NgModule({
   providers: [
     {
       provide: IConfigService,
-      useClass: ConfigService,
-      deps: [INativeService, DomSanitizer],
+      useClass: ConfigWebService,
     },
     {
       provide: II18nService,
-      useClass: I18nService,
-      deps: [INativeService],
+      useClass: I18nWebService,
+      deps: [HttpClient],
     },
     {
       provide: ILoadSaveService,
       useClass: LoadSaveService,
-      deps: [INativeService],
+      deps: [HttpClient, MatDialog],
     },
     {
       provide: INativeService,
-      useClass: TauriService,
+      useClass: BrowserService,
     },
     {
       provide: IProviderService,
       useClass: ProviderService,
-      deps: [INativeService, GlobalModel],
     },
     DocumentService,
   ],
