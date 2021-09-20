@@ -1,10 +1,13 @@
-mod types;
-mod xml_parser;
+pub mod types;
+pub mod xml_parser;
+
+use async_trait::async_trait;
+use reqwest::Client;
+use serde::de::DeserializeOwned;
 
 use cabr2_types::{Data, Source, SubstanceData};
-use types::GestisResponse;
-use ureq::Agent;
 
+use self::types::GestisResponse;
 use crate::{
   error::{Result, SearchError},
   types::{Provider, SearchArguments, SearchResponse, SearchType},
@@ -15,33 +18,71 @@ const SEARCH_SUGGESTIONS: &str = "search_suggestions";
 const SEARCH: &str = "search";
 const ARTICLE: &str = "article";
 
+// TODO: add runtime for async requests
 pub struct Gestis {
-  agent: Agent,
+  client: Client,
 }
 
 impl Gestis {
-  pub fn new() -> Gestis {
-    #[cfg(not(test))]
-    let user_agent = &format!("cabr2 v{}", env!("CARGO_PKG_VERSION"));
-    #[cfg(test)]
-    let user_agent = "cabr2 testing";
-    Gestis {
-      agent: Agent::new()
-        // don't ask, just leave it
-        // https://gestis.dguv.de/search -> webpack:///./src/api.ts?
-        .auth_kind("Bearer", "dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd")
-        .set("User-Agent", user_agent)
-        .build(),
+  pub fn new(client: Client) -> Gestis {
+    Gestis { client }
+  }
+
+  async fn get_article(&self, identifier: String) -> Result<(GestisResponse, String)> {
+    let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, identifier);
+    let res = self.make_request(&url).await?;
+
+    Ok((res, url))
+  }
+
+  async fn make_request<T: DeserializeOwned>(&self, url: &str) -> Result<T> {
+    log::trace!("making request to: {}", url);
+    let req = self
+      .client
+      .get(url)
+      // don't ask, just leave it
+      // https://gestis.dguv.de/search -> webpack:///./src/api.ts?
+      .bearer_auth("dddiiasjhduuvnnasdkkwUUSHhjaPPKMasd");
+
+    match req.send().await {
+      Ok(response) => {
+        let code = response.status();
+        log::debug!(
+          "{} {} - {}",
+          code.as_u16(),
+          code.canonical_reason().unwrap_or_default(),
+          &url
+        );
+        match response.json().await {
+          Ok(json) => Ok(json),
+          Err(err) => {
+            log::error!("{:?}", err);
+            Err(SearchError::JsonError)
+          }
+        }
+      }
+      Err(err) => {
+        log::error!("error when requesting url: {} -> {:?}", &url, err);
+        if let Some(code) = err.status() {
+          return match code.as_u16() {
+            429 => Err(SearchError::RateLimit),
+            _ => Err(SearchError::RequestError(code.as_u16())),
+          };
+        }
+        Err(SearchError::Logged)
+      }
     }
   }
 }
 
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 impl Provider for Gestis {
   fn get_name(&self) -> String {
     "Gestis".into()
   }
 
-  fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> Result<Vec<String>> {
+  async fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> Result<Vec<String>> {
     let url = format!(
       "{}/{}/de?{}={}",
       BASE_URL,
@@ -49,12 +90,11 @@ impl Provider for Gestis {
       search_type.as_str(),
       pattern
     );
-    let res = make_request(&self.agent, &url)?;
 
-    Ok(res.into_json_deserialize()?)
+    Ok(self.make_request(&url).await?)
   }
 
-  fn get_search_results(&self, arguments: SearchArguments) -> Result<Vec<SearchResponse>> {
+  async fn get_search_results(&self, arguments: SearchArguments) -> Result<Vec<SearchResponse>> {
     let args: Vec<String> = arguments
       .arguments
       .into_iter()
@@ -68,16 +108,13 @@ impl Provider for Gestis {
       args.join("&"),
       arguments.exact,
     );
-    let res = make_request(&self.agent, &url)?;
+    let res = self.make_request(&url).await?;
 
-    Ok(res.into_json_deserialize()?)
+    Ok(res)
   }
 
-  fn get_substance_data(&self, identifier: String) -> Result<cabr2_types::SubstanceData> {
-    let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, identifier);
-    let res = make_request(&self.agent, &url)?;
-
-    let json: GestisResponse = res.into_json_deserialize()?;
+  async fn get_substance_data(&self, identifier: String) -> Result<cabr2_types::SubstanceData> {
+    let (json, url) = self.get_article(identifier).await?;
 
     let data = xml_parser::parse_response(&json)?;
 
@@ -119,17 +156,6 @@ impl Provider for Gestis {
   }
 }
 
-pub fn make_request(agent: &Agent, url: &str) -> Result<ureq::Response> {
-  let res = agent.get(&url).call();
-  log::debug!("{} - {}", res.status_line(), &url);
-
-  match res.status() {
-    200..=399 => Ok(res),
-    429 => Err(SearchError::RateLimit),
-    _ => Err(SearchError::RequestError(res.status())),
-  }
-}
-
 impl SearchType {
   /// Returns the search type as the string that is used in the query parameters
   pub fn as_str(&self) -> &'static str {
@@ -139,46 +165,5 @@ impl SearchType {
       SearchType::Numbers => "nummern",
       SearchType::FullText => "volltextsuche",
     }
-  }
-}
-
-#[cfg(test)]
-mod tests {
-  use lazy_static::lazy_static;
-
-  use super::*;
-
-  lazy_static! {
-    static ref GESTIS: Gestis = Gestis::new();
-  }
-
-  #[test]
-  fn test_suggestions_chemical_name() {
-    assert_eq!(
-      GESTIS
-        .get_quick_search_suggestions(SearchType::ChemicalName, "cobaltnit".into())
-        .unwrap(),
-      vec!["cobaltnitrat"]
-    );
-  }
-
-  #[test]
-  fn test_suggestions_chemical_formula() {
-    assert_eq!(
-      GESTIS
-        .get_quick_search_suggestions(SearchType::ChemicalFormula, "h2o".into())
-        .unwrap(),
-      vec!["h2o", "h2o2", "h2o2sr", "h2o2zn", "h2o3s", "h2o3se", "h2o4s", "h2o4se", "h2o4w", "h2o7s2"]
-    );
-  }
-
-  #[test]
-  fn test_suggestions_numbers() {
-    assert_eq!(
-      GESTIS
-        .get_quick_search_suggestions(SearchType::Numbers, "5340".into())
-        .unwrap(),
-      vec!["5340", "53404-28-7", "53408-94-9"]
-    );
   }
 }

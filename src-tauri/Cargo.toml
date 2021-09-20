@@ -5,7 +5,7 @@ description = 'Generate "experiment wise safety sheets" in compliance to Europea
 authors = [
   "Epsilon_02 <epsilon_02@mailbox.org>",
   "crapStone <crapstone01@gmail.com>",
-  "6543 <6543@obermui.de>"
+  "6543 <6543@obermui.de>",
 ]
 license = "GPLv3+"
 repository = "https://github.com/Calciumdibromid/CaBr2/"
@@ -13,39 +13,52 @@ default-run = "cabr2"
 edition = "2018"
 build = "src/build.rs"
 
-[package.metadata.bundle]
-name = "Calciumdibromid"
-identifier = "de.cabr2"
-icon = [ "32x32.png", "128x128.png", "128x128@2x.png" ]
-category = "Education"
-resources = [ "ghs_symbols/*.png" ]
+[build-dependencies]
+tauri-build = { version = "1.0.0-beta.4" }
 
 [dependencies]
 cabr2_config = { path = "./cabr2_config/" }
 cabr2_load_save = { path = "./cabr2_load_save/" }
-cabr2_logger = { path = "./cabr2_logger/" }
+cabr2_logger = { path = "./cabr2_logger/", optional = true }
 cabr2_search = { path = "./cabr2_search/" }
 log = "0.4.14"
-tauri = { version = "0.11", features = [
-  "event",
-  "notification",
-  "open-dialog",
-  "open",
-  "save-dialog"
-] }
-
-[target."cfg(windows)".build-dependencies]
-winres = "0.1"
+tauri = { version = "1.0.0-beta.8", features = ["api-all"], optional = true }
+tokio = { version = "1.11.0", features = ["macros", "rt-multi-thread"], optional = true }
+warp = { version = "0.3.1", optional = true }
 
 [features]
-embedded-server = [ "tauri/embedded-server" ]
-no-server = [ "tauri/no-server" ]
+default = [
+  "portable",
+  "beryllium",
+  "cabr2",
+  "pdf",
+  "gestis",
+]
 portable = [ "cabr2_config/portable" ]
-default = [ "portable" ]
+custom-protocol = [ "tauri/custom-protocol" ] # needed for tauri release builds
+tauri_app = [
+  "tauri",
+  "cabr2_logger/tauri_plugin",
+  "cabr2_config/tauri_plugin",
+  "cabr2_load_save/tauri_plugin",
+  "cabr2_search/tauri_plugin",
+]
+webserver = [
+  "warp",
+  "tokio",
+  "cabr2_logger",
+  "cabr2_config/webserver",
+  "cabr2_load_save/webserver",
+  "cabr2_search/webserver",
+]
 
-[[bin]]
-name = "cabr2"
-path = "src/main.rs"
+# cabr2_load_save file types
+beryllium = [ "cabr2_load_save/beryllium" ]
+cabr2 = [ "cabr2_load_save/cabr2" ]
+pdf = [ "cabr2_load_save/pdf" ]
+
+# cabr2_search providers
+gestis = [ "cabr2_search/gestis" ]
 
 [workspace]
 members = [
@@ -53,7 +66,7 @@ members = [
   "cabr2_config",
   "cabr2_load_save",
   "cabr2_logger",
-  "cabr2_search"
+  "cabr2_search",
 ]
 
 [profile.release]

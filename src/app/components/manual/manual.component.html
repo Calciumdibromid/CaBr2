@@ -1,0 +1,7 @@
+<ng-container *transloco="let t; read: 'base'">
+  <div mat-dialog-content [innerHTML]="data.content"></div>
+  <mat-divider></mat-divider>
+  <div mat-dialog-actions>
+    <button mat-button (click)="dialogRef.close()">{{ t('close') }}</button>
+  </div>
+</ng-container>

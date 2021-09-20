@@ -1,3 +1,4 @@
+import { DialogFilter } from '../native/tauri.service';
 import { Header } from '../../interfaces/Header';
 import { SubstanceData } from '../../models/substances.model';
 
@@ -11,6 +12,6 @@ export interface CaBr2Document {
 }
 
 export interface DocumentTypes {
-  load: string[];
-  save: string[];
+  load: DialogFilter[];
+  save: DialogFilter[];
 }

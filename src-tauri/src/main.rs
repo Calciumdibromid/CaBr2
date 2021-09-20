@@ -1,21 +1,22 @@
 #![cfg_attr(all(not(debug_assertions), target_os = "windows"), windows_subsystem = "windows")]
 
+#[cfg(feature = "tauri_app")]
+mod tauri_app;
+#[cfg(feature = "webserver")]
+mod webserver;
+
 fn main() {
-  // must be initialized first
-  let logger = cabr2_logger::Logger::new();
+  #[cfg(feature = "tauri_app")]
+  tauri_app::main();
 
-  let config = cabr2_config::Config;
-  let load_save = cabr2_load_save::LoadSave::new();
-  let search = cabr2_search::Search::new();
-
-  log::debug!("initializing tauri application...");
-
-  tauri::AppBuilder::new()
-    .plugin(config)
-    .plugin(load_save)
-    .plugin(logger)
-    .plugin(search)
-    .setup(|_, s| log::debug!("tauri setup complete ({})", s))
-    .build()
-    .run();
+  #[cfg(feature = "webserver")]
+  webserver::main();
 }
+
+// Validity checks for features
+
+#[cfg(not(any(feature = "tauri_app", feature = "webserver")))]
+compile_error!("you must specify one of these features: 'tauri_app', 'webserver'!");
+
+#[cfg(all(feature = "tauri_app", feature = "webserver"))]
+compile_error!("you can only use one of these features: 'tauri_app', 'webserver'!");

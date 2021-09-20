@@ -151,10 +151,7 @@ impl std::convert::From<SubstanceData> for PDFSubstanceData {
       symbols: data.symbols.into(),
       lethal_dose: data.lethal_dose.into(),
       mak: data.mak.into(),
-      amount: match data.amount {
-        Some(amount) => Some(amount.into()),
-        None => None,
-      },
+      amount: data.amount.map(|value| value.into()),
       source: data.source,
     }
   }
@@ -163,20 +160,7 @@ impl std::convert::From<SubstanceData> for PDFSubstanceData {
 impl std::convert::From<cabr2_types::Amount> for Amount {
   fn from(amount: cabr2_types::Amount) -> Self {
     Amount {
-      unit: match amount.unit {
-        cabr2_types::Unit::Litre => "l".into(),
-        cabr2_types::Unit::Milliliter => "ml".into(),
-        cabr2_types::Unit::Microlitre => "µl".into(),
-        cabr2_types::Unit::Gram => "g".into(),
-        cabr2_types::Unit::Milligram => "mg".into(),
-        cabr2_types::Unit::Microgram => "µg".into(),
-        cabr2_types::Unit::Pieces => "st".into(),
-        cabr2_types::Unit::SolutionRelative => "% (v/v)".into(),
-        cabr2_types::Unit::SolutionMol => "mol/l".into(),
-        cabr2_types::Unit::SolutionMillimol => "mmol/l".into(),
-        cabr2_types::Unit::SolutionMicromol => "µmol/l".into(),
-        cabr2_types::Unit::Custom(unit) => unit,
-      },
+      unit: amount.unit.into(),
       value: amount.value,
     }
   }

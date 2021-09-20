@@ -1,0 +1,32 @@
+<ng-container *transloco="let t; read: 'header'">
+  <mat-card class="flex-column onepager-mat-card unselectable">
+    <mat-form-field>
+      <mat-label>{{ t('docTitle') }}</mat-label>
+      <input matInput [(ngModel)]="header.documentTitle" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ t('organisation') }}</mat-label>
+      <input matInput [(ngModel)]="header.organisation" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ t('labCourse') }}</mat-label>
+      <input matInput [(ngModel)]="header.labCourse" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ t('name') }}</mat-label>
+      <input matInput [(ngModel)]="header.name" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ t('place') }}</mat-label>
+      <input matInput [(ngModel)]="header.place" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ t('assistant') }}</mat-label>
+      <input matInput [(ngModel)]="header.assistant" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>{{ t('preparation') }}</mat-label>
+      <input matInput [(ngModel)]="header.preparation" />
+    </mat-form-field>
+  </mat-card>
+</ng-container>

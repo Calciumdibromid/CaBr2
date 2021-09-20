@@ -1,11 +1,10 @@
 mod types;
 
-use std::{fs::File, io::BufReader, path::PathBuf};
-
 use chrono::TimeZone;
 use lazy_static::lazy_static;
 use quick_xml::de::from_reader;
 use regex::Regex;
+use async_trait::async_trait;
 
 use cabr2_types::{Amount, Data, Source, SubstanceData, Unit};
 
@@ -17,18 +16,17 @@ use types::{BerylliumDocument, TemplateCategory};
 
 pub struct Beryllium;
 
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 impl Loader for Beryllium {
-  fn load_document(&self, filename: PathBuf) -> Result<CaBr2Document> {
+  async fn load_document(&self, contents: Vec<u8>) -> Result<CaBr2Document> {
     lazy_static! {
       static ref BEGINNING_OF_TIME: chrono::DateTime<chrono::Utc> = chrono::Utc.ymd(1970, 1, 1).and_hms(0, 0, 0);
       static ref GESTIS_URL_RE: Regex =
         Regex::new(r"http://gestis\.itrust\.de/nxt/gateway\.dll/gestis_(de|en)/(\d{6})\.xml").unwrap();
     }
 
-    let file = File::open(filename)?;
-    let reader = BufReader::new(file);
-
-    match from_reader(reader) {
+    match from_reader(contents.as_slice()) {
       Ok(beryllium_doc) => {
         // simplest way for a typedefinition
         let beryllium_doc: BerylliumDocument = beryllium_doc;
@@ -96,7 +94,7 @@ impl Loader for Beryllium {
                 let mut value = None;
                 if let Some(su) = substance.setting_up {
                   if su.volumina.unwrap_or_default() {
-                    unit = Some(Unit::Litre);
+                    unit = Some(Unit::Liter);
                   } else if su.mass.unwrap_or_default() {
                     unit = Some(Unit::Gram);
                   }

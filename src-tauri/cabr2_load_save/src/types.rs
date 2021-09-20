@@ -1,17 +1,20 @@
-use std::path::PathBuf;
-
+use async_trait::async_trait;
 use serde::{Deserialize, Serialize};
 
 use cabr2_types::SubstanceData;
 
 use super::error::Result;
 
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 pub trait Loader {
-  fn load_document(&self, filename: PathBuf) -> Result<CaBr2Document>;
+  async fn load_document(&self, contents: Vec<u8>) -> Result<CaBr2Document>;
 }
 
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 pub trait Saver {
-  fn save_document(&self, filename: PathBuf, document: CaBr2Document) -> Result<()>;
+  async fn save_document(&self, document: CaBr2Document) -> Result<Vec<u8>>;
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -39,6 +42,12 @@ pub struct Header {
 
 #[derive(Debug, Serialize)]
 pub struct DocumentTypes {
-  pub load: Vec<String>,
-  pub save: Vec<String>,
+  pub load: Vec<DialogFilter>,
+  pub save: Vec<DialogFilter>,
+}
+
+#[derive(Debug, Serialize)]
+pub struct DialogFilter {
+  pub name: String,
+  pub extensions: Vec<String>,
 }

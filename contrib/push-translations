@@ -1,0 +1,21 @@
+#!/bin/bash
+
+################################
+# push locale files to crowdin #
+################################
+
+cd "$(dirname "$0")/.."
+token="$1"
+
+# make config if not exist
+[ -f "crowdin.yml" ] || {
+  # make sure it exists
+  [ -z "$token" ] && {
+    echo "token not set"
+    exit 1
+  }
+  sed "s/-TOKEN-/${token}/g" crowdin.example.yml >crowdin.yml
+}
+
+# crowdin action
+crowdin push || exit 1

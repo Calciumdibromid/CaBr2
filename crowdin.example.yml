@@ -1,0 +1,12 @@
+"project_id": "444900"
+"api_token": "-TOKEN-"
+
+"base_path": "."
+"preserve_hierarchy": false
+files:
+  [
+    {
+      "source": "translations/en_us.json",
+      "translation": "translations/%locale_with_underscore%.json",
+    },
+  ]

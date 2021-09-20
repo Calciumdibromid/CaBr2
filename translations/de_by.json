@@ -11,6 +11,12 @@
       "save": "Auf'n PC damid",
       "close": "Weg damid!"
     },
+    "tooltips": {
+      "header": "Kopf der Anweisung",
+      "search": "G'suachte und ausgwählte Substanzn",
+      "securitythings": "De Rückseidn vom Bladl beabadn",
+      "preview": "D'Vorschau"
+    },
     "menu": {
       "newDocument": "Wos neis",
       "loadFile": "Wos oids hoin",
@@ -26,7 +32,8 @@
     },
     "bugreport": {
       "title": "Do geht wos ned!",
-      "sentence": "Wennst merkst, dass wos ned ganz stimmt, dann kost du mit de Computernerds so schmatzn:"
+      "sentence": "Wennst merkst, dass wos ned ganz stimmt, dann kost du mit de Computernerds so schmatzn:",
+      "githubSentence": "Du konnst uns a auf GitHub zam scheißen:"
     },
     "header": {
       "docTitle": "Titl vom Wisch:",
@@ -48,13 +55,21 @@
       "option": "Suchoption:",
       "searchButton": "Suche",
       "removeSubstance": "Substanz rausdoa",
+      "editSubstance": "Gmisch bearbadn",
       "removeOption": "Suchoption wegmacha",
       "addOption": "Suchoption dazua doa",
       "resultsHeader": "Gfundne Sachan",
       "noResult": "Nix gfundn",
+      "customSubstance": "Eigner Scheiß",
+      "unsupportedProviderInfo": "kenn i ned, mog i ned",
       "error": "S'Programm wuit ned"
     },
     "substance": {
+      "invalidFormsTitle": "Irgendwos stimmt ned",
+      "invalidFormsContent": [
+        "Da Stoff hod foische Sachan bei den Dingan:"
+      ],
+      "edited": "Rumgspuid?",
       "name": "Wia mas' ruaft",
       "needsName": "Du, ohne Nama gäds ned",
       "casNumber": "De Ammi-Numma",
@@ -72,20 +87,39 @@
       "customUnit": "Woibadinga",
       "hPhrases": "H-Satzal",
       "noHPhrase": "Foische H-Numma",
+      "invalidHPhrase": "Foische H-Satzal",
       "removeHPhrase": "H-Satz wegmacha",
       "addHPhrase": "H-Satz dazua doa",
       "pPhrases": "P-Satzal",
       "noPPhrase": "Foische P-Numma",
+      "invalidPPhrase": "Foische P-Satzal",
       "removePPhrase": "P-Satz wegad doa",
       "addPPhrase": "P-Satz dazua doa",
+      "editingHint": "Auf's Gmisch drugga zum beabadn.",
       "ghsSymbolsAddOrRemoveInfo": "Wenns so a Buidl weg- oda dazuadoa megst, muast nur auf des Buidl drugga",
-      "ghsSymbolsColorInfo": "Wenns grau is, dann hostas ned gnomma / Wenns bunt is, dann isses ogschoidn"
+      "ghsSymbolsColorInfo": "Wenns grau is, dann hostas ned gnomma / Wenns bunt is, dann isses ogschoidn",
+      "addCustomSubstanceData": "Eignen Scheiß dazua doa",
+      "dragAndDrop": "Ziang & Loslossn",
+      "resetTooltip": "Den friaran Stand vom Stof zruck bringa"
+    },
+    "units": {
+      "groups": {
+        "rawSubstance": "Ohne wos",
+        "solution": "Gmisch",
+        "custom": "Eigner Scheiß"
+      },
+      "custom": "Eigner Scheiß",
+      "pcs.": "Stk."
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Des ko de Andan und der Umwelt bassiern:",
       "rulesOfConduct": "Auf des muast aufbassn und des muast macha:",
       "inCaseOfDanger": "Des muast macha, wenn wos bassiert:",
       "disposal": "Wia weads weggschmissn:",
+      "humanAndEnvironmentDangerShort": "Gfahren",
+      "rulesOfConductShort": "Sicherheitsgrampf",
+      "inCaseOfDangerShort": "Wenn's schiaf laft",
+      "disposalShort": "Weggschmeissn",
       "signatureFieldStudent": "Ich stä dazua, des ois glesn zum hom und duas so macha.",
       "signatureFieldAssistant": "I bass scho drauf auf, dass de Saubuam und -Madl koan Scheiß machan."
     },
@@ -126,6 +160,22 @@
       "loadFile": "Datei basd",
       "saveFile": "Datei is auf da Festplattn",
       "exportPDF": "PDF is auf da Festplattn"
+    },
+    "dialogs": {
+      "unchangedValues": {
+        "title": "Ned oglangt",
+        "content": [
+          "Des host vergessn"
+        ],
+        "footer": [
+          "Scheiß drauf?"
+        ]
+      },
+      "pdfGeneration": {
+        "generatingPdf": "Duad PDF zam baun...",
+        "downloadPdf": "PDF Runterladn",
+        "download": "Runterladn"
+      }
     }
   }
 }

@@ -1,52 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Translation } from '@ngneat/transloco';
 
-import { strings as DEFAULT_STRINGS } from '../../../../assets/defaultStrings.json';
+import { II18nService } from './i18n.interface';
+import { INativeService } from '../native/native.interface';
 import Logger from '../../utils/logger';
-import { TauriService } from '../tauri/tauri.service';
+import { tap } from 'rxjs/operators';
 
 const logger = new Logger('i18n-service');
 
-export type LocalizedStrings = typeof DEFAULT_STRINGS;
+@Injectable()
+export class I18nService implements II18nService {
+  constructor(private nativeService: INativeService) {}
 
-@Injectable({
-  providedIn: 'root',
-})
-export class I18nService {
-  constructor(private tauriService: TauriService) {}
-
-  static getDefaultStrings(): LocalizedStrings {
-    return DEFAULT_STRINGS;
+  getTranslation(language: string): Observable<Translation> {
+    return this.nativeService.promisified<Translation>('plugin:cabr2_config|get_localized_strings', { language }).pipe(
+      tap(() => {
+        logger.trace('loading translation successful:', language);
+      }),
+    );
   }
-
-  getAvailableLanguages(): Observable<LocalizedStringsHeader[]> {
-    return this.tauriService.promisified({
-      cmd: 'getAvailableLanguages',
-    });
-  }
-
-  getLocalizedStrings(language: string): Observable<LocalizedStrings> {
-    return new Observable((sub) => {
-      this.tauriService
-        .promisified<LocalizedStrings>({
-          cmd: 'getLocalizedStrings',
-          language,
-        })
-        .subscribe(
-          (strings) => {
-            logger.trace('loading localized strings successful:', strings);
-            sub.next(strings);
-          },
-          (err) => {
-            logger.error('loading localized strings failed:', err);
-            sub.next(I18nService.getDefaultStrings());
-          },
-        );
-    });
-  }
-}
-
-export interface LocalizedStringsHeader {
-  name: string;
-  locale: string;
 }

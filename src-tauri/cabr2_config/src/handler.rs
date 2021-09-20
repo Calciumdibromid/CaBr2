@@ -1,14 +1,12 @@
-use std::{
-  collections::HashMap,
-  env,
-  fs::{self, OpenOptions},
-  io::{BufReader, Read, Write},
-  path::PathBuf,
-};
+use std::{collections::HashMap, env, path::PathBuf};
 
 use directories_next::ProjectDirs;
 use lazy_static::lazy_static;
 use serde_json::Value;
+use tokio::{
+  fs::{self, OpenOptions},
+  io::{AsyncReadExt, AsyncWriteExt},
+};
 
 use crate::error::ConfigError;
 
@@ -20,39 +18,45 @@ use super::{
 lazy_static! {
   pub static ref PROJECT_DIRS: ProjectDirs = ProjectDirs::from("de", "Calciumdibromid", "CaBr2").unwrap();
   pub static ref DATA_DIR: PathBuf = get_program_data_dir();
-  pub static ref TMP_DIR: PathBuf = env::temp_dir();
+  pub static ref TMP_DIR: PathBuf = get_tmp_dir();
 }
 
-pub fn get_config() -> Result<FrontendConfig> {
-  Ok(read_config()?.into())
+pub async fn get_frontend_config() -> Result<FrontendConfig> {
+  Ok(read_config().await?.into())
 }
 
-pub fn read_config() -> Result<BackendConfig> {
+pub async fn read_config() -> Result<BackendConfig> {
   let config_path = get_config_path();
   log::trace!("reading config from: {:?}", config_path);
 
-  let mut file = match OpenOptions::new().read(true).open(config_path) {
-    Ok(file) => file,
-    Err(e) => match e.kind() {
-      std::io::ErrorKind::NotFound => {
-        write_config(BackendConfig::default())?;
-        return read_config();
+  let mut file;
+
+  loop {
+    match OpenOptions::new().read(true).open(&config_path).await {
+      Ok(f) => {
+        file = f;
+        break;
       }
-      _ => return Err(e.into()),
-    },
-  };
+      Err(e) => match e.kind() {
+        std::io::ErrorKind::NotFound => {
+          write_config(BackendConfig::default()).await?;
+        }
+        _ => return Err(e.into()),
+      },
+    }
+  }
 
   let mut buf = String::new();
-  file.read_to_string(&mut buf)?;
+  file.read_to_string(&mut buf).await?;
 
   Ok(toml::from_str::<BackendConfig>(&buf)?)
 }
 
-pub fn save_config(config: FrontendConfig) -> Result<()> {
-  write_config(config.into())
+pub async fn save_frontend_config(config: FrontendConfig) -> Result<()> {
+  write_config(BackendConfig::convert(config).await).await
 }
 
-pub fn write_config(config: BackendConfig) -> Result<()> {
+pub async fn write_config(config: BackendConfig) -> Result<()> {
   let config_path = get_config_path();
   log::trace!("writing config to: {:?}", config_path);
 
@@ -60,14 +64,16 @@ pub fn write_config(config: BackendConfig) -> Result<()> {
     .create(true)
     .write(true)
     .truncate(true)
-    .open(config_path)?;
+    .open(config_path)
+    .await?;
 
-  file.write_all(toml::to_string_pretty(&config)?.as_bytes())?;
+  file.write_all(toml::to_string_pretty(&config)?.as_bytes()).await?;
+  file.sync_all().await?;
 
   Ok(())
 }
 
-pub fn get_hazard_symbols() -> Result<GHSSymbols> {
+pub async fn get_hazard_symbols() -> Result<GHSSymbols> {
   // symbols from: https://unece.org/transportdangerous-goods/ghs-pictograms
   let mut symbol_folder = DATA_DIR.clone();
   symbol_folder.push("ghs_symbols");
@@ -83,8 +89,8 @@ pub fn get_hazard_symbols() -> Result<GHSSymbols> {
     .filter(|p| p.is_file())
   {
     buf.clear();
-    let mut file = OpenOptions::new().read(true).open(&filename)?;
-    file.read_to_end(&mut buf)?;
+    let mut file = OpenOptions::new().read(true).open(&filename).await?;
+    file.read_to_end(&mut buf).await?;
 
     symbols.insert(
       filename
@@ -100,28 +106,30 @@ pub fn get_hazard_symbols() -> Result<GHSSymbols> {
   Ok(symbols)
 }
 
-pub fn get_available_languages() -> Result<Vec<LocalizedStringsHeader>> {
+pub async fn get_available_languages() -> Result<Vec<LocalizedStringsHeader>> {
   let translation_folder = get_translation_folder();
 
   let mut languages: Vec<LocalizedStringsHeader> = Vec::new();
+  let mut buf: Vec<u8> = Vec::new();
 
   if translation_folder.is_dir() {
-    for entry in fs::read_dir(translation_folder)? {
-      let path = match entry {
-        Ok(entry) => entry.path(),
-        Err(err) => {
-          log::debug!("error when iterating over translation files: {:?}", err);
-          continue;
-        }
-      };
-      let reader = match OpenOptions::new().read(true).open(path) {
-        Ok(file) => BufReader::new(file),
+    let mut results = fs::read_dir(translation_folder).await?;
+    while let Some(entry) = results.next_entry().await? {
+      let path = entry.path();
+
+      let mut file = match OpenOptions::new().read(true).open(path).await {
+        Ok(file) => file,
         Err(err) => {
           log::debug!("error when opening translation file: {:?}", err);
           continue;
         }
       };
-      match serde_json::from_reader(reader) {
+
+      buf.clear();
+      // It's faster to first read the complete file and then deserialize it.
+      file.read_to_end(&mut buf).await?;
+
+      match serde_json::from_slice(&buf) {
         Ok(lang) => languages.push(lang),
         Err(err) => {
           log::debug!("error when reading translation file: {:?}", err)
@@ -133,20 +141,24 @@ pub fn get_available_languages() -> Result<Vec<LocalizedStringsHeader>> {
   Ok(languages)
 }
 
-pub fn get_localized_strings(language: String) -> Result<Value> {
+pub async fn get_localized_strings(language: String) -> Result<Value> {
   let mut translation_path = get_translation_folder();
   translation_path.push(&language);
   let translation_path = translation_path.with_extension("json");
 
   if translation_path.is_file() {
-    let reader = match OpenOptions::new().read(true).open(&translation_path) {
-      Ok(file) => BufReader::new(file),
+    let mut file = match OpenOptions::new().read(true).open(&translation_path).await {
+      Ok(file) => file,
       Err(err) => {
         log::error!("opening translation file '{:?}' failed: {:?}", translation_path, err);
         return Err(ConfigError::LocalizationReadError(language));
       }
     };
-    match serde_json::from_reader(reader) {
+
+    let mut buf = vec![];
+    file.read_to_end(&mut buf).await?;
+
+    match serde_json::from_slice(&buf) {
       Ok(localized) => {
         let localized: LocalizedStrings = localized;
         return Ok(localized.strings);
@@ -162,32 +174,12 @@ pub fn get_localized_strings(language: String) -> Result<Value> {
   Err(ConfigError::LocalizationNotFound(language))
 }
 
-pub fn get_prompt_html(name: String) -> Result<String> {
-  // TODO embed images
-  let mut folder = get_prompt_folder();
-  match name.as_str() {
-    "gettingStarted" => {
-      folder.push("getting-started.html");
-      Ok(fs::read_to_string(folder)?)
-    }
-    _ => Err(ConfigError::NoPromptHtml(name)),
-  }
-}
-
 #[inline]
 fn get_translation_folder() -> PathBuf {
   let mut translation_folder = DATA_DIR.clone();
   translation_folder.push("translations");
 
   translation_folder
-}
-
-#[inline]
-fn get_prompt_folder() -> PathBuf {
-  let mut prompt_folder = DATA_DIR.clone();
-  prompt_folder.push("prompts");
-
-  prompt_folder
 }
 
 #[cfg(not(debug_assertions))]
@@ -277,4 +269,15 @@ fn get_program_data_dir() -> PathBuf {
     program_path.push("../../../");
     program_path.canonicalize().unwrap()
   }
+}
+
+fn get_tmp_dir() -> PathBuf {
+  let mut tmp_dir = env::temp_dir();
+
+  #[cfg(feature = "webserver")]
+  tmp_dir.push("cabr2_server/");
+  #[cfg(not(feature = "webserver"))]
+  tmp_dir.push("cabr2/");
+
+  tmp_dir
 }
