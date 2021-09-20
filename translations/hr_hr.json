@@ -11,6 +11,12 @@
       "save": "Spremi",
       "close": "Zatvori"
     },
+    "tooltips": {
+      "header": "Header of the safety sheet",
+      "search": "Search and selected substances",
+      "securitythings": "Editing of the back of the safety sheet",
+      "preview": "Preview of the safety sheet"
+    },
     "menu": {
       "newDocument": "Nova sigurnosna lista podataka",
       "loadFile": "Otvori sigurnosnu listu podataka",
@@ -26,7 +32,8 @@
     },
     "bugreport": {
       "title": "Prijavi grešku",
-      "sentence": "Prijavi grešku na ovaj email:"
+      "sentence": "Prijavi grešku na ovaj email:",
+      "githubSentence": "Alternatively you can open an issue in Github:"
     },
     "header": {
       "docTitle": "Naslov dokumenta:",

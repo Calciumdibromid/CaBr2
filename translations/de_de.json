@@ -11,6 +11,12 @@
       "save": "Speichern",
       "close": "Schließen"
     },
+    "tooltips": {
+      "header": "Kopf der Sicherheitsanweisung",
+      "search": "Suche und ausgewählte Substanzen",
+      "securitythings": "Bearbeiten der Rückseite",
+      "preview": "Vorschau der Sicherheitsanweisung"
+    },
     "menu": {
       "newDocument": "Neue Betriebsanweisung",
       "loadFile": "Bestehende Betriebsanweisung öffnen",
@@ -26,7 +32,8 @@
     },
     "bugreport": {
       "title": "Einen Fehler melden",
-      "sentence": "Falls ein Fehler festgestellt wurde, kann man mit folgender Mail mit den Entwicklern in Kontakt getreten werden:"
+      "sentence": "Falls ein Fehler festgestellt wurde, kann man mit folgender Mail mit den Entwicklern in Kontakt getreten werden:",
+      "githubSentence": "Du kannst auch ein Ticket in GitHub öffnen:"
     },
     "header": {
       "docTitle": "Dokument Titel:",
