@@ -11,6 +11,12 @@
       "save": "Сохранить",
       "close": "Закрыть"
     },
+    "tooltips": {
+      "header": "Header of the safety sheet",
+      "search": "Search and selected substances",
+      "securitythings": "Editing of the back of the safety sheet",
+      "preview": "Preview of the safety sheet"
+    },
     "menu": {
       "newDocument": "Новые инструкция",
       "loadFile": "Открыть новыю инструкцию",
@@ -26,7 +32,8 @@
     },
     "bugreport": {
       "title": "Сообщить об ошибке",
-      "sentence": "Сообщить об ошибке по следующей почте:"
+      "sentence": "Сообщить об ошибке по следующей почте:",
+      "githubSentence": "Alternatively you can open an issue in Github:"
     },
     "header": {
       "docTitle": "Название документа:",

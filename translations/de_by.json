@@ -11,6 +11,12 @@
       "save": "Auf'n PC damid",
       "close": "Weg damid!"
     },
+    "tooltips": {
+      "header": "Kopf der Anweisung",
+      "search": "G'suachte und ausgwählte Substanzn",
+      "securitythings": "De Rückseidn vom Bladl beabadn",
+      "preview": "D'Vorschau"
+    },
     "menu": {
       "newDocument": "Wos neis",
       "loadFile": "Wos oids hoin",
@@ -26,7 +32,8 @@
     },
     "bugreport": {
       "title": "Do geht wos ned!",
-      "sentence": "Wennst merkst, dass wos ned ganz stimmt, dann kost du mit de Computernerds so schmatzn:"
+      "sentence": "Wennst merkst, dass wos ned ganz stimmt, dann kost du mit de Computernerds so schmatzn:",
+      "githubSentence": "Du konnst uns a auf GitHub zam scheißen:"
     },
     "header": {
       "docTitle": "Titl vom Wisch:",
