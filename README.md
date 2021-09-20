@@ -23,3 +23,9 @@ To convert the html template to a pdf file you need to install `wkhtmltopdf`.
 `wkhtmltox` (that can be downloaded from [here](https://wkhtmltopdf.org/downloads.html)) is needed to build the app.
 
 Just execute `build:release` afterwards.
+
+## Translate
+
+Translation is done via [Crowdin](https://crowdin.com/project/cabr2).
+
+to suggest translation improvements or improve support of your own language visit [https://crowdin.com/project/cabr2](https://crowdin.com/project/cabr2).
