@@ -1,4 +1,4 @@
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 #[derive(Debug)]
 pub struct ParsedData {
@@ -16,7 +16,7 @@ pub struct ParsedData {
   pub mak: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct GestisResponse {
   #[serde(rename = "zvgnummer_mit_null")]
   pub zvg_number: String,
@@ -26,7 +26,7 @@ pub struct GestisResponse {
   pub aliases: Vec<Alias>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Chapter {
   #[serde(rename = "drnr")]
   pub number: String,
@@ -34,14 +34,14 @@ pub struct Chapter {
   pub subchapters: Vec<Subchapter>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Subchapter {
   #[serde(rename = "drnr")]
   pub number: String,
   pub text: Option<String>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Alias {
   pub name: String,
 }

@@ -11,6 +11,12 @@
       "save": "Save",
       "close": "Close"
     },
+    "tooltips": {
+      "header": "Header of the safety sheet",
+      "search": "Search and selected substances",
+      "securitythings": "Editing of the back of the safety sheet",
+      "preview": "Preview of the safety sheet"
+    },
     "menu": {
       "newDocument": "New safety datasheet",
       "loadFile": "Open safety datasheet",
@@ -26,7 +32,8 @@
     },
     "bugreport": {
       "title": "Report a bug",
-      "sentence": "Report a bug on following email:"
+      "sentence": "Report a bug on following email:",
+      "githubSentence": "Alternatively you can open an issue in Github:"
     },
     "header": {
       "docTitle": "Document title:",
@@ -48,13 +55,19 @@
       "option": "Search options:",
       "searchButton": "Search",
       "removeSubstance": "Remove substance",
+      "editSubstance": "Edit substance",
       "removeOption": "Remove search option",
       "addOption": "Add search option",
       "resultsHeader": "Search results",
       "noResult": "No results",
+      "customSubstance": "Custom",
+      "unsupportedProviderInfo": "not supported",
       "error": "An error occurred while retrieving data"
     },
     "substance": {
+      "invalidFormsTitle": "Something is wrong",
+      "invalidFormsContent": ["The substance has invalid or missing data on following items:"],
+      "edited": "Edited?",
       "name": "Name",
       "needsName": "Name is required",
       "casNumber": "CAS number",
@@ -72,21 +85,39 @@
       "customUnit": "Custom unit",
       "hPhrases": "H-phrases",
       "noHPhrase": "Invalid H-number",
+      "invalidHPhrase": "Invalid H-Phrases",
       "removeHPhrase": "remove H-phrase",
       "addHPhrase": "add H-phrase",
       "pPhrases": "P-phrases",
       "noPPhrase": "Invalid P-number",
+      "invalidPPhrase": "Invalid P-Phrases",
       "removePPhrase": "remove P-phrase",
       "addPPhrase": "add P-phrase",
+      "editingHint": "Click on substance to edit.",
       "ghsSymbolsAddOrRemoveInfo": "To remove or add click on the symbol",
       "ghsSymbolsColorInfo": "gray: not selected / colorized: selected",
-      "addCustomSubstanceData": "Add custom substance"
+      "addCustomSubstanceData": "Add custom substance",
+      "dragAndDrop": "drag & drop",
+      "resetTooltip": "Reset current substance to original values"
+    },
+    "units": {
+      "groups": {
+        "rawSubstance": "Raw Substance",
+        "solution": "Solution",
+        "custom": "Custom"
+      },
+      "custom": "Custom",
+      "pcs.": "pcs."
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Additional dangers for humans and environment (e.g. carcinogenic, teratogenic):",
       "rulesOfConduct": "Protective measures and safety rules:",
       "inCaseOfDanger": "Behavior in case of danger and first aid:",
       "disposal": "Disposal:",
+      "humanAndEnvironmentDangerShort": "Dangers",
+      "rulesOfConductShort": "Protection measures",
+      "inCaseOfDangerShort": "Hazard case",
+      "disposalShort": "Disposal",
       "signatureFieldStudent": "I hereby confirm that I will execute the task/preparation according to the here presented safety data instructions.",
       "signatureFieldAssistant": "The student is allowed to perform the presented task/preparation."
     },
@@ -127,6 +158,18 @@
       "loadFile": "File successfully loaded",
       "saveFile": "File saved successfully",
       "exportPDF": "PDF exported successfully"
+    },
+    "dialogs": {
+      "unchangedValues": {
+        "title": "Unchanged values",
+        "content": ["The following values were not changed."],
+        "footer": ["Continue anyway?"]
+      },
+      "pdfGeneration": {
+        "generatingPdf": "Generating PDF...",
+        "downloadPdf": "Download PDF",
+        "download": "Download"
+      }
     }
   }
 }

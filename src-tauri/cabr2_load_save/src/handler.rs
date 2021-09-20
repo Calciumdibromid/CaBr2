@@ -1,83 +1,132 @@
-use std::{
-  collections::HashMap,
-  path::PathBuf,
-  sync::{Arc, Mutex},
-};
+use std::collections::HashMap;
 
+use cfg_if::cfg_if;
 use lazy_static::lazy_static;
 
-use super::{
+use cabr2_types::ProviderMapping;
+
+use crate::{
   error::{LoadSaveError, Result},
-  types::{CaBr2Document, DocumentTypes, Loader, Saver},
+  types::{CaBr2Document, DialogFilter, DocumentTypes, Loader, Saver},
 };
 
-lazy_static! {
-  pub static ref REGISTERED_LOADERS: Arc<Mutex<HashMap<&'static str, Box<dyn Loader + Send + Sync>>>> =
-    Arc::new(Mutex::new(HashMap::new()));
-  pub static ref REGISTERED_SAVERS: Arc<Mutex<HashMap<&'static str, Box<dyn Saver + Send + Sync>>>> =
-    Arc::new(Mutex::new(HashMap::new()));
-}
-
-pub fn save_document(file_type: String, filename: PathBuf, document: CaBr2Document) -> Result<()> {
-  log::debug!("type: {}", file_type);
-  log::debug!("filename: {:?}", filename);
-  log::trace!("doc: {:#?}", document);
-
-  let mut filename = filename;
-  let mut filename_changed = false;
-  if let Some(ext) = filename.extension() {
-    if ext.to_str().unwrap() != file_type {
-      let mut name = filename.file_name().unwrap().to_owned();
-      name.push(".");
-      name.push(&file_type);
-      filename = filename.with_file_name(&name);
-      filename_changed = true;
-    }
+// because tokio doesn't fully support wasm we have to use two different implementations for these locks
+cfg_if! {
+  if #[cfg(feature = "wasm")] {
+    use std::sync::RwLock;
   } else {
-    filename.set_extension(&file_type);
-    filename_changed = true;
+    use tokio::sync::RwLock;
   }
+}
 
-  if filename_changed {
-    log::debug!("filename changed: {:?}", filename);
-    if filename.exists() {
-      return Err(LoadSaveError::FileExists(filename.to_string_lossy().into()));
+type LoadersMap = RwLock<HashMap<&'static str, (&'static str, Box<dyn Loader + Send + Sync>)>>;
+type SaversMap = RwLock<HashMap<&'static str, (&'static str, Box<dyn Saver + Send + Sync>)>>;
+
+lazy_static! {
+  pub static ref REGISTERED_LOADERS: LoadersMap = RwLock::new(HashMap::new());
+  pub static ref REGISTERED_SAVERS: SaversMap = RwLock::new(HashMap::new());
+}
+
+pub async fn init_handlers(_provider_mapping: ProviderMapping) {
+  cfg_if! {
+    if #[cfg(feature = "wasm")] {
+      let mut _loaders = REGISTERED_LOADERS.write().expect("failed to get write lock of loaders");
+    } else {
+      let mut _loaders = REGISTERED_LOADERS.write().await;
     }
   }
 
-  if let Some(saver) = REGISTERED_SAVERS.lock().unwrap().get(file_type.as_str()) {
-    return saver.save_document(filename, document);
-  }
+  #[cfg(feature = "cabr2")]
+  _loaders.insert("cb2", ("CaBr2", Box::new(crate::cabr2::CaBr2)));
+  #[cfg(feature = "beryllium")]
+  _loaders.insert("be", ("Beryllium", Box::new(crate::beryllium::Beryllium)));
 
-  Err(LoadSaveError::UnknownFileType)
-}
-
-pub fn load_document(filename: PathBuf) -> Result<CaBr2Document> {
-  log::debug!("filename: {:?}", filename);
-
-  if let Some(extension) = filename.extension() {
-    let extension = extension.to_str().unwrap();
-    if let Some(loader) = REGISTERED_LOADERS.lock().unwrap().get(extension) {
-      return loader.load_document(filename);
+  cfg_if! {
+    if #[cfg(feature = "wasm")] {
+      let mut _savers = REGISTERED_SAVERS.write().expect("failed to get write lock of savers");
+    } else {
+      let mut _savers = REGISTERED_SAVERS.write().await;
     }
   }
 
-  Err(LoadSaveError::UnknownFileType)
+  #[cfg(feature = "cabr2")]
+  _savers.insert("cb2", ("CaBr2", Box::new(crate::cabr2::CaBr2)));
+  #[cfg(feature = "pdf")]
+  _savers.insert("pdf", ("PDF", Box::new(crate::pdf::PDF::new(_provider_mapping))));
 }
 
-pub fn get_available_document_types() -> Result<DocumentTypes> {
-  Ok(DocumentTypes {
-    load: REGISTERED_LOADERS
-      .lock()
-      .expect("couldn't get lock for REGISTERED_LOADERS")
-      .keys()
-      .map(|s| s.to_string())
-      .collect(),
-    save: REGISTERED_SAVERS
-      .lock()
-      .expect("couldn't get lock for REGISTERED_SAVERS")
-      .keys()
-      .map(|s| s.to_string())
-      .collect(),
-  })
+pub async fn save_document(file_type: &str, document: CaBr2Document) -> Result<Vec<u8>> {
+  cfg_if! {
+    if #[cfg(feature = "wasm")] {
+      let savers = REGISTERED_SAVERS.read().expect("failed to get read lock of savers");
+    } else {
+      let savers = REGISTERED_SAVERS.read().await;
+    }
+  }
+
+  if let Some((_, saver)) = savers.get(file_type) {
+    return saver.save_document(document).await;
+  }
+
+  Err(LoadSaveError::UnknownFileType(file_type.to_string()))
+}
+
+pub async fn load_document(file_type: &str, contents: Vec<u8>) -> Result<CaBr2Document> {
+  cfg_if! {
+    if #[cfg(feature = "wasm")] {
+      let loaders = REGISTERED_LOADERS.read().expect("failed to get read lock of loaders");
+    } else {
+      let loaders = REGISTERED_LOADERS.read().await;
+    }
+  }
+
+  if let Some((_, loader)) = loaders.get(file_type) {
+    return loader.load_document(contents).await;
+  }
+
+  Err(LoadSaveError::UnknownFileType(file_type.to_string()))
+}
+
+pub async fn get_available_document_types() -> DocumentTypes {
+  cfg_if! {
+    if #[cfg(feature = "wasm")] {
+      let loaders = REGISTERED_LOADERS.read().expect("failed to get read lock of loaders");
+    } else {
+      let loaders = REGISTERED_LOADERS.read().await;
+    }
+  }
+
+  let mut load: Vec<DialogFilter> = loaders
+    .iter()
+    .map(|(ext, (name, _))| DialogFilter {
+      name: name.to_string(),
+      extensions: vec![ext.to_string()],
+    })
+    .collect();
+
+  // set cb2 as first element
+  if let Some((i, _)) = (&load).iter().enumerate().find(|(_, f)| f.extensions[0] == "cb2") {
+    if i != 0 {
+      log::debug!("setting cb2 as first file type from: {}", i);
+      load.swap(i, 0);
+    }
+  }
+
+  cfg_if! {
+    if #[cfg(feature = "wasm")] {
+      let savers = REGISTERED_SAVERS.read().expect("failed to get read lock of savers");
+    } else {
+      let savers = REGISTERED_SAVERS.read().await;
+    }
+  }
+
+  let save = savers
+    .iter()
+    .map(|(ext, (name, _))| DialogFilter {
+      name: name.to_string(),
+      extensions: vec![ext.to_string()],
+    })
+    .collect();
+
+  DocumentTypes { load, save }
 }

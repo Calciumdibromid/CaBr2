@@ -1,0 +1,45 @@
+name: checks
+
+on:
+  # Triggers the workflow on push or pull request events but only for the master and develop branches
+  push:
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+    paths:
+      - '.github/workflows/backend.yml'
+      - 'src-tauri/**'
+      - '.gitignore'
+      - 'contrib/for-each-cargo'
+
+jobs:
+  backend:
+    runs-on: ubuntu-20.04
+    container: a6543/cabr2_ci:latest
+    strategy:
+      fail-fast: true
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+
+      - name: Set Rust Toolchain
+        run: rustup default stable
+
+      - name: Fix Build
+        run: mkdir -p dist/CaBr2 && echo "Hello" > dist/CaBr2/index.html
+
+      - name: Linting Tauri app
+        run: cd src-tauri && cargo clippy --features tauri_app -- -D warnings
+
+      - name: Linting webserver
+        run: cd src-tauri && cargo clippy --features webserver -- -D warnings
+
+      - name: Build Tauri app
+        run: cd src-tauri && cargo build --features tauri_app
+
+      - name: Build webserver
+        run: cd src-tauri && cargo build --features webserver
+
+      # TODO(692) reactivate when tests are written
+      # - name: Tests
+      #   run: ./contrib/for-each-cargo test

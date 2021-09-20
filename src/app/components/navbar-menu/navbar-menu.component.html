@@ -1,0 +1,18 @@
+<ng-container *transloco="let t; read: 'menu'">
+  <button class="hamburger icon" mat-icon-button [matMenuTriggerFor]="menu">
+    <img src="assets/icons/menu.svg" />
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="newDocument()">{{ t('newDocument') }}</button>
+    <button mat-menu-item (click)="loadFile()">{{ t('loadFile') }}</button>
+    <button mat-menu-item (click)="exportCB2File()">
+      {{ t('saveFile') }}
+    </button>
+    <button mat-menu-item (click)="exportPDFFile()">
+      {{ t('exportPDF') }}
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item (click)="openSettingsDialog()">{{ t('settings') }}</button>
+    <button mat-menu-item (click)="openManualDialog()">{{ t('quickStart') }}</button>
+  </mat-menu>
+</ng-container>

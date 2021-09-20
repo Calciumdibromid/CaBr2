@@ -1,0 +1,31 @@
+#!/bin/bash
+
+######################################
+# pull locale files from crowdin and #
+# create a pull if there are changes #
+######################################
+
+cd "$(dirname "$0")/.."
+token="$1"
+
+# make config if not exist
+[ -f "crowdin.yml" ] || {
+  # make sure it exists
+  [ -z "$token" ] && {
+    echo "token not set"
+    exit 1
+  }
+  sed "s/-TOKEN-/${token}/g" crowdin.example.yml >crowdin.yml
+}
+
+# crowdin action
+crowdin pull || exit 1
+
+# normalize locales
+for i in $(ls translations/??_??.json); do
+  file_old=$i
+  file_new=$(echo "$file_old" | tr '[:upper:]' '[:lower:]')
+  [ "$file_old" == "$file_new" ] || {
+    cp -f "$file_old" "$file_new" && rm "$file_old"
+  }
+done

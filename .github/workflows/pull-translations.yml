@@ -1,0 +1,45 @@
+name: pull-translations
+# pull locale files from crowdin and create a pull if there are changes
+
+on:
+  schedule:
+    # exec every day at midnight
+    - cron: '0 0 * * *'
+
+jobs:
+  crowdin:
+    runs-on: ubuntu-20.04
+    container: a6543/cabr2_ci_update-translations:latest
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+
+      - name: install prettier
+        run: yarn install
+
+      - name: Run Crowdin Update
+        shell: bash
+        env:
+          CROWDIN_TOKEN: ${{ secrets.CROWDIN_TOKEN }}
+        run: ./contrib/pull-translations "$CROWDIN_TOKEN"
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          base: develop
+          token: ${{ secrets.PAT }}
+          commit-message: Update Translations
+          committer: GitHub <noreply@github.com>
+          author: GitHub <noreply@github.com>
+          signoff: false
+          branch: update-translations
+          delete-branch: true
+          title: 'Update Translations'
+          labels: kind/translation
+          draft: false
+
+      - name: Check outputs
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"

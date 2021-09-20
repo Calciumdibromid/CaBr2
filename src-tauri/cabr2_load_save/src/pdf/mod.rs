@@ -2,13 +2,14 @@ mod merge;
 mod types;
 
 use std::{
+  collections::HashMap,
   fs::OpenOptions,
   io::{BufReader, Read},
-  path::PathBuf,
   sync::{mpsc, Arc, Mutex},
   thread,
 };
 
+use async_trait::async_trait;
 use handlebars::Handlebars;
 use lazy_static::lazy_static;
 use lopdf::Document;
@@ -16,6 +17,7 @@ use serde::Serialize;
 use wkhtmltopdf::{Orientation, PageSize, PdfApplication, Size};
 
 use cabr2_config::DATA_DIR;
+use cabr2_types::ProviderMapping;
 
 use self::types::PDFCaBr2Document;
 use super::{
@@ -23,18 +25,33 @@ use super::{
   types::{CaBr2Document, Saver},
 };
 
-pub struct PDF;
-
 type PDFThreadChannels = Arc<Mutex<(mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>)>>;
 
+lazy_static! {
+  pub static ref PROVIDER_MAPPING: Arc<Mutex<ProviderMapping>> = Arc::new(Mutex::new(HashMap::new()));
+}
+
+pub struct PDF;
+
+impl PDF {
+  pub fn new(provider_mapping: ProviderMapping) -> PDF {
+    PROVIDER_MAPPING.lock().unwrap().extend(provider_mapping.into_iter());
+    PDF
+  }
+}
+
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 impl Saver for PDF {
-  fn save_document(&self, filename: PathBuf, document: CaBr2Document) -> Result<()> {
+  async fn save_document(&self, document: CaBr2Document) -> Result<Vec<u8>> {
     lazy_static! {
       static ref PDF_THREAD_CHANNEL: PDFThreadChannels = Arc::new(Mutex::new(init_pdf_application()));
     }
 
     let title = document.header.document_title.clone();
-    match render_doc(document.into()) {
+    // PDF generation may be a long running, cpu intensive task. This informs the runtime to move other waiting tasks
+    // to different threads.
+    match tokio::task::block_in_place(|| render_doc(document.into())) {
       Err(e) => Err(e),
       Ok(pages) => {
         let channels = PDF_THREAD_CHANNEL.lock().unwrap();
@@ -59,9 +76,11 @@ impl Saver for PDF {
         }
 
         let mut merged_pdf = merge::merge_pdfs(documents)?;
-        merged_pdf.save(filename)?;
 
-        Ok(())
+        let mut buf = Vec::new();
+        merged_pdf.save_to(&mut buf)?;
+
+        Ok(buf)
       }
     }
   }
@@ -139,7 +158,7 @@ fn init_pdf_application() -> PDFChannels {
 
   thread::spawn(move || {
     log::debug!("[pdf_thread]: initializing pdf application");
-    let mut pdf_app = match PdfApplication::new() {
+    let pdf_app = match PdfApplication::new() {
       Ok(app) => app,
       Err(e) => {
         log::error!("[pdf_thread]: initialization of pdf application failed");
@@ -198,12 +217,17 @@ mod handlebar_helpers {
   use handlebars::{Handlebars, JsonRender, RenderError};
   use lazy_static::lazy_static;
 
-  use cabr2_config::{get_hazard_symbols, GHSSymbols};
+  use cabr2_config::GHSSymbols;
 
-  use super::types::PDFSubstanceData;
+  use super::{types::PDFSubstanceData, PROVIDER_MAPPING};
 
   lazy_static! {
     static ref GHS_SYMBOLS: Arc<Mutex<GHSSymbols>> = Arc::new(Mutex::new(get_hazard_symbols().unwrap_or_default()));
+  }
+
+  fn get_hazard_symbols() -> Result<GHSSymbols, impl std::error::Error> {
+    // calling `block_on` is possible, because we set the current thread to block at the beginning of the PDF generation.
+    tokio::runtime::Handle::current().block_on(cabr2_config::get_hazard_symbols())
   }
 
   /// Inlines the actual ghs-symbol-images from their keys as base64-encodes pngs
@@ -337,10 +361,12 @@ mod handlebar_helpers {
 
     let providers: BTreeSet<String> = substances.into_iter().map(|s| s.source.provider).collect();
 
+    let provider_mapping = PROVIDER_MAPPING.lock().unwrap();
     // kill empty string from empty substance lines
     for (i, provider) in providers
       .iter()
       .filter(|p| !(p.is_empty() || p.as_str() == "custom"))
+      .map(|p| provider_mapping.get(p).unwrap())
       .enumerate()
     {
       if i > 0 {

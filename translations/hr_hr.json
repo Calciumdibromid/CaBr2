@@ -1,0 +1,181 @@
+{
+  "name": "Hrvatski",
+  "locale": "hr_hr",
+  "strings": {
+    "base": {
+      "addElement": "Dodajte unos",
+      "removeElement": "Uklonite unos",
+      "print": "Isprintaj",
+      "cancel": "Odustani",
+      "ok": "OK",
+      "save": "Spremi",
+      "close": "Zatvori"
+    },
+    "tooltips": {
+      "header": "Header of the safety sheet",
+      "search": "Search and selected substances",
+      "securitythings": "Editing of the back of the safety sheet",
+      "preview": "Preview of the safety sheet"
+    },
+    "menu": {
+      "newDocument": "Nova sigurnosna lista podataka",
+      "loadFile": "Otvori sigurnosnu listu podataka",
+      "saveFile": "Spremi sigurnosnu listu podataka",
+      "exportPDF": "Izvoz kao PDF",
+      "settings": "Postavke",
+      "quickStart": "Vodič"
+    },
+    "settings": {
+      "language": "Jezik",
+      "reloadRequired": "Potrebno ponovno učitavanje",
+      "darkModeSwitchInfo": "Uključivanje/isključivanje tamne teme"
+    },
+    "bugreport": {
+      "title": "Prijavi grešku",
+      "sentence": "Prijavi grešku na ovaj email:",
+      "githubSentence": "Alternatively you can open an issue in Github:"
+    },
+    "header": {
+      "docTitle": "Naslov dokumenta:",
+      "organisation": "Organizacija:",
+      "labCourse": "Laboratorij / Predavanje:",
+      "name": "Ime:",
+      "place": "Mjesto:",
+      "assistant": "Asistent:",
+      "preparation": "Priprema / Zadatak:"
+    },
+    "search": {
+      "types": {
+        "chemicalName": "Kemijsko ime",
+        "chemicalFormula": "Molekularna formula",
+        "numbers": "Broj",
+        "fullText": "cijeli tekst"
+      },
+      "exact": "Točno pretraživanje",
+      "option": "Pretraži opcije:",
+      "searchButton": "Traži",
+      "removeSubstance": "Ukloni supstancu",
+      "editSubstance": "Uredi supstancu",
+      "removeOption": "Ukloni opcije pretraživanja",
+      "addOption": "Dodaj opcije pretraživanja",
+      "resultsHeader": "Rezultati pretraživanja",
+      "noResult": "Nema rezultata",
+      "customSubstance": "Prilagođeno",
+      "unsupportedProviderInfo": "nepodržano",
+      "error": "Došlo je do pogreške prilikom dohvaćanja podataka"
+    },
+    "substance": {
+      "invalidFormsTitle": "Something is wrong",
+      "invalidFormsContent": [
+        "The substance has invalid or missing data on following items:"
+      ],
+      "edited": "Uređeno?",
+      "name": "Ime",
+      "needsName": "Ime je obavezno",
+      "casNumber": "CAS broj",
+      "molecularFormula": "Molekularna formula",
+      "waterHazardClass": "Predavanje opasnosti od vode",
+      "signalWord": "Signalna riječ",
+      "molarMass": "Molarna masa",
+      "unit": "Jedinica",
+      "lethalDose": "Smrtonosna doza",
+      "mak": "MAK",
+      "meltingPoint": "Točka taljenja",
+      "boilingPoint": "Točka vrenja",
+      "amount": "Količina",
+      "notANumber": "Nije broj",
+      "customUnit": "Prilagođena jedinica",
+      "hPhrases": "H-izrazi",
+      "noHPhrase": "H-Broj nije valjan",
+      "invalidHPhrase": "Invalid H-Phrases",
+      "removeHPhrase": "ukloni H-izraze",
+      "addHPhrase": "dodaj H-izraze",
+      "pPhrases": "P-izrazi",
+      "noPPhrase": "P-Broj nije valjan",
+      "invalidPPhrase": "Invalid P-Phrases",
+      "removePPhrase": "ukloni P-izraze",
+      "addPPhrase": "dodaj P-izraze",
+      "editingHint": "Klikni na supstancu za uređivanje.",
+      "ghsSymbolsAddOrRemoveInfo": "Za ukloniti ili dodati kliknite na simbol",
+      "ghsSymbolsColorInfo": "sivo: nije odabrano / u boji: odabrano",
+      "addCustomSubstanceData": "Dodaj prilagođenu supstancu",
+      "dragAndDrop": "drag & drop",
+      "resetTooltip": "Reset current substance to original values"
+    },
+    "units": {
+      "groups": {
+        "rawSubstance": "Raw Substance",
+        "solution": "Solution",
+        "custom": "Custom"
+      },
+      "custom": "Custom",
+      "pcs.": "pcs."
+    },
+    "descriptions": {
+      "humanAndEnvironmentDanger": "Dodatne opasnosti za ljude i okoliš (npr. kancerogene, teratogene):",
+      "rulesOfConduct": "Mjere zaštite i sigurnosna pravila:",
+      "inCaseOfDanger": "Ponašanje u slučaju opasnosti i prve pomoći:",
+      "disposal": "Odlaganje:",
+      "humanAndEnvironmentDangerShort": "Opasnosti",
+      "rulesOfConductShort": "Zaštitne mjere",
+      "inCaseOfDangerShort": "Slučaj opasnosti",
+      "disposalShort": "Odlaganje",
+      "signatureFieldStudent": "Time potvrđujem da ću izvršiti zadatak/pripremu prema ovdje predstavljenim uputama za sigurnosne podatke.",
+      "signatureFieldAssistant": "Student smije obaviti predstavljeni zadatak/ pripremu."
+    },
+    "preview": {
+      "info": "Ovo je samo pregled. Generirani PDF može izgledati drugačije!",
+      "tableSubstanceTitleHeader": "Korištene supstance i proizvodi",
+      "tableMolarMassHeader": {
+        "mw": "MW",
+        "grammPerMol": "[g/mol]"
+      },
+      "tableBoilingHeader": "BP",
+      "tableMeltingHeader": "MP",
+      "tableGHSSymbolHeader": "GHS piktogram opasnosti",
+      "tableHPPhrasesHeader": "H/P-izrazi",
+      "tableHPPhrasesNumberHeader": "(brojevi)",
+      "tableMAKHeader": "MAC, LD50",
+      "tableWHCHeader": "WHC",
+      "tableAmountHeader": "Korištena količina",
+      "tableHPPhrasesTitle": "Tekst bitnih H/P-izraza:",
+      "sources": "Izvori"
+    },
+    "error": {
+      "substanceWithCASExist": "Supstance sa identičnim CAS brojim već postoji!",
+      "substanceLoadData": "Neuspješno učitavanje podataka o supstanci!",
+      "editSubstance": "Neuspješno uređivanje supstanci!",
+      "configLoad": "Neuspješno iščitavanje konfiguracije!",
+      "configSave": "Neuspješno spremanje konfiguracije!",
+      "getHazardSymbols": "Neuspješno učitavanje simbola opasnosti!",
+      "loadSearchSuggestions": "Neuspješno učitavanje prijedloga pretraživanja!",
+      "loadSearchResults": "Neuspješno učitavanje rezultata pretraživanja!",
+      "getAvailableDocumentTypes": "Neuspješno učitavanje dostupnih vrste dokumenata!",
+      "loadFile": "Neuspješno učitavanje dokumenta!",
+      "saveFile": "Spremanje datoteke je neuspješno!",
+      "exportPDF": "Izvoz PDFa nije uspio!",
+      "localeLoading": "Učitavanje jezika nije uspjelo!"
+    },
+    "success": {
+      "loadFile": "Datoteka je uspješno učitana",
+      "saveFile": "Datoteka uspješno spremljena",
+      "exportPDF": "PDF uspješno izvezen"
+    },
+    "dialogs": {
+      "unchangedValues": {
+        "title": "Nepromijenjene vrijednosti",
+        "content": [
+          "Slijedeće vrijednosti nisu pronađene."
+        ],
+        "footer": [
+          "Svejedno nastavi?"
+        ]
+      },
+      "pdfGeneration": {
+        "generatingPdf": "Generating PDF...",
+        "downloadPdf": "Download PDF",
+        "download": "Download"
+      }
+    }
+  }
+}

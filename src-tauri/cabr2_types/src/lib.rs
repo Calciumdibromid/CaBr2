@@ -1,4 +1,10 @@
+#![allow(clippy::upper_case_acronyms)]
+
 pub mod logging;
+#[cfg(feature = "webserver")]
+pub mod webserver;
+
+use std::collections::HashMap;
 
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
@@ -61,16 +67,70 @@ pub struct Amount {
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "UPPERCASE")]
 pub enum Unit {
-  Litre,
+  Liter,
   Milliliter,
-  Microlitre,
+  Microliter,
   Gram,
   Milligram,
   Microgram,
+  Mol,
+  Millimol,
   Pieces,
+
   SolutionRelative,
   SolutionMol,
   SolutionMillimol,
   SolutionMicromol,
+  SolutionGram,
+  SolutionMilligram,
+
   Custom(String),
+
+  GramPerMol,
+
+  MilligramPerKilogram,
+  MilligramPerLiter,
+
+  PartsPerMillion,
+
+  Celsius,
+  Fahrenheit,
 }
+
+impl std::convert::From<Unit> for std::string::String {
+  fn from(unit: Unit) -> Self {
+    use Unit::*;
+    match unit {
+      Liter => "l".into(),
+      Milliliter => "ml".into(),
+      Microliter => "µl".into(),
+      Gram => "g".into(),
+      Milligram => "mg".into(),
+      Microgram => "µg".into(),
+      Mol => "mol".into(),
+      Millimol => "mmol".into(),
+      Pieces => "st".into(),
+
+      SolutionRelative => "% (v/v)".into(),
+      SolutionMol => "mol/l".into(),
+      SolutionMillimol => "mmol/l".into(),
+      SolutionMicromol => "µmol/l".into(),
+      SolutionGram => "g/l".into(),
+      SolutionMilligram => "mg/l".into(),
+
+      GramPerMol => "g/mol".into(),
+
+      MilligramPerKilogram => "mg/kg".into(),
+      MilligramPerLiter => "mg/l".into(),
+
+      PartsPerMillion => "ppm".into(),
+
+      Custom(name) => name,
+
+      Celsius => "°C".into(),
+      Fahrenheit => "F".into(),
+    }
+  }
+}
+
+pub type ProviderMapping = HashMap<String, String>;

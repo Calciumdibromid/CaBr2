@@ -1,6 +1,6 @@
 [package]
 name = "cabr2_load_save"
-version = "0.3.0"
+version = "0.4.0"
 authors = [
   "crapStone <crapstone01@gmail.com>",
   "6543 <6543@obermui.de>",
@@ -10,17 +10,31 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cabr2_config = { path = "../cabr2_config/" }
+async-trait = "0.1.51"
+cabr2_config = { path = "../cabr2_config/", optional = true }
 cabr2_types = { path = "../cabr2_types/" }
-chrono = "0.4.19"
-handlebars = "3.5.3"
+cfg-if = "1.0.0"
+chrono = { version = "0.4.19", optional = true }
+handlebars = { version = "4.1.3", optional = true }
 lazy_static = "1.4.0"
 log = "0.4.14"
-lopdf = "0.26.0"
-quick-xml = { version = "0.22.0", features = ["serialize"] }
-regex = "1.4.5"
-serde = { version = "1.0.124", features = ["derive"] }
-serde_json = "1.0.64"
-tauri = { version = "0.11.1", default-features = false }
-thiserror = "1.0.24"
-wkhtmltopdf = "0.3.0"
+lopdf = { version = "0.26.0", optional = true }
+quick-xml = { version = "0.22.0", features = ["serialize"], optional = true }
+regex = { version = "1.4.6", optional = true }
+serde = { version = "1.0.130", features = ["derive"] }
+serde_json = { version = "1.0.68", optional = true }
+tauri = { version = "1.0.0-beta.8", default-features = false, optional = true }
+thiserror = "1.0.29"
+tokio = { version = "1.11.0", features = ["fs"], optional = true }
+uuid = { version = "0.8.2", features = ["serde", "v4"], optional = true }
+warp = { version = "0.3.1", features = [], optional = true }
+wkhtmltopdf = { version = "0.4.0", optional = true }
+
+[features]
+beryllium = ["chrono", "quick-xml", "regex"]
+cabr2 = ["serde_json"]
+pdf = ["cabr2_config", "tokio", "chrono", "handlebars", "lopdf", "serde_json", "wkhtmltopdf"]
+tauri_plugin = ["tauri", "serde_json", "tokio"]
+webserver = ["tokio", "uuid", "warp", "cabr2_types/webserver"]
+wasm = []
+default = []

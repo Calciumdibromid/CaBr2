@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 use lazy_static::lazy_static;
 use roxmltree::{Document, Node, NodeId};
@@ -7,16 +7,16 @@ use super::types::{GestisResponse, ParsedData};
 use crate::error::{Result, SearchError};
 
 lazy_static! {
-  pub static ref CHAPTER_MAPPING: HashMap<&'static str, (&'static str, &'static str)> = [
-    ("melting_point", ("0600", "0602")),
+  pub static ref CHAPTER_MAPPING: BTreeMap<&'static str, (&'static str, &'static str)> = [
     ("boiling_point", ("0600", "0603")),
-    ("molecular_formula", ("0400", "0400")),
-    ("water_hazard_class", ("1100", "1106")),
+    ("cas_number", ("0100", "0100")),
     ("h_p_signal_symbols", ("1100", "1303")),
     ("lethal_dose", ("0500", "0501")),
-    ("cas_number", ("0100", "0100")),
     ("mak1", ("1100", "1201")),
     ("mak2", ("1100", "1203")),
+    ("melting_point", ("0600", "0602")),
+    ("molecular_formula", ("0400", "0400")),
+    ("water_hazard_class", ("1100", "1106")),
   ]
   .iter()
   .cloned()
@@ -27,7 +27,7 @@ pub fn parse_response(json: &GestisResponse) -> Result<ParsedData> {
   log::info!("extracting data for: {} [{}] ...", json.name, json.zvg_number);
 
   let h_p_signal_symbols_error;
-  let (h_phrases, p_phrases, signal_word, symbols) = match get_h_p_signal_symbols(&json) {
+  let (h_phrases, p_phrases, signal_word, symbols) = match get_h_p_signal_symbols(json) {
     Ok(inner) => {
       h_p_signal_symbols_error = None;
       inner

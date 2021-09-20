@@ -1,8 +1,4 @@
-use std::{
-  fs::OpenOptions,
-  io::{BufReader, BufWriter},
-  path::PathBuf,
-};
+use async_trait::async_trait;
 
 use super::{
   error::Result,
@@ -11,26 +7,18 @@ use super::{
 
 pub struct CaBr2;
 
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 impl Loader for CaBr2 {
-  fn load_document(&self, filename: PathBuf) -> Result<CaBr2Document> {
-    let file = OpenOptions::new().read(true).open(filename)?;
-    let reader = BufReader::new(file);
-
-    Ok(serde_json::from_reader(reader)?)
+  async fn load_document(&self, contents: Vec<u8>) -> Result<CaBr2Document> {
+    Ok(serde_json::from_slice(&contents)?)
   }
 }
 
+#[cfg_attr(not(feature = "wasm"), async_trait)]
+#[cfg_attr(feature = "wasm", async_trait(?Send))]
 impl Saver for CaBr2 {
-  fn save_document(&self, filename: PathBuf, document: CaBr2Document) -> Result<()> {
-    let file = OpenOptions::new()
-      .write(true)
-      .create(true)
-      .truncate(true)
-      .open(filename)?;
-    let writer = BufWriter::new(file);
-
-    serde_json::to_writer(writer, &document)?;
-
-    Ok(())
+  async fn save_document(&self, document: CaBr2Document) -> Result<Vec<u8>> {
+    Ok(serde_json::to_vec(&document)?)
   }
 }

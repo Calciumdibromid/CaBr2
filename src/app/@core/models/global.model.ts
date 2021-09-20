@@ -1,7 +1,8 @@
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import { I18nService, LocalizedStrings } from '../services/i18n/i18n.service';
+import DocsTemplate from '../interfaces/DocTemplate';
 import { Header } from '../interfaces/Header';
 import { SearchResult } from '../services/provider/provider.model';
 import { SubstanceData } from './substances.model';
@@ -9,9 +10,7 @@ import { SubstanceData } from './substances.model';
 @Injectable()
 export class GlobalModel {
   ghsSymbols: GHSSymbols = new Map();
-
-  localizedStringsSubject = new BehaviorSubject<LocalizedStrings>(I18nService.getDefaultStrings());
-  localizedStringsObservable = this.localizedStringsSubject.asObservable();
+  ghsSymbolKeys: string[] = [];
 
   headerSubject = new BehaviorSubject<Header>({
     assistant: '',
@@ -45,10 +44,24 @@ export class GlobalModel {
   ghsSymbolsSubject = new BehaviorSubject<GHSSymbols>(new Map<string, string>());
   ghsSymbolsObservable = this.ghsSymbolsSubject.asObservable();
 
+  constructor(private sanitizer: DomSanitizer) {}
+
   setGHSSymbols(newSymbols: GHSSymbols) {
-    // newSymbols is just an object
-    this.ghsSymbols = new Map(Object.entries(newSymbols));
+    this.ghsSymbols = newSymbols;
+    this.ghsSymbolKeys = Array.from(newSymbols.keys());
+
+    this.ghsSymbolKeys.sort();
+  }
+
+  loadTemplate(docsTemplate: DocsTemplate): void {
+    this.headerSubject.next({ ...docsTemplate.header });
+    this.humanAndEnvironmentDangerSubject.next(docsTemplate.humanAndEnvironmentDanger);
+    this.rulesOfConductSubject.next(docsTemplate.rulesOfConduct);
+    this.inCaseOfDangerSubject.next(docsTemplate.inCaseOfDanger);
+    this.disposalSubject.next(docsTemplate.disposal);
+
+    this.substanceDataSubject.next([]);
   }
 }
 
-export type GHSSymbols = Map<string, string>;
+export type GHSSymbols = Map<string, SafeResourceUrl>;
