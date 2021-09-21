@@ -52,7 +52,7 @@
     "@tauri-apps/cli": "^1.0.0-beta.10",
     "@types/jasmine": "~3.9.1",
     "@types/lodash.merge": "^4.6.6",
-    "@types/node": "^16.9.4",
+    "@types/node": "^16.9.6",
     "@typescript-eslint/eslint-plugin": "4.31.1",
     "@typescript-eslint/parser": "4.31.1",
     "eslint": "^7.32.0",
