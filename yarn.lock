@@ -140,15 +140,6 @@
   dependencies:
     "@nrwl/devkit" "12.6.0"
 
-"@angular-eslint/eslint-plugin-template@12.4.1":
-  version "12.4.1"
-  resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin-template/-/eslint-plugin-template-12.4.1.tgz#7107db958995758c397431ef03b1316f0c800536"
-  integrity sha512-XfyvME1/Ikyy1wNXxhbXoRWDM4fH9tUfsO0nYEX/C2HXDzjDyeuT54eZzLGrNnkDom1IEw12V7Dwjm+R/rkL/g==
-  dependencies:
-    "@typescript-eslint/experimental-utils" "4.28.2"
-    aria-query "^4.2.2"
-    axobject-query "^2.2.0"
-
 "@angular-eslint/eslint-plugin-template@12.5.0":
   version "12.5.0"
   resolved "https://registry.yarnpkg.com/@angular-eslint/eslint-plugin-template/-/eslint-plugin-template-12.5.0.tgz#9b77647c7d850a956d4e2fc8343230f3076e5892"
