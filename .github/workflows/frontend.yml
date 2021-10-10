@@ -14,6 +14,7 @@ on:
       - '.prettierignore'
       - 'yarn.lock'
       - '.github/workflows/frontend.yml'
+      - 'src-wasm/**'
 
 jobs:
   frontend:
@@ -21,11 +22,11 @@ jobs:
     container: a6543/cabr2_ci:latest
     strategy:
       fail-fast: true
-  
+
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
-      
+
       - name: Set Rust Toolchain
         run: rustup default stable
 
@@ -37,7 +38,7 @@ jobs:
 
       - name: Eslint
         run: yarn lint
-      
+
       - name: Build WASM binary
         run: yarn wasm_lib:release
 
