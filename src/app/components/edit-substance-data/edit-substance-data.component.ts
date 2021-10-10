@@ -161,7 +161,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
   localizeUnit(unit: Unit): string {
     const name = getViewValue(unit);
-    const localizedName = translate('units')[name];
+    const localizedName = translate<any>('units')[name];
 
     if (localizedName) {
       return localizedName;
@@ -285,7 +285,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   }
 
   private checkForInvalidControls(): string[] {
-    const reasons = [];
+    const reasons: string[] = [];
     if (this.form.get('name')?.invalid) {
       reasons.push(translate('substance.name'));
     }

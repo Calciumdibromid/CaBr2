@@ -176,7 +176,7 @@ export default class DocumentService {
    * Returns `true` if the `CaBr2Document has some unchecked default values
    */
   private checkUnmodified(document: CaBr2Document, docsTemplate: DocsTemplate): string[] {
-    const unmodified = [];
+    const unmodified: string[] = [];
     for (const substance of document.substanceData) {
       if (!substance.checked) {
         unmodified.push(substance.name.modifiedData ?? substance.name.originalData);
@@ -193,7 +193,7 @@ export default class DocumentService {
       [document.disposal, docsTemplate.disposal, [translate('descriptions.disposalShort')]],
     ]) {
       if (compareArrays(section[0], section[1])) {
-        unmodified.push(section[2][0]);
+        unmodified.push(section[2][0] as string);
       }
     }
     return unmodified;
