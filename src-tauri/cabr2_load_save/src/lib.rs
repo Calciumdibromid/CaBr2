@@ -8,10 +8,10 @@ mod types;
 
 #[cfg(feature = "tauri_plugin")]
 pub mod plugin;
-#[cfg(feature = "webserver")]
-pub mod webserver;
 #[cfg(feature = "wasm")]
 pub mod wasm;
+#[cfg(feature = "webserver")]
+pub mod webserver;
 
 #[cfg(feature = "beryllium")]
 mod beryllium;
