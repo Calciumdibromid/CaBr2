@@ -54,7 +54,7 @@ checksum = "c4872d67bab6358e59559027aa3b9157c53d9358c51423c17554809a8858e0f8"
 
 [[package]]
 name = "cabr2_load_save"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "async-trait",
  "cabr2_types",
@@ -70,7 +70,7 @@ dependencies = [
 
 [[package]]
 name = "cabr2_search"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "async-trait",
  "cabr2_types",
@@ -87,7 +87,7 @@ dependencies = [
 
 [[package]]
 name = "cabr2_types"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "chrono",
  "log",
@@ -96,7 +96,7 @@ dependencies = [
 
 [[package]]
 name = "cabr2_wasm_lib"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "base64",
  "cabr2_load_save",
@@ -693,9 +693,9 @@ dependencies = [
 
 [[package]]
 name = "reqwest"
-version = "0.11.4"
+version = "0.11.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "246e9f61b9bb77df069a947682be06e31ac43ea37862e244a69f177694ea6d22"
+checksum = "66d2927ca2f685faf0fc620ac4834690d29e7abb153add10f5812eef20b5e280"
 dependencies = [
  "base64",
  "bytes",
@@ -796,9 +796,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.67"
+version = "1.0.68"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a7f9e390c27c3c0ce8bc5d725f6e4d30a29d26659494aa4b17535f7522c5c950"
+checksum = "0f690853975602e1bfe1ccbf50504d67174e3bcf340f23b5ea9992e0587a52d8"
 dependencies = [
  "itoa",
  "ryu",

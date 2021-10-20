@@ -1,10 +1,10 @@
 mod types;
 
+use async_trait::async_trait;
 use chrono::TimeZone;
 use lazy_static::lazy_static;
 use quick_xml::de::from_reader;
 use regex::Regex;
-use async_trait::async_trait;
 
 use cabr2_types::{Amount, Data, Source, SubstanceData, Unit};
 
