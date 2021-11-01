@@ -1411,20 +1411,20 @@
     merge-source-map "^1.1.0"
     schema-utils "^2.7.0"
 
-"@ngneat/transloco-utils@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@ngneat/transloco-utils/-/transloco-utils-3.0.0.tgz#4265a345634489ed423b97f36e5ea482e8a98034"
-  integrity sha512-kEBoaJdY2orKhPH5eAHQpos1NiOnQoPMKUBINXObSe3SjjWNnGVrqytJRD+ruOFnBJlhXS2sRIiruQru/U/QuQ==
+"@ngneat/transloco-utils@^3.0.1":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@ngneat/transloco-utils/-/transloco-utils-3.0.2.tgz#43470e314d4815eab82a5247ff3123992d2fec3c"
+  integrity sha512-NItuBldCJPfQ1FtDcbTQUGbOtfYjdoNC/IIV+M0jeUqzeKCZCYh5ajwTYhLXSXhMhG4nH4QNWCADOKwOAOVuRg==
   dependencies:
     cosmiconfig "^7.0.0"
     tslib "^2.3.0"
 
-"@ngneat/transloco@3.0.2":
-  version "3.0.2"
-  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-3.0.2.tgz#60130deb89fd26c08eabcf3eee7ae8ccb67886fb"
-  integrity sha512-vL++GGJWIr8mWtYFoVfi3fQj7540c6JxZ+/R+3TvhisZKAb1Jxy84Vns98QsHCqAVkZxCxXQscNEMod9wOXUUQ==
+"@ngneat/transloco@3.0.7":
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-3.0.7.tgz#8be780e04f7784f567fb651b0fd24ebee34f83e7"
+  integrity sha512-q9l4GrgOz0ispF64/CXzKzwn0HlqmbS033wQI+WrvVFeNjY5puca0AYQQHB4cSIWwkG9ex3q8IXCOD9dC1a4bA==
   dependencies:
-    "@ngneat/transloco-utils" "3.0.0"
+    "@ngneat/transloco-utils" "^3.0.1"
     flat "5.0.2"
     lodash.kebabcase "^4.1.1"
     ora "^5.4.1"
