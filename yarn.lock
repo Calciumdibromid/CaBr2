@@ -18,14 +18,6 @@
     "@angular-devkit/core" "12.2.12"
     rxjs "6.6.7"
 
-"@angular-devkit/architect@0.1202.9":
-  version "0.1202.9"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/architect/-/architect-0.1202.9.tgz#de1bce9bd74e5310232c609c2881e37705b4ad84"
-  integrity sha512-s2NcFqZjsdYoR0vhJWLCwykF6hG7F0C5fJJs49i6IJMKj5Ai58z7d2IFYvD8nA60paMvjFS14OQ+E/FEEEZ88Q==
-  dependencies:
-    "@angular-devkit/core" "12.2.9"
-    rxjs "6.6.7"
-
 "@angular-devkit/build-angular@~12.2.12":
   version "12.2.12"
   resolved "https://registry.yarnpkg.com/@angular-devkit/build-angular/-/build-angular-12.2.12.tgz#87f53514f293e1788a80fadcd9fa96bd57127e69"
@@ -132,18 +124,6 @@
     rxjs "6.6.7"
     source-map "0.7.3"
 
-"@angular-devkit/core@12.2.9":
-  version "12.2.9"
-  resolved "https://registry.yarnpkg.com/@angular-devkit/core/-/core-12.2.9.tgz#58f41ca4fea44307d90fb23af605ee06fe3c5552"
-  integrity sha512-iPHQiga08bbryiVq3QYzwpuq9sNb8CB/MVy65MHJ0fuW1z6RYDeUh1EziitBBUT2d81KWKPO1wQ2DuUoxOg4mg==
-  dependencies:
-    ajv "8.6.2"
-    ajv-formats "2.1.0"
-    fast-json-stable-stringify "2.1.0"
-    magic-string "0.25.7"
-    rxjs "6.6.7"
-    source-map "0.7.3"
-
 "@angular-devkit/schematics@12.2.12":
   version "12.2.12"
   resolved "https://registry.yarnpkg.com/@angular-devkit/schematics/-/schematics-12.2.12.tgz#f6145c2f3fe815b269512028cb2c7d189b4d0cef"
@@ -153,10 +133,10 @@
     ora "5.4.1"
     rxjs "6.6.7"
 
-"@angular-eslint/builder@12.5.0":
-  version "12.5.0"
-  resolved "https://registry.yarnpkg.com/@angular-eslint/builder/-/builder-12.5.0.tgz#e53946ffe9873579ff2a9ce46d3b7e44ea62905d"
-  integrity sha512-abex1KdqEvUYbJqLkqhEeW4r0DuJPDzlMZYODMyBDDFTcBFYQCzLFUkhIjRNet9Vjto3Y3DbkkFUfS4DEEwjTw==
+"@angular-eslint/builder@12.6.1":
+  version "12.6.1"
+  resolved "https://registry.yarnpkg.com/@angular-eslint/builder/-/builder-12.6.1.tgz#9c65dde8dbab20bc40667ee336c9e51697b5e171"
+  integrity sha512-w5hkN3ZEWAQusqFnwv4MbC8TsY6Eh4pgKShAKfYA0GmqmCp3QZG1vHRbpV1Rs0WQIzoa3RRXRiIMt6STgf8SAA==
   dependencies:
     "@nrwl/devkit" "12.6.0"
 
