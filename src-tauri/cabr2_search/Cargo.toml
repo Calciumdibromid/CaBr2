@@ -14,7 +14,7 @@ async-trait = "0.1.50"
 cabr2_types = { path = "../cabr2_types/" }
 cfg-if = "1.0.0"
 chrono = "0.4.19"
-futures = { version = "0.3.17", optional = true }
+futures = { version = "0.3.18", optional = true }
 lazy_static = "1.4.0"
 log = "0.4.14"
 reqwest = { version = "0.11.6", features = ["json", "native-tls"], default-features = false, optional = true }
