@@ -12,10 +12,10 @@
       "close": "Закрыть"
     },
     "tooltips": {
-      "header": "Header of the safety sheet",
-      "search": "Search and selected substances",
-      "securitythings": "Editing of the back of the safety sheet",
-      "preview": "Preview of the safety sheet"
+      "header": "Заголовок защитного брезента",
+      "search": "Поиск и выбор веществ",
+      "securitythings": "Редактирование задней части защитного брезента",
+      "preview": "Предварительный просмотр защитного брезента"
     },
     "menu": {
       "newDocument": "Новые инструкция",
@@ -33,7 +33,7 @@
     "bugreport": {
       "title": "Сообщить об ошибке",
       "sentence": "Сообщить об ошибке по следующей почте:",
-      "githubSentence": "Alternatively you can open an issue in Github:"
+      "githubSentence": "В качестве альтернативы вы можете открыть проблему в Github:"
     },
     "header": {
       "docTitle": "Название документа:",
@@ -65,9 +65,9 @@
       "error": "Ошибка при получении данных"
     },
     "substance": {
-      "invalidFormsTitle": "Something is wrong",
+      "invalidFormsTitle": "Что-то не так",
       "invalidFormsContent": [
-        "The substance has invalid or missing data on following items:"
+        "Вещество имеет недостоверные или отсутствующие данные по следующим пунктам:"
       ],
       "edited": "Переработанный?",
       "name": "Название",
@@ -87,29 +87,29 @@
       "customUnit": "Нестандартная единица",
       "hPhrases": "Заявления об опасности",
       "noHPhrase": "Недействительный Предупреждения об опасности",
-      "invalidHPhrase": "Invalid H-Phrases",
+      "invalidHPhrase": "Недопустимые H-фразы",
       "removeHPhrase": "удалить Предупреждения об опасности",
       "addHPhrase": "добавить Предупреждение об опасности",
       "pPhrases": "Предупрежение о безопасности",
       "noPPhrase": "Недействительный Предупреждения о безопасности",
-      "invalidPPhrase": "Invalid P-Phrases",
+      "invalidPPhrase": "Неверные P-фразы",
       "removePPhrase": "удалить Предупреждения о безопасности",
       "addPPhrase": "добавить Предупреждение о безопасности",
       "editingHint": "Нажмите на субстанцу, чтобы изменить ее.",
       "ghsSymbolsAddOrRemoveInfo": "Нажмите на символ для удаления или добавления",
       "ghsSymbolsColorInfo": "серый: не выбрано / раскрашено: выбрано",
       "addCustomSubstanceData": "Добавить обычай субстанция",
-      "dragAndDrop": "drag & drop",
-      "resetTooltip": "Reset current substance to original values"
+      "dragAndDrop": "перетащить",
+      "resetTooltip": "Сбросить текущее вещество к исходным значениям"
     },
     "units": {
       "groups": {
-        "rawSubstance": "Raw Substance",
-        "solution": "Solution",
-        "custom": "Custom"
+        "rawSubstance": "Сырая субстанция",
+        "solution": "Решение",
+        "custom": "Пользовательский"
       },
-      "custom": "Custom",
-      "pcs.": "pcs."
+      "custom": "Пользовательский",
+      "pcs.": "шт."
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Дополнительные Опасность для людей и окружающей среды (например: канцерогенная, тератогенная опасность):",
@@ -172,9 +172,9 @@
         ]
       },
       "pdfGeneration": {
-        "generatingPdf": "Generating PDF...",
-        "downloadPdf": "Download PDF",
-        "download": "Download"
+        "generatingPdf": "Генерация PDF...",
+        "downloadPdf": "Скачать PDF",
+        "download": "Скачать"
       }
     }
   }
