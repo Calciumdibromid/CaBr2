@@ -10,7 +10,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-trait = "0.1.50"
+async-trait = "0.1.52"
 cabr2_types = { path = "../cabr2_types/" }
 cfg-if = "1.0.0"
 chrono = "0.4.19"
