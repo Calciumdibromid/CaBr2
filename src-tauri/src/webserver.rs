@@ -109,11 +109,21 @@ pub async fn main() {
     address = ([127, 0, 0, 1], 3030);
   }
 
+  let version = warp::path("version")
+    .and(warp::path::end())
+    .and(warp::get())
+    .and_then(cabr2_config::webserver::handle_program_version);
+
   let api = warp::path("api").and(warp::path("v1"));
-  let routes = api.and(search.or(config.or(load_save))).with(cors).or(downloads_folder);
+  let routes = api
+    .and(version.or(search.or(config.or(load_save))))
+    .with(cors)
+    .or(downloads_folder);
 
   /*
   /api/v1/..
+
+  GET  ../version
 
   POST ../search/suggestions { provider, searchArgument: { searchType, pattern } }
   POST ../search/results { provider, searchArguments: { exact, arguments: []{ searchType, pattern } } }
