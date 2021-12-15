@@ -25,6 +25,7 @@ log = "0.4.14"
 tauri = { version = "1.0.0-beta.8", features = ["api-all"], optional = true }
 tokio = { version = "1.15.0", features = ["macros", "rt-multi-thread"], optional = true }
 warp = { version = "0.3.2", optional = true }
+structopt = { version = "0.3", optional = true }
 
 [features]
 default = [
@@ -46,6 +47,7 @@ tauri_app = [
 webserver = [
   "warp",
   "tokio",
+  "structopt",
   "cabr2_logger",
   "cabr2_config/webserver",
   "cabr2_load_save/webserver",

@@ -313,6 +313,7 @@ dependencies = [
  "cabr2_logger",
  "cabr2_search",
  "log",
+ "structopt",
  "tauri",
  "tauri-build",
  "tokio",
