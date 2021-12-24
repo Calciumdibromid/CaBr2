@@ -93,7 +93,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.dialog
           .open(ConsentComponent, {
             data: {
-              duration: 10,
+              duration: 5,
             },
             disableClose: true,
           })
