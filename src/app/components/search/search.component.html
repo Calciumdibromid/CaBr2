@@ -2,6 +2,10 @@
   <mat-card class="onepager-mat-card">
     <mat-tab-group [(selectedIndex)]="index">
       <mat-tab *ngFor="let provider of providers" class="flex" [label]="provider.name">
+        <div class="disclaimer" *ngIf="provider.identifier === 'gestis'">
+          <!-- TODO (#978) -->
+          {{ t('search.disclaimer.' + provider.identifier) }}
+        </div>
         <app-selected-search
           (triggerSearch)="openDialog(index)"
           [providerIdentifier]="provider.identifier"
