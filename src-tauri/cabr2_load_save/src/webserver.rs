@@ -10,15 +10,19 @@ use cabr2_types::{webserver::generate_error_reply, ProviderMapping};
 
 use crate::{error::LoadSaveError, handler, types::CaBr2Document};
 
-pub const DOWNLOAD_FOLDER: &str = "/tmp/cabr2_server/created";
-pub const CACHE_FOLDER: &str = "/tmp/cabr2_server/cache";
+lazy_static! {
+  static ref DOWNLOAD_FOLDER: Arc<Mutex<PathBuf>> = Arc::new(Mutex::new(PathBuf::new()));
+  static ref CACHE_FOLDER: Arc<Mutex<PathBuf>> = Arc::new(Mutex::new(PathBuf::new()));
+}
 
 #[cfg(not(debug_assertions))]
 const SERVER_URL: &str = "https://api.cabr2.de";
 #[cfg(debug_assertions)]
 const SERVER_URL: &str = "http://localhost:3030";
 
-pub async fn init(provider_mapping: ProviderMapping) {
+pub async fn init(download_folder: PathBuf, cache_folder: PathBuf, provider_mapping: ProviderMapping) {
+  DOWNLOAD_FOLDER.lock().unwrap() = download_folder;
+  CACHE_FOLDER.lock().unwrap() = cache_folder;
   handler::init_handlers(provider_mapping).await;
 }
 
@@ -69,7 +73,7 @@ struct SaveDocumentResponse {
 
 pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, Infallible> {
   lazy_static! {
-    static ref TMP: PathBuf = PathBuf::from(DOWNLOAD_FOLDER);
+    static ref TMP: PathBuf = PathBuf::from(DOWNLOAD_FOLDER.lock().unwrap().clone());
   }
 
   let mut path;
@@ -123,7 +127,7 @@ pub async fn cleanup_thread() {
   // but we want to know what went wrong.
 
   loop {
-    let mut res = match fs::read_dir(DOWNLOAD_FOLDER).await {
+    let mut res = match fs::read_dir(DOWNLOAD_FOLDER.lock().unwrap().clone()).await {
       Ok(iter) => iter,
       Err(err) => {
         log::error!("{:?}", err);

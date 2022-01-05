@@ -1,20 +1,56 @@
-use std::fs;
+use std::{fs, path::PathBuf};
+use structopt::StructOpt;
 
 use warp::Filter;
 
-use cabr2_load_save::webserver::{CACHE_FOLDER, DOWNLOAD_FOLDER};
+/// A basic example
+#[derive(StructOpt, Debug)]
+#[structopt(name = "basic")]
+struct Opt {
+  // TODO
+  #[structopt(short, long, default_value = "0.0.0:80")]
+  address: String,
+
+  // TODO
+  #[structopt(short, long)]
+  config: PathBuf,
+
+  /// TODO
+  #[structopt(short = "l", long)]
+  log_folder: PathBuf,
+
+  // download folder
+  #[structopt(long, default_value = "/tmp/cabr2_server/created")]
+  download_folder: PathBuf,
+
+  // cache folder
+  #[structopt(long, default_value = "/tmp/cabr2_server/cache")]
+  cache_folder: PathBuf,
+
+  // TODO
+  #[structopt(short, long, default_value = "https://app.cabr2.de")]
+  cors_allow_origin: String,
+}
 
 #[tokio::main]
 pub async fn main() {
+  let opt = Opt::from_args();
+  println!("{:#?}", opt);
+
   // must be initialized first
   cabr2_logger::setup_logger().await.unwrap();
 
   cabr2_search::webserver::init().await;
-  cabr2_load_save::webserver::init(cabr2_search::webserver::get_provider_mapping().await).await;
+  cabr2_load_save::webserver::init(
+    opt.download_folder.clone(),
+    opt.cache_folder.clone(),
+    cabr2_search::webserver::get_provider_mapping().await,
+  )
+  .await;
 
   // create tmp folders
-  handle_result(fs::create_dir_all(DOWNLOAD_FOLDER));
-  handle_result(fs::create_dir(CACHE_FOLDER));
+  handle_result(fs::create_dir_all(opt.download_folder.clone()));
+  handle_result(fs::create_dir(opt.cache_folder));
 
   let search_available_providers = warp::path("availableProviders")
     .and(warp::path::end())
@@ -88,17 +124,17 @@ pub async fn main() {
       .or(load_save_save_document),
   );
 
-  let downloads_folder = warp::path("download").and(warp::fs::dir(DOWNLOAD_FOLDER));
+  let downloads_folder = warp::path("download").and(warp::fs::dir(opt.download_folder));
 
   let cors;
-  let address;
+  let address: std::net::SocketAddr;
   #[cfg(not(debug_assertions))]
   {
     cors = warp::cors()
-      .allow_origin("https://app.cabr2.de")
+      .allow_origin(opt.cors_allow_origin)
       .allow_methods(vec!["GET", "POST"])
       .allow_headers(vec!["content-type"]);
-    address = ([0, 0, 0, 0], 80);
+    address = opt.address.parse().expect("fail to parse socket address");
   }
   #[cfg(debug_assertions)]
   {
@@ -106,7 +142,7 @@ pub async fn main() {
       .allow_origin("http://localhost:4200")
       .allow_methods(vec!["GET", "POST"])
       .allow_headers(vec!["content-type"]);
-    address = ([127, 0, 0, 1], 3030);
+    address = "127.0.0.1:3030".parse().expect("fail to parse socket address");
   }
 
   let version = warp::path("version")
