@@ -301,7 +301,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     return reasons;
   }
 
-  /** Custom helper to evaluate wether amount was set or not */
+  /** Custom helper to evaluate whether amount was set or not */
   private evaluateAmount(): Amount | undefined {
     if (this.amount.dirty) {
       const value = this.amount.get('value')?.value;

@@ -13,7 +13,7 @@ CaBr2 is a [tauri](https://tauri.studio) project.
 Frontend is written in Angular 12 and backend is in Rust.
 
 To start execute `yarn start` to build and serve UI,
-execute `yarn tauri:dev` to get the aplication window.
+execute `yarn tauri:dev` to get the application window.
 
 ## Build
 
