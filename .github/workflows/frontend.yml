@@ -39,6 +39,14 @@ jobs:
       - name: Eslint
         run: yarn lint
 
+      - name: codespell
+        uses: codespell-project/actions-codespell@master
+        with:
+          check_filenames: true
+          check_hidden: true
+          skip: ./.git,./.gitignore,node_modules,dist,yarn.lock,./src/assets,./translations,*.html,./src-tauri
+          ignore_words_list: crate,ser
+
       - name: Build WASM binary
         run: yarn wasm_lib:release
 
