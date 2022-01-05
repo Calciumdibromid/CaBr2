@@ -11,7 +11,6 @@ use log::LevelFilter;
 use cabr2_config::{read_config, BackendConfig, TMP_DIR};
 use cabr2_types::logging::LogLevel;
 
-// som wrong
 pub async fn setup_logger() -> Result<(), fern::InitError> {
   let mut log_file = TMP_DIR.clone();
   log_file.push("logs/");
