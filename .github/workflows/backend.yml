@@ -39,7 +39,7 @@ jobs:
         with:
           check_filenames: true
           check_hidden: true
-          skip: ./.git,./.gitignore,node_modules,dist,yarn.lock,target,./translations,*.html,./src
+          skip: ./.git,./.gitignore,node_modules,dist,yarn.lock,target,./translations,*.html,./src,assets
           ignore_words_list: crate,ser
 
       - name: Build Tauri app
