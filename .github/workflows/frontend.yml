@@ -8,7 +8,6 @@ on:
     branches: [master, develop]
     paths:
       - 'src'
-      - '!src/assets/defaultStrings.json'
       - '*.json'
       - '*.js'
       - '.prettierignore'
