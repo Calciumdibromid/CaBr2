@@ -186,13 +186,7 @@ const getViewValue = (unit: Unit): string => {
     return unit.name ?? '';
   }
 
-  const value = unitMapping.get(unit.type);
-
-  if (value === undefined) {
-    throw Error('unknown unit');
-  }
-
-  return value;
+  return getViewName(unit);
 };
 
 const getViewName = (unit: Unit): string => {
@@ -216,7 +210,6 @@ class UnitGroups {
     UnitType.MOL,
     UnitType.MILLIMOL,
     UnitType.PIECES,
-    // Unit.CUSTOM,
   ];
   public readonly solutionUnits = [
     UnitType.SOLUTION_MOL,
@@ -224,18 +217,9 @@ class UnitGroups {
     UnitType.SOLUTION_MICROMOL,
     UnitType.SOLUTION_GRAM,
     UnitType.SOLUTION_MILLIGRAM,
-    // Unit.CUSTOM,
   ];
-  public readonly temperatureUnits = [
-    UnitType.CELSIUS,
-    UnitType.FAHRENHEIT,
-    // Unit.CUSTOM,
-  ];
-  public readonly lethalUnits = [
-    UnitType.MILLIGRAM_PER_KILOGRAM,
-    UnitType.MILLIGRAM_PER_LITER,
-    // Unit.CUSTOM,
-  ];
+  public readonly temperatureUnits = [UnitType.CELSIUS, UnitType.FAHRENHEIT];
+  public readonly lethalUnits = [UnitType.MILLIGRAM_PER_KILOGRAM, UnitType.MILLIGRAM_PER_LITER];
   public readonly defaultUnitGroups: GroupMapping[] = [
     { viewValue: 'rawSubstance', unitMappings: this.substanceUnits },
     { viewValue: 'solution', unitMappings: this.solutionUnits },
