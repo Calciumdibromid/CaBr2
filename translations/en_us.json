@@ -59,7 +59,7 @@
       "removeOption": "Remove search option",
       "addOption": "Add search option",
       "resultsHeader": "Search results",
-      "noResult": "Gestis returned no results.\nPlease try again with synonyms or partial words.",
+      "noResult": "{{provider}} returned no results.\nPlease try again with synonyms or partial words.",
       "customSubstance": "Custom",
       "unsupportedProviderInfo": "not supported",
       "error": "An error occurred while retrieving data",

@@ -26,7 +26,7 @@
   </ng-template>
   <ng-template #empty>
     <p class="viewport empty">
-      <b>{{ searchFailed ? t('search.error') : t('search.noResult') }}</b>
+      <b>{{ searchFailed ? t('search.error') : t('search.noResult', {provider: data.provider.name}) }}</b>
     </p>
   </ng-template>
   <mat-divider class="divider"></mat-divider>

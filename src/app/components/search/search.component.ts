@@ -67,21 +67,21 @@ export class SearchComponent implements OnInit {
   }
 
   openDialog(index: number): void {
-    const providerIdentifier = this.providers[index].identifier;
+    const provider = this.providers[index];
     const currentSearchComponent = this.selectedSearchComponents.find((_, i) => i === index);
     const searchArguments = currentSearchComponent?.getSearchArguments();
 
     const dialogRef = this.dialog.open(SearchDialogComponent, {
       data: {
         arguments: searchArguments,
-        providerIdentifier,
+        provider,
       },
       panelClass: ['unselectable', 'undragable'],
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.providerService.substanceData(providerIdentifier, result.zvgNumber).subscribe(
+        this.providerService.substanceData(provider.identifier, result.zvgNumber).subscribe(
           (value) => {
             logger.debug(value);
             const cas = this.modifiedOrOriginal(value.cas);
