@@ -22,6 +22,16 @@ ul {
 
 mat-card {
   @include mat.elevation(0);
-  padding-top: 0;
+  padding-top: 10px;
   padding-bottom: 0;
+}
+
+button:not(.add-button) {
+  mat-icon {
+    font-size: 1.3em !important;
+  }
+}
+
+.add-button {
+  margin-bottom: 16px !important; // material angular... -.-
 }
