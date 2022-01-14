@@ -172,7 +172,7 @@
         "generatingPdf": "Generating PDF...",
         "downloadPdf": "Download PDF",
         "download": "Download",
-        "errorMessage": "Server is not responding.\nThis could have multiple reasons.\nYou can wait or close this dialog now and try again later"
+        "errorMessage": "The Server is not responding.\nThis could have multiple reasons.\nYou can wait or close this dialog now and try again later."
       }
     }
   }
