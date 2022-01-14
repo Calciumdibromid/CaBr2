@@ -7,11 +7,11 @@ import { translate } from '@ngneat/transloco';
 import {
   Amount,
   Data,
-  getViewValue,
+  getViewName,
   modifiedOrOriginal,
   SubstanceData,
-  Unit,
   unitGroups,
+  UnitType,
 } from '../../@core/models/substances.model';
 import { compareArrays } from '../../@core/utils/compare';
 import { GlobalModel } from '../../@core/models/global.model';
@@ -32,7 +32,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
   addPPhraseHover = false;
 
-  unit = Unit;
+  unit = UnitType;
 
   unitGroups = unitGroups;
 
@@ -51,8 +51,8 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.customSubscription = this.amount.get('unit')?.valueChanges.subscribe((value: Unit) => {
-      this.customUnitVisible = value === Unit.CUSTOM;
+    this.customSubscription = this.amount.get('unit')?.valueChanges.subscribe((value: UnitType) => {
+      this.customUnitVisible = value === UnitType.CUSTOM;
     });
   }
 
@@ -61,7 +61,14 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   }
 
   initControls(): FormGroup {
-    const amount = this.data.amount ?? { value: '', unit: Unit.GRAM };
+    let amount;
+
+    if (this.data.amount) {
+      const a = this.data.amount;
+      amount = { value: a.value, unit: a.unit.type, unitName: a.unit.name ?? '' };
+    } else {
+      amount = { value: '', unit: UnitType.GRAM, unitName: '' };
+    }
 
     const group = this.formBuilder.group({
       name: [modifiedOrOriginal(this.data.name), Validators.required],
@@ -81,11 +88,12 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       symbols: this.formBuilder.array(modifiedOrOriginal(this.data.symbols)),
       lethalDose: modifiedOrOriginal(this.data.lethalDose) ?? '',
       mak: modifiedOrOriginal(this.data.mak) ?? '',
-      amount: this.formBuilder.group({
-        value: amount.value,
-        unit: amount.unit,
-      }),
+      amount: this.formBuilder.group(amount),
     });
+
+    if (amount.unit === UnitType.CUSTOM) {
+      this.customUnitVisible = true;
+    }
 
     return group;
   }
@@ -159,8 +167,8 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     formArray.markAllAsTouched();
   }
 
-  localizeUnit(unit: Unit): string {
-    const name = getViewValue(unit);
+  localizeUnit(unit: UnitType): string {
+    const name = getViewName({ type: unit });
     const localizedName = translate<any>('units')[name];
 
     if (localizedName) {
@@ -219,7 +227,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       signalWord: this.data.signalWord.originalData ?? '',
       lethalDose: this.data.lethalDose.originalData ?? '',
       mak: this.data.mak.originalData ?? '',
-      amount: { value: '', unit: Unit.GRAM },
+      amount: { value: '', unit: UnitType.GRAM },
       hPhrases: this.data.hPhrases.originalData.map((phrase) => ({
         hNumber: phrase[0],
         hPhrase: phrase[1],
@@ -305,7 +313,18 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   private evaluateAmount(): Amount | undefined {
     if (this.amount.dirty) {
       const value = this.amount.get('value')?.value;
-      return value ? { value, unit: this.amount.get('unit')?.value } : undefined;
+
+      if (!value) {
+        return undefined;
+      }
+
+      const unit = this.amount.get('unit')?.value;
+
+      if ((unit as UnitType) === UnitType.CUSTOM) {
+        return { value, unit: { type: unit, name: this.amount.get('unitName')?.value } };
+      }
+
+      return { value, unit: { type: unit } };
     } else {
       return this.data.amount;
     }

@@ -111,7 +111,7 @@
           </mat-form-field>
           <mat-form-field *ngIf="customUnitVisible">
             <mat-label>{{ t('substance.customUnit') }}</mat-label>
-            <input matInput />
+            <input matInput formControlName="unitName" />
           </mat-form-field>
         </div>
       </mat-card>
