@@ -127,10 +127,12 @@
                 <input matInput formControlName="hNumber" />
                 <mat-error
                   *ngIf="hPhrases.at(i).get('hNumber')?.invalid"
-                  matTooltip="HXXX+HXXX+..."
+                  [matTooltip]="t('substance.phraseFormatTooltip', { format: 'Hxxx+Hxxx ...' })"
                   matTooltipPosition="above"
-                  >{{ t('substance.noHPhrase') }}</mat-error
                 >
+                  {{ t('substance.noHPhrase') }}
+                  <mat-icon>info</mat-icon>
+                </mat-error>
               </mat-form-field>
               <mat-form-field class="phrases-form-field">
                 <textarea
@@ -180,10 +182,12 @@
                 <input matInput formControlName="pNumber" />
                 <mat-error
                   *ngIf="pPhrases.at(i).get('pNumber')?.invalid"
-                  matTooltip="PXXX+PXXX+..."
+                  [matTooltip]="t('substance.phraseFormatTooltip', { format: 'Pxxx+Pxxx ...' })"
                   matTooltipPosition="above"
-                  >{{ t('substance.noPPhrase') }}</mat-error
                 >
+                  {{ t('substance.noPPhrase') }}
+                  <mat-icon>info</mat-icon>
+                </mat-error>
               </mat-form-field>
               <mat-form-field class="phrases-form-field">
                 <textarea

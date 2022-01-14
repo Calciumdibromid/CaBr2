@@ -101,7 +101,8 @@
       "ghsSymbolsColorInfo": "gray: not selected / colorized: selected",
       "addCustomSubstanceData": "Add custom substance",
       "dragAndDrop": "drag & drop",
-      "resetTooltip": "Reset current substance to original values"
+      "resetTooltip": "Reset current substance to original values",
+      "phraseFormatTooltip": "Expected format: {{format}}"
     },
     "units": {
       "groups": {
