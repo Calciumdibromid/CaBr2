@@ -7,7 +7,7 @@ updates:
     time: "22:30"
   open-pull-requests-limit: 10
 - package-ecosystem: cargo
-  directory: "/src-tauri/"
+  directory: "/"
   schedule:
     interval: daily
     time: "22:30"
