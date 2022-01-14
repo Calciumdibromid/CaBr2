@@ -23,6 +23,8 @@ export class ProgressDialogComponent implements OnInit {
 
   finished = false;
 
+  error = false;
+
   closeEnabled = false;
 
   constructor(
@@ -37,14 +39,24 @@ export class ProgressDialogComponent implements OnInit {
         this.closeEnabled = true;
         data.subscriber.next();
       },
-      (err) => data.subscriber.error(err),
+      (err) => {
+        data.subscriber.error(err);
+        this.dialogRef.close();
+      },
     );
   }
 
   ngOnInit(): void {
     this.finished = false;
     this.closeEnabled = false;
-    setTimeout(() => (this.closeEnabled = true), 5000);
+    this.error = false;
+
+    // enable close button and show error message after 10 seconds
+    setTimeout(() => {
+      this.closeEnabled = true;
+      // set only if pdfUrl wasn't set
+      this.error = !this.pdfUrl;
+    }, 10000);
   }
 
   downloadPdf() {
@@ -56,5 +68,6 @@ export class ProgressDialogComponent implements OnInit {
   setPdfUrl(url: string) {
     this.pdfUrl = url;
     this.finished = true;
+    this.error = false;
   }
 }

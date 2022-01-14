@@ -4,8 +4,8 @@ h1 {
   flex-direction: row;
 }
 
-p {
-  margin: 4px;
+.dialog {
+  width: 320px;
 }
 
 .title {
@@ -14,4 +14,10 @@ p {
 
 .margin-bottom {
   margin-bottom: 25px;
+}
+
+.error-message {
+  white-space: pre-line;
+  margin: 20px 0;
+  font-weight: bold;
 }
