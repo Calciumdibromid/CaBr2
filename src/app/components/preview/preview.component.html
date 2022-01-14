@@ -140,11 +140,19 @@
           </td>
         </tr>
         <tr>
-          <td class="top height-2cm">
+          <td class="top height-2cm td-signature">
             {{ t('signatureFieldStudent') }}
+            <div class="signature-location-date">
+              <span class="signature">{{ t('signature') }}</span>
+              <span class="location-date">({{ t('locationAndDate') }})</span>
+            </div>
           </td>
-          <td class="top height-2cm">
+          <td class="top height-2cm td-signature">
             {{ t('signatureFieldAssistant') }}
+            <div class="signature-location-date">
+              <span class="signature">{{ t('signature') }}</span>
+              <span class="location-date">({{ t('locationAndDate') }})</span>
+            </div>
           </td>
         </tr>
       </ng-container>

@@ -84,3 +84,34 @@ img {
   justify-content: center;
   color: mat.get-color-from-palette($ang-CaBr2-primary);
 }
+
+.td-signature {
+  position: relative;
+}
+
+.signature-location-date {
+  position: absolute;
+  bottom: 7px;
+  right: 15px;
+  z-index: 10;
+  text-align: right;
+  vertical-align: bottom;
+  border-top: 1px solid #000;
+
+  span {
+    width: inherit;
+    font-size: small;
+  }
+
+  .signature {
+    padding-right: auto;
+    padding-left: 10px;
+  }
+
+  .location-date {
+    padding-left: 2cm;
+    padding-right: 10px;
+    text-indent: 5px;
+    margin-left: 10px;
+  }
+}

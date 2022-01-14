@@ -123,7 +123,9 @@
       "inCaseOfDangerShort": "Hazard case",
       "disposalShort": "Disposal",
       "signatureFieldStudent": "I hereby confirm that I will execute the task/preparation according to the here presented safety data instructions.",
-      "signatureFieldAssistant": "The student is allowed to perform the presented task/preparation."
+      "signatureFieldAssistant": "The student is allowed to perform the presented task/preparation.",
+      "signature": "Signature",
+      "locationAndDate": "Location, Date"
     },
     "preview": {
       "info": "This is only a preview. The generated PDF may look different!",
