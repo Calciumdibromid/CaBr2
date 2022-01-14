@@ -106,19 +106,20 @@ export interface Source {
 
 export interface Amount {
   value: string;
-  unit: Unit | CustomUnit;
+  unit: Unit;
+}
+
+export interface Unit {
+  type: UnitType;
+  name?: string;
 }
 
 export interface GroupMapping {
   viewValue: string;
-  unitMappings: Unit[];
+  unitMappings: UnitType[];
 }
 
-export interface CustomUnit {
-  readonly name: string;
-}
-
-export enum Unit {
+export enum UnitType {
   LITER = 'LITER',
   MILLILITER = 'MILLILITER',
   MICROLITER = 'MICROLITER',
@@ -149,39 +150,47 @@ export enum Unit {
   FAHRENHEIT = 'FAHRENHEIT',
 }
 
-const unitMapping = new Map<Unit, string>([
-  [Unit.LITER, 'l'],
-  [Unit.MILLILITER, 'ml'],
-  [Unit.MICROLITER, 'µl'],
-  [Unit.GRAM, 'g'],
-  [Unit.MILLIGRAM, 'mg'],
-  [Unit.MICROGRAM, 'µg'],
-  [Unit.MOL, 'mol'],
-  [Unit.MILLIMOL, 'mmol'],
-  [Unit.PIECES, 'pcs.'],
+const unitMapping = new Map<UnitType, string>([
+  [UnitType.LITER, 'l'],
+  [UnitType.MILLILITER, 'ml'],
+  [UnitType.MICROLITER, 'µl'],
+  [UnitType.GRAM, 'g'],
+  [UnitType.MILLIGRAM, 'mg'],
+  [UnitType.MICROGRAM, 'µg'],
+  [UnitType.MOL, 'mol'],
+  [UnitType.MILLIMOL, 'mmol'],
+  [UnitType.PIECES, 'pcs.'],
 
-  [Unit.SOLUTION_RELATIVE, '% (v/v)'],
-  [Unit.SOLUTION_MOL, 'mol/l'],
-  [Unit.SOLUTION_MILLIMOL, 'mmol/l'],
-  [Unit.SOLUTION_MICROMOL, 'µmol/l'],
-  [Unit.SOLUTION_GRAM, 'g/l'],
-  [Unit.SOLUTION_MILLIGRAM, 'mg/l'],
+  [UnitType.SOLUTION_RELATIVE, '% (v/v)'],
+  [UnitType.SOLUTION_MOL, 'mol/l'],
+  [UnitType.SOLUTION_MILLIMOL, 'mmol/l'],
+  [UnitType.SOLUTION_MICROMOL, 'µmol/l'],
+  [UnitType.SOLUTION_GRAM, 'g/l'],
+  [UnitType.SOLUTION_MILLIGRAM, 'mg/l'],
 
-  [Unit.CUSTOM, 'custom'],
+  [UnitType.CUSTOM, 'custom'],
 
-  [Unit.GRAM_PER_MOL, 'g/mol'],
+  [UnitType.GRAM_PER_MOL, 'g/mol'],
 
-  [Unit.MILLIGRAM_PER_KILOGRAM, 'mg/kg'],
-  [Unit.MILLIGRAM_PER_LITER, 'mg/l'],
+  [UnitType.MILLIGRAM_PER_KILOGRAM, 'mg/kg'],
+  [UnitType.MILLIGRAM_PER_LITER, 'mg/l'],
 
-  [Unit.PARTS_PER_MILLION, 'ppm'],
+  [UnitType.PARTS_PER_MILLION, 'ppm'],
 
-  [Unit.CELSIUS, '°C'],
-  [Unit.FAHRENHEIT, 'F'],
+  [UnitType.CELSIUS, '°C'],
+  [UnitType.FAHRENHEIT, 'F'],
 ]);
 
 const getViewValue = (unit: Unit): string => {
-  const value = unitMapping.get(unit);
+  if (unit.type === UnitType.CUSTOM) {
+    return unit.name ?? '';
+  }
+
+  return getViewName(unit);
+};
+
+const getViewName = (unit: Unit): string => {
+  const value = unitMapping.get(unit.type);
 
   if (value === undefined) {
     throw Error('unknown unit');
@@ -192,45 +201,35 @@ const getViewValue = (unit: Unit): string => {
 
 class UnitGroups {
   public readonly substanceUnits = [
-    Unit.GRAM,
-    Unit.MILLIGRAM,
-    Unit.MICROGRAM,
-    Unit.LITER,
-    Unit.MILLILITER,
-    Unit.MICROLITER,
-    Unit.MOL,
-    Unit.MILLIMOL,
-    Unit.PIECES,
-    // Unit.CUSTOM,
+    UnitType.GRAM,
+    UnitType.MILLIGRAM,
+    UnitType.MICROGRAM,
+    UnitType.LITER,
+    UnitType.MILLILITER,
+    UnitType.MICROLITER,
+    UnitType.MOL,
+    UnitType.MILLIMOL,
+    UnitType.PIECES,
   ];
   public readonly solutionUnits = [
-    Unit.SOLUTION_MOL,
-    Unit.SOLUTION_MILLIMOL,
-    Unit.SOLUTION_MICROMOL,
-    Unit.SOLUTION_GRAM,
-    Unit.SOLUTION_MILLIGRAM,
-    // Unit.CUSTOM,
+    UnitType.SOLUTION_MOL,
+    UnitType.SOLUTION_MILLIMOL,
+    UnitType.SOLUTION_MICROMOL,
+    UnitType.SOLUTION_GRAM,
+    UnitType.SOLUTION_MILLIGRAM,
   ];
-  public readonly temperatureUnits = [
-    Unit.CELSIUS,
-    Unit.FAHRENHEIT,
-    // Unit.CUSTOM,
-  ];
-  public readonly lethalUnits = [
-    Unit.MILLIGRAM_PER_KILOGRAM,
-    Unit.MILLIGRAM_PER_LITER,
-    // Unit.CUSTOM,
-  ];
+  public readonly temperatureUnits = [UnitType.CELSIUS, UnitType.FAHRENHEIT];
+  public readonly lethalUnits = [UnitType.MILLIGRAM_PER_KILOGRAM, UnitType.MILLIGRAM_PER_LITER];
   public readonly defaultUnitGroups: GroupMapping[] = [
     { viewValue: 'rawSubstance', unitMappings: this.substanceUnits },
     { viewValue: 'solution', unitMappings: this.solutionUnits },
-    { viewValue: 'custom', unitMappings: [Unit.CUSTOM] },
+    { viewValue: 'custom', unitMappings: [UnitType.CUSTOM] },
   ];
 }
 
 const unitGroups = new UnitGroups();
 
-export { unitMapping, unitGroups, getViewValue, modifiedOrOriginal };
+export { unitMapping, unitGroups, getViewValue, getViewName, modifiedOrOriginal };
 
 // these are needed to create new objects every time and don't copy a reference
 // because otherwise every field would reference the same values
