@@ -1,24 +1,33 @@
-<ng-container *transloco="let t; read: 'dialogs.pdfGeneration'">
-  <h1 mat-dialog-title>
-    <mat-icon>picture_as_pdf</mat-icon>
-    <div *ngIf="!finished" class="title">{{ t('generatingPdf') }}</div>
-    <div *ngIf="finished" class="title">{{ t('downloadPdf') }}</div>
-  </h1>
+<div class="dialog">
+  <ng-container *transloco="let t; read: 'dialogs.pdfGeneration'">
+    <h1 mat-dialog-title>
+      <mat-icon>picture_as_pdf</mat-icon>
+      <div *ngIf="!finished" class="title">{{ t('generatingPdf') }}</div>
+      <div *ngIf="finished" class="title">{{ t('downloadPdf') }}</div>
+    </h1>
 
-  <div *ngIf="finished; else loading">
-    <button mat-raised-button class="margin-bottom" (click)="downloadPdf()">
-      {{ t('download') }}
-    </button>
+    <div *ngIf="finished; else loading">
+      <button mat-raised-button class="margin-bottom" (click)="downloadPdf()">
+        {{ t('download') }}
+      </button>
+    </div>
+  </ng-container>
+
+  <ng-template #loading>
+    <app-loading class="margin-bottom"></app-loading>
+  </ng-template>
+
+  <div *ngIf="error">
+    <ng-container *transloco="let t; read: 'dialogs.pdfGeneration'">
+      <mat-divider></mat-divider>
+      <p class="error-message">{{ t('errorMessage') }}</p>
+    </ng-container>
   </div>
-</ng-container>
 
-<ng-template #loading>
-  <app-loading class="margin-bottom"></app-loading>
-</ng-template>
-
-<mat-divider></mat-divider>
-<ng-container *transloco="let t; read: 'base'">
-  <div mat-dialog-actions>
-    <button mat-button (click)="dialogRef.close(true)" [disabled]="!closeEnabled">{{ t('close') }}</button>
-  </div>
-</ng-container>
+  <mat-divider></mat-divider>
+  <ng-container *transloco="let t; read: 'base'">
+    <div mat-dialog-actions>
+      <button mat-button (click)="dialogRef.close(true)" [disabled]="!closeEnabled">{{ t('close') }}</button>
+    </div>
+  </ng-container>
+</div>
