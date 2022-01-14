@@ -35,7 +35,7 @@
   }
 }
 
-.mat-icon-button {
+.mat-icon-button:not(.add-button) {
   width: auto;
 }
 
