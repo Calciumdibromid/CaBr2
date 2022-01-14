@@ -65,7 +65,7 @@ pub struct Amount {
 }
 
 #[derive(Debug, Deserialize, Serialize)]
-#[serde(rename_all = "UPPERCASE")]
+#[serde(rename_all = "UPPERCASE", tag = "type", content = "name")]
 pub enum Unit {
   Liter,
   Milliliter,
