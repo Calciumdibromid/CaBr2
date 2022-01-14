@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [master, develop]
     paths:
-      - 'src'
+      - 'src/**'
       - '*.json'
       - '*.js'
       - '.prettierignore'
