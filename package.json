@@ -1,6 +1,6 @@
 {
-  "name": "ca-br2",
-  "version": "0.0.0",
+  "name": "cabr2",
+  "version": "0.4.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
