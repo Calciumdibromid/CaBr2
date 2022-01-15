@@ -1,3 +1,21 @@
+## [v0.4.1](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.4.1) - 2022-01-15
+
+* ENHANCEMENTS
+  * Add signature and location, date to preview and template (#1009)
+  * Add error message to pdf dialog (#1007)
+  * Some style improvements (#1006)
+  * Add disclaimer to provider tab (#979)
+  * Reduce timeout of consent dialog to 5 seconds (#974)
+* BUGFIXES
+  * Fix frontend custom unit (#1004)
+  * Fix molar mass header in preview (#933)
+  * Fix transloco dependency (#860)
+* TRANSLATION
+  * Update translations (#1008)
+* MISC
+  * Update wasm dependencies (#1003)
+  * Add codespell into backend & frontend pipeline (#990)
+
 ## [v0.4.0](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.4.0) - 2021-09-20
 
 * FEATURES
