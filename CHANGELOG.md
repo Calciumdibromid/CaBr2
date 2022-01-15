@@ -9,7 +9,7 @@
 * BUGFIXES
   * Fix frontend custom unit (#1004)
   * Fix molar mass header in preview (#933)
-  * Fix/transloco dependency (#860)
+  * Fix transloco dependency (#860)
 * TRANSLATION
   * Update translations (#1008)
 * MISC
