@@ -59,10 +59,13 @@
       "removeOption": "Suchoption entfernen",
       "addOption": "Suchoption hinzufügen",
       "resultsHeader": "Suchergebnisse",
-      "noResult": "Keine Ergebnisse",
+      "noResult": "{{provider}} hat keine Ergebnisse geliefert.\nVersuche es noch einmal mit Synonymen oder Teilwörtern.",
       "customSubstance": "Selbst erstellt",
       "unsupportedProviderInfo": "nicht unterstützt",
-      "error": "Fehler beim Anfragen der Daten"
+      "error": "Fehler beim Anfragen der Daten",
+      "disclaimer": {
+        "gestis": "Die Daten stammen von Gestis und Gestis bietet keine Daten zu Verbindungen."
+      }
     },
     "substance": {
       "invalidFormsTitle": "Etwas stimmt nicht",
@@ -100,7 +103,8 @@
       "ghsSymbolsColorInfo": "grau: nicht gewählt / farbig: gewählt",
       "addCustomSubstanceData": "Eigene Substanz hinzufügen",
       "dragAndDrop": "Drag & Drop",
-      "resetTooltip": "Aktuellen Stoff auf Originalwerte zurücksetzen"
+      "resetTooltip": "Aktuellen Stoff auf Originalwerte zurücksetzen",
+      "phraseFormatTooltip": "Folgendes Format wird erwartet: {{format}}"
     },
     "units": {
       "groups": {
@@ -121,7 +125,9 @@
       "inCaseOfDangerShort": "Gefahrenfall",
       "disposalShort": "Entsorgung",
       "signatureFieldStudent": "Hiermit verpflichte ich mich, den Versuch gemäß den in dieser Betriebsanweisung aufgeführten Sicherheitsvorschriften durchzuführen.",
-      "signatureFieldAssistant": "Präparat zur Synthese mit den auf der Vorderseite berechneten Chemikalienmengen freigegeben."
+      "signatureFieldAssistant": "Präparat zur Synthese mit den auf der Vorderseite berechneten Chemikalienmengen freigegeben.",
+      "signature": "Unterschrift",
+      "locationAndDate": "Ort, Datum"
     },
     "preview": {
       "info": "Dies ist eine Vorschau. Die tatsächliche, generierte PDF kann minimale Unterschiede aufweisen!",
@@ -174,7 +180,8 @@
       "pdfGeneration": {
         "generatingPdf": "PDF Generierung...",
         "downloadPdf": "PDF herunterladen",
-        "download": "Herunterladen"
+        "download": "Herunterladen",
+        "errorMessage": "Der Server antwortet nicht.\nDas kann verschiedenste Gründe haben.\nEntweder du wartest noch ein bisschen oder schließt diesen Dialog und versuchst es später noch einmal."
       }
     }
   }
