@@ -35,7 +35,7 @@
   }
 }
 
-.mat-icon-button {
+.mat-icon-button:not(.add-button) {
   width: auto;
 }
 
@@ -76,4 +76,8 @@
 .edited-column {
   max-width: 100px;
   min-width: 50px;
+}
+
+.disclaimer {
+  margin-top: 15px;
 }

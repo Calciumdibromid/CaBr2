@@ -34,6 +34,14 @@ jobs:
       - name: Linting webserver
         run: cd src-tauri && cargo clippy --features webserver -- -D warnings
 
+      - name: codespell
+        uses: codespell-project/actions-codespell@master
+        with:
+          check_filenames: true
+          check_hidden: true
+          skip: ./.git,./.gitignore,node_modules,dist,yarn.lock,target,./translations,*.html,./src,assets
+          ignore_words_list: crate,ser
+
       - name: Build Tauri app
         run: cd src-tauri && cargo build --features tauri_app
 

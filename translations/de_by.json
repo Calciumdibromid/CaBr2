@@ -59,10 +59,13 @@
       "removeOption": "Suchoption wegmacha",
       "addOption": "Suchoption dazua doa",
       "resultsHeader": "Gfundne Sachan",
-      "noResult": "Nix gfundn",
+      "noResult": "{{provider}} hod nix zruck gem.\nVersuach's nomoi mit Synonymen oda Teilwörter.",
       "customSubstance": "Eigner Scheiß",
       "unsupportedProviderInfo": "kenn i ned, mog i ned",
-      "error": "S'Programm wuit ned"
+      "error": "S'Programm wuit ned",
+      "disclaimer": {
+        "gestis": "Die Daten kemman von Gestis und de hom koane Daten für Gmisch."
+      }
     },
     "substance": {
       "invalidFormsTitle": "Irgendwos stimmt ned",
@@ -100,7 +103,8 @@
       "ghsSymbolsColorInfo": "Wenns grau is, dann hostas ned gnomma / Wenns bunt is, dann isses ogschoidn",
       "addCustomSubstanceData": "Eignen Scheiß dazua doa",
       "dragAndDrop": "Ziang & Loslossn",
-      "resetTooltip": "Den friaran Stand vom Stof zruck bringa"
+      "resetTooltip": "Den friaran Stand vom Stof zruck bringa",
+      "phraseFormatTooltip": "Mia nemman nur des Format o: {{format}}"
     },
     "units": {
       "groups": {
@@ -121,7 +125,9 @@
       "inCaseOfDangerShort": "Wenn's schiaf laft",
       "disposalShort": "Weggschmeissn",
       "signatureFieldStudent": "Ich stä dazua, des ois glesn zum hom und duas so macha.",
-      "signatureFieldAssistant": "I bass scho drauf auf, dass de Saubuam und -Madl koan Scheiß machan."
+      "signatureFieldAssistant": "I bass scho drauf auf, dass de Saubuam und -Madl koan Scheiß machan.",
+      "signature": "Autogramm",
+      "locationAndDate": "Blotz, Zeid"
     },
     "preview": {
       "info": "Des wos du do undn sigst is nur a Möglichkeit wias ausschaung ko. Des Zeig wos aufs Bladl kimmt, ko a bissal andas ausschaun!",
@@ -174,7 +180,8 @@
       "pdfGeneration": {
         "generatingPdf": "Duad PDF zam baun...",
         "downloadPdf": "PDF Runterladn",
-        "download": "Runterladn"
+        "download": "Runterladn",
+        "errorMessage": "Der Server mog grod ned.\nDes kannt vui Gründ hom. A Reh kannts Kabe im Serverkammal obgfieslt hom oda so.\nEntweder du host no a bissl Gduid oder du klickst as Fenster jetzad weg und versuachst as spada nummoi."
       }
     }
   }

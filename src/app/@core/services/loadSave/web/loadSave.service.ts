@@ -58,7 +58,7 @@ export class LoadSaveService implements ILoadSaveService {
             .save_document(fileType, JSON.stringify(document))
             .then((contents: string) => {
               // `atob` is deprecated but `Buffer.from()` results in optimization problems with Angular.
-              // I'm pretty sure `atob` won't be removed from browsers in the forseeable future so it should be ok ^^.
+              // I'm pretty sure `atob` won't be removed from browsers in the foreseeable future so it should be ok ^^.
               const blob2 = new Blob([atob(contents)], { type: 'application/octet-stream' });
               downloadFile(blob2, fileType);
               sub.next();

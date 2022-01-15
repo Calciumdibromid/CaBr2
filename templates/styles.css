@@ -100,11 +100,33 @@ li {
   padding: 10px 0;
 }
 
-.signature {
-  width: 7cm;
-  margin: 5px 10px;
-  margin-top: 1.5cm;
-  font-size: small;
-  text-indent: 5px;
+.td-signature {
+  position: relative;
+}
+
+.signature-location-date {
+  position: absolute;
+  bottom: 7px;
+  right: 15px;
+  z-index: 10;
+  text-align: right;
+  vertical-align: bottom;
   border-top: 1px solid #000;
+}
+
+.signature-location-date span {
+  width: inherit;
+  font-size: small;
+}
+
+.signature-location-date .signature {
+  padding-right: auto;
+  padding-left: 10px;
+}
+
+.signature-location-date .location-date {
+  padding-left: 2cm;
+  padding-right: 10px;
+  text-indent: 5px;
+  margin-left: 10px;
 }

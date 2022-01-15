@@ -111,7 +111,7 @@
           </mat-form-field>
           <mat-form-field *ngIf="customUnitVisible">
             <mat-label>{{ t('substance.customUnit') }}</mat-label>
-            <input matInput />
+            <input matInput formControlName="unitName" />
           </mat-form-field>
         </div>
       </mat-card>
@@ -125,7 +125,14 @@
             <div [formGroupName]="i">
               <mat-form-field>
                 <input matInput formControlName="hNumber" />
-                <mat-error *ngIf="hPhrases.at(i).get('hNumber')?.invalid">{{ t('substance.noHPhrase') }}</mat-error>
+                <mat-error
+                  *ngIf="hPhrases.at(i).get('hNumber')?.invalid"
+                  [matTooltip]="t('substance.phraseFormatTooltip', { format: 'Hxxx+Hxxx ...' })"
+                  matTooltipPosition="above"
+                >
+                  {{ t('substance.noHPhrase') }}
+                  <mat-icon>info</mat-icon>
+                </mat-error>
               </mat-form-field>
               <mat-form-field class="phrases-form-field">
                 <textarea
@@ -173,7 +180,14 @@
             <div [formGroupName]="i">
               <mat-form-field>
                 <input matInput formControlName="pNumber" />
-                <mat-error *ngIf="pPhrases.at(i).get('pNumber')?.invalid">{{ t('substance.noPPhrase') }}</mat-error>
+                <mat-error
+                  *ngIf="pPhrases.at(i).get('pNumber')?.invalid"
+                  [matTooltip]="t('substance.phraseFormatTooltip', { format: 'Pxxx+Pxxx ...' })"
+                  matTooltipPosition="above"
+                >
+                  {{ t('substance.noPPhrase') }}
+                  <mat-icon>info</mat-icon>
+                </mat-error>
               </mat-form-field>
               <mat-form-field class="phrases-form-field">
                 <textarea

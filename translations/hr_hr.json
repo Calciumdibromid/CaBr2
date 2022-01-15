@@ -12,10 +12,10 @@
       "close": "Zatvori"
     },
     "tooltips": {
-      "header": "Header of the safety sheet",
-      "search": "Search and selected substances",
-      "securitythings": "Editing of the back of the safety sheet",
-      "preview": "Preview of the safety sheet"
+      "header": "Zaglavlje sigurnosnog lista",
+      "search": "Pretraživanje i odabrane tvari",
+      "securitythings": "Uređivanje stražnje strane sigurnosnog lista",
+      "preview": "Pregled sigurnosnog lista"
     },
     "menu": {
       "newDocument": "Nova sigurnosna lista podataka",
@@ -33,7 +33,7 @@
     "bugreport": {
       "title": "Prijavi grešku",
       "sentence": "Prijavi grešku na ovaj email:",
-      "githubSentence": "Alternatively you can open an issue in Github:"
+      "githubSentence": "Alternativno, možete otvoriti problem u GitHub:"
     },
     "header": {
       "docTitle": "Naslov dokumenta:",
@@ -59,15 +59,14 @@
       "removeOption": "Ukloni opcije pretraživanja",
       "addOption": "Dodaj opcije pretraživanja",
       "resultsHeader": "Rezultati pretraživanja",
-      "noResult": "Nema rezultata",
       "customSubstance": "Prilagođeno",
       "unsupportedProviderInfo": "nepodržano",
       "error": "Došlo je do pogreške prilikom dohvaćanja podataka"
     },
     "substance": {
-      "invalidFormsTitle": "Something is wrong",
+      "invalidFormsTitle": "Nešto nije u redu",
       "invalidFormsContent": [
-        "The substance has invalid or missing data on following items:"
+        "Tvar sadrži netočne ili nestale podatke o sljedećim točkama:"
       ],
       "edited": "Uređeno?",
       "name": "Ime",
@@ -87,29 +86,29 @@
       "customUnit": "Prilagođena jedinica",
       "hPhrases": "H-izrazi",
       "noHPhrase": "H-Broj nije valjan",
-      "invalidHPhrase": "Invalid H-Phrases",
+      "invalidHPhrase": "Nevažeći H-Fraze",
       "removeHPhrase": "ukloni H-izraze",
       "addHPhrase": "dodaj H-izraze",
       "pPhrases": "P-izrazi",
       "noPPhrase": "P-Broj nije valjan",
-      "invalidPPhrase": "Invalid P-Phrases",
+      "invalidPPhrase": "Nevažeći P-Fraze",
       "removePPhrase": "ukloni P-izraze",
       "addPPhrase": "dodaj P-izraze",
       "editingHint": "Klikni na supstancu za uređivanje.",
       "ghsSymbolsAddOrRemoveInfo": "Za ukloniti ili dodati kliknite na simbol",
       "ghsSymbolsColorInfo": "sivo: nije odabrano / u boji: odabrano",
       "addCustomSubstanceData": "Dodaj prilagođenu supstancu",
-      "dragAndDrop": "drag & drop",
-      "resetTooltip": "Reset current substance to original values"
+      "dragAndDrop": "povlačenje i ispuštanje",
+      "resetTooltip": "Vraćanje trenutne tvari na izvorne vrijednosti"
     },
     "units": {
       "groups": {
-        "rawSubstance": "Raw Substance",
-        "solution": "Solution",
-        "custom": "Custom"
+        "rawSubstance": "Sirova Tvar",
+        "solution": "Rješenje",
+        "custom": "Običaj"
       },
-      "custom": "Custom",
-      "pcs.": "pcs."
+      "custom": "Običaj",
+      "pcs.": "nešto."
     },
     "descriptions": {
       "humanAndEnvironmentDanger": "Dodatne opasnosti za ljude i okoliš (npr. kancerogene, teratogene):",
@@ -172,9 +171,9 @@
         ]
       },
       "pdfGeneration": {
-        "generatingPdf": "Generating PDF...",
-        "downloadPdf": "Download PDF",
-        "download": "Download"
+        "generatingPdf": "Stvaranje PDF datoteke...",
+        "downloadPdf": "Preuzmite PDF",
+        "download": "Preuzimanja"
       }
     }
   }

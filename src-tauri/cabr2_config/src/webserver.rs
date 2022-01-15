@@ -56,11 +56,6 @@ pub async fn handle_localized_strings(body: LocalizedStringsBody) -> Result<impl
 // Body definitions
 
 #[derive(Debug, Deserialize)]
-pub struct PromptHtmlBody {
-  name: String,
-}
-
-#[derive(Debug, Deserialize)]
 pub struct LocalizedStringsBody {
   language: String,
 }

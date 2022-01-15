@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { translate } from '@ngneat/transloco';
 
-import { SearchArgument, SearchResult } from '../../../@core/services/provider/provider.model';
+import { Provider, SearchArgument, SearchResult } from '../../../@core/services/provider/provider.model';
 import { AlertService } from '../../../@core/services/alertsnackbar/altersnackbar.service';
 import { IProviderService } from '../../../@core/services/provider/provider.interface';
 import Logger from '../../../@core/utils/logger';
@@ -12,7 +12,7 @@ const logger = new Logger('search-dialog');
 
 interface Data {
   arguments: SearchArgument[];
-  providerIdentifier: string;
+  provider: Provider;
 }
 
 @Component({
@@ -37,7 +37,7 @@ export class SearchDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.subscription = this.providerService.search(this.data.providerIdentifier, {
+    this.subscription = this.providerService.search(this.data.provider.identifier, {
       arguments: this.data.arguments,
       exact: this.exactSearch,
     });
