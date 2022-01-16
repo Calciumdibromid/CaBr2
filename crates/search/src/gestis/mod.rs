@@ -74,6 +74,7 @@ impl Gestis {
     }
   }
 
+  // see `search/contrib/gestis/helper.rs`
   #[cfg(feature = "gestis_helper")]
   pub async fn get_raw_substance_data(&self, arg: String) -> Result<(GestisResponse, String)> {
     self.get_article(arg).await
