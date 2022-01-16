@@ -6,18 +6,18 @@ use lazy_static::lazy_static;
 use quick_xml::de::from_reader;
 use regex::Regex;
 
-use cabr2_types::{Amount, Data, Source, SubstanceData, Unit};
+use ::types::{Amount, Data, Source, SubstanceData, Unit};
 
 use super::{
   error::{LoadSaveError, Result},
   types::{CaBr2Document, Header, Loader},
 };
-use types::{BerylliumDocument, TemplateCategory};
+use self::types::{BerylliumDocument, TemplateCategory};
 
 pub struct Beryllium;
 
-#[cfg_attr(not(feature = "wasm"), async_trait)]
-#[cfg_attr(feature = "wasm", async_trait(?Send))]
+#[cfg_attr(not(target_family = "wasm"), async_trait)]
+#[cfg_attr(target_family = "wasm", async_trait(?Send))]
 impl Loader for Beryllium {
   async fn load_document(&self, contents: Vec<u8>) -> Result<CaBr2Document> {
     lazy_static! {

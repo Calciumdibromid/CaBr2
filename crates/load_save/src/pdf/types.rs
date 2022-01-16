@@ -4,7 +4,7 @@ use chrono::TimeZone;
 use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 
-use cabr2_types::{Source, SubstanceData};
+use ::types::{Source, SubstanceData};
 
 use crate::types::{CaBr2Document, Header};
 
@@ -157,8 +157,8 @@ impl std::convert::From<SubstanceData> for PDFSubstanceData {
   }
 }
 
-impl std::convert::From<cabr2_types::Amount> for Amount {
-  fn from(amount: cabr2_types::Amount) -> Self {
+impl std::convert::From<::types::Amount> for Amount {
+  fn from(amount: ::types::Amount) -> Self {
     Amount {
       unit: amount.unit.into(),
       value: amount.value,
@@ -172,8 +172,8 @@ impl<T> Data<T> {
   }
 }
 
-impl<T> std::convert::From<cabr2_types::Data<T>> for Data<T> {
-  fn from(data: cabr2_types::Data<T>) -> Self {
+impl<T> std::convert::From<::types::Data<T>> for Data<T> {
+  fn from(data: ::types::Data<T>) -> Self {
     match data.modified_data {
       Some(data) => Data { data, modified: true },
       None => Data {

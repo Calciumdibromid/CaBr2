@@ -1,3 +1,6 @@
+mod load_save;
+mod search;
+
 use std::{env, future::Future};
 
 use base64::encode;
@@ -6,8 +9,8 @@ use log::Level;
 use serde::Serialize;
 use wasm_bindgen::prelude::*;
 
-use cabr2_load_save::wasm::CaBr2Document;
-use cabr2_search::types::{SearchArguments, SearchType};
+use ::load_save::types::CaBr2Document;
+use ::search::types::{SearchArguments, SearchType};
 
 type Result<T> = std::result::Result<T, JsValue>;
 
@@ -26,9 +29,9 @@ pub async fn init() {
   log::debug!("Initializing WASM implementation...");
 
   // must be initialized first
-  cabr2_search::wasm::init().await;
+  search::init().await;
 
-  cabr2_load_save::wasm::init(cabr2_search::wasm::get_provider_mapping().await).await;
+  load_save::init(search::get_provider_mapping().await).await;
 }
 
 /// Converts a `CaBr2Document` into a `base64` encoded `string` that can be saved by the client.
@@ -43,7 +46,7 @@ pub async fn save_document(file_type: String, document: String) -> Result<String
     Err(err) => return Err(JsValue::from(err.to_string())),
   };
 
-  match cabr2_load_save::wasm::save_document(file_type, document).await {
+  match load_save::save_document(file_type, document).await {
     Ok(res) => Ok(encode(res)),
     Err(err) => Err(JsValue::from(err.to_string())),
   }
@@ -54,7 +57,7 @@ pub async fn save_document(file_type: String, document: String) -> Result<String
 /// May throw errors.
 #[wasm_bindgen]
 pub async fn load_document(file_type: String, doc: Vec<u8>) -> Result<String> {
-  convert_result(cabr2_load_save::wasm::load_document(file_type, doc)).await
+  convert_result(load_save::load_document(file_type, doc)).await
 }
 
 /// Returns all available document types.
@@ -63,7 +66,7 @@ pub async fn load_document(file_type: String, doc: Vec<u8>) -> Result<String> {
 /// May throw errors.
 #[wasm_bindgen]
 pub async fn get_available_document_types() -> Result<String> {
-  convert_value(cabr2_load_save::wasm::get_available_document_types()).await
+  convert_value(load_save::get_available_document_types()).await
 }
 
 /// Returns version as `string`
@@ -75,7 +78,7 @@ pub fn get_program_version() -> String {
 /// May throw errors.
 #[wasm_bindgen]
 pub async fn get_available_providers() -> Result<String> {
-  convert_value(cabr2_search::wasm::get_available_providers()).await
+  convert_value(search::get_available_providers()).await
 }
 
 /// May throw errors.
@@ -86,7 +89,7 @@ pub async fn search_suggestions(provider: String, pattern: String, search_type: 
     Err(err) => return Err(JsValue::from(err.to_string())),
   };
 
-  convert_result(cabr2_search::wasm::search_suggestions(provider, pattern, search_type)).await
+  convert_result(search::search_suggestions(provider, pattern, search_type)).await
 }
 
 /// May throw errors.
@@ -97,13 +100,13 @@ pub async fn search_results(provider: String, arguments_: String) -> Result<Stri
     Err(err) => return Err(JsValue::from(err.to_string())),
   };
 
-  convert_result(cabr2_search::wasm::search_results(provider, arguments)).await
+  convert_result(search::search_results(provider, arguments)).await
 }
 
 /// May throw errors.
 #[wasm_bindgen]
 pub async fn substance_data(provider: String, identifier: String) -> Result<String> {
-  convert_result(cabr2_search::wasm::get_substance_data(provider, identifier)).await
+  convert_result(search::get_substance_data(provider, identifier)).await
 }
 
 async fn convert_value<S>(future: impl Future<Output = S>) -> Result<String>

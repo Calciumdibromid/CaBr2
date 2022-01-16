@@ -22,19 +22,16 @@ quick-xml = { version = "0.22.0", features = ["serialize"], optional = true }
 regex = { version = "1.4.6", optional = true }
 serde = { version = "1.0.133", features = ["derive"] }
 serde_json = { version = "1.0.74", optional = true }
-tauri = { version = "1.0.0-beta.8", default-features = false, optional = true }
 thiserror = "1.0.29"
-tokio = { version = "1.15.0", features = ["fs"], optional = true }
+tokio = { version = "1.15.0", features = ["fs", "rt-multi-thread"], optional = true }
 types = { path = "../types/" }
-uuid = { version = "0.8.2", features = ["serde", "v4"], optional = true }
-warp = { version = "0.3.2", features = [], optional = true }
 wkhtmltopdf = { version = "0.4.0", optional = true }
 
 [features]
 beryllium = ["chrono", "quick-xml", "regex"]
 cabr2 = ["serde_json"]
 pdf = ["config", "tokio", "chrono", "handlebars", "lopdf", "serde_json", "wkhtmltopdf"]
-tauri_plugin = ["tauri", "serde_json", "tokio"]
-webserver = ["tokio", "uuid", "warp", "types/webserver"]
-wasm = []
-default = []
+
+__tokio = [ "tokio" ] # internal feature to enable tokio specific optimizations
+
+default = [ "__tokio" ]

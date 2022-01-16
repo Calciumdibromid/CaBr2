@@ -1,8 +1,10 @@
 use std::{borrow::Borrow, collections::HashMap};
 
-use cabr2_types::SubstanceData;
+use ::types::SubstanceData;
 use cfg_if::cfg_if;
 use lazy_static::lazy_static;
+
+use types::ProviderMapping;
 
 use crate::{
   error::{Result, SearchError},
@@ -11,10 +13,10 @@ use crate::{
 
 // because tokio doesn't fully support wasm we have to use two different implementations for these locks
 cfg_if! {
-  if #[cfg(feature = "wasm")] {
-    use std::sync::RwLock;
-  } else {
+  if #[cfg(feature = "__tokio")] {
     use tokio::sync::RwLock;
+  } else {
+    use std::sync::RwLock;
   }
 }
 
@@ -23,24 +25,24 @@ lazy_static! {
     RwLock::new(HashMap::new());
 }
 
-#[cfg(all(feature = "gestis", not(feature = "wasm")))]
+#[cfg(all(feature = "gestis", not(target_family = "wasm")))]
 const USER_AGENT: &str = concat!("cabr2/v", env!("CARGO_PKG_VERSION"));
 
 pub async fn init_providers() -> Result<()> {
   log::trace!("initializing providers");
   // let mut _providers;
   cfg_if! {
-    if #[cfg(feature = "wasm")] {
-      let mut _providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
-    } else {
+    if #[cfg(feature = "__tokio")] {
       let mut _providers = REGISTERED_PROVIDERS.write().await;
+    } else {
+      let mut _providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
     }
   }
 
   #[cfg(feature = "gestis")]
   {
     cfg_if! {
-      if #[cfg(feature = "wasm")] {
+      if #[cfg(target_family = "wasm")] {
         let agent = reqwest::ClientBuilder::new().build()?;
       } else {
         let agent = reqwest::ClientBuilder::new().user_agent(USER_AGENT).build()?;
@@ -54,12 +56,12 @@ pub async fn init_providers() -> Result<()> {
   Ok(())
 }
 
-pub async fn get_provider_mapping() -> HashMap<String, String> {
+pub async fn get_provider_mapping() -> ProviderMapping {
   cfg_if! {
-    if #[cfg(feature = "wasm")] {
-      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
-    } else {
+    if #[cfg(feature = "__tokio")] {
       let providers = REGISTERED_PROVIDERS.read().await;
+    } else {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
     }
   }
 
@@ -73,10 +75,10 @@ pub async fn get_provider_mapping() -> HashMap<String, String> {
 
 pub async fn get_available_providers() -> Vec<ProviderInfo> {
   cfg_if! {
-    if #[cfg(feature = "wasm")] {
-      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
-    } else {
+    if #[cfg(feature = "__tokio")] {
       let providers = REGISTERED_PROVIDERS.read().await;
+    } else {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
     }
   }
 
@@ -106,10 +108,10 @@ pub async fn get_quick_search_suggestions(
   }
 
   cfg_if! {
-    if #[cfg(feature = "wasm")] {
-      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
-    } else {
+    if #[cfg(feature = "__tokio")] {
       let providers = REGISTERED_PROVIDERS.read().await;
+    } else {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
     }
   }
 
@@ -135,10 +137,10 @@ pub async fn get_search_results(provider: String, arguments: SearchArguments) ->
   }
 
   cfg_if! {
-    if #[cfg(feature = "wasm")] {
-      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
-    } else {
+    if #[cfg(feature = "__tokio")] {
       let providers = REGISTERED_PROVIDERS.read().await;
+    } else {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
     }
   }
 
@@ -151,10 +153,10 @@ pub async fn get_search_results(provider: String, arguments: SearchArguments) ->
 
 pub async fn get_substance_data(provider: String, identifier: String) -> Result<SubstanceData> {
   cfg_if! {
-    if #[cfg(feature = "wasm")] {
-      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
-    } else {
+    if #[cfg(feature = "__tokio")] {
       let providers = REGISTERED_PROVIDERS.read().await;
+    } else {
+      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
     }
   }
 

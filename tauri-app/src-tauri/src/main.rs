@@ -1,22 +1,32 @@
 #![cfg_attr(all(not(debug_assertions), target_os = "windows"), windows_subsystem = "windows")]
 
-#[cfg(feature = "tauri_app")]
-mod tauri_app;
-#[cfg(feature = "webserver")]
-mod webserver;
+mod impls;
 
-fn main() {
-  #[cfg(feature = "tauri_app")]
-  tauri_app::main();
+use tauri::async_runtime;
 
-  #[cfg(feature = "webserver")]
-  webserver::main();
+use impls::{config, load_save, logger, search};
+
+pub fn main() {
+  // must be initialized first
+  let logger = logger::Logger::new();
+
+  let config = config::Config::default();
+  let search = async_runtime::block_on(search::Search::new());
+
+  let provider_mapping = async_runtime::block_on(search::get_provider_mapping());
+  let load_save = async_runtime::block_on(load_save::LoadSave::new(provider_mapping));
+
+  log::debug!("initializing tauri application...");
+
+  tauri::Builder::default()
+    .plugin(logger)
+    .plugin(config)
+    .plugin(search)
+    .plugin(load_save)
+    .setup(|_| {
+      log::debug!("tauri setup complete");
+      Ok(())
+    })
+    .run(tauri::generate_context!())
+    .unwrap();
 }
-
-// Validity checks for features
-
-#[cfg(not(any(feature = "tauri_app", feature = "webserver")))]
-compile_error!("you must specify one of these features: 'tauri_app', 'webserver'!");
-
-#[cfg(all(feature = "tauri_app", feature = "webserver"))]
-compile_error!("you can only use one of these features: 'tauri_app', 'webserver'!");

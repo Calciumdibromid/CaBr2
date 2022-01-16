@@ -1,15 +1,14 @@
 use std::path::PathBuf;
 
 use tauri::{plugin::Plugin, Invoke, Runtime, Window};
-
-use cabr2_types::ProviderMapping;
 use tokio::fs;
 
-use crate::{
+use load_save::{
   error::{LoadSaveError, Result},
-  handler::{self, init_handlers},
+  handler,
   types::{CaBr2Document, DocumentTypes},
 };
+use types::ProviderMapping;
 
 #[tauri::command]
 pub async fn save_document(file_type: String, filename: PathBuf, document: CaBr2Document) -> Result<()> {
@@ -78,7 +77,7 @@ pub struct LoadSave<R: Runtime> {
 
 impl<R: Runtime> LoadSave<R> {
   pub async fn new(provider_mapping: ProviderMapping) -> Self {
-    init_handlers(provider_mapping).await;
+    handler::init_handlers(provider_mapping).await;
     LoadSave {
       invoke_handler: Box::new(tauri::generate_handler![
         save_document,

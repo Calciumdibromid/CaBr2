@@ -2,16 +2,9 @@
 #![allow(clippy::unnecessary_unwrap)]
 #![allow(clippy::upper_case_acronyms)]
 
-mod error;
+pub mod error;
 pub mod handler;
-mod types;
-
-#[cfg(feature = "tauri_plugin")]
-pub mod plugin;
-#[cfg(feature = "wasm")]
-pub mod wasm;
-#[cfg(feature = "webserver")]
-pub mod webserver;
+pub mod types;
 
 #[cfg(feature = "beryllium")]
 mod beryllium;

@@ -1,0 +1,35 @@
+[package]
+name = "webserver"
+version = "0.4.1"
+edition = "2021"
+description = 'CaBr2 backend as webserver.'
+authors = [
+  "crapStone <crapstone01@gmail.com>",
+  "6543 <6543@obermui.de>",
+]
+license = "GPLv3+"
+repository = "https://github.com/Calciumdibromid/CaBr2/"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+config = { path = "../crates/config/" }
+load_save = { path = "../crates/load_save/" }
+log = "0.4.14"
+logger = { path = "../crates/logger/" }
+search = { path = "../crates/search/" }
+serde = { version = "1.0.133", features = ["derive"] }
+tokio = { version = "1.15.0", features = ["macros", "rt-multi-thread"] }
+types = { path = "../crates/types/" }
+uuid = { version = "0.8.2", features = ["serde", "v4"] }
+warp = "0.3.2"
+
+[features]
+portable = [ "config/portable" ]
+
+default = [  ]
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true

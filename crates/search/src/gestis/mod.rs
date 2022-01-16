@@ -5,7 +5,7 @@ use async_trait::async_trait;
 use reqwest::Client;
 use serde::de::DeserializeOwned;
 
-use cabr2_types::{Data, Source, SubstanceData};
+use ::types::{Data, Source, SubstanceData};
 
 use self::types::GestisResponse;
 use crate::{
@@ -73,6 +73,11 @@ impl Gestis {
       }
     }
   }
+
+  #[cfg(feature = "gestis_helper")]
+  pub async fn get_raw_substance_data(&self, arg: String) -> Result<(GestisResponse, String)> {
+    self.get_article(arg).await
+  }
 }
 
 #[cfg_attr(not(feature = "wasm"), async_trait)]
@@ -113,7 +118,7 @@ impl Provider for Gestis {
     Ok(res)
   }
 
-  async fn get_substance_data(&self, identifier: String) -> Result<cabr2_types::SubstanceData> {
+  async fn get_substance_data(&self, identifier: String) -> Result<::types::SubstanceData> {
     let (json, url) = self.get_article(identifier).await?;
 
     let data = xml_parser::parse_response(&json)?;

@@ -6,7 +6,7 @@ use std::{
 
 use structopt::StructOpt;
 
-use cabr2_search::gestis::{self, types::GestisResponse};
+use search::gestis::{self, types::GestisResponse};
 
 #[derive(StructOpt, Debug)]
 #[structopt(name = "gestis_helper")]
@@ -16,12 +16,13 @@ struct Arguments {
   pub extract: Option<String>,
 }
 
-fn main() {
+#[tokio::main]
+async fn main() {
   let args = Arguments::from_args();
 
   if args.extract.is_some() {
-    let gestis = gestis::Gestis::new(ureq::agent());
-    let (res, _) = gestis.get_article(args.extract.unwrap()).unwrap();
+    let gestis = gestis::Gestis::new(reqwest::ClientBuilder::new().build().unwrap());
+    let (res, _) = gestis.get_raw_substance_data(args.extract.unwrap()).await.unwrap();
 
     extract_xmls(&res).unwrap();
   }

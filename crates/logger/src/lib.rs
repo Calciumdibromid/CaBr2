@@ -1,15 +1,12 @@
 #![allow(clippy::new_without_default)]
 
-#[cfg(feature = "tauri_plugin")]
-pub mod plugin;
-
 use std::fs;
 
 use fern::Dispatch;
 use log::LevelFilter;
 
-use cabr2_config::{read_config, BackendConfig, TMP_DIR};
-use cabr2_types::logging::LogLevel;
+use config::{read_config, BackendConfig, TMP_DIR};
+use ::types::logging::LogLevel;
 
 pub async fn setup_logger() -> Result<(), fern::InitError> {
   let mut log_file = TMP_DIR.clone();

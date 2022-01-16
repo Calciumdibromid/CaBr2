@@ -25,9 +25,9 @@
         "icons/icon.ico"
       ],
       "resources": [
-        "../ghs_symbols/",
-        "../templates/",
-        "../translations/"
+        "../../assets/ghs_symbols/",
+        "../../assets/templates/",
+        "../../assets/translations/"
       ],
       "externalBin": [],
       "copyright": "",

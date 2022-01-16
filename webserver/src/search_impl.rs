@@ -3,13 +3,9 @@ use std::{collections::HashMap, convert::Infallible};
 use serde::Deserialize;
 use warp::{hyper::StatusCode, Reply};
 
-use cabr2_types::webserver::generate_error_reply;
+use search::{handler, error::SearchError, types::{SearchArgument, SearchArguments}};
 
-use crate::{
-  error::SearchError,
-  handler,
-  types::{SearchArgument, SearchArguments},
-};
+use crate::types_impl::generate_error_reply;
 
 pub async fn init() {
   handler::init_providers().await.unwrap();

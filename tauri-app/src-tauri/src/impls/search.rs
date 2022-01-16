@@ -2,9 +2,8 @@ use std::collections::HashMap;
 
 use tauri::{plugin::Plugin, Invoke, Runtime, Window};
 
-use cabr2_types::SubstanceData;
-
-use crate::{
+use ::types::SubstanceData;
+use search::{
   error::Result,
   handler,
   types::{ProviderInfo, SearchArguments, SearchResponse, SearchType},

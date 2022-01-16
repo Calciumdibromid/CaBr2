@@ -1,8 +1,7 @@
 use std::collections::HashMap;
 
-use cabr2_types::SubstanceData;
-
-use crate::{
+use ::types::SubstanceData;
+use search::{
   error::Result,
   handler,
   types::{ProviderInfo, SearchArguments, SearchResponse, SearchType},

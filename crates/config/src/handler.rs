@@ -188,7 +188,6 @@ fn get_config_path() -> PathBuf {
   #[cfg(not(feature = "portable"))]
   {
     log::trace!("config path: user config folder");
-    use super::PROJECT_DIRS;
     let mut conf_dir = PROJECT_DIRS.config_dir().to_path_buf();
 
     if !conf_dir.exists() {

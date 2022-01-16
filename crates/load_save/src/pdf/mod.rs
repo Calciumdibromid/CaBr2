@@ -16,8 +16,8 @@ use lopdf::Document;
 use serde::Serialize;
 use wkhtmltopdf::{Orientation, PageSize, PdfApplication, Size};
 
-use cabr2_config::DATA_DIR;
-use cabr2_types::ProviderMapping;
+use ::config::DATA_DIR;
+use ::types::ProviderMapping;
 
 use self::types::PDFCaBr2Document;
 use super::{
@@ -40,8 +40,7 @@ impl PDF {
   }
 }
 
-#[cfg_attr(not(feature = "wasm"), async_trait)]
-#[cfg_attr(feature = "wasm", async_trait(?Send))]
+#[async_trait]
 impl Saver for PDF {
   async fn save_document(&self, document: CaBr2Document) -> Result<Vec<u8>> {
     lazy_static! {
@@ -217,7 +216,7 @@ mod handlebar_helpers {
   use handlebars::{Handlebars, JsonRender, RenderError};
   use lazy_static::lazy_static;
 
-  use cabr2_config::GHSSymbols;
+  use config::GHSSymbols;
 
   use super::{types::PDFSubstanceData, PROVIDER_MAPPING};
 
@@ -227,7 +226,7 @@ mod handlebar_helpers {
 
   fn get_hazard_symbols() -> Result<GHSSymbols, impl std::error::Error> {
     // calling `block_on` is possible, because we set the current thread to block at the beginning of the PDF generation.
-    tokio::runtime::Handle::current().block_on(cabr2_config::get_hazard_symbols())
+    tokio::runtime::Handle::current().block_on(config::get_hazard_symbols())
   }
 
   /// Inlines the actual ghs-symbol-images from their keys as base64-encodes pngs

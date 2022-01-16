@@ -1,14 +1,14 @@
 use std::{convert::Infallible, path::PathBuf, time::Duration};
 
-use lazy_static::lazy_static;
 use serde::{Deserialize, Serialize};
 use tokio::fs;
 use uuid::Uuid;
 use warp::{hyper::StatusCode, Reply};
 
-use cabr2_types::{webserver::generate_error_reply, ProviderMapping};
+use load_save::{error::LoadSaveError, handler, types::CaBr2Document};
+use types::ProviderMapping;
 
-use crate::{error::LoadSaveError, handler, types::CaBr2Document};
+use crate::types_impl::generate_error_reply;
 
 pub const DOWNLOAD_FOLDER: &str = "/tmp/cabr2_server/created";
 pub const CACHE_FOLDER: &str = "/tmp/cabr2_server/cache";
@@ -68,14 +68,10 @@ struct SaveDocumentResponse {
 }
 
 pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, Infallible> {
-  lazy_static! {
-    static ref TMP: PathBuf = PathBuf::from(DOWNLOAD_FOLDER);
-  }
-
   let mut path;
   let mut uuid_str;
   loop {
-    path = TMP.clone();
+    path = PathBuf::from(DOWNLOAD_FOLDER);
     uuid_str = Uuid::new_v4().to_hyphenated().to_string();
     path.push(format!("{}.{}", uuid_str, body.file_type));
 

@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use cfg_if::cfg_if;
 use lazy_static::lazy_static;
 
-use cabr2_types::ProviderMapping;
+use ::types::ProviderMapping;
 
 use crate::{
   error::{LoadSaveError, Result},
@@ -12,10 +12,10 @@ use crate::{
 
 // because tokio doesn't fully support wasm we have to use two different implementations for these locks
 cfg_if! {
-  if #[cfg(feature = "wasm")] {
-    use std::sync::RwLock;
-  } else {
+  if #[cfg(feature = "__tokio")] {
     use tokio::sync::RwLock;
+  } else {
+    use std::sync::RwLock;
   }
 }
 
@@ -29,10 +29,10 @@ lazy_static! {
 
 pub async fn init_handlers(_provider_mapping: ProviderMapping) {
   cfg_if! {
-    if #[cfg(feature = "wasm")] {
-      let mut _loaders = REGISTERED_LOADERS.write().expect("failed to get write lock of loaders");
-    } else {
+    if #[cfg(feature = "__tokio")] {
       let mut _loaders = REGISTERED_LOADERS.write().await;
+    } else {
+      let mut _loaders = REGISTERED_LOADERS.write().expect("failed to get write lock of loaders");
     }
   }
 
@@ -42,10 +42,10 @@ pub async fn init_handlers(_provider_mapping: ProviderMapping) {
   _loaders.insert("be", ("Beryllium", Box::new(crate::beryllium::Beryllium)));
 
   cfg_if! {
-    if #[cfg(feature = "wasm")] {
-      let mut _savers = REGISTERED_SAVERS.write().expect("failed to get write lock of savers");
-    } else {
+    if #[cfg(feature = "__tokio")] {
       let mut _savers = REGISTERED_SAVERS.write().await;
+    } else {
+      let mut _savers = REGISTERED_SAVERS.write().expect("failed to get write lock of savers");
     }
   }
 
@@ -57,10 +57,10 @@ pub async fn init_handlers(_provider_mapping: ProviderMapping) {
 
 pub async fn save_document(file_type: &str, document: CaBr2Document) -> Result<Vec<u8>> {
   cfg_if! {
-    if #[cfg(feature = "wasm")] {
-      let savers = REGISTERED_SAVERS.read().expect("failed to get read lock of savers");
-    } else {
+    if #[cfg(feature = "__tokio")] {
       let savers = REGISTERED_SAVERS.read().await;
+    } else {
+      let savers = REGISTERED_SAVERS.read().expect("failed to get read lock of savers");
     }
   }
 
@@ -73,10 +73,10 @@ pub async fn save_document(file_type: &str, document: CaBr2Document) -> Result<V
 
 pub async fn load_document(file_type: &str, contents: Vec<u8>) -> Result<CaBr2Document> {
   cfg_if! {
-    if #[cfg(feature = "wasm")] {
-      let loaders = REGISTERED_LOADERS.read().expect("failed to get read lock of loaders");
-    } else {
+    if #[cfg(feature = "__tokio")] {
       let loaders = REGISTERED_LOADERS.read().await;
+    } else {
+      let loaders = REGISTERED_LOADERS.read().expect("failed to get read lock of loaders");
     }
   }
 
@@ -89,10 +89,10 @@ pub async fn load_document(file_type: &str, contents: Vec<u8>) -> Result<CaBr2Do
 
 pub async fn get_available_document_types() -> DocumentTypes {
   cfg_if! {
-    if #[cfg(feature = "wasm")] {
-      let loaders = REGISTERED_LOADERS.read().expect("failed to get read lock of loaders");
-    } else {
+    if #[cfg(feature = "__tokio")] {
       let loaders = REGISTERED_LOADERS.read().await;
+    } else {
+      let loaders = REGISTERED_LOADERS.read().expect("failed to get read lock of loaders");
     }
   }
 
@@ -113,10 +113,10 @@ pub async fn get_available_document_types() -> DocumentTypes {
   }
 
   cfg_if! {
-    if #[cfg(feature = "wasm")] {
-      let savers = REGISTERED_SAVERS.read().expect("failed to get read lock of savers");
-    } else {
+    if #[cfg(feature = "__tokio")] {
       let savers = REGISTERED_SAVERS.read().await;
+    } else {
+      let savers = REGISTERED_SAVERS.read().expect("failed to get read lock of savers");
     }
   }
 

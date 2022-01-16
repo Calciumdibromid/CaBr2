@@ -1,11 +1,7 @@
 use serde_json::Value;
 use tauri::{plugin::Plugin, Invoke, Runtime, Window};
 
-use crate::{
-  error::Result,
-  handler,
-  types::{FrontendConfig, GHSSymbols, LocalizedStringsHeader},
-};
+use config::{handler, error::Result, types::{FrontendConfig, LocalizedStringsHeader}, GHSSymbols};
 
 #[tauri::command]
 pub fn get_program_version() -> &'static str {

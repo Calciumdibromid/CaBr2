@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-use cabr2_types::logging::LogLevel;
+use ::types::logging::LogLevel;
 
 use crate::handler;
 

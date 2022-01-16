@@ -1,16 +1,21 @@
+mod config_impl;
+mod load_save_impl;
+mod search_impl;
+mod types_impl;
+
 use std::fs;
 
 use warp::Filter;
 
-use cabr2_load_save::webserver::{CACHE_FOLDER, DOWNLOAD_FOLDER};
+use crate::load_save_impl::{DOWNLOAD_FOLDER, CACHE_FOLDER};
 
 #[tokio::main]
 pub async fn main() {
   // must be initialized first
-  cabr2_logger::setup_logger().await.unwrap();
+  logger::setup_logger().await.unwrap();
 
-  cabr2_search::webserver::init().await;
-  cabr2_load_save::webserver::init(cabr2_search::webserver::get_provider_mapping().await).await;
+  search_impl::init().await;
+  load_save_impl::init(search_impl::get_provider_mapping().await).await;
 
   // create tmp folders
   handle_result(fs::create_dir_all(DOWNLOAD_FOLDER));
@@ -19,24 +24,24 @@ pub async fn main() {
   let search_available_providers = warp::path("availableProviders")
     .and(warp::path::end())
     .and(warp::get())
-    .and_then(cabr2_search::webserver::handle_available_providers);
+    .and_then(search_impl::handle_available_providers);
 
   let search_suggestions = warp::path("suggestions")
     .and(warp::post())
     .and(warp::body::json())
-    .and_then(cabr2_search::webserver::handle_suggestions);
+    .and_then(search_impl::handle_suggestions);
 
   let search_results = warp::path("results")
     .and(warp::path::end())
     .and(warp::post())
     .and(warp::body::json())
-    .and_then(cabr2_search::webserver::handle_results);
+    .and_then(search_impl::handle_results);
 
   let search_substances = warp::path("substances")
     .and(warp::path::end())
     .and(warp::post())
     .and(warp::body::json())
-    .and_then(cabr2_search::webserver::handle_substances);
+    .and_then(search_impl::handle_substances);
 
   let search = warp::path("search")
     .and(search_available_providers.or(search_suggestions.or(search_results.or(search_substances))));
@@ -44,23 +49,23 @@ pub async fn main() {
   let config_programversion = warp::path("programVersion")
     .and(warp::path::end())
     .and(warp::get())
-    .and_then(cabr2_config::webserver::handle_program_version);
+    .and_then(config_impl::handle_program_version);
 
   let config_hazard_symbols = warp::path("hazardSymbols")
     .and(warp::path::end())
     .and(warp::get())
-    .and_then(cabr2_config::webserver::handle_hazard_symbols);
+    .and_then(config_impl::handle_hazard_symbols);
 
   let config_available_languages = warp::path("availableLanguages")
     .and(warp::path::end())
     .and(warp::get())
-    .and_then(cabr2_config::webserver::handle_available_languages);
+    .and_then(config_impl::handle_available_languages);
 
   let config_localized_strings = warp::path("localizedStrings")
     .and(warp::path::end())
     .and(warp::post())
     .and(warp::body::json())
-    .and_then(cabr2_config::webserver::handle_localized_strings);
+    .and_then(config_impl::handle_localized_strings);
 
   let config = warp::path("config")
     .and(config_programversion.or(config_hazard_symbols.or(config_available_languages.or(config_localized_strings))));
@@ -68,19 +73,19 @@ pub async fn main() {
   let load_save_available_document_types = warp::path("availableDocumentTypes")
     .and(warp::path::end())
     .and(warp::get())
-    .and_then(cabr2_load_save::webserver::handle_available_document_types);
+    .and_then(load_save_impl::handle_available_document_types);
 
   let load_save_load_document = warp::path("loadDocument")
     .and(warp::path::end())
     .and(warp::post())
     .and(warp::body::json())
-    .and_then(cabr2_load_save::webserver::handle_load_document);
+    .and_then(load_save_impl::handle_load_document);
 
   let load_save_save_document = warp::path("saveDocument")
     .and(warp::path::end())
     .and(warp::post())
     .and(warp::body::json())
-    .and_then(cabr2_load_save::webserver::handle_save_document);
+    .and_then(load_save_impl::handle_save_document);
 
   let load_save = warp::path("loadSave").and(
     load_save_available_document_types
@@ -132,7 +137,7 @@ pub async fn main() {
   */
 
   log::info!("Starting cleanup thread...");
-  tokio::spawn(cabr2_load_save::webserver::cleanup_thread());
+  tokio::spawn(load_save_impl::cleanup_thread());
 
   log::info!("server starting...");
   // On debug builds it runs on `http://localhost:3030`,
