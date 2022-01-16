@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "tauri-app"
+    },
+    {
+      "path": "tauri-app/src-wasm"
+    },
+    {
+      "path": "tauri-app/src-tauri"
+    },
+    {
+      "path": "crates"
+    },
+    {
+      "path": "webserver"
+    }
+  ],
+  "settings": {
+    "cSpell.words": ["Calciumdibromid", "Gestis", "cabr", "fuzzer", "promisified", "tauri", "ureq", "wasm"]
+  }
+}
