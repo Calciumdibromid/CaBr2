@@ -40,7 +40,7 @@ pub async fn get_provider_mapping() -> HashMap<String, String> {
 impl<R: Runtime> Search<R> {
   pub async fn new() -> Self {
     // Must be finished when this function exits, because other init functions depend on the result of this.
-    handler::init_providers().await.expect("failed to initialize providers");
+    handler::init_providers(env!("CARGO_PKG_VERSION")).await.expect("failed to initialize providers");
     Search {
       invoke_handler: Box::new(tauri::generate_handler![
         get_available_providers,

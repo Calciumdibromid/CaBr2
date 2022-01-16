@@ -8,7 +8,7 @@ use search::{
 };
 
 pub async fn init() {
-  handler::init_providers().await.expect("failed to initialize providers");
+  handler::init_providers(env!("CARGO_PKG_VERSION")).await.expect("failed to initialize providers");
 }
 
 pub async fn get_provider_mapping() -> HashMap<String, String> {
