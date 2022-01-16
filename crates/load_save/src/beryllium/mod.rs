@@ -8,11 +8,11 @@ use regex::Regex;
 
 use ::types::{Amount, Data, Source, SubstanceData, Unit};
 
+use self::types::{BerylliumDocument, TemplateCategory};
 use super::{
   error::{LoadSaveError, Result},
   types::{CaBr2Document, Header, Loader},
 };
-use self::types::{BerylliumDocument, TemplateCategory};
 
 pub struct Beryllium;
 

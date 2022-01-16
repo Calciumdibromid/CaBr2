@@ -3,7 +3,11 @@ use std::{collections::HashMap, convert::Infallible};
 use serde::Deserialize;
 use warp::{hyper::StatusCode, Reply};
 
-use search::{handler, error::SearchError, types::{SearchArgument, SearchArguments}};
+use search::{
+  error::SearchError,
+  handler,
+  types::{SearchArgument, SearchArguments},
+};
 
 use super::types::generate_error_reply;
 

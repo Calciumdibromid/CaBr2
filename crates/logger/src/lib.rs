@@ -5,8 +5,8 @@ use std::fs;
 use fern::Dispatch;
 use log::LevelFilter;
 
-use config::{read_config, BackendConfig, TMP_DIR};
 use ::types::logging::LogLevel;
+use config::{read_config, BackendConfig, TMP_DIR};
 
 pub async fn setup_logger() -> Result<(), fern::InitError> {
   let mut log_file = TMP_DIR.clone();
