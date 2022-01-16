@@ -1,5 +1,5 @@
 [package]
-name = "cabr2_logger"
+name = "logger"
 version = "0.0.0"
 authors = [
   "crapStone <crapstone01@gmail.com>",
@@ -10,15 +10,15 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cabr2_config = { path = "../cabr2_config/" }
-cabr2_types = { path = "../cabr2_types/" }
 chrono = "0.4.19"
+config = { path = "../config/" }
 fern = "0.6.0"
 log = "0.4.14"
 serde = { version = "1.0.133", features = ["derive"], optional = true }
 serde_json = { version = "1.0.74", optional = true }
 tauri = { version = "1.0.0-beta.8", default-features = false, optional = true }
 tokio = "1.15.0"
+types = { path = "../types/" }
 
 [features]
 tauri_plugin = ["serde", "serde_json", "tauri"]

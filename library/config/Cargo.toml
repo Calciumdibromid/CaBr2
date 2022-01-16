@@ -1,5 +1,5 @@
 [package]
-name = "cabr2_config"
+name = "config"
 version = "0.4.1" # TODO (#1013) set version to 0.0.0
 authors = [
   "crapStone <crapstone01@gmail.com>",
@@ -11,7 +11,6 @@ edition = "2018"
 
 [dependencies]
 base64 = "0.13.0"
-cabr2_types = { path = "../cabr2_types/" }
 directories-next = "2.0.0"
 lazy_static = "1.4.0"
 log = "0.4.14"
@@ -21,10 +20,11 @@ tauri = { version = "1.0.0-beta.8", default-features = false, optional = true }
 thiserror = "1.0.29"
 tokio = { version = "1.15.0", features = ["fs", "io-util"] }
 toml = { version = "0.5.8", features = ["preserve_order"] }
+types = { path = "../types/" }
 warp = { version = "0.3.2", optional = true }
 
 [features]
 portable = []
 tauri_plugin = ["tauri"]
-webserver = ["warp", "cabr2_types/webserver"]
+webserver = ["warp", "types/webserver"]
 default = []

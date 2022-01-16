@@ -1,5 +1,5 @@
 [package]
-name = "cabr2_types"
+name = "types"
 version = "0.0.0"
 authors = [
   "crapStone <crapstone01@gmail.com>",

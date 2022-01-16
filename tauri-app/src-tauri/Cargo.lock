@@ -321,7 +321,7 @@ dependencies = [
 
 [[package]]
 name = "cabr2_config"
-version = "0.4.1"
+version = "0.0.0"
 dependencies = [
  "base64",
  "cabr2_types",
