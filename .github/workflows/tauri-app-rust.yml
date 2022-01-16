@@ -26,6 +26,9 @@ jobs:
       - name: Fix Build
         run: mkdir -p frontend/dist/CaBr2 && echo "Hello" > frontend/dist/CaBr2/index.html
 
+      - name: Check formatting Tauri app
+        run: cd frontend/src-tauri && cargo fmt -- --check
+
       - name: Lint Tauri app
         run: cd frontend/src-tauri && cargo clippy -- -D warnings
 

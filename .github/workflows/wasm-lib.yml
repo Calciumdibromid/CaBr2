@@ -23,6 +23,9 @@ jobs:
       - name: Set Rust Toolchain
         run: rustup default stable
 
+      - name: Check formatting WASM library
+        run: cd frontend/src-wasm && cargo fmt -- --check
+
       - name: Lint WASM library
         run: cd frontend/src-wasm && cargo clippy -- -D warnings
 

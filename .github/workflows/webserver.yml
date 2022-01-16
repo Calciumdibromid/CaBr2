@@ -23,6 +23,9 @@ jobs:
       - name: Set Rust Toolchain
         run: rustup default stable
 
+      - name: Check formatting webserver
+        run: cd webserver && cargo fmt -- --check
+
       - name: Lint webserver
         run: cd webserver && cargo clippy -- -D warnings
 

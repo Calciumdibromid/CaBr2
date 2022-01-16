@@ -23,6 +23,9 @@ jobs:
       - name: Set Rust Toolchain
         run: rustup default stable
 
+      - name: Check formatting crates
+        run: cd crates && cargo fmt -- --check
+
       - name: Lint crates
         run: cd crates && cargo clippy --workspace --all-features -- --deny clippy::all
 
