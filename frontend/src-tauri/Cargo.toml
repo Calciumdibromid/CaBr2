@@ -1,0 +1,53 @@
+[package]
+name = "cabr2"
+version = "0.4.1"
+description = 'Generate "experiment wise safety sheets" in compliance to European law.'
+authors = [
+  "Epsilon_02 <epsilon_02@mailbox.org>",
+  "crapStone <crapstone01@gmail.com>",
+  "6543 <6543@obermui.de>",
+]
+license = "GPLv3+"
+repository = "https://github.com/Calciumdibromid/CaBr2/"
+default-run = "cabr2"
+edition = "2018"
+build = "src/build.rs"
+
+[build-dependencies]
+tauri-build = { version = "1.0.0-beta.4" }
+
+[dependencies]
+config = { path = "../../crates/config/", features = [ "tauri-app" ] }
+load_save = { path = "../../crates/load_save/" }
+log = "0.4.14"
+logger = { path = "../../crates/logger/" }
+search = { path = "../../crates/search/" }
+serde_json = "1.0.75"
+tauri = { version = "1.0.0-beta.8", features = ["api-all"] }
+tokio = { version = "1.15.0", features = ["macros", "rt-multi-thread"] }
+types = { path = "../../crates/types" }
+
+[features]
+custom-protocol = [ "tauri/custom-protocol" ] # needed for tauri release builds
+portable = [ "config/portable" ]
+
+# load_save file types
+beryllium = [ "load_save/beryllium" ]
+cabr2 = [ "load_save/cabr2" ]
+pdf = [ "load_save/pdf" ]
+
+# search providers
+gestis = [ "search/gestis" ]
+
+default = [
+  "portable",
+  "beryllium",
+  "cabr2",
+  "pdf",
+  "gestis",
+]
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true

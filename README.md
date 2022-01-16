@@ -6,6 +6,29 @@
 
 Generate "experiment wise safety sheets" in compliance to European law.
 
+## Structure
+
+This project can be built in two ways:
+
+- web front end with webserver and WASM bindings
+- Tauri app
+
+From this the folder structure was derived:
+
+| path                  | description                                                                      |
+|-----------------------|----------------------------------------------------------------------------------|
+| `/`                   | Git repo root with obvious files                                                 |
+| `webserver/`          | CaBr2 as REST API implementation                                                 |
+| `crates/`             | core CaBr2 implementation that is shared                                         |
+| `frontend/`           | Angular application that can be built for Tauri or as standalone web application |
+| `frontend/src/`       | Angular sourcecode                                                               |
+| `frontend/src-tauri/` | Tauri glue code for CaBr2 logic                                                  |
+| `frontend/src-wasm/`  | WASM glue code for CaBr2 logic                                                   |
+
+[Angular Application](frontend)  
+[WASM library](frontend/src-wasm)  
+[Webserver](webserver)  
+
 ## Develop
 
 CaBr2 is a [tauri](https://tauri.studio) project.
