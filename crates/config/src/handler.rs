@@ -264,16 +264,16 @@ fn get_program_data_dir() -> PathBuf {
       .parent()
       .unwrap()
       .to_path_buf();
-    
-      // git repo root
+
+    // git repo root
     #[cfg(feature = "webserver")]
     program_path.push("../../../assets/");
     #[cfg(feature = "tauri-app")]
     program_path.push("../../../../assets/");
-    
+
     #[cfg(not(any(feature = "webserver", feature = "tauri-app")))]
     program_path.push("assets/");
-    
+
     log::warn!("data_dir: {}", program_path.display());
     program_path.canonicalize().unwrap()
   }
