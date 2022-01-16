@@ -8,12 +8,12 @@ on:
     branches: [main, develop]
     paths:
       - '.github/workflows/frontend.yml'
-      - 'tauri-app/src/**'
-      - 'tauri-app/*.json'
-      - 'tauri-app/*.js'
-      - 'tauri-app/.prettierignore'
-      - 'tauri-app/yarn.lock'
-      - 'tauri-app/src-wasm/**'
+      - 'frontend/src/**'
+      - 'frontend/*.json'
+      - 'frontend/*.js'
+      - 'frontend/.prettierignore'
+      - 'frontend/yarn.lock'
+      - 'frontend/src-wasm/**'
 
 jobs:
   frontend:
@@ -30,20 +30,20 @@ jobs:
         run: rustup default stable
 
       - name: Install Dependencies
-        run: cd tauri-app && yarn install --frozen-lockfile
+        run: cd frontend && yarn install --frozen-lockfile
 
       - name: Check Formatting
-        run: cd tauri-app && yarn prettier -c src
+        run: cd frontend && yarn prettier -c src
 
       - name: Eslint
-        run: cd tauri-app && yarn lint
+        run: cd frontend && yarn lint
 
       - name: Build Tauri Frontend
-        run: cd tauri-app && yarn ng build --configuration production
+        run: cd frontend && yarn ng build --configuration production
 
       - name: Build WASM binary
         # debug compiles faster and everything gets checked in the dedicated wasm ci pipeline
-        run: cd tauri-app && yarn yarn wasm_lib:debug
+        run: cd frontend && yarn wasm_lib:debug
 
       - name: Build Web Frontend
-        run: cd tauri-app && yarn ng build --configuration webProd
+        run: cd frontend && yarn ng build --configuration webProd

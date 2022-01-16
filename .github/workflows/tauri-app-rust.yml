@@ -7,11 +7,11 @@ on:
   pull_request:
     branches: [main, develop]
     paths:
-      - '.github/workflows/tauri-app-rust.yml'
-      - 'tauri-app/src-tauri/**'
+      - '.github/workflows/frontend-rust.yml'
+      - 'frontend/src-tauri/**'
 
 jobs:
-  tauri-app-rust:
+  frontend-rust:
     runs-on: ubuntu-20.04
     container: a6543/cabr2_ci:latest
     strategy:
@@ -24,14 +24,14 @@ jobs:
         run: rustup default stable
 
       - name: Fix Build
-        run: mkdir -p tauri-app/dist/CaBr2 && echo "Hello" > tauri-app/dist/CaBr2/index.html
+        run: mkdir -p frontend/dist/CaBr2 && echo "Hello" > frontend/dist/CaBr2/index.html
 
       - name: Lint Tauri app
-        run: cd tauri-app/src-tauri && cargo clippy -- -D warnings
+        run: cd frontend/src-tauri && cargo clippy -- -D warnings
 
       - name: Build Tauri app
-        run: cd tauri-app/src-tauri && cargo build
+        run: cd frontend/src-tauri && cargo build
 
       # TODO(692) reactivate when tests are written
       # - name: Test Tauri app
-      #   run: cd tauri-app/src-tauri && cargo test
+      #   run: cd frontend/src-tauri && cargo test

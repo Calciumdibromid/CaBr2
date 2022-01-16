@@ -4,13 +4,13 @@
       "path": "."
     },
     {
-      "path": "tauri-app"
+      "path": "frontend"
     },
     {
-      "path": "tauri-app/src-wasm"
+      "path": "frontend/src-wasm"
     },
     {
-      "path": "tauri-app/src-tauri"
+      "path": "frontend/src-tauri"
     },
     {
       "path": "crates"

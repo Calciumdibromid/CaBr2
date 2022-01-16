@@ -8,7 +8,7 @@ on:
     branches: [main, develop]
     paths:
       - '.github/workflows/wasm-lib.yml'
-      - 'tauri-app/src-wasm/**'
+      - 'frontend/src-wasm/**'
 
 jobs:
   wasm-lib:
@@ -24,14 +24,14 @@ jobs:
         run: rustup default stable
 
       - name: Lint WASM library
-        run: cd tauri-app/src-wasm && cargo clippy -- -D warnings
+        run: cd frontend/src-wasm && cargo clippy -- -D warnings
 
       - name: Build WASM library debug
-        run: cd tauri-app/src-wasm && wasm-pack build --out-dir ../cabr2_wasm --dev -- --features debug_build
+        run: cd frontend/src-wasm && wasm-pack build --out-dir ../cabr2_wasm --dev -- --features debug_build
 
       - name: Build WASM library release
-        run: cd tauri-app/src-wasm && wasm-pack build --out-dir ../cabr2_wasm --release
+        run: cd frontend/src-wasm && wasm-pack build --out-dir ../cabr2_wasm --release
 
       # TODO(692) reactivate when tests are written
       # - name: Test WASM library
-      #   run: cd tauri-app/src-wasm && cargo test
+      #   run: cd frontend/src-wasm && cargo test
