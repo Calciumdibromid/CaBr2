@@ -1,0 +1,37 @@
+name: checks
+
+on:
+  # Triggers the workflow on push or pull request events but only for the main and develop branches
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - '.github/workflows/wasm-lib.yml'
+      - 'tauri-app/src-wasm/**'
+
+jobs:
+  wasm-lib:
+    runs-on: ubuntu-20.04
+    container: a6543/cabr2_ci:latest
+    strategy:
+      fail-fast: true
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+
+      - name: Set Rust Toolchain
+        run: rustup default stable
+
+      - name: Lint WASM library
+        run: cd tauri-app/src-wasm && cargo clippy -- -D warnings
+
+      - name: Build WASM library debug
+        run: cd tauri-app/src-wasm && wasm-pack build --out-dir ../cabr2_wasm --dev -- --features debug_build
+
+      - name: Build WASM library release
+        run: cd tauri-app/src-wasm && wasm-pack build --out-dir ../cabr2_wasm --release
+
+      # TODO(692) reactivate when tests are written
+      # - name: Test WASM library
+      #   run: cd tauri-app/src-wasm && cargo test

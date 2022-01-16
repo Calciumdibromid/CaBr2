@@ -7,11 +7,11 @@ on:
   pull_request:
     branches: [main, develop]
     paths:
-      - '.github/workflows/webserver.yml'
-      - 'webserver/**'
+      - '.github/workflows/tauri-app-rust.yml'
+      - 'tauri-app/src-tauri/**'
 
 jobs:
-  webserver:
+  tauri-app-rust:
     runs-on: ubuntu-20.04
     container: a6543/cabr2_ci:latest
     strategy:
@@ -23,12 +23,15 @@ jobs:
       - name: Set Rust Toolchain
         run: rustup default stable
 
-      - name: Lint webserver
-        run: cd webserver && cargo clippy -- -D warnings
+      - name: Fix Build
+        run: mkdir -p tauri-app/dist/CaBr2 && echo "Hello" > tauri-app/dist/CaBr2/index.html
 
-      - name: Build webserver
-        run: cd webserver && cargo build
+      - name: Lint Tauri app
+        run: cd tauri-app/src-tauri && cargo clippy -- -D warnings
+
+      - name: Build Tauri app
+        run: cd tauri-app/src-tauri && cargo build
 
       # TODO(692) reactivate when tests are written
-      # - name: Test Webserver
-      #   run: cd webserver && cargo test
+      # - name: Test Tauri app
+      #   run: cd tauri-app/src-tauri && cargo test

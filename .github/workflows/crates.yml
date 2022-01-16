@@ -7,11 +7,11 @@ on:
   pull_request:
     branches: [main, develop]
     paths:
-      - '.github/workflows/webserver.yml'
-      - 'webserver/**'
+      - '.github/workflows/crates.yml'
+      - 'crates/**'
 
 jobs:
-  webserver:
+  crates:
     runs-on: ubuntu-20.04
     container: a6543/cabr2_ci:latest
     strategy:
@@ -23,12 +23,12 @@ jobs:
       - name: Set Rust Toolchain
         run: rustup default stable
 
-      - name: Lint webserver
-        run: cd webserver && cargo clippy -- -D warnings
+      - name: Lint crates
+        run: cd crates && cargo clippy --workspace --all-features -- --deny clippy::all
 
-      - name: Build webserver
-        run: cd webserver && cargo build
+      - name: Build crates
+        run: cd crates && cargo build --workspace
 
       # TODO(692) reactivate when tests are written
-      # - name: Test Webserver
-      #   run: cd webserver && cargo test
+      # - name: Test crates
+      #   run: cd crates && cargo test --workspace

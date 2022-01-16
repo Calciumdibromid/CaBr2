@@ -1,19 +1,19 @@
 name: checks
 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
+  # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [master, develop]
+    branches: [main, develop]
   pull_request:
-    branches: [master, develop]
+    branches: [main, develop]
     paths:
-      - 'src/**'
-      - '*.json'
-      - '*.js'
-      - '.prettierignore'
-      - 'yarn.lock'
       - '.github/workflows/frontend.yml'
-      - 'src-wasm/**'
+      - 'tauri-app/src/**'
+      - 'tauri-app/*.json'
+      - 'tauri-app/*.js'
+      - 'tauri-app/.prettierignore'
+      - 'tauri-app/yarn.lock'
+      - 'tauri-app/src-wasm/**'
 
 jobs:
   frontend:
@@ -30,27 +30,20 @@ jobs:
         run: rustup default stable
 
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: cd tauri-app && yarn install --frozen-lockfile
 
       - name: Check Formatting
-        run: yarn prettier -c src
+        run: cd tauri-app && yarn prettier -c src
 
       - name: Eslint
-        run: yarn lint
-
-      - name: codespell
-        uses: codespell-project/actions-codespell@master
-        with:
-          check_filenames: true
-          check_hidden: true
-          skip: ./.git,./.gitignore,node_modules,dist,yarn.lock,./src/assets,./translations,*.html,./src-tauri
-          ignore_words_list: crate,ser
-
-      - name: Build WASM binary
-        run: yarn wasm_lib:release
+        run: cd tauri-app && yarn lint
 
       - name: Build Tauri Frontend
-        run: yarn ng build --configuration production
+        run: cd tauri-app && yarn ng build --configuration production
+
+      - name: Build WASM binary
+        # debug compiles faster and everything gets checked in the dedicated wasm ci pipeline
+        run: cd tauri-app && yarn yarn wasm_lib:debug
 
       - name: Build Web Frontend
-        run: yarn ng build --configuration webProd
+        run: cd tauri-app && yarn ng build --configuration webProd
