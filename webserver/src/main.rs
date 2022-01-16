@@ -1,21 +1,22 @@
-mod config_impl;
-mod load_save_impl;
-mod search_impl;
-mod types_impl;
+mod impls;
 
 use std::fs;
 
 use warp::Filter;
 
-use crate::load_save_impl::{DOWNLOAD_FOLDER, CACHE_FOLDER};
+use crate::impls::{
+  config,
+  load_save::{self, CACHE_FOLDER, DOWNLOAD_FOLDER},
+  search,
+};
 
 #[tokio::main]
 pub async fn main() {
   // must be initialized first
   logger::setup_logger().await.unwrap();
 
-  search_impl::init().await;
-  load_save_impl::init(search_impl::get_provider_mapping().await).await;
+  search::init().await;
+  load_save::init(search::get_provider_mapping().await).await;
 
   // create tmp folders
   handle_result(fs::create_dir_all(DOWNLOAD_FOLDER));
@@ -24,24 +25,24 @@ pub async fn main() {
   let search_available_providers = warp::path("availableProviders")
     .and(warp::path::end())
     .and(warp::get())
-    .and_then(search_impl::handle_available_providers);
+    .and_then(search::handle_available_providers);
 
   let search_suggestions = warp::path("suggestions")
     .and(warp::post())
     .and(warp::body::json())
-    .and_then(search_impl::handle_suggestions);
+    .and_then(search::handle_suggestions);
 
   let search_results = warp::path("results")
     .and(warp::path::end())
     .and(warp::post())
     .and(warp::body::json())
-    .and_then(search_impl::handle_results);
+    .and_then(search::handle_results);
 
   let search_substances = warp::path("substances")
     .and(warp::path::end())
     .and(warp::post())
     .and(warp::body::json())
-    .and_then(search_impl::handle_substances);
+    .and_then(search::handle_substances);
 
   let search = warp::path("search")
     .and(search_available_providers.or(search_suggestions.or(search_results.or(search_substances))));
@@ -49,23 +50,23 @@ pub async fn main() {
   let config_programversion = warp::path("programVersion")
     .and(warp::path::end())
     .and(warp::get())
-    .and_then(config_impl::handle_program_version);
+    .and_then(config::handle_program_version);
 
   let config_hazard_symbols = warp::path("hazardSymbols")
     .and(warp::path::end())
     .and(warp::get())
-    .and_then(config_impl::handle_hazard_symbols);
+    .and_then(config::handle_hazard_symbols);
 
   let config_available_languages = warp::path("availableLanguages")
     .and(warp::path::end())
     .and(warp::get())
-    .and_then(config_impl::handle_available_languages);
+    .and_then(config::handle_available_languages);
 
   let config_localized_strings = warp::path("localizedStrings")
     .and(warp::path::end())
     .and(warp::post())
     .and(warp::body::json())
-    .and_then(config_impl::handle_localized_strings);
+    .and_then(config::handle_localized_strings);
 
   let config = warp::path("config")
     .and(config_programversion.or(config_hazard_symbols.or(config_available_languages.or(config_localized_strings))));
@@ -73,19 +74,19 @@ pub async fn main() {
   let load_save_available_document_types = warp::path("availableDocumentTypes")
     .and(warp::path::end())
     .and(warp::get())
-    .and_then(load_save_impl::handle_available_document_types);
+    .and_then(load_save::handle_available_document_types);
 
   let load_save_load_document = warp::path("loadDocument")
     .and(warp::path::end())
     .and(warp::post())
     .and(warp::body::json())
-    .and_then(load_save_impl::handle_load_document);
+    .and_then(load_save::handle_load_document);
 
   let load_save_save_document = warp::path("saveDocument")
     .and(warp::path::end())
     .and(warp::post())
     .and(warp::body::json())
-    .and_then(load_save_impl::handle_save_document);
+    .and_then(load_save::handle_save_document);
 
   let load_save = warp::path("loadSave").and(
     load_save_available_document_types
@@ -137,7 +138,7 @@ pub async fn main() {
   */
 
   log::info!("Starting cleanup thread...");
-  tokio::spawn(load_save_impl::cleanup_thread());
+  tokio::spawn(load_save::cleanup_thread());
 
   log::info!("server starting...");
   // On debug builds it runs on `http://localhost:3030`,

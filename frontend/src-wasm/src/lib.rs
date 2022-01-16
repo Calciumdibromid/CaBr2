@@ -1,5 +1,4 @@
-mod load_save;
-mod search;
+mod impls;
 
 use std::{env, future::Future};
 
@@ -11,6 +10,8 @@ use wasm_bindgen::prelude::*;
 
 use ::load_save::types::CaBr2Document;
 use ::search::types::{SearchArguments, SearchType};
+
+use crate::impls::{load_save, search};
 
 type Result<T> = std::result::Result<T, JsValue>;
 

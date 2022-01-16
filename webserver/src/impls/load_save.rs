@@ -8,7 +8,7 @@ use warp::{hyper::StatusCode, Reply};
 use load_save::{error::LoadSaveError, handler, types::CaBr2Document};
 use types::ProviderMapping;
 
-use crate::types_impl::generate_error_reply;
+use super::types::generate_error_reply;
 
 pub const DOWNLOAD_FOLDER: &str = "/tmp/cabr2_server/created";
 pub const CACHE_FOLDER: &str = "/tmp/cabr2_server/cache";

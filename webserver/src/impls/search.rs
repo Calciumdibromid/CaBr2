@@ -5,7 +5,7 @@ use warp::{hyper::StatusCode, Reply};
 
 use search::{handler, error::SearchError, types::{SearchArgument, SearchArguments}};
 
-use crate::types_impl::generate_error_reply;
+use super::types::generate_error_reply;
 
 pub async fn init() {
   handler::init_providers().await.unwrap();

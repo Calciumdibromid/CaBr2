@@ -5,7 +5,7 @@ use warp::{hyper::StatusCode, Reply};
 
 use config::handler;
 
-use crate::types_impl::generate_error_reply;
+use super::types::generate_error_reply;
 
 pub async fn handle_hazard_symbols() -> Result<impl Reply, Infallible> {
   match handler::get_hazard_symbols().await {
