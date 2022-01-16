@@ -10,6 +10,3 @@ pub mod types;
 mod gestis;
 #[cfg(feature = "gestis_helper")]
 pub mod gestis;
-
-#[cfg(feature = "tauri_plugin")]
-pub mod plugin;
