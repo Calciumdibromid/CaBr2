@@ -23,5 +23,7 @@ types = { path = "../types/" }
 
 [features]
 portable = []
+webserver = []
+tauri-app = []
 
 default = []

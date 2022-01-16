@@ -5,7 +5,6 @@
     "beforeDevCommand": "",
     "beforeBuildCommand": "",
     "features": [
-      "tauri_app",
       "beryllium",
       "cabr2",
       "pdf",

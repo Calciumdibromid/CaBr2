@@ -79,12 +79,12 @@
                 "src/assets",
                 {
                   "glob": "**/*",
-                  "input": "ghs_symbols/",
+                  "input": "../assets/ghs_symbols/",
                   "output": "/ghs_symbols/"
                 },
                 {
                   "glob": "**/**",
-                  "input": "translations",
+                  "input": "../assets/translations",
                   "output": "/translations/"
                 }
               ]
@@ -124,12 +124,12 @@
                 "src/assets",
                 {
                   "glob": "**/*",
-                  "input": "ghs_symbols/",
+                  "input": "../assets/ghs_symbols/",
                   "output": "/ghs_symbols/"
                 },
                 {
                   "glob": "**/**",
-                  "input": "translations",
+                  "input": "../assets/translations",
                   "output": "/translations/"
                 }
               ]

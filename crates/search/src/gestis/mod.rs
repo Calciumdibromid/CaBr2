@@ -80,8 +80,8 @@ impl Gestis {
   }
 }
 
-#[cfg_attr(not(feature = "wasm"), async_trait)]
-#[cfg_attr(feature = "wasm", async_trait(?Send))]
+#[cfg_attr(not(target_family = "wasm"), async_trait)]
+#[cfg_attr(target_family = "wasm", async_trait(?Send))]
 impl Provider for Gestis {
   fn get_name(&self) -> String {
     "Gestis".into()

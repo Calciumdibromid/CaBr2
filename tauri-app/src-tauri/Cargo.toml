@@ -17,7 +17,7 @@ build = "src/build.rs"
 tauri-build = { version = "1.0.0-beta.4" }
 
 [dependencies]
-config = { path = "../../crates/config/" }
+config = { path = "../../crates/config/", features = [ "tauri-app" ] }
 load_save = { path = "../../crates/load_save/" }
 log = "0.4.14"
 logger = { path = "../../crates/logger/" }
