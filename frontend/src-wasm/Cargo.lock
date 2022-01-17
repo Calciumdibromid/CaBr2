@@ -394,7 +394,6 @@ name = "load_save"
 version = "0.0.0"
 dependencies = [
  "async-trait",
- "cfg-if",
  "chrono",
  "lazy_static",
  "log",
@@ -931,6 +930,7 @@ checksum = "59547bce71d9c38b83d9c0e92b6066c4253371f15005def0c30d9657f50c7642"
 name = "types"
 version = "0.0.0"
 dependencies = [
+ "cfg-if",
  "chrono",
  "log",
  "serde",
