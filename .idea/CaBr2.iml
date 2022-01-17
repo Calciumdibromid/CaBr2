@@ -9,6 +9,19 @@
       <sourceFolder url="file://$MODULE_DIR$/frontend/src-tauri" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/frontend/src-wasm" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/webserver" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/config/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/load_save/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/logger/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/search/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/search/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/types/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/frontend/src-tauri/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/frontend/src-wasm/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/webserver/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/crates/target" />
+      <excludeFolder url="file://$MODULE_DIR$/webserver/target" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/src-wasm/target" />
+      <excludeFolder url="file://$MODULE_DIR$/frontend/src-tauri/target" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
