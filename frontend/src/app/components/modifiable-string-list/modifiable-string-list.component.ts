@@ -26,6 +26,10 @@ export class ModifiableStringListComponent implements OnInit {
     this.form = this.formBuilder.group({});
   }
 
+  get controlElements(): FormArray {
+    return this.form.get('elements') as FormArray;
+  }
+
   ngOnInit(): void {
     this.elements.subscribe(
       (elements) =>
@@ -33,10 +37,6 @@ export class ModifiableStringListComponent implements OnInit {
           elements: this.formBuilder.array(elements.map((value) => this.initForm(value)) ?? []),
         })),
     );
-  }
-
-  get controlElements(): FormArray {
-    return this.form.get('elements') as FormArray;
   }
 
   initForm(value: string): FormGroup {
