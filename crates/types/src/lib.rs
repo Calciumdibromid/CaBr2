@@ -1,5 +1,7 @@
 #![allow(clippy::upper_case_acronyms)]
 
+#[cfg(feature = "lock")]
+pub mod lock;
 pub mod logging;
 
 use std::collections::HashMap;

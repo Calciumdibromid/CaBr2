@@ -4,36 +4,21 @@ use ::types::SubstanceData;
 use cfg_if::cfg_if;
 use lazy_static::lazy_static;
 
-use types::ProviderMapping;
+use types::{lock::RwLockWrapper, ProviderMapping};
 
 use crate::{
   error::{Result, SearchError},
   types::{Provider, ProviderInfo, SearchArguments, SearchResponse, SearchType},
 };
 
-// because tokio doesn't fully support wasm we have to use two different implementations for these locks
-cfg_if! {
-  if #[cfg(feature = "__tokio")] {
-    use tokio::sync::RwLock;
-  } else {
-    use std::sync::RwLock;
-  }
-}
-
 lazy_static! {
-  pub static ref REGISTERED_PROVIDERS: RwLock<HashMap<&'static str, Box<dyn Provider + Send + Sync>>> =
-    RwLock::new(HashMap::new());
+  pub static ref REGISTERED_PROVIDERS: RwLockWrapper<HashMap<&'static str, Box<dyn Provider + Send + Sync>>> =
+    RwLockWrapper::new(HashMap::new());
 }
 
 pub async fn init_providers(_version: &str) -> Result<()> {
   log::trace!("initializing providers");
-  cfg_if! {
-    if #[cfg(feature = "__tokio")] {
-      let mut providers = REGISTERED_PROVIDERS.write().await;
-    } else {
-      let mut providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
-    }
-  }
+  let mut providers = REGISTERED_PROVIDERS.write().await;
 
   #[cfg(feature = "gestis")]
   {
@@ -53,13 +38,7 @@ pub async fn init_providers(_version: &str) -> Result<()> {
 }
 
 pub async fn get_provider_mapping() -> ProviderMapping {
-  cfg_if! {
-    if #[cfg(feature = "__tokio")] {
-      let providers = REGISTERED_PROVIDERS.read().await;
-    } else {
-      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
-    }
-  }
+  let providers = REGISTERED_PROVIDERS.read().await;
 
   let mut mapping = HashMap::new();
   for (id, provider) in providers.iter() {
@@ -70,13 +49,7 @@ pub async fn get_provider_mapping() -> ProviderMapping {
 }
 
 pub async fn get_available_providers() -> Vec<ProviderInfo> {
-  cfg_if! {
-    if #[cfg(feature = "__tokio")] {
-      let providers = REGISTERED_PROVIDERS.read().await;
-    } else {
-      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
-    }
-  }
+  let providers = REGISTERED_PROVIDERS.read().await;
 
   let mut providers: Vec<ProviderInfo> = providers
     .iter()
@@ -103,13 +76,7 @@ pub async fn get_quick_search_suggestions(
     return Ok(vec![]);
   }
 
-  cfg_if! {
-    if #[cfg(feature = "__tokio")] {
-      let providers = REGISTERED_PROVIDERS.read().await;
-    } else {
-      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
-    }
-  }
+  let providers = REGISTERED_PROVIDERS.read().await;
 
   if let Some(provider) = providers.get(&provider.borrow()) {
     return provider.get_quick_search_suggestions(search_type, pattern).await;
@@ -132,13 +99,7 @@ pub async fn get_search_results(provider: String, arguments: SearchArguments) ->
     return Ok(vec![]);
   }
 
-  cfg_if! {
-    if #[cfg(feature = "__tokio")] {
-      let providers = REGISTERED_PROVIDERS.read().await;
-    } else {
-      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
-    }
-  }
+  let providers = REGISTERED_PROVIDERS.read().await;
 
   if let Some(provider) = providers.get(&provider.borrow()) {
     return provider.get_search_results(arguments).await;
@@ -148,13 +109,7 @@ pub async fn get_search_results(provider: String, arguments: SearchArguments) ->
 }
 
 pub async fn get_substance_data(provider: String, identifier: String) -> Result<SubstanceData> {
-  cfg_if! {
-    if #[cfg(feature = "__tokio")] {
-      let providers = REGISTERED_PROVIDERS.read().await;
-    } else {
-      let providers = REGISTERED_PROVIDERS.read().expect("failed to get read lock");
-    }
-  }
+  let providers = REGISTERED_PROVIDERS.read().await;
 
   if let Some(provider) = providers.get(&provider.borrow()) {
     return provider.get_substance_data(identifier).await;
