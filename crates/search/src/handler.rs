@@ -25,7 +25,7 @@ lazy_static! {
     RwLock::new(HashMap::new());
 }
 
-pub async fn init_providers(_user_agent: &str) -> Result<()> {
+pub async fn init_providers(_version: &str) -> Result<()> {
   log::trace!("initializing providers");
   cfg_if! {
     if #[cfg(feature = "__tokio")] {
@@ -41,7 +41,7 @@ pub async fn init_providers(_user_agent: &str) -> Result<()> {
       if #[cfg(target_family = "wasm")] {
         let client = reqwest::ClientBuilder::new().build()?;
       } else {
-        let client = reqwest::ClientBuilder::new().user_agent(&format!("cabr2/v{}", _user_agent)).build()?;
+        let client = reqwest::ClientBuilder::new().user_agent(&format!("cabr2/v{}", _version)).build()?;
       }
     }
 
