@@ -50,6 +50,22 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     this.form = this.initControls();
   }
 
+  get hPhrases(): FormArray {
+    return this.form?.get('hPhrases') as FormArray;
+  }
+
+  get pPhrases(): FormArray {
+    return this.form?.get('pPhrases') as FormArray;
+  }
+
+  get symbols(): FormArray {
+    return this.form?.get('symbols') as FormArray;
+  }
+
+  get amount(): FormGroup {
+    return this.form?.get('amount') as FormGroup;
+  }
+
   ngOnInit(): void {
     this.customSubscription = this.amount.get('unit')?.valueChanges.subscribe((value: UnitType) => {
       this.customUnitVisible = value === UnitType.CUSTOM;
@@ -96,22 +112,6 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     }
 
     return group;
-  }
-
-  get hPhrases(): FormArray {
-    return this.form?.get('hPhrases') as FormArray;
-  }
-
-  get pPhrases(): FormArray {
-    return this.form?.get('pPhrases') as FormArray;
-  }
-
-  get symbols(): FormArray {
-    return this.form?.get('symbols') as FormArray;
-  }
-
-  get amount(): FormGroup {
-    return this.form?.get('amount') as FormGroup;
   }
 
   initHPhrases(value: [string, string]): FormGroup {

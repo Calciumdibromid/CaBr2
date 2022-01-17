@@ -43,6 +43,11 @@ export class AppComponent implements OnInit, OnDestroy {
     private translocoService: TranslocoService,
   ) {}
 
+  @HostBinding('class')
+  get themeMode(): string {
+    return this.config?.globalSection.darkTheme ? 'theme-dark' : 'theme-light';
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
@@ -113,11 +118,6 @@ export class AppComponent implements OnInit, OnDestroy {
           });
       }
     });
-  }
-
-  @HostBinding('class')
-  get themeMode(): string {
-    return this.config?.globalSection.darkTheme ? 'theme-dark' : 'theme-light';
   }
 
   switchMode(isDarkMode: boolean): void {
