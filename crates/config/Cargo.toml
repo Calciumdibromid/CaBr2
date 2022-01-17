@@ -1,6 +1,6 @@
 [package]
 name = "config"
-version = "0.4.1" # TODO (#1013) set version to 0.0.0
+version = "0.0.0"
 authors = [
   "crapStone <crapstone01@gmail.com>",
   "6543 <6543@obermui.de>",

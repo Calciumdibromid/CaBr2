@@ -25,17 +25,13 @@ lazy_static! {
     RwLock::new(HashMap::new());
 }
 
-#[cfg(all(feature = "gestis", not(target_family = "wasm")))]
-const USER_AGENT: &str = concat!("cabr2/v", env!("CARGO_PKG_VERSION"));
-
-pub async fn init_providers() -> Result<()> {
+pub async fn init_providers(_version: &str) -> Result<()> {
   log::trace!("initializing providers");
-  // let mut _providers;
   cfg_if! {
     if #[cfg(feature = "__tokio")] {
-      let mut _providers = REGISTERED_PROVIDERS.write().await;
+      let mut providers = REGISTERED_PROVIDERS.write().await;
     } else {
-      let mut _providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
+      let mut providers = REGISTERED_PROVIDERS.write().expect("failed to get write lock");
     }
   }
 
@@ -43,13 +39,13 @@ pub async fn init_providers() -> Result<()> {
   {
     cfg_if! {
       if #[cfg(target_family = "wasm")] {
-        let agent = reqwest::ClientBuilder::new().build()?;
+        let client = reqwest::ClientBuilder::new().build()?;
       } else {
-        let agent = reqwest::ClientBuilder::new().user_agent(USER_AGENT).build()?;
+        let client = reqwest::ClientBuilder::new().user_agent(&format!("cabr2/v{}", _version)).build()?;
       }
     }
 
-    _providers.insert("gestis", Box::new(crate::gestis::Gestis::new(agent)));
+    providers.insert("gestis", Box::new(crate::gestis::Gestis::new(client)));
   }
 
   log::trace!("dropping provider lock...");

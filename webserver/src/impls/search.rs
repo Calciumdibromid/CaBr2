@@ -12,7 +12,7 @@ use search::{
 use super::types::generate_error_reply;
 
 pub async fn init() {
-  handler::init_providers().await.unwrap();
+  handler::init_providers(env!("CARGO_PKG_VERSION")).await.unwrap();
 }
 
 pub async fn get_provider_mapping() -> HashMap<String, String> {
