@@ -14,7 +14,7 @@ In order to build the webserver you must first install [rust](https://www.rust-l
 If you want to generate PDFs hava a look at the
 [wkhtmltopdf section in the frontend README](../frontend/README.md#wkhtmltopdf)
 
-The webserver can be built with all features with the following command:
+The webserver will be built with all features enabled by default with the following command:
 
 ```bash
 cargo build --release
@@ -39,7 +39,7 @@ These features are available:
 
 ## Code Checking
 
-We use `clippy` for lints and `cargo fmt` to check the formatting of the code:
+We use `clippy` for linting and `cargo fmt` to check the formatting of the code:
 
 ```bash
 cargo clippy --all-features -- --deny clippy::all

@@ -41,7 +41,7 @@ wasm-pack build --out-dir ../cabr2_wasm --dev -- --features debug_build
 
 ### Code Checking
 
-We use `clippy` for lints and `cargo fmt` to check the formatting of the code:
+We use `clippy` for linting and `cargo fmt` to check the formatting of the code:
 
 ```bash
 cargo clippy --all-features -- --deny clippy::all

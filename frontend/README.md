@@ -40,6 +40,12 @@ We advise you to use the web app until Tauri is stable.
 
 ### Develop
 
+First you have to install all npm dependencies:
+
+```bash
+yarn install
+```
+
 To start the Angular application in development mode run:
 
 ```bash
@@ -55,13 +61,19 @@ yarn tauri:dev
 
 ### Build
 
-To build the Tauri app in release mode you just have to run:
+To build the Tauri app in release mode you must first install the npm dependencies:
 
-> This step most likely fails on linux. We are trying to fix the problem but haven't found a solution yet.
+```bash
+yarn install --force --frozen-lockfile
+```
+
+Then you just have to run:
 
 ```bash
 yarn build:release
 ```
+
+> This step most likely fails on linux. We are trying to fix the problem but haven't found a solution yet.
 
 ## Web App
 
@@ -69,6 +81,12 @@ yarn build:release
 
 You first have to compile the wasm binary. For instructions how to do this have a look at the [README in the `src-wasm`
 folder](src-wasm/README.md).
+
+Then install all npm dependencies:
+
+```bash
+yarn install
+```
 
 To start the Angular application in development mode run:
 
@@ -80,7 +98,13 @@ When the command finishes you can open <http://localhost:4200> in your Browser.
 
 ### Build
 
-To build the Web app in release mode you just have to run:
+To build the Web app in release mode you must first install the npm dependencies:
+
+```bash
+yarn install --force --frozen-lockfile
+```
+
+Then you just have to run:
 
 ```bash
 yarn build:web
