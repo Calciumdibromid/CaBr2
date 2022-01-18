@@ -1,10 +1,20 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import { filter, map } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 
 import Logger from '../utils/logger';
 
 const logger = new Logger('config.model');
+
+enum ConfigState {
+  INITIAL,
+  LOADED,
+  CHANGED,
+}
+
+const setConfig = (config: ConfigModel): void => {
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  configSubject.next([config, ConfigState.CHANGED]);
+};
 
 export class ConfigModel {
   private global: Global;
@@ -24,11 +34,13 @@ export class ConfigModel {
 
   static setLoadedConfig(config: ConfigModel): void {
     // this must be config.global because this is mostly a deserialized JSON from the backend
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     configSubject.next([new ConfigModel(config.global), ConfigState.LOADED]);
   }
 
   static setConfig(config: ConfigModel): void {
     // this must be config.global because this is mostly a deserialized JSON from the backend
+    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     configSubject.next([new ConfigModel(config.global), ConfigState.CHANGED]);
   }
 
@@ -51,20 +63,10 @@ export class ConfigModel {
   }
 }
 
-const setConfig = (config: ConfigModel): void => {
-  configSubject.next([config, ConfigState.CHANGED]);
-};
-
 export interface Global {
   readonly darkTheme: boolean;
   readonly language: string;
   readonly acceptedConsent: boolean;
-}
-
-enum ConfigState {
-  INITIAL,
-  LOADED,
-  CHANGED,
 }
 
 const configSubject = new BehaviorSubject<[ConfigModel, ConfigState]>([new ConfigModel(), ConfigState.INITIAL]);
