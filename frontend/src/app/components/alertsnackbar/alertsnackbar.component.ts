@@ -20,10 +20,10 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
 
   constructor(private alertService: AlertService, private snackBar: MatSnackBar) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     // subscribe to new alert notifications
-    this.alertSubscription = this.alertService.onAlert().subscribe(
-      (alert) => {
+    this.alertSubscription = this.alertService.onAlert().subscribe({
+      next: (alert) => {
         // clear alerts when an empty alert is received
         if (!alert.message) {
           throw Error('Empty alert message');
@@ -35,15 +35,15 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
           this.showSnackbar();
         }
       },
-      (err) => logger.error('creating snackbar failed:', err),
-    );
+      error: (err) => logger.error('creating snackbar failed:', err),
+    });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.alertSubscription.unsubscribe();
   }
 
-  cssClass(alert: Alert) {
+  cssClass(alert: Alert): string {
     const alertTypeClass = {
       [AlertType.Success]: 'alert-success',
       [AlertType.Error]: 'alert-error',
@@ -70,12 +70,12 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
   private showSnackbar(): void {
     this.openSnackBar()
       ?.afterDismissed()
-      .subscribe(
-        () => {
+      .subscribe({
+        next: () => {
           this.snackBarVisible = false;
           this.showSnackbar();
         },
-        (err) => logger.error('snackbar dismissing failed:', err),
-      );
+        error: (err) => logger.error('snackbar dismissing failed:', err),
+      });
   }
 }

@@ -1,6 +1,6 @@
 // Comparison library inspired by https://stackoverflow.com/a/14853974/9737947
 
-export const compareArrays = <T>(array1: Array<T>, array2: Array<T>) => {
+export const compareArrays = <T>(array1: Array<T>, array2: Array<T>): boolean => {
   // compare lengths - can save a lot of time
   if (array1.length !== array2.length) {
     return false;
@@ -29,7 +29,7 @@ export const compareArrays = <T>(array1: Array<T>, array2: Array<T>) => {
   return true;
 };
 
-export const compareObjects = (object1: any, object2: any) => {
+export const compareObjects = (object1: any, object2: any): boolean => {
   //For the first loop, we only check for types
   for (const propName in object1) {
     if ({}.hasOwnProperty.call(object1, propName)) {
@@ -93,8 +93,14 @@ export const compareObjects = (object1: any, object2: any) => {
   return true;
 };
 
+const assert = (truthy: boolean, msg: string): void => {
+  if (!truthy) {
+    throw new Error(msg);
+  }
+};
+
 // TODO move to tests
-export const testComparer = () => {
+export const testComparer = (): void => {
   assert(compareArrays([], []), 'array empty');
 
   assert(!compareArrays([1], []), 'array number first');
@@ -141,10 +147,4 @@ export const testComparer = () => {
   );
 
   assert(compareObjects({}, {}), 'object empty');
-};
-
-const assert = (truthy: boolean, msg: string) => {
-  if (!truthy) {
-    throw new Error(msg);
-  }
 };

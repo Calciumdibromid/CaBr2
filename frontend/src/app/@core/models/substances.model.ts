@@ -1,20 +1,46 @@
+interface EmptyData<T> {
+  originalData: T;
+}
+
+// these are needed to create new objects every time and don't copy a reference
+// because otherwise every field would reference the same values
+const EMPTY_DATA = (): EmptyData<undefined> => ({ originalData: undefined });
+const EMPTY_STRING_DATA = (): EmptyData<string> => ({ originalData: '' });
+const EMPTY_LIST_DATA = (): EmptyData<[]> => ({ originalData: [] });
+
 export class SubstanceData {
   name: Data<string>;
+
   readonly alternativeNames: string[];
+
   cas: Data<string | undefined>;
+
   molecularFormula: Data<string | undefined>;
+
   molarMass: Data<string | undefined>;
+
   meltingPoint: Data<string | undefined>;
+
   boilingPoint: Data<string | undefined>;
+
   waterHazardClass: Data<string | undefined>;
+
   hPhrases: Data<[string, string][]>;
+
   pPhrases: Data<[string, string][]>;
+
   signalWord: Data<string | undefined>;
+
   symbols: Data<string[]>;
+
   lethalDose: Data<string | undefined>;
+
   mak: Data<string | undefined>;
+
   amount: Amount | undefined;
+
   readonly source: Source;
+
   checked: boolean;
 
   /**
@@ -181,14 +207,6 @@ const unitMapping = new Map<UnitType, string>([
   [UnitType.FAHRENHEIT, 'F'],
 ]);
 
-const getViewValue = (unit: Unit): string => {
-  if (unit.type === UnitType.CUSTOM) {
-    return unit.name ?? '';
-  }
-
-  return getViewName(unit);
-};
-
 const getViewName = (unit: Unit): string => {
   const value = unitMapping.get(unit.type);
 
@@ -197,6 +215,14 @@ const getViewName = (unit: Unit): string => {
   }
 
   return value;
+};
+
+const getViewValue = (unit: Unit): string => {
+  if (unit.type === UnitType.CUSTOM) {
+    return unit.name ?? '';
+  }
+
+  return getViewName(unit);
 };
 
 class UnitGroups {
@@ -211,6 +237,7 @@ class UnitGroups {
     UnitType.MILLIMOL,
     UnitType.PIECES,
   ];
+
   public readonly solutionUnits = [
     UnitType.SOLUTION_MOL,
     UnitType.SOLUTION_MILLIMOL,
@@ -218,8 +245,11 @@ class UnitGroups {
     UnitType.SOLUTION_GRAM,
     UnitType.SOLUTION_MILLIGRAM,
   ];
+
   public readonly temperatureUnits = [UnitType.CELSIUS, UnitType.FAHRENHEIT];
+
   public readonly lethalUnits = [UnitType.MILLIGRAM_PER_KILOGRAM, UnitType.MILLIGRAM_PER_LITER];
+
   public readonly defaultUnitGroups: GroupMapping[] = [
     { viewValue: 'rawSubstance', unitMappings: this.substanceUnits },
     { viewValue: 'solution', unitMappings: this.solutionUnits },
@@ -230,9 +260,3 @@ class UnitGroups {
 const unitGroups = new UnitGroups();
 
 export { unitMapping, unitGroups, getViewValue, getViewName, modifiedOrOriginal };
-
-// these are needed to create new objects every time and don't copy a reference
-// because otherwise every field would reference the same values
-const EMPTY_DATA = () => ({ originalData: undefined });
-const EMPTY_STRING_DATA = () => ({ originalData: '' });
-const EMPTY_LIST_DATA = () => ({ originalData: [] });

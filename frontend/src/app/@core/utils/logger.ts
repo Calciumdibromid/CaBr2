@@ -8,7 +8,7 @@ export enum LogLevel {
   ERROR = 'ERROR',
 }
 
-const logImplWeb = (level: LogLevel, path: string, ...messages: any[]) => {
+const logImplWeb = (level: LogLevel, path: string, ...messages: any[]): void => {
   let fn;
   switch (level) {
     case LogLevel.TRACE:

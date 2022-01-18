@@ -20,6 +20,7 @@ const logger = new Logger('documentService');
 @Injectable()
 export default class DocumentService {
   private loadFilter: DialogFilter[] = [];
+
   private saveFilter: DialogFilter[] = [];
 
   constructor(
@@ -29,17 +30,17 @@ export default class DocumentService {
     private alertService: AlertService,
     private dialog: MatDialog,
   ) {
-    this.loadSaveService.getAvailableDocumentTypes().subscribe(
-      (types) => {
+    this.loadSaveService.getAvailableDocumentTypes().subscribe({
+      next: (types) => {
         logger.debug(types);
         this.loadFilter = types.load;
         this.saveFilter = types.save;
       },
-      (err) => {
+      error: (err) => {
         logger.error('could not get document types:', err);
         this.alertService.error(translate('error.getAvailableDocumentTypes'));
       },
-    );
+    });
   }
 
   loadFile(): void {
@@ -50,18 +51,19 @@ export default class DocumentService {
         multiple: false,
       })
       .pipe(first())
-      .subscribe(
-        (path) => {
-          this.loadSaveService.loadDocument(path).subscribe(
-            (res) => this.documentToModel(res),
-            (err) => {
+      .subscribe({
+        next: (path) => {
+          // this is intentional, because we have to handle both errors independently
+          this.loadSaveService.loadDocument(path).subscribe({
+            next: (res) => this.documentToModel(res),
+            error: (err) => {
               logger.error('loading file failed:', err);
               this.alertService.error(translate('error.loadFile'));
             },
-          );
+          });
         },
-        (err) => logger.trace('open dialog returned error:', err),
-      );
+        error: (err) => logger.trace('open dialog returned error:', err),
+      });
   }
 
   saveFile(type: DialogFilter, document: CaBr2Document): void {
@@ -79,8 +81,8 @@ export default class DocumentService {
         switchMap((filename) => this.loadSaveService.saveDocument(extension, filename as string, document)),
         first(),
       )
-      .subscribe(
-        (res) => {
+      .subscribe({
+        next: (res) => {
           logger.debug(res === undefined ? 'saving successful:' : 'saving not successful:', res);
 
           switch (extension) {
@@ -93,7 +95,7 @@ export default class DocumentService {
               break;
           }
         },
-        (err) => {
+        error: (err) => {
           logger.error(err);
           // fix for an error that occurs only on MS Windows (only needed with Tauri app)
           if (err === 'Could not initialize COM.') {
@@ -113,7 +115,7 @@ export default class DocumentService {
               break;
           }
         },
-      );
+      });
   }
 
   exportFile(type: DialogFilter, docsTemplate: DocsTemplate): void {

@@ -22,6 +22,19 @@ const SERVER_URL =
     }
   })() + 'api/v1/';
 
+const getFileType = (file: File): string => {
+  const fileTypeSplit = file.name.split('.');
+  return fileTypeSplit[fileTypeSplit.length - 1];
+};
+
+const downloadFile = (contents: Blob, fileType: string): void => {
+  const anchor = document.createElement('a');
+  anchor.download = 'Unbenannt.' + fileType;
+  anchor.href = (window.webkitURL || window.URL).createObjectURL(contents);
+  anchor.dataset.downloadurl = [contents.type, anchor.download, anchor.href].join(':');
+  anchor.click();
+};
+
 @Injectable()
 export class LoadSaveService implements ILoadSaveService {
   constructor(private httpClient: HttpClient, private dialog: MatDialog) {}
@@ -57,9 +70,7 @@ export class LoadSaveService implements ILoadSaveService {
           wasm
             .save_document(fileType, JSON.stringify(document))
             .then((contents: string) => {
-              // `atob` is deprecated but `Buffer.from()` results in optimization problems with Angular.
-              // I'm pretty sure `atob` won't be removed from browsers in the foreseeable future so it should be ok ^^.
-              const blob2 = new Blob([atob(contents)], { type: 'application/octet-stream' });
+              const blob2 = new Blob([window.atob(contents)], { type: 'application/octet-stream' });
               downloadFile(blob2, fileType);
               sub.next();
             })
@@ -100,19 +111,6 @@ export class LoadSaveService implements ILoadSaveService {
     return from(wasm.get_available_document_types() as Promise<string>).pipe(map((types) => JSON.parse(types)));
   }
 }
-
-const getFileType = (file: File): string => {
-  const fileTypeSplit = file.name.split('.');
-  return fileTypeSplit[fileTypeSplit.length - 1];
-};
-
-const downloadFile = (contents: Blob, fileType: string) => {
-  const anchor = document.createElement('a');
-  anchor.download = 'Unbenannt.' + fileType;
-  anchor.href = (window.webkitURL || window.URL).createObjectURL(contents);
-  anchor.dataset.downloadurl = [contents.type, anchor.download, anchor.href].join(':');
-  anchor.click();
-};
 
 interface SaveDocumentResponse {
   downloadUrl: string;

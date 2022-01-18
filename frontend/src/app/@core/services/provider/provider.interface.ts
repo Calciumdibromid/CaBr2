@@ -5,6 +5,7 @@ import { SubstanceData } from '../../models/substances.model';
 
 export abstract class IProviderService {
   abstract providerMappingsSubject: BehaviorSubject<ProviderMapping>;
+
   abstract providerMappingsObservable: Observable<ProviderMapping>;
 
   /**

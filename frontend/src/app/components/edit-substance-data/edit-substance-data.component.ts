@@ -188,7 +188,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       needed: number,
       current: number,
       newCallback: () => AbstractControl,
-    ) => {
+    ): void => {
       const diff = needed - current;
       if (diff > 0) {
         for (let i = diff; i > 0; i--) {

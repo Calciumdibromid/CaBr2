@@ -27,9 +27,11 @@ const logger = new Logger('main');
 })
 export class AppComponent implements OnInit, OnDestroy {
   name = packageInfo.name;
+
   version = packageInfo.version;
 
   private config!: ConfigModel;
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -56,22 +58,24 @@ export class AppComponent implements OnInit, OnDestroy {
     this.configService
       .getConfig()
       .pipe(first())
-      .subscribe(
-        (newConfig) => ConfigModel.setLoadedConfig(newConfig),
-        (err) => {
+      .subscribe({
+        next: (newConfig) => ConfigModel.setLoadedConfig(newConfig),
+        error: (err) => {
           logger.error('loading config failed:', err);
           this.alertService.error(translate('error.configLoad'));
         },
-      );
+      });
 
     this.subscriptions.push(
-      configChangeObservable.pipe(switchMap((config) => this.configService.saveConfig(config).pipe(first()))).subscribe(
-        () => logger.info('config saved'),
-        (err) => {
-          logger.error('saving config failed:', err);
-          this.alertService.error(translate('error.configSave'));
-        },
-      ),
+      configChangeObservable
+        .pipe(switchMap((config) => this.configService.saveConfig(config).pipe(first())))
+        .subscribe({
+          next: () => logger.info('config saved'),
+          error: (err) => {
+            logger.error('saving config failed:', err);
+            this.alertService.error(translate('error.configSave'));
+          },
+        }),
 
       configObservable.subscribe((config) => {
         // config is undefined before first call of this function
@@ -84,13 +88,13 @@ export class AppComponent implements OnInit, OnDestroy {
         this.config = config;
       }),
 
-      this.configService.getHazardSymbols().subscribe(
-        (symbols) => this.global.setGHSSymbols(symbols),
-        (err) => {
+      this.configService.getHazardSymbols().subscribe({
+        next: (symbols) => this.global.setGHSSymbols(symbols),
+        error: (err) => {
           logger.error('loading ghs-symbols failed:', err);
           this.alertService.error(translate('error.getHazardSymbols'));
         },
-      ),
+      }),
     );
 
     configLoadObservable.pipe(first()).subscribe((config) => {
@@ -108,13 +112,13 @@ export class AppComponent implements OnInit, OnDestroy {
             this.configService
               .saveConfig(this.config)
               .pipe(first())
-              .subscribe(
-                () => logger.info('config saved'),
-                (err) => {
+              .subscribe({
+                next: () => logger.info('config saved'),
+                error: (err) => {
                   logger.error('saving config failed:', err);
                   this.alertService.error(translate('error.configSave'));
                 },
-              );
+              });
           });
       }
     });
