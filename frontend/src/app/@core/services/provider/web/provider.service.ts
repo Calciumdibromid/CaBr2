@@ -10,6 +10,7 @@ import { SubstanceData } from 'src/app/@core/models/substances.model';
 @Injectable()
 export class ProviderService implements IProviderService {
   providerMappingsSubject = new BehaviorSubject<ProviderMapping>(new Map());
+
   providerMappingsObservable = this.providerMappingsSubject.asObservable();
 
   constructor() {

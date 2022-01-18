@@ -34,6 +34,7 @@ export class PreviewComponent implements OnInit {
   header!: Header;
 
   substanceData!: SimpleSubstanceData[];
+
   providerMapping!: ProviderMapping;
 
   sources: Set<string> = new Set();

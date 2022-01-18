@@ -1,5 +1,6 @@
 export class Alert {
   type!: AlertType;
+
   message!: string;
 
   constructor(init?: Partial<Alert>) {

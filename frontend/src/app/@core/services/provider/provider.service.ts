@@ -12,6 +12,7 @@ import { SubstanceData } from '../../models/substances.model';
 @Injectable()
 export class ProviderService implements IProviderService {
   providerMappingsSubject = new BehaviorSubject<ProviderMapping>(new Map());
+
   providerMappingsObservable = this.providerMappingsSubject.asObservable();
 
   constructor(private nativeService: INativeService, private globals: GlobalModel) {

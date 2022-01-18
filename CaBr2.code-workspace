@@ -20,6 +20,15 @@
     }
   ],
   "settings": {
-    "cSpell.words": ["Calciumdibromid", "Gestis", "cabr", "fuzzer", "promisified", "tauri", "ureq", "wasm"]
+    "cSpell.words": ["Calciumdibromid", "Gestis", "cabr", "fuzzer", "promisified", "tauri", "ureq", "wasm"],
+    "eslint.options": {
+      "extensions": [".ts", ".html"]
+    },
+    "eslint.validate": [
+      "javascript",
+      "typescript",
+      "html"
+    ],
+    "eslint.packageManager": "yarn"
   }
 }

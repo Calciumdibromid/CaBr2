@@ -112,15 +112,15 @@ export class SelectedSearchComponent {
         }
         this.providerService
           .searchSuggestions(this.providerIdentifier, selectionGroup.get('searchOption')?.value, result)
-          .subscribe(
-            (response) => {
+          .subscribe({
+            next: (response) => {
               this.suggestionResults.set(selectionGroup.get('searchOption')?.value, response);
             },
-            (err) => {
+            error: (err) => {
               logger.error('loading search suggestions failed:', err);
               this.alertService.error(translate('loadSearchSuggestions'));
             },
-          );
+          });
       });
   }
 

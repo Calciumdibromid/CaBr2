@@ -33,17 +33,17 @@ export class ProgressDialogComponent implements OnInit {
 
     private nativeService: INativeService,
   ) {
-    data.download.subscribe(
-      (res) => {
+    data.download.subscribe({
+      next: (res) => {
         this.setPdfUrl(res.downloadUrl);
         this.closeEnabled = true;
         data.subscriber.next();
       },
-      (err) => {
+      error: (err) => {
         data.subscriber.error(err);
         this.dialogRef.close();
       },
-    );
+    });
   }
 
   ngOnInit(): void {
@@ -59,13 +59,13 @@ export class ProgressDialogComponent implements OnInit {
     }, 10000);
   }
 
-  downloadPdf() {
+  downloadPdf(): void {
     // if this function can be called the url has been set
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.nativeService.openUrl(this.pdfUrl!);
   }
 
-  setPdfUrl(url: string) {
+  setPdfUrl(url: string): void {
     this.pdfUrl = url;
     this.finished = true;
     this.error = false;

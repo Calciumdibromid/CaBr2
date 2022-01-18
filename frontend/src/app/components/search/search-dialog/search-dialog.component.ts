@@ -22,10 +22,15 @@ interface Data {
 })
 export class SearchDialogComponent implements OnInit {
   searchResults: SearchResult[] = [];
+
   searchFinished = false;
+
   searchFailed = false;
+
   exactSearch = false;
+
   subscription?: Observable<SearchResult[]>;
+
   selected?: SearchResult;
 
   constructor(
@@ -45,18 +50,18 @@ export class SearchDialogComponent implements OnInit {
     this.searchResults = [];
     this.searchFinished = false;
     this.searchFailed = false;
-    this.subscription.subscribe(
-      (response) => {
+    this.subscription.subscribe({
+      next: (response) => {
         this.searchResults = response;
         this.searchFinished = true;
       },
-      (err) => {
+      error: (err) => {
         this.searchFinished = true;
         this.searchFailed = true;
         logger.error('loading search results failed:', err);
         this.alertService.error(translate('loadSearchResults'));
       },
-    );
+    });
   }
 
   setSelected(selected: SearchResult): void {

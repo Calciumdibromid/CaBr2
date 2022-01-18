@@ -81,8 +81,8 @@ export class SearchComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.providerService.substanceData(provider.identifier, result.zvgNumber).subscribe(
-          (value) => {
+        this.providerService.substanceData(provider.identifier, result.zvgNumber).subscribe({
+          next: (value) => {
             logger.debug(value);
             const cas = this.modifiedOrOriginal(value.cas);
             if (
@@ -97,11 +97,11 @@ export class SearchComponent implements OnInit {
             this.dataSource.connect().next(data);
             this.globals.substanceDataSubject.next(data);
           },
-          (err) => {
+          error: (err) => {
             logger.error('could not get substance information:', err);
             this.alertService.error(translate('error.substanceLoadData'));
           },
-        );
+        });
 
         currentSearchComponent?.clear();
       }
@@ -120,8 +120,8 @@ export class SearchComponent implements OnInit {
         autoFocus: false,
       })
       .afterClosed()
-      .subscribe(
-        (substanceData?: SubstanceData) => {
+      .subscribe({
+        next: (substanceData?: SubstanceData) => {
           // substanceData is only filled if editing was successful
           if (substanceData) {
             const newData = this.globals.substanceDataSubject.getValue();
@@ -130,11 +130,11 @@ export class SearchComponent implements OnInit {
             this.globals.substanceDataSubject.next(newData);
           }
         },
-        (err) => {
+        error: (err) => {
           logger.error('editing substance failed:', err);
           this.alertService.error(translate('error.editSubstance'));
         },
-      );
+      });
   }
 
   removeSubstance(event: MouseEvent, data: SubstanceData): void {
@@ -182,7 +182,7 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  drop(event: CdkDragDrop<string[]> | any) {
+  drop(event: CdkDragDrop<string[]> | any): void {
     moveItemInArray(this.dataSource.data, event.previousIndex, event.currentIndex);
     const data = this.dataSource.data.slice();
     this.dataSource.connect().next(data);

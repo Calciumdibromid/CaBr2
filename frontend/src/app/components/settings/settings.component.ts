@@ -17,7 +17,9 @@ export class SettingsComponent implements OnInit, OnDestroy {
   readonly darkModeSwitched = new EventEmitter<boolean>();
 
   langs!: AvailableLanguage[];
+
   form: FormGroup;
+
   subscriptions: Subscription[] = [];
 
   private config!: ConfigModel;

@@ -9,7 +9,5 @@ export class LoadingComponent implements OnInit {
   @Input()
   width!: string;
 
-  constructor() {}
-
   ngOnInit(): void {}
 }
