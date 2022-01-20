@@ -3,6 +3,7 @@ import { first, switchMap } from 'rxjs/operators';
 import { translate, TranslocoService } from '@ngneat/transloco';
 import { DOCUMENT } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
 
 import {
@@ -15,6 +16,7 @@ import { AlertService } from './@core/services/alertsnackbar/altersnackbar.servi
 import { ConsentComponent } from './components/consent/consent.component';
 import { GlobalModel } from './@core/models/global.model';
 import { IConfigService } from './@core/services/config/config.interface';
+import { LoadGHSSymbols } from './@core/states/ghs-symbols.state';
 import Logger from './@core/utils/logger';
 import packageInfo from '../../package.json';
 
@@ -43,6 +45,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private configService: IConfigService,
     private alertService: AlertService,
     private translocoService: TranslocoService,
+    private store: Store,
   ) {}
 
   @HostBinding('class')
@@ -87,15 +90,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
         this.config = config;
       }),
-
-      this.configService.getHazardSymbols().subscribe({
-        next: (symbols) => this.global.setGHSSymbols(symbols),
-        error: (err) => {
-          logger.error('loading ghs-symbols failed:', err);
-          this.alertService.error(translate('error.getHazardSymbols'));
-        },
-      }),
     );
+
+    this.store.dispatch(new LoadGHSSymbols());
 
     configLoadObservable.pipe(first()).subscribe((config) => {
       if (!config.globalSection.acceptedConsent) {

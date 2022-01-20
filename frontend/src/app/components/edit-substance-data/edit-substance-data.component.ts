@@ -1,7 +1,8 @@
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { Select } from '@ngxs/store';
 import { translate } from '@ngneat/transloco';
 
 import {
@@ -13,8 +14,8 @@ import {
   unitGroups,
   UnitType,
 } from '../../@core/models/substances.model';
+import { GHSSymbolMap, SymbolKeys } from 'src/app/@core/states/ghs-symbols.state';
 import { compareArrays } from '../../@core/utils/compare';
-import { GlobalModel } from '../../@core/models/global.model';
 import Logger from '../../@core/utils/logger';
 import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
@@ -26,6 +27,10 @@ const logger = new Logger('edit-substance-data');
   styleUrls: ['./edit-substance-data.component.scss'],
 })
 export class EditSubstanceDataComponent implements OnInit, OnDestroy {
+  @Select((state: any) => state.ghs_symbols.symbols) symbols$!: Observable<GHSSymbolMap>;
+
+  @Select((state: any) => state.ghs_symbols.symbolKeys) symbolKeys$!: Observable<SymbolKeys>;
+
   form: FormGroup;
 
   addHPhraseHover = false;
@@ -42,7 +47,6 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
   constructor(
     public dialogRef: MatDialogRef<EditSubstanceDataComponent>,
-    public globals: GlobalModel,
     @Inject(MAT_DIALOG_DATA) public data: SubstanceData,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,

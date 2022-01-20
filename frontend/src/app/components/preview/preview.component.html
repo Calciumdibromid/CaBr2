@@ -7,33 +7,33 @@
     <table class="unselectable">
       <!-- header -->
       <tr>
-        <th colspan="8">{{ header.documentTitle }}</th>
+        <th colspan="8">{{ (header | async)?.documentTitle }}</th>
       </tr>
       <tr>
-        <th colspan="8">{{ header.organisation }}</th>
+        <th colspan="8">{{ (header | async)?.organization }}</th>
       </tr>
       <tr>
-        <th colspan="8">{{ header.labCourse }}</th>
+        <th colspan="8">{{ (header | async)?.labCourse }}</th>
       </tr>
       <ng-container *transloco="let t; read: 'header'">
         <tr>
           <td colspan="3">
             {{ t('name') }}<br />
-            {{ header.name }}
+            {{ (header | async)?.name }}
           </td>
           <td colspan="2">
             {{ t('place') }}<br />
-            {{ header.place }}
+            {{ (header | async)?.place }}
           </td>
           <td colspan="3">
             {{ t('assistant') }}<br />
-            {{ header.assistant }}
+            {{ (header | async)?.assistant }}
           </td>
         </tr>
         <tr>
           <td colspan="8">
             {{ t('preparation') }}<br />
-            <b>{{ header.preparation }}</b>
+            <b>{{ (header | async)?.preparation }}</b>
           </td>
         </tr>
       </ng-container>
@@ -59,7 +59,7 @@
         <td class="min-width-2cm">{{ data.molarMass }}</td>
         <td class="min-width-2cm">{{ data.boilingPoint }}<br />{{ data.meltingPoint }}</td>
         <td>
-          <img *ngFor="let key of data.symbols" [src]="globals.ghsSymbols.get(key)" alt="{{ key }}" />
+          <img *ngFor="let key of data.symbols" [src]="(symbols$ | async)?.get(key)" alt="{{ key }}" />
           <span class="signalword">{{ data.signalWord }}</span>
         </td>
         <td>{{ getPhraseNumber(data.hPhrases).join(', ') }}<br />{{ getPhraseNumber(data.pPhrases).join(', ') }}</td>

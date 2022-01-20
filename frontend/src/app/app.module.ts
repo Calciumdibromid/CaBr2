@@ -1,17 +1,22 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { NgxsModule as NgrxModule } from '@ngxs/store';
+import { NgxsFormPluginModule } from '@ngxs/form-plugin';
 
 import { AlertModule } from './@core/modules/alert.module';
 import { AppComponent } from './app.component';
 import { BugReportButtonComponent } from './components/bug-report-button/bug-report-button.component';
 import { ConsentComponent } from './components/consent/consent.component';
 import { EditSubstanceDataComponent } from './components/edit-substance-data/edit-substance-data.component';
+import { environment } from 'src/environments/environment';
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
+import { GHSSYmbolState } from './@core/states/ghs-symbols.state';
 import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './components/header/header.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HeaderState } from './@core/states/header.state';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ManualComponent } from './components/manual/manual.component';
 import { MatModules } from './@core/modules/mat.module';
@@ -29,6 +34,7 @@ import { SelectedSearchComponent } from './components/search/selected-search/sel
 import { ServiceModule } from './@core/services/service.module';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SubMolecularFormula } from './@core/pipes/molecularformula.pipe';
+import { SubstanceDataState } from './@core/states/search-results.state';
 import { TranslocoRootModule } from './transloco-root.module';
 import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.component';
 
@@ -67,6 +73,8 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
     ServiceModule,
     HttpClientModule,
     TranslocoRootModule,
+    NgrxModule.forRoot([HeaderState, GHSSYmbolState, SubstanceDataState], { developmentMode: !environment.production }),
+    NgxsFormPluginModule.forRoot(),
   ],
   providers: [GlobalModel],
   bootstrap: [AppComponent],

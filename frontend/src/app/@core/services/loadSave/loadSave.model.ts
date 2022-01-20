@@ -1,5 +1,5 @@
 import { DialogFilter } from '../native/tauri.service';
-import { Header } from '../../interfaces/Header';
+import { Header } from '../../interfaces/DocTemplate';
 import { SubstanceData } from '../../models/substances.model';
 
 export interface CaBr2Document {

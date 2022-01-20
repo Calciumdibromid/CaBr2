@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Select, Store } from '@ngxs/store';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 import { Amount, getViewValue } from '../../@core/models/substances.model';
+import { GHSSymbolMap } from 'src/app/@core/states/ghs-symbols.state';
 import { GlobalModel } from '../../@core/models/global.model';
-import { Header } from '../../@core/interfaces/Header';
+import { Header } from '../../@core/interfaces/DocTemplate';
 import { IProviderService } from '../../@core/services/provider/provider.interface';
 import { ProviderMapping } from '../../@core/services/provider/provider.model';
 
@@ -31,7 +34,9 @@ interface SimpleSubstanceData {
   styleUrls: ['./preview.component.scss'],
 })
 export class PreviewComponent implements OnInit {
-  header!: Header;
+  @Select((state: any) => state.ghs_symbols.symbols) symbols$!: Observable<GHSSymbolMap>;
+
+  header!: Observable<Header>;
 
   substanceData!: SimpleSubstanceData[];
 
@@ -41,13 +46,13 @@ export class PreviewComponent implements OnInit {
 
   getViewValue = getViewValue;
 
-  constructor(public globals: GlobalModel, private providerService: IProviderService) {
+  constructor(public globals: GlobalModel, private providerService: IProviderService, private store: Store) {
     this.providerService.providerMappingsObservable.subscribe((providers) => (this.providerMapping = providers));
+
+    this.header = this.store.select((state) => state.header.headerForm.model);
   }
 
   ngOnInit(): void {
-    this.globals.headerObservable.subscribe((value) => (this.header = value));
-
     this.globals.substanceDataObservable
       .pipe(
         map((data) =>

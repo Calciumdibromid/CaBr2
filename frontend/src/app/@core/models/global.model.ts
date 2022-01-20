@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import DocsTemplate from '../interfaces/DocTemplate';
-import { Header } from '../interfaces/Header';
+import { Header } from '../interfaces/DocTemplate';
 import { SearchResult } from '../services/provider/provider.model';
 import { SubstanceData } from './substances.model';
 
@@ -18,7 +18,7 @@ export class GlobalModel {
     documentTitle: '',
     labCourse: '',
     name: '',
-    organisation: '',
+    organization: '',
     place: '',
     preparation: '',
   });
