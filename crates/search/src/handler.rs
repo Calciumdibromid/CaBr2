@@ -8,7 +8,6 @@ use types::{lock::RwLockWrapper, ProviderMapping};
 
 use crate::{
   error::{Result, SearchError},
-  gestis::error::GestisError,
   types::{Provider, ProviderInfo, SearchArguments, SearchResponse, SearchType},
 };
 
@@ -25,9 +24,9 @@ pub async fn init_providers(_version: &str) -> Result<()> {
   {
     cfg_if! {
       if #[cfg(target_family = "wasm")] {
-        let client = reqwest::ClientBuilder::new().build().map_err(GestisError::from)?;
+        let client = reqwest::ClientBuilder::new().build().map_err(crate::gestis::GestisError::from)?;
       } else {
-        let client = reqwest::ClientBuilder::new().user_agent(&format!("cabr2/v{}", _version)).build().map_err(GestisError::from)?;
+        let client = reqwest::ClientBuilder::new().user_agent(&format!("cabr2/v{}", _version)).build().map_err(crate::gestis::GestisError::from)?;
       }
     }
 

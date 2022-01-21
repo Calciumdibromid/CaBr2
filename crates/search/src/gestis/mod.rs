@@ -1,4 +1,4 @@
-pub(crate) mod error;
+mod error;
 pub mod types;
 pub mod xml_parser;
 
@@ -8,14 +8,13 @@ use serde::de::DeserializeOwned;
 
 use ::types::{Data, Source, SubstanceData};
 
-use self::{
-  error::{GestisError, Result},
-  types::GestisResponse,
-};
+use self::{error::Result, types::GestisResponse};
 use crate::{
   error::Result as SearchResult,
   types::{Provider, SearchArguments, SearchResponse, SearchType},
 };
+
+pub use self::error::GestisError;
 
 const BASE_URL: &str = "https://gestis-api.dguv.de/api";
 const SEARCH_SUGGESTIONS: &str = "search_suggestions";
