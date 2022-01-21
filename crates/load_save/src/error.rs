@@ -1,4 +1,4 @@
-use serde::{Serialize, Serializer};
+use serde::{ser::SerializeStruct, Serialize, Serializer};
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -6,35 +6,23 @@ pub enum LoadSaveError {
   #[error("unknown file type")]
   UnknownFileType(String),
 
-  #[cfg(feature = "beryllium")]
-  #[error("failed to load file: '{0}'")]
-  DeserializeError(String),
-
   #[error("file already exists: '{0}'")]
   FileExists(String),
 
-  #[cfg(feature = "pdf")]
-  #[error("merging of pdfs failed: '{0}'")]
-  PdfMergeError(String),
+  #[error(transparent)]
+  IOError(#[from] std::io::Error),
 
-  #[cfg(feature = "pdf")]
-  #[error("creating template failed: '{0}'")]
-  TemplateError(#[from] handlebars::TemplateError),
-
-  #[cfg(feature = "pdf")]
-  #[error("rendering document failed: '{0}'")]
-  RenderError(#[from] handlebars::RenderError),
-
-  #[cfg(feature = "pdf")]
-  #[error("PDF creation failed: {0}")]
-  PdfError(#[from] wkhtmltopdf::Error),
+  #[cfg(feature = "beryllium")]
+  #[error(transparent)]
+  BerylliumError(#[from] crate::beryllium::BerylliumError),
 
   #[cfg(feature = "cabr2")]
-  #[error("parsing json failed: '{0}'")]
-  JsonError(#[from] serde_json::Error),
+  #[error(transparent)]
+  Cabr2Error(#[from] crate::cabr2::Cabr2Error),
 
-  #[error("io error: '{0}'")]
-  IOError(#[from] std::io::Error),
+  #[cfg(feature = "pdf")]
+  #[error(transparent)]
+  PdfError(#[from] crate::pdf::PdfError),
 }
 
 impl Serialize for LoadSaveError {
@@ -42,8 +30,24 @@ impl Serialize for LoadSaveError {
   where
     S: Serializer,
   {
-    serializer.serialize_str(self.to_string().as_str())
+    match self {
+      LoadSaveError::UnknownFileType(value) => serialize_string(serializer, "unknownFileType", value),
+      LoadSaveError::FileExists(value) => serialize_string(serializer, "fileExists", value),
+      LoadSaveError::IOError(err) => serialize_string(serializer, "ioError", err),
+
+      _ => self.serialize(serializer),
+    }
   }
+}
+
+fn serialize_string<S: Serializer, ST: ToString>(
+  ser: S,
+  name: &'static str,
+  field_value: ST,
+) -> std::result::Result<S::Ok, S::Error> {
+  let mut st = ser.serialize_struct("Error", 1)?;
+  st.serialize_field(name, &field_value.to_string())?;
+  st.end()
 }
 
 pub type Result<T> = std::result::Result<T, LoadSaveError>;

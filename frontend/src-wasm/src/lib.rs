@@ -123,13 +123,20 @@ where
 async fn convert_result<S, E>(future: impl Future<Output = std::result::Result<S, E>>) -> Result<String>
 where
   S: Serialize,
-  E: std::error::Error,
+  E: std::error::Error + Serialize,
 {
   match future.await {
-    Ok(data) => match serde_json::to_string(&data) {
-      Ok(res) => Ok(res),
-      Err(err) => Err(JsValue::from(err.to_string())),
-    },
-    Err(err) => Err(JsValue::from(err.to_string())),
+    Ok(data) => Ok(serde_json::to_string(&data).map_err(jsify)?),
+    Err(err) => Err(JsValue::from_serde(&err).map_err(jsify)?),
   }
+}
+
+#[cfg(feature = "debug_build")]
+fn jsify(err: serde_json::Error) -> JsValue {
+  JsValue::from_str(&format!("{err:#?}"))
+}
+
+#[cfg(not(feature = "debug_build"))]
+fn jsify(err: serde_json::Error) -> JsValue {
+  JsValue::from_str(&format!("{err}"))
 }

@@ -1,3 +1,4 @@
+pub(crate) mod error;
 pub mod types;
 pub mod xml_parser;
 
@@ -7,9 +8,12 @@ use serde::de::DeserializeOwned;
 
 use ::types::{Data, Source, SubstanceData};
 
-use self::types::GestisResponse;
+use self::{
+  error::{GestisError, Result},
+  types::GestisResponse,
+};
 use crate::{
-  error::{Result, SearchError},
+  error::Result as SearchResult,
   types::{Provider, SearchArguments, SearchResponse, SearchType},
 };
 
@@ -56,20 +60,19 @@ impl Gestis {
         match response.json().await {
           Ok(json) => Ok(json),
           Err(err) => {
-            log::error!("{:?}", err);
-            Err(SearchError::JsonError)
+            log::error!("deserializing response failed: {:?}", err);
+            Err(err.into())
           }
         }
       }
       Err(err) => {
         log::error!("error when requesting url: {} -> {:?}", &url, err);
         if let Some(code) = err.status() {
-          return match code.as_u16() {
-            429 => Err(SearchError::RateLimit),
-            _ => Err(SearchError::RequestError(code.as_u16())),
+          if code.as_u16() == 429 {
+            return Err(GestisError::RateLimit);
           };
         }
-        Err(SearchError::Logged)
+        Err(err.into())
       }
     }
   }
@@ -88,7 +91,7 @@ impl Provider for Gestis {
     "Gestis".into()
   }
 
-  async fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> Result<Vec<String>> {
+  async fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> SearchResult<Vec<String>> {
     let url = format!(
       "{}/{}/de?{}={}",
       BASE_URL,
@@ -100,7 +103,7 @@ impl Provider for Gestis {
     Ok(self.make_request(&url).await?)
   }
 
-  async fn get_search_results(&self, arguments: SearchArguments) -> Result<Vec<SearchResponse>> {
+  async fn get_search_results(&self, arguments: SearchArguments) -> SearchResult<Vec<SearchResponse>> {
     let args: Vec<String> = arguments
       .arguments
       .into_iter()
@@ -119,7 +122,7 @@ impl Provider for Gestis {
     Ok(res)
   }
 
-  async fn get_substance_data(&self, identifier: String) -> Result<::types::SubstanceData> {
+  async fn get_substance_data(&self, identifier: String) -> SearchResult<::types::SubstanceData> {
     let (json, url) = self.get_article(identifier).await?;
 
     let data = xml_parser::parse_response(&json)?;

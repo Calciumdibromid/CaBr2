@@ -3,8 +3,10 @@ use std::collections::BTreeMap;
 use lazy_static::lazy_static;
 use roxmltree::{Document, Node, NodeId};
 
-use super::types::{GestisResponse, ParsedData};
-use crate::error::{Result, SearchError};
+use super::{
+  error::{GestisError, Result},
+  types::{GestisResponse, ParsedData},
+};
 
 lazy_static! {
   pub static ref CHAPTER_MAPPING: BTreeMap<&'static str, (&'static str, &'static str)> = [
@@ -37,10 +39,10 @@ pub fn parse_response(json: &GestisResponse) -> Result<ParsedData> {
       (
         // this error type should not be used like this but here it is
         // only a sentinel value that is ignored further down anyways
-        Err(SearchError::Empty),
-        Err(SearchError::Empty),
-        Err(SearchError::Empty),
-        Err(SearchError::Empty),
+        Err(GestisError::Empty),
+        Err(GestisError::Empty),
+        Err(GestisError::Empty),
+        Err(GestisError::Empty),
       )
     }
   };
@@ -56,8 +58,8 @@ pub fn parse_response(json: &GestisResponse) -> Result<ParsedData> {
       (
         // this error type should not be used like this but here it is
         // only a sentinel value that is ignored further down anyways
-        Err(SearchError::Empty),
-        Err(SearchError::Empty),
+        Err(GestisError::Empty),
+        Err(GestisError::Empty),
       )
     }
   };
@@ -166,7 +168,7 @@ pub fn parse_response(json: &GestisResponse) -> Result<ParsedData> {
       Err(e) => {
         log::debug!("[lethal_dose] error: {:#?}", e);
         match e {
-          SearchError::Multiple(inner) => Some(inner),
+          GestisError::Multiple(inner) => Some(inner),
           _ => None,
         }
       }
@@ -189,7 +191,7 @@ pub fn get_xml(json: &GestisResponse, chapter: &str, subchapter: &str) -> Result
       return Ok(format!("<div>\n{}</div>\n", sub.text.as_ref().unwrap()));
     }
   }
-  Err(SearchError::NoXML)
+  Err(GestisError::NoXML)
 }
 
 #[inline]
@@ -235,7 +237,7 @@ fn get_cas(json: &GestisResponse) -> Result<String> {
     }
   }
 
-  Err(SearchError::MissingInfo("cas number".into()))
+  Err(GestisError::MissingInfo("cas number".into()))
 }
 
 fn get_molecular_formula_molar_mass(json: &GestisResponse) -> Result<(Result<String>, Result<String>)> {
@@ -262,12 +264,12 @@ fn get_molecular_formula_molar_mass(json: &GestisResponse) -> Result<(Result<Str
     }
   }
 
-  let mut molecular_formula = Err(SearchError::MissingInfo("molecular formula".into()));
+  let mut molecular_formula = Err(GestisError::MissingInfo("molecular formula".into()));
   if let Some(mf) = data.children().find(|c| c.has_tag_name("summenformel")) {
     molecular_formula = Ok(mf.first_child().unwrap().text().unwrap().into());
   }
 
-  let mut molar_mass = Err(SearchError::MissingInfo("molar mass".into()));
+  let mut molar_mass = Err(GestisError::MissingInfo("molar mass".into()));
   if let Some(new_table_id) = id_tables.nth(2) {
     let mut new_table = tables(&doc.get_node(new_table_id).unwrap(), "feldmitlabel")
       .into_iter()
@@ -329,7 +331,7 @@ fn get_mp_bp(json: &GestisResponse, name: &str, xml_check: &str) -> Result<Strin
 
   match mp_bp_point {
     Some(mp) => Ok(mp.trim().into()),
-    None => Err(SearchError::MissingInfo(name.into())),
+    None => Err(GestisError::MissingInfo(name.into())),
   }
 }
 
@@ -363,13 +365,13 @@ fn get_whc(json: &GestisResponse) -> Result<String> {
     data = doc.get_node(node_id).unwrap();
     let text = data.text().unwrap();
     if text == KEYWORD {
-      return Err(SearchError::Empty);
+      return Err(GestisError::Empty);
     } else {
       return Ok(text.split('-').next().unwrap().trim().into());
     }
   }
 
-  Err(SearchError::MissingInfo("water hazard class".into()))
+  Err(GestisError::MissingInfo("water hazard class".into()))
 }
 
 type HPSignalSymbolsResult = Result<(
@@ -398,10 +400,10 @@ fn get_h_p_signal_symbols(json: &GestisResponse) -> HPSignalSymbolsResult {
   let xml = get_xml(json, chapter, subchapter)?;
   let doc = Document::parse(&xml)?;
 
-  let mut h_phrases = Err(SearchError::MissingInfo("h phrases".into()));
-  let mut p_phrases = Err(SearchError::MissingInfo("p phrases".into()));
-  let mut signal_word = Err(SearchError::MissingInfo("signal word".into()));
-  let mut symbols = Err(SearchError::MissingInfo("symbols".into()));
+  let mut h_phrases = Err(GestisError::MissingInfo("h phrases".into()));
+  let mut p_phrases = Err(GestisError::MissingInfo("p phrases".into()));
+  let mut signal_word = Err(GestisError::MissingInfo("signal word".into()));
+  let mut symbols = Err(GestisError::MissingInfo("symbols".into()));
 
   for table in tables(&doc.root().first_child().unwrap(), "block").into_iter() {
     let mut row_iter = table.into_iter();
@@ -474,7 +476,7 @@ fn get_lethal_dose(json: &GestisResponse) -> Result<Option<String>> {
         if let Some(inner) = data.first_element_child() {
           if inner.has_tag_name("b") && inner.text() == Some("LD50 oral Ratte") {
             if let Some(inner) = ld50 {
-              return Err(SearchError::Multiple(inner.into()));
+              return Err(GestisError::Multiple(inner.into()));
             } else if let Some(table) = table_iter.next() {
               let mut row_iter = table.into_iter();
 
@@ -500,14 +502,14 @@ fn get_lethal_dose(json: &GestisResponse) -> Result<Option<String>> {
 
   match ld50 {
     Some(inner) => Ok(Some(inner.into())),
-    None => Err(SearchError::MissingInfo("lethal dose".into())),
+    None => Err(GestisError::MissingInfo("lethal dose".into())),
   }
 }
 
 fn get_mak(_json: &GestisResponse) -> Result<String> {
   // TODO implement function
   log::error!("not implemented: 'get_mak()'");
-  Err(SearchError::MissingInfo("mak".into()))
+  Err(GestisError::MissingInfo("mak".into()))
 }
 
 /* #endregion */
