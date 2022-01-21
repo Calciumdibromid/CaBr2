@@ -30,8 +30,7 @@ jobs:
         run: cd crates && cargo clippy --workspace --all-features -- --deny clippy::all
 
       - name: Build crates
-        run: cd crates && cargo build --workspace
+        run: cd crates && cargo build --workspace --all-features
 
-      # TODO(692) reactivate when tests are written
-      # - name: Test crates
-      #   run: cd crates && cargo test --workspace
+      - name: Test crates
+        run: cd crates && cargo test --workspace --all-features

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub struct ParsedData {
   pub cas: Option<String>,
   pub molecular_formula: Option<String>,
