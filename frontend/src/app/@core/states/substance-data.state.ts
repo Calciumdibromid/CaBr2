@@ -1,10 +1,10 @@
-import { Action, Select, State, StateContext } from '@ngxs/store';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { append, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Injectable } from '@angular/core';
 import { translate } from '@ngneat/transloco';
 
-import { Data, SubstanceData, ViewSubstanceData } from '../models/substances.model';
+import { Data, EMPTY_VIEW_SUBSTANCE_DATA, SubstanceData, ViewSubstanceData } from '../models/substances.model';
 import { AlertService } from '../services/alertsnackbar/altersnackbar.service';
 import { IProviderService } from '../services/provider/provider.interface';
 import Logger from '../utils/logger';
@@ -56,43 +56,13 @@ export class SubstanceDataState {
     this.providerService.providerMappingsObservable.subscribe((providers) => (this.providerMapping = providers));
   }
 
-  @Select()
-  static viewSubstanceData(state: any): ViewSubstanceData[] {
-    const substanceData: SubstanceData[] = state.substance_data.substanceData;
-
-    const viewData = substanceData.map<ViewSubstanceData>((value) => ({
-      name: value.name.modifiedData ?? value.name.originalData,
-      cas: value.cas.modifiedData ?? value.cas.originalData,
-      molecularFormula: value.molecularFormula.modifiedData ?? value.molecularFormula.originalData,
-      molarMass: value.molarMass.modifiedData ?? value.molarMass.originalData,
-      meltingPoint: value.meltingPoint.modifiedData ?? value.meltingPoint.originalData,
-      boilingPoint: value.boilingPoint.modifiedData ?? value.boilingPoint.originalData,
-      waterHazardClass: value.waterHazardClass.modifiedData ?? value.waterHazardClass.originalData,
-      hPhrases: value.hPhrases.modifiedData ?? value.hPhrases.originalData,
-      pPhrases: value.pPhrases.modifiedData ?? value.pPhrases.originalData,
-      signalWord: value.signalWord.modifiedData ?? value.signalWord.originalData,
-      symbols: value.symbols.modifiedData ?? value.symbols.originalData,
-      lethalDose: value.lethalDose.modifiedData ?? value.lethalDose.originalData,
-      mak: value.mak.modifiedData ?? value.mak.originalData,
-      amount: value.amount,
-    }));
+  @Selector()
+  static viewSubstanceData(state: SubstanceDataStateModel): ViewSubstanceData[] {
+    const substanceData = state.substanceData;
+    const viewData = substanceData.map((value) => SubstanceData.convertToViewSubstanceData(value));
 
     for (let i = viewData.length; i < 5; i++) {
-      viewData.push({
-        name: '',
-        cas: '',
-        molecularFormula: '',
-        molarMass: '',
-        meltingPoint: '',
-        boilingPoint: '',
-        waterHazardClass: '',
-        hPhrases: [],
-        pPhrases: [],
-        signalWord: '',
-        symbols: [],
-        lethalDose: '',
-        mak: '',
-      });
+      viewData.push(EMPTY_VIEW_SUBSTANCE_DATA);
     }
 
     return viewData;

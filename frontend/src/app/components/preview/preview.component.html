@@ -87,7 +87,7 @@
         <tr>
           <td colspan="8">
             <b>{{ t('sources') }}:</b>
-            {{ getProviders() }}
+            {{ sources$ | async }}
           </td>
         </tr>
       </ng-container>

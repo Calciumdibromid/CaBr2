@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { BugReportButtonComponent } from './components/bug-report-button/bug-report-button.component';
 import { ConsentComponent } from './components/consent/consent.component';
 import { EditSubstanceDataComponent } from './components/edit-substance-data/edit-substance-data.component';
-import { environment } from 'src/environments/environment';
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
 import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './components/header/header.component';
@@ -20,6 +19,7 @@ import { ManualComponent } from './components/manual/manual.component';
 import { MatModules } from './@core/modules/mat.module';
 import { ModifiableStringListComponent } from './components/modifiable-string-list/modifiable-string-list.component';
 import { NavbarMenuComponent } from './components/navbar-menu/navbar-menu.component';
+import { ngxsConfig } from './ngxs.config';
 import { OnePagerComponent } from './onepager/onepager.component';
 import { PreviewComponent } from './components/preview/preview.component';
 import { ProgressDialogComponent } from './components/progress-dialog/progress-dialog.component';
@@ -71,7 +71,7 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
     ServiceModule,
     HttpClientModule,
     TranslocoRootModule,
-    NgrxModule.forRoot(States, { developmentMode: !environment.production }),
+    NgrxModule.forRoot(States, ngxsConfig),
     NgxsFormPluginModule.forRoot(),
   ],
   providers: [GlobalModel],

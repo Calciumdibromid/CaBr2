@@ -8,6 +8,22 @@ const EMPTY_DATA = (): EmptyData<undefined> => ({ originalData: undefined });
 const EMPTY_STRING_DATA = (): EmptyData<string> => ({ originalData: '' });
 const EMPTY_LIST_DATA = (): EmptyData<[]> => ({ originalData: [] });
 
+export const EMPTY_VIEW_SUBSTANCE_DATA: ViewSubstanceData = {
+  name: '',
+  cas: '',
+  molecularFormula: '',
+  molarMass: '',
+  meltingPoint: '',
+  boilingPoint: '',
+  waterHazardClass: '',
+  hPhrases: [],
+  pPhrases: [],
+  signalWord: '',
+  symbols: [],
+  lethalDose: '',
+  mak: '',
+};
+
 export class SubstanceData {
   name: Data<string>;
 
@@ -102,6 +118,26 @@ export class SubstanceData {
     }
 
     return false;
+  }
+
+  // don't know why this does not work as non-static -.-
+  static convertToViewSubstanceData(data: SubstanceData): ViewSubstanceData {
+    return {
+      name: data.name.modifiedData ?? data.name.originalData,
+      cas: data.cas.modifiedData ?? data.cas.originalData,
+      molecularFormula: data.molecularFormula.modifiedData ?? data.molecularFormula.originalData,
+      molarMass: data.molarMass.modifiedData ?? data.molarMass.originalData,
+      meltingPoint: data.meltingPoint.modifiedData ?? data.meltingPoint.originalData,
+      boilingPoint: data.boilingPoint.modifiedData ?? data.boilingPoint.originalData,
+      waterHazardClass: data.waterHazardClass.modifiedData ?? data.waterHazardClass.originalData,
+      hPhrases: data.hPhrases.modifiedData ?? data.hPhrases.originalData,
+      pPhrases: data.pPhrases.modifiedData ?? data.pPhrases.originalData,
+      signalWord: data.signalWord.modifiedData ?? data.signalWord.originalData,
+      symbols: data.symbols.modifiedData ?? data.symbols.originalData,
+      lethalDose: data.lethalDose.modifiedData ?? data.lethalDose.originalData,
+      mak: data.mak.modifiedData ?? data.mak.originalData,
+      amount: data.amount,
+    };
   }
 }
 
