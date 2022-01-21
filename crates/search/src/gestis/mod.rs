@@ -127,7 +127,7 @@ impl Provider for Gestis {
     let data = xml_parser::parse_response(&json)?;
 
     let res_data = SubstanceData {
-      name: Data::new(json.name.clone()),
+      name: Data::new(json.name),
       alternative_names: json.aliases.into_iter().map(|a| a.name).collect(),
       cas: Data::new(data.cas),
       molecular_formula: Data::new(data.molecular_formula),
@@ -139,20 +139,11 @@ impl Provider for Gestis {
       signal_word: Data::new(data.signal_word),
       mak: Data::new(data.mak),
       amount: None,
-      h_phrases: Data::new(match data.h_phrases {
-        Some(inner) => inner,
-        None => Vec::new(),
-      }),
-      p_phrases: Data::new(match data.p_phrases {
-        Some(inner) => inner,
-        None => Vec::new(),
-      }),
-      symbols: Data::new(match data.symbols {
-        Some(inner) => inner,
-        None => Vec::new(),
-      }),
+      h_phrases: Data::new(data.h_phrases.unwrap_or_default()),
+      p_phrases: Data::new(data.p_phrases.unwrap_or_default()),
+      symbols: Data::new(data.symbols.unwrap_or_default()),
       source: Source {
-        provider: "gestis".into(),
+        provider: "gestis".to_string(),
         url,
         last_updated: chrono::Utc::now(),
       },
