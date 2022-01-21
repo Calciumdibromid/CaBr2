@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { map, Observable } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 
-import { Amount, getViewValue } from '../../@core/models/substances.model';
+import { Amount, getViewValue, ViewSubstanceData } from '../../@core/models/substances.model';
 import { GHSSymbolMap } from 'src/app/@core/states/ghs-symbols.state';
 import { GlobalModel } from '../../@core/models/global.model';
 import { Header } from '../../@core/interfaces/DocTemplate';
 import { IProviderService } from '../../@core/services/provider/provider.interface';
 import { ProviderMapping } from '../../@core/services/provider/provider.model';
+import { SubstanceDataState } from 'src/app/@core/states/substance-data.state';
 
 // TODO ViewSubstanceData and move
 interface SimpleSubstanceData {
@@ -36,6 +36,10 @@ interface SimpleSubstanceData {
 export class PreviewComponent implements OnInit {
   @Select((state: any) => state.ghs_symbols.symbols) symbols$!: Observable<GHSSymbolMap>;
 
+  @Select(SubstanceDataState.viewSubstanceData) substanceData$!: Observable<ViewSubstanceData[]>;
+
+  @Select((state: any) => state.substance_data.providers) sources$!: Observable<Set<string>>;
+
   header!: Observable<Header>;
 
   substanceData!: SimpleSubstanceData[];
@@ -50,74 +54,36 @@ export class PreviewComponent implements OnInit {
     this.providerService.providerMappingsObservable.subscribe((providers) => (this.providerMapping = providers));
 
     this.header = this.store.select((state) => state.header.headerForm.model);
+
+    this.sources$.subscribe((sources) => {
+      this.sources = sources;
+    });
   }
 
-  ngOnInit(): void {
-    this.globals.substanceDataObservable
-      .pipe(
-        map((data) =>
-          data.map<SimpleSubstanceData>((value) => {
-            const provider = this.providerMapping.get(value.source.provider);
-            if (provider && provider.identifier !== 'custom') {
-              this.sources.add(provider.name);
-            }
-
-            return {
-              name: value.name.modifiedData ?? value.name.originalData,
-              cas: value.cas.modifiedData ?? value.cas.originalData,
-              molecularFormula: value.molecularFormula.modifiedData ?? value.molecularFormula.originalData,
-              molarMass: value.molarMass.modifiedData ?? value.molarMass.originalData,
-              meltingPoint: value.meltingPoint.modifiedData ?? value.meltingPoint.originalData,
-              boilingPoint: value.boilingPoint.modifiedData ?? value.boilingPoint.originalData,
-              waterHazardClass: value.waterHazardClass.modifiedData ?? value.waterHazardClass.originalData,
-              hPhrases: value.hPhrases.modifiedData ?? value.hPhrases.originalData,
-              pPhrases: value.pPhrases.modifiedData ?? value.pPhrases.originalData,
-              signalWord: value.signalWord.modifiedData ?? value.signalWord.originalData,
-              symbols: value.symbols.modifiedData ?? value.symbols.originalData,
-              lethalDose: value.lethalDose.modifiedData ?? value.lethalDose.originalData,
-              mak: value.mak.modifiedData ?? value.mak.originalData,
-              amount: value.amount,
-            };
-          }),
-        ),
-        map((substances) => {
-          for (let i = substances.length; i < 5; i++) {
-            substances.push({
-              name: '',
-              cas: '',
-              molecularFormula: '',
-              molarMass: '',
-              meltingPoint: '',
-              boilingPoint: '',
-              waterHazardClass: '',
-              hPhrases: [],
-              pPhrases: [],
-              signalWord: '',
-              symbols: [],
-              lethalDose: '',
-              mak: '',
-            });
-          }
-          return substances;
-        }),
-      )
-      .subscribe((data) => (this.substanceData = data));
-  }
+  ngOnInit(): void {}
 
   getPhraseNumber(phrases: [string, string][]): string[] {
     return phrases.map((p) => p[0]);
   }
 
-  getHPhrases(): Set<string> {
-    const phraseSet = new Set<string>();
-    this.substanceData.flatMap((data) => data.hPhrases).forEach((phrase) => phraseSet.add(phrase.join(':\u00A0')));
-    return phraseSet;
+  getHPhrases(): Observable<Set<string>> {
+    return this.substanceData$.pipe(
+      map((value) => {
+        const phraseSet = new Set<string>();
+        value?.flatMap((data) => data.hPhrases).forEach((phrase) => phraseSet.add(phrase.join(':\u00A0')));
+        return phraseSet;
+      }),
+    );
   }
 
-  getPPhrases(): Set<string> {
-    const phraseSet = new Set<string>();
-    this.substanceData.flatMap((data) => data.pPhrases).forEach((phrase) => phraseSet.add(phrase.join(':\u00A0')));
-    return phraseSet;
+  getPPhrases(): Observable<Set<string>> {
+    return this.substanceData$.pipe(
+      map((value) => {
+        const phraseSet = new Set<string>();
+        value?.flatMap((data) => data.pPhrases).forEach((phrase) => phraseSet.add(phrase.join(':\u00A0')));
+        return phraseSet;
+      }),
+    );
   }
 
   getProviders(): string {

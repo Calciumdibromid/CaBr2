@@ -13,10 +13,8 @@ import { ConsentComponent } from './components/consent/consent.component';
 import { EditSubstanceDataComponent } from './components/edit-substance-data/edit-substance-data.component';
 import { environment } from 'src/environments/environment';
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
-import { GHSSYmbolState } from './@core/states/ghs-symbols.state';
 import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './components/header/header.component';
-import { HeaderState } from './@core/states/header.state';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ManualComponent } from './components/manual/manual.component';
 import { MatModules } from './@core/modules/mat.module';
@@ -33,8 +31,8 @@ import { SecurityThingsComponent } from './components/security-things/security-t
 import { SelectedSearchComponent } from './components/search/selected-search/selected-search.component';
 import { ServiceModule } from './@core/services/service.module';
 import { SettingsComponent } from './components/settings/settings.component';
+import States from './@core/states/_states';
 import { SubMolecularFormula } from './@core/pipes/molecularformula.pipe';
-import { SubstanceDataState } from './@core/states/search-results.state';
 import { TranslocoRootModule } from './transloco-root.module';
 import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.component';
 
@@ -73,7 +71,7 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
     ServiceModule,
     HttpClientModule,
     TranslocoRootModule,
-    NgrxModule.forRoot([HeaderState, GHSSYmbolState, SubstanceDataState], { developmentMode: !environment.production }),
+    NgrxModule.forRoot(States, { developmentMode: !environment.production }),
     NgxsFormPluginModule.forRoot(),
   ],
   providers: [GlobalModel],

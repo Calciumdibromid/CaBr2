@@ -135,6 +135,23 @@ export interface Amount {
   unit: Unit;
 }
 
+export interface ViewSubstanceData {
+  name: string;
+  cas?: string;
+  molecularFormula?: string;
+  molarMass?: string;
+  meltingPoint?: string;
+  boilingPoint?: string;
+  waterHazardClass?: string;
+  hPhrases: [string, string][];
+  pPhrases: [string, string][];
+  signalWord?: string;
+  symbols: string[];
+  lethalDose?: string;
+  mak?: string;
+  amount?: Amount;
+}
+
 export interface Unit {
   type: UnitType;
   name?: string;

@@ -51,7 +51,7 @@
         </tr>
       </ng-container>
 
-      <tr *ngFor="let data of substanceData">
+      <tr *ngFor="let data of substanceData$ | async">
         <td class="min-width-5cm" colspan="2">
           {{ data.name }}<br />
           <div class="padding-top-5px"><span [outerHTML]="data.molecularFormula | subMolecularFormula"></span></div>
@@ -74,12 +74,12 @@
         </tr>
         <tr>
           <td colspan="4" class="full-height top">
-            <div class="phrase" *ngFor="let phrase of getHPhrases()">
+            <div class="phrase" *ngFor="let phrase of getHPhrases() | async">
               {{ phrase }}
             </div>
           </td>
           <td colspan="4" class="full-height top">
-            <div class="phrase" *ngFor="let phrase of getPPhrases()">
+            <div class="phrase" *ngFor="let phrase of getPPhrases() | async">
               {{ phrase }}
             </div>
           </td>

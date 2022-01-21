@@ -11,8 +11,7 @@ import {
   ModifySubstanceData,
   RearrangeSubstanceData,
   RemoveSubstanceData,
-  SubstanceDataState,
-} from '../../@core/states/search-results.state';
+} from '../../@core/states/substance-data.state';
 import { Provider, ProviderMapping } from '../../@core/services/provider/provider.model';
 import { Source, SubstanceData } from '../../@core/models/substances.model';
 import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
@@ -37,7 +36,7 @@ export class SearchComponent implements OnInit {
   @ViewChildren(SelectedSearchComponent)
   selectedSearchComponents!: QueryList<SelectedSearchComponent>;
 
-  @Select(SubstanceDataState) substanceData$!: Observable<SubstanceData[]>;
+  @Select((state: any) => state.substance_data.substanceData) substanceData$!: Observable<SubstanceData[]>;
 
   addButtonHover = false;
 
