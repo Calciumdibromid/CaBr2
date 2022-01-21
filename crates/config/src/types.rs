@@ -72,7 +72,7 @@ impl std::default::Default for BackendConfig {
         all: Some(LogLevel::DEBUG),
         cabr2: Some(LogLevel::DEBUG),
         rustls: None,
-        ureq: None,
+        reqwest: None,
       },
     }
   }
@@ -104,7 +104,7 @@ pub struct Logging {
   #[serde(skip_serializing_if = "Option::is_none")]
   pub rustls: Option<LogLevel>,
   #[serde(skip_serializing_if = "Option::is_none")]
-  pub ureq: Option<LogLevel>,
+  pub reqwest: Option<LogLevel>,
 }
 
 /* #endregion */

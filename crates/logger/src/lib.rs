@@ -39,8 +39,7 @@ pub async fn setup_logger() -> Result<(), fern::InitError> {
     .level_for("cabr2_load_save", convert_level(config.cabr2.clone()))
     .level_for("cabr2_logger", convert_level(config.cabr2.clone()))
     .level_for("cabr2_search", convert_level(config.cabr2))
-    .level_for("ureq", convert_level(config.ureq))
-    .level_for("rustls", convert_level(config.rustls))
+    .level_for("reqwest", convert_level(config.reqwest))
     .chain(std::io::stdout())
     .chain(fs::OpenOptions::new().create(true).write(true).open(&log_file)?)
     .apply()?;
