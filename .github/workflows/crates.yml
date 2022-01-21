@@ -32,6 +32,5 @@ jobs:
       - name: Build crates
         run: cd crates && cargo build --workspace --all-features
 
-      # TODO(692) reactivate when tests are written
       - name: Test crates
         run: cd crates && cargo test --workspace --all-features

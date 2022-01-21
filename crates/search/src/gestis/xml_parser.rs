@@ -650,5 +650,3 @@ mod tests {
     )
   }
 }
-
-// ` [abcdefghijklmnopqrstuvwxyz_]+: `
