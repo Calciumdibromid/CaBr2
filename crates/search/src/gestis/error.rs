@@ -37,9 +37,11 @@ impl Serialize for GestisError {
     match self {
       GestisError::MissingInfo(value) => serialize_string(serializer, "missingInfo", value),
       GestisError::Multiple(value) => serialize_string(serializer, "multiple", value),
+
       GestisError::RequestError(err) => serialize_string(serializer, "requestError", err),
       GestisError::XmlError(err) => serialize_string(serializer, "xmlError", err),
       GestisError::IOError(err) => serialize_string(serializer, "ioError", err),
+
       _ => serialize_string(serializer, "error", &format!("{self}")),
     }
   }

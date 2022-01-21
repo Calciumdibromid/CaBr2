@@ -28,6 +28,7 @@ impl Serialize for PdfError {
   {
     match self {
       PdfError::PdfMergeError(value) => serialize_string(serializer, "pdfMergeError", value),
+
       PdfError::TemplateError(err) => serialize_string(serializer, "templateError", err),
       PdfError::RenderError(err) => serialize_string(serializer, "renderError", err),
       PdfError::Wkhtml(err) => serialize_string(serializer, "wkhtmltopdfError", err),
