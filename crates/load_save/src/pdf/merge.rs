@@ -2,7 +2,7 @@ use std::collections::BTreeMap;
 
 use lopdf::{Document, Object, ObjectId};
 
-use crate::error::{LoadSaveError, Result};
+use super::error::{PdfError, Result};
 
 /// this code is basically the example from the
 /// [lopdf repo](https://github.com/J-F-Liu/lopdf/blob/master/examples/merge.rs)
@@ -85,7 +85,7 @@ pub fn merge_pdfs(documents: Vec<Document>) -> Result<Document> {
 
   // If no "Pages" found abort
   if pages_object.is_none() {
-    return Err(LoadSaveError::PdfMergeError("Pages root not found.".into()));
+    return Err(PdfError::PdfMergeError("Pages root not found.".into()));
   }
 
   // Iter over all "Page" and collect with the parent "Pages" created before
@@ -100,7 +100,7 @@ pub fn merge_pdfs(documents: Vec<Document>) -> Result<Document> {
 
   // If no "Catalog" found abort
   if catalog_object.is_none() {
-    return Err(LoadSaveError::PdfMergeError("Catalog root not found.".into()));
+    return Err(PdfError::PdfMergeError("Catalog root not found.".into()));
   }
 
   let catalog_object = catalog_object.unwrap();

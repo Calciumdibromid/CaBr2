@@ -1,3 +1,4 @@
+mod error;
 mod merge;
 mod types;
 
@@ -19,11 +20,13 @@ use wkhtmltopdf::{Orientation, PageSize, PdfApplication, Size};
 use ::config::DATA_DIR;
 use ::types::ProviderMapping;
 
-use self::types::PDFCaBr2Document;
+use self::{error::Result, types::PDFCaBr2Document};
 use super::{
-  error::{LoadSaveError, Result},
+  error::Result as LoadSaveResult,
   types::{CaBr2Document, Saver},
 };
+
+pub use error::PdfError;
 
 type PDFThreadChannels = Arc<Mutex<(mpsc::SyncSender<(String, String)>, mpsc::Receiver<Result<Vec<u8>>>)>>;
 
@@ -42,52 +45,50 @@ impl PDF {
 
 #[async_trait]
 impl Saver for PDF {
-  async fn save_document(&self, document: CaBr2Document) -> Result<Vec<u8>> {
+  async fn save_document(&self, document: CaBr2Document) -> LoadSaveResult<Vec<u8>> {
     lazy_static! {
       static ref PDF_THREAD_CHANNEL: PDFThreadChannels = Arc::new(Mutex::new(init_pdf_application()));
     }
 
     let title = document.header.document_title.clone();
+
     // PDF generation may be a long running, cpu intensive task. This informs the runtime to move other waiting tasks
     // to different threads.
-    match tokio::task::block_in_place(|| render_doc(document.into())) {
-      Err(e) => Err(e),
-      Ok(pages) => {
-        let channels = PDF_THREAD_CHANNEL.lock().unwrap();
+    let pages = tokio::task::block_in_place(|| render_doc(document.into()))?;
 
-        let mut pdfs = Vec::with_capacity(2);
-        for page in pages {
-          channels
-            .0
-            .send((page, title.clone()))
-            .expect("sending data to pdf thread failed");
+    let channels = PDF_THREAD_CHANNEL.lock().unwrap();
 
-          let pdf: Vec<u8> = channels.1.recv().expect("receiving data from pdf thread failed")?;
-          pdfs.push(pdf);
-        }
+    let mut pdfs = Vec::with_capacity(2);
+    for page in pages {
+      channels
+        .0
+        .send((page, title.clone()))
+        .expect("sending data to pdf thread failed");
 
-        let mut documents = Vec::with_capacity(pdfs.len());
-        for pdf in pdfs {
-          match Document::load_mem(&pdf) {
-            Ok(doc) => documents.push(doc),
-            Err(_) => return Err(LoadSaveError::PdfMergeError("loading pdf failed".into())),
-          }
-        }
+      let pdf: Vec<u8> = channels.1.recv().expect("receiving data from pdf thread failed")?;
+      pdfs.push(pdf);
+    }
 
-        let mut merged_pdf = merge::merge_pdfs(documents)?;
-
-        let mut buf = Vec::new();
-        merged_pdf.save_to(&mut buf)?;
-
-        Ok(buf)
+    let mut documents = Vec::with_capacity(pdfs.len());
+    for pdf in pdfs {
+      match Document::load_mem(&pdf) {
+        Ok(doc) => documents.push(doc),
+        Err(_) => return Err(PdfError::PdfMergeError("loading pdf failed".into()).into()),
       }
     }
+
+    let mut merged_pdf = merge::merge_pdfs(documents)?;
+
+    let mut buf = Vec::new();
+    merged_pdf.save_to(&mut buf)?;
+
+    Ok(buf)
   }
 }
 
 const PDF_TEMPLATE_PAGES: [&str; 2] = ["first", "second"];
 
-/// render_doc get CaBr2Document and return html (dummy at the moment)
+/// render_doc get CaBr2Document and return html
 fn render_doc(document: PDFCaBr2Document) -> Result<Vec<String>> {
   #[derive(Debug, Serialize)]
   struct Context<'a> {
@@ -162,7 +163,7 @@ fn init_pdf_application() -> PDFChannels {
       Err(e) => {
         log::error!("[pdf_thread]: initialization of pdf application failed");
         pdf_tx
-          .send(Err(LoadSaveError::PdfError(e)))
+          .send(Err(PdfError::Wkhtml(e)))
           .expect("[pdf_thread]: pdf thread could not send data");
         return;
       }
@@ -176,7 +177,7 @@ fn init_pdf_application() -> PDFChannels {
       // needed for rust to resolve types
       let title: String = title;
 
-      let mut buf = Vec::new();
+      let mut buf = Vec::with_capacity(256_000); // just some random default value to minimize allocations
 
       let result = match pdf_app
         .builder()
@@ -188,9 +189,9 @@ fn init_pdf_application() -> PDFChannels {
       {
         Ok(mut pdfout) => match pdfout.read_to_end(&mut buf) {
           Ok(_) => Ok(buf),
-          Err(e) => Err(LoadSaveError::IOError(e)),
+          Err(e) => Err(e.into()),
         },
-        Err(e) => Err(LoadSaveError::PdfError(e)),
+        Err(e) => Err(e.into()),
       };
 
       log::trace!("[pdf_thread]: sending result");
