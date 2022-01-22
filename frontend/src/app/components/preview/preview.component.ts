@@ -6,6 +6,7 @@ import { getViewValue, ViewSubstanceData } from '../../@core/models/substances.m
 import { GHSSymbolMap } from 'src/app/@core/states/ghs-symbols.state';
 import { GlobalModel } from '../../@core/models/global.model';
 import { Header } from '../../@core/interfaces/DocTemplate';
+import { StringListStateModel } from 'src/app/@core/interfaces/string-list-state-model.interface';
 import { SubstanceDataState } from 'src/app/@core/states/substance-data.state';
 
 @Component({
@@ -18,9 +19,11 @@ export class PreviewComponent implements OnInit {
 
   @Select(SubstanceDataState.viewSubstanceData) substanceData$!: Observable<ViewSubstanceData[]>;
 
-  sources$!: Observable<string>;
+  humanAndEnvironmentDanger$!: Observable<string[]>;
 
   header!: Observable<Header>;
+
+  sources$!: Observable<string>;
 
   getViewValue = getViewValue;
 
@@ -32,6 +35,10 @@ export class PreviewComponent implements OnInit {
     this.sources$ = this.store
       .select((state) => state.substance_data.providers)
       .pipe(map((providers) => Array.from(providers.values()).join(', ')));
+
+    this.humanAndEnvironmentDanger$ = this.store
+      .select<StringListStateModel>((state) => state.human_and_environment_danger)
+      .pipe(map((state) => state.form.model?.elements.map((element) => element.value) ?? []));
   }
 
   getPhraseNumber(phrases: [string, string][]): string[] {

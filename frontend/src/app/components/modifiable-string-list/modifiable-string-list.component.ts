@@ -1,7 +1,13 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import { Store } from '@ngxs/store';
+
+import {
+  AddSentence,
+  RearrangeSentences,
+  RemoveSentence,
+} from 'src/app/@core/states/human-and-environment-danger.state';
 
 @Component({
   selector: 'app-modifiable-string-list',
@@ -9,59 +15,50 @@ import { Observable } from 'rxjs';
   styleUrls: ['./modifiable-string-list.component.scss'],
 })
 export class ModifiableStringListComponent implements OnInit {
-  @Output()
-  elementEmitter = new EventEmitter<string[]>();
+  @Input()
+  ngxsIdentifier!: string;
 
   @Input()
-  title = '';
+  title!: string;
 
-  @Input()
-  elements!: Observable<string[]>;
-
-  form: FormGroup;
+  formGroup!: FormGroup;
 
   addHover = false;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.form = this.formBuilder.group({});
-  }
+  constructor(private store: Store, private formBuilder: FormBuilder) {}
 
   get controlElements(): FormArray {
-    return this.form.get('elements') as FormArray;
+    return this.formGroup.get('elements') as FormArray;
   }
 
   ngOnInit(): void {
-    this.elements.subscribe(
-      (elements) =>
-        (this.form = this.formBuilder.group({
-          elements: this.formBuilder.array(elements.map((value) => this.initForm(value)) ?? []),
-        })),
-    );
-  }
-
-  initForm(value: string): FormGroup {
-    return this.formBuilder.group({
-      value,
-      hover: false,
+    this.formGroup = this.formBuilder.group({
+      elements: this.formBuilder.array([
+        this.formBuilder.group({
+          value: '',
+        }),
+      ]),
     });
   }
 
   addElement(): void {
     this.controlElements.push(this.initForm(''));
-    this.emitChange();
+    this.store.dispatch(new AddSentence());
   }
 
   removeElement(index: number): void {
     this.controlElements.removeAt(index);
-    this.emitChange();
-  }
-
-  emitChange(): void {
-    this.elementEmitter.emit(this.controlElements.controls.map((control) => control.get('value')?.value));
+    this.store.dispatch(new RemoveSentence(index));
   }
 
   drop(event: CdkDragDrop<FormGroup[]>): void {
-    moveItemInArray(this.controlElements.controls, event.previousIndex, event.currentIndex);
-    this.emitChange();
+    this.store.dispatch(new RearrangeSentences(event));
+  }
+
+  private initForm(value: string): FormGroup {
+    return this.formBuilder.group({
+      value,
+      hover: false,
+    });
   }
 }

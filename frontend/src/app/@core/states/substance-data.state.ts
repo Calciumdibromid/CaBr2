@@ -17,6 +17,7 @@ interface SubstanceDataStateModel {
   providers: Set<string>;
 }
 
+// TODO clean up action naming
 export class AddSubstanceData {
   static readonly type = '[SubstanceData] add substance data';
 
@@ -41,6 +42,10 @@ export class RearrangeSubstanceData {
   constructor(public event: CdkDragDrop<string[]> | any) {}
 }
 
+export class ClearAllSubstanceData {
+  static readonly type = '[SubstanceData] clear all substance data';
+}
+
 @State<SubstanceDataStateModel>({
   name: 'substance_data',
   defaults: {
@@ -59,7 +64,7 @@ export class SubstanceDataState {
   @Selector()
   static viewSubstanceData(state: SubstanceDataStateModel): ViewSubstanceData[] {
     const substanceData = state.substanceData;
-    const viewData = substanceData.map((value) => SubstanceData.convertToViewSubstanceData(value));
+    const viewData = substanceData.map((value) => value.convertToViewSubstanceData());
 
     for (let i = viewData.length; i < 5; i++) {
       viewData.push(EMPTY_VIEW_SUBSTANCE_DATA);
@@ -116,6 +121,14 @@ export class SubstanceDataState {
     moveItemInArray(state, action.event.previousIndex, action.event.currentIndex);
     context.patchState({
       substanceData: state,
+    });
+  }
+
+  @Action(ClearAllSubstanceData)
+  clearAllSubstanceData(context: StateContext<SubstanceDataStateModel>): void {
+    context.setState({
+      substanceData: [],
+      providers: new Set(),
     });
   }
 

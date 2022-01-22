@@ -8,8 +8,9 @@ describe('ModifiableStringListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ModifiableStringListComponent],
-    }).compileComponents();
+      declarations: [ ModifiableStringListComponent ]
+    })
+    .compileComponents();
   });
 
   beforeEach(() => {
