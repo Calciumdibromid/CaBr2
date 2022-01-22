@@ -5,7 +5,6 @@ import * as Disposal from '../../@core/actions/disposal.actions';
 import * as HumanAndEnvironmentDanger from '../../@core/actions/human-and-environment-danger.actions';
 import * as InCaseOfDanger from '../../@core/actions/in-case-of-danger.actions';
 import * as RulesOfConduct from '../../@core/actions/rules-of-conduct-acitons';
-import { GlobalModel } from 'src/app/@core/models/global.model';
 
 @Component({
   selector: 'app-security-things',
@@ -36,6 +35,4 @@ export class SecurityThingsComponent {
     removeSentence: Disposal.RemoveSentence,
     rearrangeSentence: Disposal.RearrangeSentences,
   };
-
-  constructor(public globals: GlobalModel) {}
 }
