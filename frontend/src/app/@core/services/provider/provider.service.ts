@@ -1,5 +1,5 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
 import { GlobalModel } from '../../models/global.model';
@@ -41,9 +41,11 @@ export class ProviderService implements IProviderService {
   }
 
   substanceData(provider: string, identifier: string): Observable<SubstanceData> {
-    return this.nativeService.promisified('plugin:cabr2_search|get_substance_data', {
-      provider,
-      identifier,
-    });
+    return this.nativeService
+      .promisified<SubstanceData>('plugin:cabr2_search|get_substance_data', {
+        provider,
+        identifier,
+      })
+      .pipe(map((data) => new SubstanceData(data)));
   }
 }

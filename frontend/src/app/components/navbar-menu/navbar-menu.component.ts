@@ -1,9 +1,12 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Store } from '@ngxs/store';
 
+import { ClearAllSubstanceData } from 'src/app/@core/states/substance-data.state';
 import DocumentService from 'src/app/@core/services/document/document.service';
 import { GlobalModel } from 'src/app/@core/models/global.model';
 import { INativeService } from 'src/app/@core/services/native/native.interface';
+import { ResetHeader } from 'src/app/@core/states/header.state';
 import { SettingsComponent } from '../settings/settings.component';
 import TEMPLATES from '../../../assets/docsTemplate.json';
 
@@ -23,6 +26,7 @@ export class NavbarMenuComponent implements OnInit {
     private nativeService: INativeService,
     private documentService: DocumentService,
     private dialog: MatDialog,
+    private store: Store,
   ) {}
 
   ngOnInit(): void {
@@ -31,6 +35,7 @@ export class NavbarMenuComponent implements OnInit {
 
   newDocument(): void {
     this.globals.loadTemplate(DOCS_TEMPLATE);
+    this.store.dispatch([new ResetHeader(), new ClearAllSubstanceData()]);
   }
 
   loadFile(): void {

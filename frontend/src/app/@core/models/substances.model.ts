@@ -120,23 +120,22 @@ export class SubstanceData {
     return false;
   }
 
-  // don't know why this does not work as non-static -.-
-  static convertToViewSubstanceData(data: SubstanceData): ViewSubstanceData {
+  convertToViewSubstanceData(): ViewSubstanceData {
     return {
-      name: data.name.modifiedData ?? data.name.originalData,
-      cas: data.cas.modifiedData ?? data.cas.originalData,
-      molecularFormula: data.molecularFormula.modifiedData ?? data.molecularFormula.originalData,
-      molarMass: data.molarMass.modifiedData ?? data.molarMass.originalData,
-      meltingPoint: data.meltingPoint.modifiedData ?? data.meltingPoint.originalData,
-      boilingPoint: data.boilingPoint.modifiedData ?? data.boilingPoint.originalData,
-      waterHazardClass: data.waterHazardClass.modifiedData ?? data.waterHazardClass.originalData,
-      hPhrases: data.hPhrases.modifiedData ?? data.hPhrases.originalData,
-      pPhrases: data.pPhrases.modifiedData ?? data.pPhrases.originalData,
-      signalWord: data.signalWord.modifiedData ?? data.signalWord.originalData,
-      symbols: data.symbols.modifiedData ?? data.symbols.originalData,
-      lethalDose: data.lethalDose.modifiedData ?? data.lethalDose.originalData,
-      mak: data.mak.modifiedData ?? data.mak.originalData,
-      amount: data.amount,
+      name: this.name.modifiedData ?? this.name.originalData,
+      cas: this.cas.modifiedData ?? this.cas.originalData,
+      molecularFormula: this.molecularFormula.modifiedData ?? this.molecularFormula.originalData,
+      molarMass: this.molarMass.modifiedData ?? this.molarMass.originalData,
+      meltingPoint: this.meltingPoint.modifiedData ?? this.meltingPoint.originalData,
+      boilingPoint: this.boilingPoint.modifiedData ?? this.boilingPoint.originalData,
+      waterHazardClass: this.waterHazardClass.modifiedData ?? this.waterHazardClass.originalData,
+      hPhrases: this.hPhrases.modifiedData ?? this.hPhrases.originalData,
+      pPhrases: this.pPhrases.modifiedData ?? this.pPhrases.originalData,
+      signalWord: this.signalWord.modifiedData ?? this.signalWord.originalData,
+      symbols: this.symbols.modifiedData ?? this.symbols.originalData,
+      lethalDose: this.lethalDose.modifiedData ?? this.lethalDose.originalData,
+      mak: this.mak.modifiedData ?? this.mak.originalData,
+      amount: this.amount,
     };
   }
 }

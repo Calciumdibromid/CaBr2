@@ -1,5 +1,5 @@
+import { Action, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { State } from '@ngxs/store';
 
 import { Header } from '../interfaces/DocTemplate';
 import TEMPLATES from '../../../assets/docsTemplate.json';
@@ -12,6 +12,10 @@ interface HeaderStateModel {
   };
 }
 
+export class ResetHeader {
+  static readonly type = '[Header] reset header to default values';
+}
+
 @State<HeaderStateModel>({
   name: 'header',
   defaults: {
@@ -21,4 +25,13 @@ interface HeaderStateModel {
   },
 })
 @Injectable()
-export class HeaderState {}
+export class HeaderState {
+  @Action(ResetHeader)
+  resetHeader(context: StateContext<HeaderStateModel>): void {
+    context.setState({
+      headerForm: {
+        model: HEADER_TEMPLATE,
+      },
+    });
+  }
+}
