@@ -16,8 +16,8 @@ chrono = "0.4.19"
 futures = { version = "0.3.19", optional = true }
 lazy_static = "1.4.0"
 log = "0.4.14"
+quick-xml = { version = "0.23.0-alpha3", optional = true }
 reqwest = { version = "0.11.9", features = ["json", "native-tls"], default-features = false, optional = true }
-roxmltree = { version = "0.14.1", optional = true }
 serde = { version = "1.0.133", features = ["derive"] }
 serde_json = "1.0.74"
 structopt = { version = "0.3.25", optional = true }
@@ -26,7 +26,7 @@ tokio = { version = "1.15.0", default-features = false, optional = true }
 types = { path = "../types/", features = ["lock"] }
 
 [features]
-gestis = [ "roxmltree", "reqwest" ]
+gestis = [ "reqwest", "quick-xml" ]
 gestis_helper = [ "gestis", "structopt", "tokio/rt-multi-thread", "tokio/macros" ]
 
 __tokio = [ "types/rt-tokio" ] # internal feature to enable tokio specific optimizations

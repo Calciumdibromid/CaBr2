@@ -691,7 +691,7 @@ dependencies = [
  "lazy_static",
  "log",
  "lopdf",
- "quick-xml",
+ "quick-xml 0.22.0",
  "regex",
  "serde",
  "serde_json",
@@ -1069,6 +1069,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "quick-xml"
+version = "0.23.0-alpha3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e6c002cfafa1de674ef8557e3dbf2ad8c03ac8eb3d162672411b1b7fb4d272ef"
+dependencies = [
+ "memchr",
+]
+
+[[package]]
 name = "quote"
 version = "1.0.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1205,15 +1214,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "roxmltree"
-version = "0.14.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "921904a62e410e37e215c40381b7117f830d9d89ba60ab5236170541dd25646b"
-dependencies = [
- "xmlparser",
-]
-
-[[package]]
 name = "rustc_version"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1259,8 +1259,8 @@ dependencies = [
  "chrono",
  "lazy_static",
  "log",
+ "quick-xml 0.23.0-alpha3",
  "reqwest",
- "roxmltree",
  "serde",
  "serde_json",
  "thiserror",
@@ -2006,9 +2006,3 @@ name = "wkhtmltox-sys"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ab0405f2aa72bed0966b1bf52964ab82035ff4d420bda535f162461875ab1b1d"
-
-[[package]]
-name = "xmlparser"
-version = "0.13.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "114ba2b24d2167ef6d67d7d04c8cc86522b87f490025f39f0303b7db5bf5e3d8"

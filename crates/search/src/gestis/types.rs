@@ -45,3 +45,16 @@ pub struct Subchapter {
 pub struct Alias {
   pub name: String,
 }
+
+#[derive(Debug)]
+pub struct ChapterMapping<'a> {
+  pub boiling_point: Option<&'a str>,
+  pub cas_number: Option<&'a str>,
+  pub h_p_signal_symbols: Option<&'a str>,
+  pub lethal_dose: Option<&'a str>,
+  pub mak1: Option<&'a str>,
+  pub mak2: Option<&'a str>,
+  pub melting_point: Option<&'a str>,
+  pub molecular_formula: Option<&'a str>,
+  pub water_hazard_class: Option<&'a str>,
+}

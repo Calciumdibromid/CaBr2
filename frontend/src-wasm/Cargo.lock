@@ -397,7 +397,7 @@ dependencies = [
  "chrono",
  "lazy_static",
  "log",
- "quick-xml",
+ "quick-xml 0.22.0",
  "regex",
  "serde",
  "thiserror",
@@ -582,6 +582,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "quick-xml"
+version = "0.23.0-alpha3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e6c002cfafa1de674ef8557e3dbf2ad8c03ac8eb3d162672411b1b7fb4d272ef"
+dependencies = [
+ "memchr",
+]
+
+[[package]]
 name = "quote"
 version = "1.0.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -662,15 +671,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "roxmltree"
-version = "0.14.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "921904a62e410e37e215c40381b7117f830d9d89ba60ab5236170541dd25646b"
-dependencies = [
- "xmlparser",
-]
-
-[[package]]
 name = "ryu"
 version = "1.0.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -695,8 +695,8 @@ dependencies = [
  "chrono",
  "lazy_static",
  "log",
+ "quick-xml 0.23.0-alpha3",
  "reqwest",
- "roxmltree",
  "serde",
  "serde_json",
  "thiserror",
@@ -1099,9 +1099,3 @@ checksum = "0120db82e8a1e0b9fb3345a539c478767c0048d842860994d96113d5b667bd69"
 dependencies = [
  "winapi",
 ]
-
-[[package]]
-name = "xmlparser"
-version = "0.13.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "114ba2b24d2167ef6d67d7d04c8cc86522b87f490025f39f0303b7db5bf5e3d8"

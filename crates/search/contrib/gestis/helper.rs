@@ -41,11 +41,23 @@ fn extract_xmls(res: &GestisResponse) -> std::io::Result<()> {
 
   println!("extracting: {}.json", res.name);
 
-  for (chapter_name, (chapter, subchapter)) in gestis::xml_parser::CHAPTER_MAPPING.iter() {
+  let mapping = gestis::xml_parser::parse_chapters(res);
+
+  for (chapter_name, xml) in [
+    ("boiling_point", mapping.boiling_point),
+    ("cas_number", mapping.cas_number),
+    ("h_p_signal_symbols", mapping.h_p_signal_symbols),
+    ("lethal_dose", mapping.lethal_dose),
+    ("mak1", mapping.mak1),
+    ("mak2", mapping.mak2),
+    ("melting_point", mapping.melting_point),
+    ("molecular_formula", mapping.molecular_formula),
+    ("water_hazard_class", mapping.water_hazard_class),
+  ] {
     print!("  trying: {} ... ", chapter_name);
 
-    match gestis::xml_parser::get_xml(res, chapter, subchapter) {
-      Ok(xml) => {
+    match xml {
+      Some(xml) => {
         let mut filename = folder.clone();
         filename.push(chapter_name);
 
@@ -58,7 +70,7 @@ fn extract_xmls(res: &GestisResponse) -> std::io::Result<()> {
 
         println!("\x1B[32mSUCCESS\x1B[m");
       }
-      Err(_) => {
+      None => {
         println!("\x1B[31mNO_XML\x1B[m");
         continue;
       }
