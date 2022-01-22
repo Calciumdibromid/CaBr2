@@ -1,5 +1,5 @@
 <ng-container *transloco="let t">
-  <mat-card [formGroup]="formGroup" [ngxsForm]="ngxsIdentifier" class="onepager-mat-card">
+  <mat-card [formGroup]="formGroup" [ngxsForm]="ngxsIdentifier + '.form'" class="onepager-mat-card">
     <h3 class="mat-h3">{{ title }}</h3>
     <div formArrayName="elements">
       <ul cdkDropList (cdkDropListDropped)="drop($event)">

@@ -112,7 +112,7 @@
         <tr>
           <td colspan="2" class="top height-5cm9">
             <b>{{ t('rulesOfConduct') }}</b>
-            <ul *ngFor="let entry of globals.rulesOfConductObservable | async">
+            <ul *ngFor="let entry of rulesOfConduct$ | async">
               <li *ngIf="entry">
                 {{ entry }}
               </li>
@@ -122,7 +122,7 @@
         <tr>
           <td colspan="2" class="top height-5cm9">
             <b>{{ t('inCaseOfDanger') }}</b>
-            <ul *ngFor="let entry of globals.inCaseOfDangerObservable | async">
+            <ul *ngFor="let entry of inCaseOfDanger$ | async">
               <li *ngIf="entry">
                 {{ entry }}
               </li>
@@ -132,7 +132,7 @@
         <tr>
           <td colspan="2" class="top height-5cm9">
             <b>{{ t('disposal') }}</b>
-            <ul *ngFor="let entry of globals.disposalObservable | async">
+            <ul *ngFor="let entry of disposal$ | async">
               <li *ngIf="entry">
                 {{ entry }}
               </li>

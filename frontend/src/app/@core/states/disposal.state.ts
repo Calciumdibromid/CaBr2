@@ -2,29 +2,24 @@ import { Action, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 
 import { addEmptySentence, rearrangeSentences, removeSentence } from '../operators/string-list-operators';
-import {
-  AddSentence,
-  RearrangeSentences,
-  RemoveSentence,
-  ResetSentences,
-} from '../actions/human-and-environment-danger.actions';
+import { AddSentence, RearrangeSentences, RemoveSentence, ResetSentences } from '../actions/disposal.actions';
 import { StringListStateModel } from '../interfaces/string-list-state-model.interface';
 import TEMPLATES from '../../../assets/docsTemplate.json';
 
-const HUMAN_AND_ENVIRONMENT_DANGER_TEMPLATE = TEMPLATES.docsTemplate.humanAndEnvironmentDanger;
+const DISPOSAL_TEMPLATE = TEMPLATES.docsTemplate.disposal;
 
 @State<StringListStateModel>({
-  name: 'human_and_environment_danger',
+  name: 'disposal',
   defaults: {
     form: {
       model: {
-        elements: HUMAN_AND_ENVIRONMENT_DANGER_TEMPLATE.map((sentence) => ({ value: sentence })),
+        elements: DISPOSAL_TEMPLATE.map((sentence) => ({ value: sentence })),
       },
     },
   },
 })
 @Injectable()
-export class HumanAndEnvironmentDangerState {
+export class DisposalState {
   @Action(AddSentence)
   addSentence(context: StateContext<StringListStateModel>): void {
     context.setState(addEmptySentence());
@@ -45,7 +40,7 @@ export class HumanAndEnvironmentDangerState {
     context.setState({
       form: {
         model: {
-          elements: HUMAN_AND_ENVIRONMENT_DANGER_TEMPLATE.map((sentence) => ({ value: sentence })),
+          elements: DISPOSAL_TEMPLATE.map((sentence) => ({ value: sentence })),
         },
       },
     });

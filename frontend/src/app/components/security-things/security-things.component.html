@@ -1,7 +1,25 @@
 <ng-container *transloco="let t; read: 'descriptions'">
   <app-modifiable-string-list
-    ngxsIdentifier="human_and_environment_danger.form"
+    ngxsIdentifier="human_and_environment_danger"
     [title]="t('humanAndEnvironmentDanger')"
+    [actions]="humanAndEnvimiromentActions"
   >
+  </app-modifiable-string-list>
+
+  <app-modifiable-string-list
+    ngxsIdentifier="rules_of_conduct_state"
+    [title]="t('rulesOfConduct')"
+    [actions]="rulesOfConductActions"
+  >
+  </app-modifiable-string-list>
+
+  <app-modifiable-string-list
+    ngxsIdentifier="in_case_of_danger"
+    [title]="t('inCaseOfDanger')"
+    [actions]="inCaseOfDangerActions"
+  >
+  </app-modifiable-string-list>
+
+  <app-modifiable-string-list ngxsIdentifier="disposal" [title]="t('disposal')" [actions]="disposalActions">
   </app-modifiable-string-list>
 </ng-container>

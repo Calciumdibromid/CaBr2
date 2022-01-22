@@ -6,7 +6,10 @@ import { ClearAllSubstanceData } from 'src/app/@core/states/substance-data.state
 import DocumentService from 'src/app/@core/services/document/document.service';
 import { GlobalModel } from 'src/app/@core/models/global.model';
 import { INativeService } from 'src/app/@core/services/native/native.interface';
+import { ResetSentences as ResetDisposalSentence } from 'src/app/@core/actions/disposal.actions';
 import { ResetHeader } from 'src/app/@core/states/header.state';
+import { ResetSentences as ResetHumanAndEnvironmentDangerSentences } from 'src/app/@core/actions/human-and-environment-danger.actions';
+import { ResetSentences as ResetRulesOfConductSentences } from 'src/app/@core/actions/rules-of-conduct-acitons';
 import { SettingsComponent } from '../settings/settings.component';
 import TEMPLATES from '../../../assets/docsTemplate.json';
 
@@ -35,7 +38,13 @@ export class NavbarMenuComponent implements OnInit {
 
   newDocument(): void {
     this.globals.loadTemplate(DOCS_TEMPLATE);
-    this.store.dispatch([new ResetHeader(), new ClearAllSubstanceData()]);
+    this.store.dispatch([
+      new ResetHeader(),
+      new ClearAllSubstanceData(),
+      new ResetHumanAndEnvironmentDangerSentences(),
+      new ResetRulesOfConductSentences(),
+      new ResetDisposalSentence(),
+    ]);
   }
 
   loadFile(): void {

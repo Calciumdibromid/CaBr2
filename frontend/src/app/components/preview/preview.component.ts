@@ -21,6 +21,12 @@ export class PreviewComponent implements OnInit {
 
   humanAndEnvironmentDanger$!: Observable<string[]>;
 
+  rulesOfConduct$!: Observable<string[]>;
+
+  inCaseOfDanger$!: Observable<string[]>;
+
+  disposal$!: Observable<string[]>;
+
   header!: Observable<Header>;
 
   sources$!: Observable<string>;
@@ -38,6 +44,18 @@ export class PreviewComponent implements OnInit {
 
     this.humanAndEnvironmentDanger$ = this.store
       .select<StringListStateModel>((state) => state.human_and_environment_danger)
+      .pipe(map((state) => state.form.model?.elements.map((element) => element.value) ?? []));
+
+    this.rulesOfConduct$ = this.store
+      .select<StringListStateModel>((state) => state.rules_of_conduct_state)
+      .pipe(map((state) => state.form.model?.elements.map((element) => element.value) ?? []));
+
+    this.inCaseOfDanger$ = this.store
+      .select<StringListStateModel>((state) => state.in_case_of_danger)
+      .pipe(map((state) => state.form.model?.elements.map((element) => element.value) ?? []));
+
+    this.disposal$ = this.store
+      .select<StringListStateModel>((state) => state.disposal)
       .pipe(map((state) => state.form.model?.elements.map((element) => element.value) ?? []));
   }
 
