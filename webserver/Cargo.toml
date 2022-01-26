@@ -18,7 +18,7 @@ load_save = { path = "../crates/load_save/" }
 log = "0.4.14"
 logger = { path = "../crates/logger/" }
 search = { path = "../crates/search/" }
-serde = { version = "1.0.134", features = ["derive"] }
+serde = { version = "1.0.136", features = ["derive"] }
 tokio = { version = "1.15.0", features = ["macros", "rt-multi-thread"] }
 types = { path = "../crates/types/" }
 uuid = { version = "0.8.2", features = ["serde", "v4"] }
