@@ -1,10 +1,15 @@
+import { Actions, Store } from '@ngxs/store';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { map, Observable } from 'rxjs';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component } from '@angular/core';
-import { StringListDispatcherActionMatpping as StringListDispatcherActionMapping } from 'src/app/@core/interfaces/string-list-state-model.interface';
 
 import * as Disposal from '../../@core/actions/disposal.actions';
 import * as HumanAndEnvironmentDanger from '../../@core/actions/human-and-environment-danger.actions';
 import * as InCaseOfDanger from '../../@core/actions/in-case-of-danger.actions';
 import * as RulesOfConduct from '../../@core/actions/rules-of-conduct-acitons';
+import { elementsToFormGroup, stateToElements } from 'src/app/@core/utils/forms.helper';
+import { ActionNewable } from 'src/app/@core/utils/action-newable';
 
 @Component({
   selector: 'app-security-things',
@@ -12,27 +17,32 @@ import * as RulesOfConduct from '../../@core/actions/rules-of-conduct-acitons';
   styleUrls: ['./security-things.component.scss'],
 })
 export class SecurityThingsComponent {
-  humanAndEnvimiromentActions: StringListDispatcherActionMapping = {
-    addSentence: HumanAndEnvironmentDanger.AddSentence,
-    removeSentence: HumanAndEnvironmentDanger.RemoveSentence,
-    rearrangeSentence: HumanAndEnvironmentDanger.RearrangeSentences,
-  };
+  HumanAndEnvironmentDanger = HumanAndEnvironmentDanger;
 
-  rulesOfConductActions: StringListDispatcherActionMapping = {
-    addSentence: RulesOfConduct.AddSentence,
-    removeSentence: RulesOfConduct.RemoveSentence,
-    rearrangeSentence: RulesOfConduct.RearrangeSentences,
-  };
+  RulesOfConduct = RulesOfConduct;
 
-  inCaseOfDangerActions: StringListDispatcherActionMapping = {
-    addSentence: InCaseOfDanger.AddSentence,
-    removeSentence: InCaseOfDanger.RemoveSentence,
-    rearrangeSentence: InCaseOfDanger.RearrangeSentences,
-  };
+  InCaseOfDanger = InCaseOfDanger;
 
-  disposalActions: StringListDispatcherActionMapping = {
-    addSentence: Disposal.AddSentence,
-    removeSentence: Disposal.RemoveSentence,
-    rearrangeSentence: Disposal.RearrangeSentences,
-  };
+  Disposal = Disposal;
+
+  constructor(private store: Store, private formBuilder: FormBuilder, private actions$: Actions) {}
+
+  add(action: ActionNewable<unknown>): void {
+    console.log(typeof Disposal.AddSentence);
+    this.store.dispatch(new action());
+  }
+
+  remove(action: ActionNewable<any, number>, index: number): void {
+    this.store.dispatch(new action(index));
+  }
+
+  rearrange(action: ActionNewable<any, CdkDragDrop<FormGroup[]>>, event: CdkDragDrop<FormGroup[]>): void {
+    this.store.dispatch(new action(event));
+  }
+
+  initFormGroup(identifier: string): Observable<FormGroup> {
+    return stateToElements(this.store, identifier).pipe(
+      map((elements) => elementsToFormGroup(this.formBuilder, elements)),
+    );
+  }
 }

@@ -1,19 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Actions, ofActionDispatched, Store } from '@ngxs/store';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Observable, Subscription } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
-import { Store } from '@ngxs/store';
 
-import {
-  StringListDispatcherActionMatpping,
-  StringListStateModel,
-} from 'src/app/@core/interfaces/string-list-state-model.interface';
+import { elementsToFormGroup, initForm, stateToElements } from 'src/app/@core/utils/forms.helper';
+import { ResetSentences as ResetDisposalSentence } from '../../@core/actions/disposal.actions';
+import { ResetSentences as ResetHumanAndEnvironmentDangerSentences } from '../../@core/actions/human-and-environment-danger.actions';
+import { ResetSentences as ResetInCaseOfDangerSentences } from '../../@core/actions/in-case-of-danger.actions';
+import { ResetSentences as ResetRulesOfConductSentences } from '../../@core/actions/rules-of-conduct-acitons';
 
 @Component({
   selector: 'app-modifiable-string-list',
   templateUrl: './modifiable-string-list.component.html',
   styleUrls: ['./modifiable-string-list.component.scss'],
 })
-export class ModifiableStringListComponent implements OnInit {
+export class ModifiableStringListComponent implements OnInit, OnDestroy {
   @Input()
   ngxsIdentifier!: string;
 
@@ -21,52 +23,67 @@ export class ModifiableStringListComponent implements OnInit {
   title!: string;
 
   @Input()
-  actions!: StringListDispatcherActionMatpping;
+  formGroup$!: Observable<FormGroup>;
+
+  @Output()
+  add = new EventEmitter();
+
+  @Output()
+  remove = new EventEmitter<number>();
+
+  @Output()
+  rearrange = new EventEmitter<CdkDragDrop<FormGroup[]>>();
 
   formGroup!: FormGroup;
 
   addHover = false;
 
-  constructor(private store: Store, private formBuilder: FormBuilder) {}
+  private subscription!: Subscription;
+
+  constructor(private formBuilder: FormBuilder, private actions$: Actions, private store: Store) {}
 
   get controlElements(): FormArray {
     return this.formGroup.get('elements') as FormArray;
   }
 
   ngOnInit(): void {
-    this.store
-      .selectOnce(
-        (state) =>
-          // if you think there is a better way, feel free to improve this piece of code
-          Object.entries<StringListStateModel>(state)
-            .filter((entry) => entry[0] === this.ngxsIdentifier)
-            .map((entry) => entry[1])
-            .map((value) => value.form.model?.elements)[0],
+    this.formGroup$.subscribe((formGroup) => (this.formGroup = formGroup));
+    this.actions$
+      .pipe(
+        ofActionDispatched(
+          ResetHumanAndEnvironmentDangerSentences,
+          ResetRulesOfConductSentences,
+          ResetInCaseOfDangerSentences,
+          ResetDisposalSentence,
+        ),
       )
-      .subscribe((elements) => {
-        this.formGroup = this.formBuilder.group({
-          elements: this.formBuilder.array(elements?.map((element) => this.initForm(element.value)) ?? []),
-        });
+      .subscribe(() => {
+        console.log('resetting');
+        this.initFormGroup(this.ngxsIdentifier);
       });
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   addElement(): void {
-    this.controlElements.push(this.initForm(''));
-    this.store.dispatch(new this.actions.addSentence());
+    this.controlElements.push(initForm('', this.formBuilder));
+    this.add.emit();
   }
 
   removeElement(index: number): void {
     this.controlElements.removeAt(index);
-    this.store.dispatch(new this.actions.removeSentence(index));
+    this.remove.emit(index);
   }
 
   drop(event: CdkDragDrop<FormGroup[]>): void {
-    this.store.dispatch(new this.actions.rearrangeSentence(event));
+    this.rearrange.emit(event);
   }
 
-  private initForm(value: string): FormGroup {
-    return this.formBuilder.group({
-      value,
+  initFormGroup(identifier: string): void {
+    stateToElements(this.store, identifier).subscribe((elements) => {
+      this.formGroup = elementsToFormGroup(this.formBuilder, elements);
     });
   }
 }
