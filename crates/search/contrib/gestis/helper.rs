@@ -6,7 +6,10 @@ use std::{
 
 use structopt::StructOpt;
 
-use search::gestis::{self, types::GestisResponse};
+use search::{
+  gestis::{self, types::GestisResponse},
+  types::Provider,
+};
 
 #[derive(StructOpt, Debug)]
 #[structopt(name = "gestis_helper")]
@@ -14,13 +17,25 @@ struct Arguments {
   /// Extract xmls from gestis id
   #[structopt(short, long)]
   pub extract: Option<String>,
+
+  /// Parse and print substance with gestis id
+  #[structopt(short, long)]
+  pub parse: Option<String>,
 }
 
 #[tokio::main]
 async fn main() {
+  pretty_env_logger::init();
+
   let args = Arguments::from_args();
 
-  if args.extract.is_some() {
+  if args.parse.is_some() {
+    let gestis = gestis::Gestis::new(reqwest::ClientBuilder::new().build().unwrap());
+
+    let res = gestis.get_substance_data(args.parse.unwrap()).await.unwrap();
+
+    println!("{res:#?}");
+  } else if args.extract.is_some() {
     let gestis = gestis::Gestis::new(reqwest::ClientBuilder::new().build().unwrap());
     let (res, _) = gestis.get_raw_substance_data(args.extract.unwrap()).await.unwrap();
 
@@ -41,7 +56,7 @@ fn extract_xmls(res: &GestisResponse) -> std::io::Result<()> {
 
   println!("extracting: {}.json", res.name);
 
-  let mapping = gestis::xml_parser::parse_chapters(res);
+  let mapping = gestis::functions::parse_chapters(res);
 
   for (chapter_name, xml) in [
     ("boiling_point", mapping.boiling_point),

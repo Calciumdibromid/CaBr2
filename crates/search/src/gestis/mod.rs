@@ -1,6 +1,10 @@
 mod error;
+pub mod functions;
 pub mod types;
 pub mod xml_parser;
+
+#[cfg(test)]
+mod tests;
 
 use async_trait::async_trait;
 use reqwest::Client;
@@ -32,7 +36,8 @@ impl Gestis {
   }
 
   async fn get_article(&self, identifier: String) -> Result<(GestisResponse, String)> {
-    let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, identifier);
+    // create gestis url and left fill the identifier with zeros if it's smaller than 6
+    let url = format!("{BASE_URL}/{ARTICLE}/de/{identifier:0>6}");
     let res = self.make_request(&url).await?;
 
     Ok((res, url))
@@ -59,13 +64,13 @@ impl Gestis {
         match response.json().await {
           Ok(json) => Ok(json),
           Err(err) => {
-            log::error!("deserializing response failed: {:?}", err);
+            log::error!("deserializing response failed: {err:?}");
             Err(err.into())
           }
         }
       }
       Err(err) => {
-        log::error!("error when requesting url: {} -> {:?}", &url, err);
+        log::error!("error when requesting url: {url} -> {err:?}");
         if let Some(code) = err.status() {
           if code.as_u16() == 429 {
             return Err(GestisError::RateLimit);
@@ -109,13 +114,7 @@ impl Provider for Gestis {
       .map(|a| format!("{}={}", a.search_type.as_str(), a.pattern))
       .collect();
 
-    let url = format!(
-      "{}/{}/de?{}&exact={}",
-      BASE_URL,
-      SEARCH,
-      args.join("&"),
-      arguments.exact,
-    );
+    let url = format!("{BASE_URL}/{SEARCH}/de?{}&exact={}", args.join("&"), arguments.exact,);
     let res = self.make_request(&url).await?;
 
     Ok(res)
@@ -124,7 +123,7 @@ impl Provider for Gestis {
   async fn get_substance_data(&self, identifier: String) -> SearchResult<::types::SubstanceData> {
     let (json, url) = self.get_article(identifier).await?;
 
-    let data = xml_parser::parse_response(&json)?;
+    let data = xml_parser::parse_response(&json, false)?;
 
     let res_data = SubstanceData {
       name: Data::new(json.name),
