@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { ConfigModel } from '../../models/config.model';
-import { GHSSymbols } from '../../models/global.model';
+import { GHSSymbols } from '../../models/substances.model';
 
 import { IConfigService } from './config.interface';
 import { INativeService } from '../native/native.interface';

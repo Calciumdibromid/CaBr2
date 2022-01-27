@@ -1,3 +1,7 @@
+import { SafeResourceUrl } from '@angular/platform-browser';
+
+export type GHSSymbols = Map<string, SafeResourceUrl>;
+
 interface EmptyData<T> {
   originalData: T;
 }

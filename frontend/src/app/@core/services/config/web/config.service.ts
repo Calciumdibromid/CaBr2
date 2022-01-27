@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import * as wasm from 'cabr2_wasm';
 import { ConfigModel } from 'src/app/@core/models/config.model';
-import { GHSSymbols } from 'src/app/@core/models/global.model';
+import { GHSSymbols } from 'src/app/@core/models/substances.model';
 
 import { IConfigService } from '../config.interface';
 
