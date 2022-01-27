@@ -27,7 +27,7 @@ jobs:
         run: cd crates && cargo fmt -- --check
 
       - name: Lint crates
-        run: cd crates && cargo clippy --workspace --all-features -- --deny clippy::all
+        run: cd crates && cargo clippy --workspace --all-features -- --deny clippy::all --deny warnings
 
       - name: Build crates
         run: cd crates && cargo build --workspace --all-features

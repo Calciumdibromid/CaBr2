@@ -30,7 +30,7 @@ jobs:
         run: cd frontend/src-tauri && cargo fmt -- --check
 
       - name: Lint Tauri app
-        run: cd frontend/src-tauri && cargo clippy -- -D warnings
+        run: cd frontend/src-tauri && cargo clippy --all-features -- --deny clippy::all --deny warnings
 
       - name: Build Tauri app
         run: cd frontend/src-tauri && cargo build
