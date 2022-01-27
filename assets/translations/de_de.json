@@ -37,7 +37,7 @@
     },
     "header": {
       "docTitle": "Dokument Titel:",
-      "organization": "Organisation:",
+      "organisation": "Organisation:",
       "labCourse": "Lab/Kurs:",
       "name": "Name:",
       "place": "Platz:",

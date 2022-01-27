@@ -17,7 +17,7 @@ const EMPTY_HEADER: Header = {
   documentTitle: '',
   labCourse: '',
   name: '',
-  organization: '',
+  organisation: '',
   place: '',
   preparation: '',
 };

@@ -37,7 +37,7 @@
     },
     "header": {
       "docTitle": "Название документа:",
-      "organization": "Организация:",
+      "organisation": "Организация:",
       "labCourse": "Лаборатория / Курс:",
       "name": "Имя:",
       "place": "Место:",

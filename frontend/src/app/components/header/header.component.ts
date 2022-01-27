@@ -5,7 +5,7 @@ import { Header } from '../../@core/interfaces/DocTemplate';
 
 const form: Header = {
   documentTitle: '',
-  organization: '',
+  organisation: '',
   labCourse: '',
   name: '',
   place: '',

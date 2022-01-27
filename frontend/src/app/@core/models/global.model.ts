@@ -18,7 +18,7 @@ export class GlobalModel {
     documentTitle: '',
     labCourse: '',
     name: '',
-    organization: '',
+    organisation: '',
     place: '',
     preparation: '',
   });
