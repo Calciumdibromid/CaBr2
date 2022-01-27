@@ -17,27 +17,32 @@ interface SubstanceDataStateModel {
   providers: Set<string>;
 }
 
-// TODO clean up action naming
+export class FillSubstanceData {
+  static readonly type = '[SubstanceData] fill data with payload';
+
+  constructor(public substanceData: SubstanceData[]) {}
+}
+
 export class AddSubstanceData {
-  static readonly type = '[SubstanceData] add substance data';
+  static readonly type = '[SubstanceData] add data';
 
   constructor(public substanceData: SubstanceData) {}
 }
 
 export class RemoveSubstanceData {
-  static readonly type = '[SubstanceData] remove substance data';
+  static readonly type = '[SubstanceData] remove data';
 
   constructor(public dataToRemove: SubstanceData) {}
 }
 
 export class ModifySubstanceData {
-  static readonly type = '[SubstanceData] modify substance data';
+  static readonly type = '[SubstanceData] modify data';
 
   constructor(public origData: SubstanceData, public modifiedData: SubstanceData) {}
 }
 
 export class RearrangeSubstanceData {
-  static readonly type = '[SubstanceData] rearrange substance data';
+  static readonly type = '[SubstanceData] rearrange data';
 
   constructor(public event: CdkDragDrop<string[]> | any) {}
 }
@@ -71,6 +76,19 @@ export class SubstanceDataState {
     }
 
     return viewData;
+  }
+
+  @Action(FillSubstanceData)
+  fillSubstanceData(context: StateContext<SubstanceDataStateModel>, action: FillSubstanceData): void {
+    const providers = new Set<string>();
+    const substanceData = action.substanceData.map((data) => new SubstanceData(data));
+
+    substanceData.forEach((data) => this.setProviders(providers, data));
+
+    context.setState({
+      substanceData,
+      providers,
+    });
   }
 
   @Action(AddSubstanceData)

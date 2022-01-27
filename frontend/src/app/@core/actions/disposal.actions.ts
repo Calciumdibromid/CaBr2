@@ -1,5 +1,11 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
+export class FillSentence {
+  static readonly type = '[Disposal] fill sentence';
+
+  constructor(public strings: string[]) {}
+}
+
 export class AddSentence {
   static readonly type = '[Disposal] add sentence';
 }

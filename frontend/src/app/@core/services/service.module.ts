@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { ConfigService } from './config/config.service';
 import DocumentService from './document/document.service';
-import { GlobalModel } from '../models/global.model';
 import { I18nService } from './i18n/i18n.service';
 import { IConfigService } from './config/config.interface';
 import { II18nService } from './i18n/i18n.interface';
@@ -43,7 +42,7 @@ logger.trace('loading services for tauri environment');
     {
       provide: IProviderService,
       useClass: ProviderService,
-      deps: [INativeService, GlobalModel],
+      deps: [INativeService],
     },
     DocumentService,
   ],

@@ -1,21 +1,27 @@
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
+export class FillSentence {
+  static readonly type = '[InCaseOfDanger] fill sentence';
+
+  constructor(public strings: string[]) {}
+}
+
 export class AddSentence {
-  static readonly type = '[RulesOfConduct] add sentence';
+  static readonly type = '[InCaseOfDanger] add sentence';
 }
 
 export class RemoveSentence {
-  static readonly type = '[RulesOfConduct] remove sentence';
+  static readonly type = '[InCaseOfDanger] remove sentence';
 
   constructor(public index: number) {}
 }
 
 export class RearrangeSentences {
-  static readonly type = '[RulesOfConduct] rearrange sentences';
+  static readonly type = '[InCaseOfDanger] rearrange sentences';
 
   constructor(public event: CdkDragDrop<string[]> | any) {}
 }
 
 export class ResetSentences {
-  static readonly type = '[RulesOfConduct] reset sentences';
+  static readonly type = '[InCaseOfDanger] reset sentences';
 }

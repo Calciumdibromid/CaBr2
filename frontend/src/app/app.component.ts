@@ -14,7 +14,6 @@ import {
 } from './@core/models/config.model';
 import { AlertService } from './@core/services/alertsnackbar/altersnackbar.service';
 import { ConsentComponent } from './components/consent/consent.component';
-import { GlobalModel } from './@core/models/global.model';
 import { IConfigService } from './@core/services/config/config.interface';
 import { LoadGHSSymbols } from './@core/states/ghs-symbols.state';
 import Logger from './@core/utils/logger';
@@ -41,7 +40,6 @@ export class AppComponent implements OnInit, OnDestroy {
     private renderer: Renderer2,
     private dialog: MatDialog,
 
-    private global: GlobalModel,
     private configService: IConfigService,
     private alertService: AlertService,
     private translocoService: TranslocoService,

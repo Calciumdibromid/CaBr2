@@ -4,7 +4,6 @@ import { Store } from '@ngxs/store';
 
 import { ClearAllSubstanceData } from 'src/app/@core/states/substance-data.state';
 import DocumentService from 'src/app/@core/services/document/document.service';
-import { GlobalModel } from 'src/app/@core/models/global.model';
 import { INativeService } from 'src/app/@core/services/native/native.interface';
 import { ResetSentences as ResetDisposalSentence } from 'src/app/@core/actions/disposal.actions';
 import { ResetHeader } from 'src/app/@core/states/header.state';
@@ -26,7 +25,6 @@ export class NavbarMenuComponent implements OnInit {
   readonly darkModeSwitched = new EventEmitter<boolean>();
 
   constructor(
-    public globals: GlobalModel,
     private nativeService: INativeService,
     private documentService: DocumentService,
     private dialog: MatDialog,
@@ -38,7 +36,6 @@ export class NavbarMenuComponent implements OnInit {
   }
 
   newDocument(): void {
-    this.globals.loadTemplate(DOCS_TEMPLATE);
     this.store.dispatch([
       new ResetHeader(),
       new ClearAllSubstanceData(),

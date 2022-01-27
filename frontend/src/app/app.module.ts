@@ -12,7 +12,6 @@ import { BugReportButtonComponent } from './components/bug-report-button/bug-rep
 import { ConsentComponent } from './components/consent/consent.component';
 import { EditSubstanceDataComponent } from './components/edit-substance-data/edit-substance-data.component';
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
-import { GlobalModel } from './@core/models/global.model';
 import { HeaderComponent } from './components/header/header.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ManualComponent } from './components/manual/manual.component';
@@ -76,7 +75,6 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
     NgrxModule.forRoot(States, ngxsConfig),
     NgxsFormPluginModule.forRoot(),
   ],
-  providers: [GlobalModel],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

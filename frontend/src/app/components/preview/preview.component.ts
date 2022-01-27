@@ -4,7 +4,6 @@ import { Select, Store } from '@ngxs/store';
 
 import { getViewValue, ViewSubstanceData } from '../../@core/models/substances.model';
 import { GHSSymbolMap } from 'src/app/@core/states/ghs-symbols.state';
-import { GlobalModel } from '../../@core/models/global.model';
 import { Header } from '../../@core/interfaces/DocTemplate';
 import { StringListStateModel } from 'src/app/@core/interfaces/string-list-state-model.interface';
 import { SubstanceDataState } from 'src/app/@core/states/substance-data.state';
@@ -33,7 +32,7 @@ export class PreviewComponent implements OnInit {
 
   getViewValue = getViewValue;
 
-  constructor(public globals: GlobalModel, private store: Store) {}
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.header = this.store.select((state) => state.header.headerForm.model);

@@ -1,7 +1,6 @@
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component } from '@angular/core';
 
-import { GlobalModel } from '../../@core/models/global.model';
 import { Header } from '../../@core/interfaces/DocTemplate';
 
 const form: Header = {
@@ -24,7 +23,7 @@ export class HeaderComponent {
 
   public formGroup: FormGroup;
 
-  constructor(public globals: GlobalModel, private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder) {
     this.formGroup = this.formBuilder.group(form);
   }
 }
