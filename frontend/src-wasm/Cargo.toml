@@ -25,7 +25,7 @@ serde = "1.0.133"
 serde_json = "1.0.75"
 types = { path = "../../crates/types/" }
 wasm-bindgen = { version = "0.2.78", features = ["serde-serialize"] }
-wasm-bindgen-futures = "0.4.28"
+wasm-bindgen-futures = "0.4.29"
 
 [features]
 default = ["load_save/beryllium", "search/gestis"]
