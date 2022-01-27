@@ -28,7 +28,6 @@ export class SecurityThingsComponent {
   constructor(private store: Store, private formBuilder: FormBuilder, private actions$: Actions) {}
 
   add(action: ActionNewable<unknown>): void {
-    console.log(typeof Disposal.AddSentence);
     this.store.dispatch(new action());
   }
 
