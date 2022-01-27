@@ -21,8 +21,6 @@
       <mat-icon *ngIf="!hover">remove_circle_outline</mat-icon>
       <mat-icon color="primary" *ngIf="hover">remove_circle</mat-icon>
     </button>
-    <button mat-icon-button [matTooltip]="t('substance.dragAndDrop')" matSuffix cdkDragHandle>
-      <mat-icon>drag_handle</mat-icon>
-    </button>
+    <ng-content matSuffix></ng-content>
   </mat-form-field>
 </ng-container>
