@@ -3,7 +3,6 @@ use quick_xml::{events::Event, Reader};
 use super::{
   error::Result,
   types::{ChapterMapping, GestisResponse},
-  GestisError,
 };
 
 pub fn parse_chapters(json: &GestisResponse) -> ChapterMapping {
@@ -78,13 +77,13 @@ pub trait ReaderExt<'a> {
   fn skip(&mut self, name: &str, times: u8) -> Result<()>;
 
   /// Finds the next occurrence of tag `name`.
-  fn find_start(&mut self, name: &str) -> Result<()>;
+  fn find_start(&mut self, name: &str) -> Result<Event>;
 
   /// Finds the next `table` tag with class attribute `class`.
-  fn find_table(&mut self, class: &str) -> Result<()>;
+  fn find_table(&mut self, class: &str) -> Result<Event>;
 
   /// Reads the text with internal buffer.
-  fn read_text_unbuffered(&mut self, name: &str) -> Result<String>;
+  fn read_text_unbuffered(&mut self, end: &str) -> Result<String>;
 
   #[cfg(debug_assertions)]
   fn print_to_end(&mut self) -> Result<()>;
@@ -99,50 +98,46 @@ impl<'a> ReaderExt<'a> for Reader<&'a [u8]> {
     Ok(())
   }
 
-  fn find_start(&mut self, name: &str) -> Result<()> {
+  fn find_start(&mut self, name: &str) -> Result<Event> {
     let name: &[u8] = name.as_ref();
     loop {
       match self.read_event_unbuffered()? {
         Event::Start(e) => {
           if e.name() == name {
-            break;
+            return Ok(Event::Start(e));
           }
         }
-        Event::Eof => return Err(GestisError::UnexpectedEvent(format!("{:?}", Event::Eof))),
+        Event::Eof => return Ok(Event::Eof),
         _ => {}
       }
     }
-
-    Ok(())
   }
 
-  fn find_table(&mut self, class: &str) -> Result<()> {
+  fn find_table(&mut self, class: &str) -> Result<Event> {
     let class: &[u8] = class.as_ref();
     loop {
       match self.read_event_unbuffered()? {
         Event::Start(e) => {
-          if e.name() == "table".as_bytes()
+          if e.name() == b"table"
             && e.attributes().into_iter().any(|a| {
               if let Ok(attr) = a {
-                attr.key == "class".as_bytes() && attr.value == class
+                attr.key == b"class" && attr.value == class
               } else {
                 false
               }
             })
           {
-            break;
+            return Ok(Event::Start(e));
           }
         }
-        Event::Eof => return Err(GestisError::UnexpectedEvent(format!("{:?}", Event::Eof))),
+        Event::Eof => return Ok(Event::Eof),
         _ => {}
       }
     }
-
-    Ok(())
   }
 
-  fn read_text_unbuffered(&mut self, name: &str) -> Result<String> {
-    Ok(self.read_text(name, &mut Vec::with_capacity(32))?)
+  fn read_text_unbuffered(&mut self, end: &str) -> Result<String> {
+    Ok(self.read_text(end, &mut Vec::with_capacity(32))?)
   }
 
   #[cfg(debug_assertions)]

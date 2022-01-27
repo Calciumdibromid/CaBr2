@@ -13,10 +13,10 @@ pub enum GestisError {
   Empty,
 
   #[error("missing information: {0}")]
-  MissingInfo(String),
+  MissingInfo(&'static str),
 
   #[error("more values than expected")]
-  Multiple(String),
+  Multiple(&'static str),
 
   #[error("rate limited")]
   RateLimit,
