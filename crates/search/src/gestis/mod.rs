@@ -168,7 +168,7 @@ impl SearchType {
   }
 }
 
-// TODO() remove again when SubstanceData was reworked
+// TODO(#1085) remove again when SubstanceData was reworked
 
 fn vec_to_option<T>(mut vec: Vec<T>) -> Option<T> {
   if vec.is_empty() {
