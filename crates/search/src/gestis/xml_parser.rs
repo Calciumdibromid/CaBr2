@@ -7,11 +7,11 @@
 
   We don't trust gestis so every single XML/HTML string is searched until the end for everything that looks like stuff we could use.
   This means, that every function starts with a definition of a `Vec` with some default capacity.
-  If there is not comment above or behind the value is the maximum we saw in the wild, so if you find a higher value
-  write change it (the values will be very low so the memory usage doesn't matter).
+  If there is no comment above or behind the value it's the maximum we saw in the wild. So if you find a higher value,
+  change it (the values will be very low so the memory usage doesn't matter).
 
   If you are the poor soul who has to fix a bug or change something because the gestis API has changed look in the
-  `contrib` folder in the search crate, I wrote a helper binary that has some useful features that eases the pain of
+  `contrib` folder in the search crate. I wrote a helper binary that has some useful features that eases the pain of
   reading a JSON response with XML/HTML strings a bit.
 */
 use std::str;
