@@ -123,6 +123,8 @@ impl Provider for Gestis {
   async fn get_substance_data(&self, identifier: String) -> SearchResult<::types::SubstanceData> {
     let (json, url) = self.get_article(identifier).await?;
 
+    // If you don't have to, save yourself the pain and don't look deeper.
+    // See the line below as black box that extracts the substance data you need from the response.
     let data = xml_parser::parse_response(&json, false)?;
 
     let res_data = SubstanceData {
@@ -138,9 +140,9 @@ impl Provider for Gestis {
       signal_word: Data::new(data.signal_word),
       mak: Data::new(data.mak),
       amount: None,
-      h_phrases: Data::new(data.h_phrases.unwrap_or_default()),
-      p_phrases: Data::new(data.p_phrases.unwrap_or_default()),
-      symbols: Data::new(data.symbols.unwrap_or_default()),
+      h_phrases: Data::new(data.h_phrases),
+      p_phrases: Data::new(data.p_phrases),
+      symbols: Data::new(data.symbols),
       source: Source {
         provider: "gestis".to_string(),
         url,

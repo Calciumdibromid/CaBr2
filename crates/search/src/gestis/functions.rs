@@ -11,10 +11,10 @@ pub fn parse_chapters(json: &GestisResponse) -> ChapterMapping {
     cas_number: None,
     h_p_signal_symbols: None,
     lethal_dose: None,
-    mak1: None,
-    mak2: None,
+    agw: None,
+    mak: None,
     melting_point: None,
-    molecular_formula: None,
+    molecular_formula_molar_mass: None,
     water_hazard_class: None,
   };
 
@@ -30,7 +30,7 @@ pub fn parse_chapters(json: &GestisResponse) -> ChapterMapping {
       "0400" => {
         for subchapter in chapter.subchapters.iter() {
           if subchapter.number.as_str() == "0400" {
-            mapping.molecular_formula = subchapter.text.as_deref();
+            mapping.molecular_formula_molar_mass = subchapter.text.as_deref();
           }
         }
       }
@@ -54,8 +54,8 @@ pub fn parse_chapters(json: &GestisResponse) -> ChapterMapping {
         for subchapter in chapter.subchapters.iter() {
           match subchapter.number.as_str() {
             "1106" => mapping.water_hazard_class = subchapter.text.as_deref(),
-            "1201" => mapping.mak1 = subchapter.text.as_deref(),
-            "1203" => mapping.mak2 = subchapter.text.as_deref(),
+            "1201" => mapping.agw = subchapter.text.as_deref(),
+            "1203" => mapping.mak = subchapter.text.as_deref(),
             "1303" => mapping.h_p_signal_symbols = subchapter.text.as_deref(),
             _ => {}
           }
