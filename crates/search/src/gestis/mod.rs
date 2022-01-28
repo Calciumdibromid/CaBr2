@@ -130,19 +130,19 @@ impl Provider for Gestis {
     let res_data = SubstanceData {
       name: Data::new(json.name),
       alternative_names: json.aliases.into_iter().map(|a| a.name).collect(),
-      cas: Data::new(data.cas),
-      molecular_formula: Data::new(data.molecular_formula),
-      molar_mass: Data::new(data.molar_mass),
-      melting_point: Data::new(data.melting_point),
-      boiling_point: Data::new(data.boiling_point),
-      water_hazard_class: Data::new(data.water_hazard_class),
-      lethal_dose: Data::new(data.lethal_dose),
-      signal_word: Data::new(data.signal_word),
-      mak: Data::new(data.mak),
+      cas: Data::new(vec_to_option(data.cas)),
+      molecular_formula: Data::new(vec_to_option(data.molecular_formula)),
+      molar_mass: Data::new(vec_to_option(data.molar_mass)),
+      melting_point: Data::new(vec_to_option(data.melting_point)),
+      boiling_point: Data::new(vec_to_option(data.boiling_point)),
+      water_hazard_class: Data::new(vec_to_option(data.water_hazard_class)),
+      lethal_dose: Data::new(vec_to_option(data.lethal_dose)),
+      signal_word: Data::new(vec_to_option(data.signal_word)),
+      mak: Data::new(vec_to_option(data.mak)),
       amount: None,
-      h_phrases: Data::new(data.h_phrases),
-      p_phrases: Data::new(data.p_phrases),
-      symbols: Data::new(data.symbols),
+      h_phrases: Data::new(vec_vec_to_vec(data.h_phrases)),
+      p_phrases: Data::new(vec_vec_to_vec(data.p_phrases)),
+      symbols: Data::new(vec_vec_to_vec(data.symbols)),
       source: Source {
         provider: "gestis".to_string(),
         url,
@@ -165,5 +165,23 @@ impl SearchType {
       SearchType::Numbers => "nummern",
       SearchType::FullText => "volltextsuche",
     }
+  }
+}
+
+// TODO() remove again when SubstanceData was reworked
+
+fn vec_to_option<T>(mut vec: Vec<T>) -> Option<T> {
+  if vec.is_empty() {
+    None
+  } else {
+    Some(vec.swap_remove(0))
+  }
+}
+
+fn vec_vec_to_vec<T>(mut vec: Vec<Vec<T>>) -> Vec<T> {
+  if vec.is_empty() {
+    Vec::with_capacity(0)
+  } else {
+    vec.swap_remove(0)
   }
 }

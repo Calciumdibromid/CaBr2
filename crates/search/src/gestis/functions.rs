@@ -18,6 +18,7 @@ pub fn parse_chapters(json: &GestisResponse) -> ChapterMapping {
     water_hazard_class: None,
   };
 
+  // just go through the JSON once and save references to the XML strings for each required section
   for chapter in json.chapters.iter() {
     match chapter.number.as_str() {
       "0100" => {
@@ -85,6 +86,9 @@ pub trait ReaderExt<'a> {
   /// Reads the text with internal buffer.
   fn read_text_unbuffered(&mut self, end: &str) -> Result<String>;
 
+  /// This function should only be use to debug code.
+  ///
+  /// It is just a convenience function that prints all remaining tags and texts of the XML.
   #[cfg(debug_assertions)]
   fn print_to_end(&mut self) -> Result<()>;
 }
@@ -145,7 +149,8 @@ impl<'a> ReaderExt<'a> for Reader<&'a [u8]> {
     loop {
       match self.read_event_unbuffered()? {
         Event::Start(e) => println!("{}", self.decode(e.name())?),
-        Event::Text(e) => println!("  text: '{}'", self.decode(e.escaped())?),
+        Event::Text(e) => println!("  text: '{}'", e.unescape_and_decode(self)?),
+        Event::Empty(e) => println!("empty: {}", self.decode(e.name())?),
         Event::Eof => break,
         _ => {}
       }

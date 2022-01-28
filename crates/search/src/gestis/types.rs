@@ -2,18 +2,18 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq)]
 pub struct ParsedData {
-  pub cas: Option<String>,
-  pub molecular_formula: Option<String>,
-  pub molar_mass: Option<String>,
-  pub melting_point: Option<String>,
-  pub boiling_point: Option<String>,
-  pub water_hazard_class: Option<String>,
-  pub h_phrases: Vec<(String, String)>,
-  pub p_phrases: Vec<(String, String)>,
-  pub signal_word: Option<String>,
-  pub symbols: Vec<String>,
-  pub lethal_dose: Option<String>,
-  pub mak: Option<String>,
+  pub cas: Vec<String>,
+  pub molecular_formula: Vec<String>,
+  pub molar_mass: Vec<String>,
+  pub melting_point: Vec<String>,
+  pub boiling_point: Vec<String>,
+  pub water_hazard_class: Vec<String>,
+  pub h_phrases: Vec<Vec<(String, String)>>,
+  pub p_phrases: Vec<Vec<(String, String)>>,
+  pub signal_word: Vec<String>,
+  pub symbols: Vec<Vec<String>>,
+  pub lethal_dose: Vec<String>,
+  pub mak: Vec<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
