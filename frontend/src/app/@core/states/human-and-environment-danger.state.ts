@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import * as HumanAndEnvironmentDangerActions from '../actions/human-and-environment-danger.actions';
 import { addEmptySentence, rearrangeSentences, removeSentence } from '../operators/string-list-operators';
-import { GenericSentenceState } from './generic.state';
+import { GenericSentenceState } from './@generic.state';
 import { StringListStateModel } from '../interfaces/string-list-state-model.interface';
 import TEMPLATES from '../../../assets/docsTemplate.json';
 
@@ -34,7 +34,7 @@ export class HumanAndEnvironmentDangerState extends GenericSentenceState<HumanAn
     super.fillSentence(context, action);
   }
 
-  @Action(HumanAndEnvironmentDangerActions.AddSentence)
+  @Action(HumanAndEnvironmentDangerActions.AddLine)
   addSentence(context: StateContext<StringListStateModel>): void {
     context.setState(addEmptySentence());
   }

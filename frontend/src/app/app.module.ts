@@ -30,7 +30,7 @@ import { SecurityThingsComponent } from './components/security-things/security-t
 import { SelectedSearchComponent } from './components/search/selected-search/selected-search.component';
 import { ServiceModule } from './@core/services/service.module';
 import { SettingsComponent } from './components/settings/settings.component';
-import States from './@core/states/_states';
+import States from './@core/states/@states';
 import { SubMolecularFormula } from './@core/pipes/molecularformula.pipe';
 import { TextAreaFieldComponent } from './components/modifiable-string-list/text-area-field/text-area-field.component';
 import { TranslocoRootModule } from './transloco-root.module';

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import * as DisposalActions from '../actions/disposal.actions';
 import { addEmptySentence, rearrangeSentences, removeSentence } from '../operators/string-list-operators';
-import { GenericSentenceState } from './generic.state';
+import { GenericSentenceState } from './@generic.state';
 import { StringListStateModel } from '../interfaces/string-list-state-model.interface';
 import TEMPLATES from '../../../assets/docsTemplate.json';
 
@@ -31,7 +31,7 @@ export class DisposalState extends GenericSentenceState<DisposalActions.FillSent
     super.fillSentence(context, action);
   }
 
-  @Action(DisposalActions.AddSentence)
+  @Action(DisposalActions.AddLine)
   addSentence(context: StateContext<StringListStateModel>): void {
     context.setState(addEmptySentence());
   }

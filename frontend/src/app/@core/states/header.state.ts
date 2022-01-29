@@ -1,6 +1,7 @@
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 
+import { EMPTY_HEADER } from '../models/header.model';
 import { Header } from '../interfaces/DocTemplate';
 import TEMPLATES from '../../../assets/docsTemplate.json';
 
@@ -11,16 +12,6 @@ interface HeaderStateModel {
     model?: Header;
   };
 }
-
-const EMPTY_HEADER: Header = {
-  assistant: '',
-  documentTitle: '',
-  labCourse: '',
-  name: '',
-  organisation: '',
-  place: '',
-  preparation: '',
-};
 
 export class FillHeader {
   static readonly type = '[Header] fill header with new values';

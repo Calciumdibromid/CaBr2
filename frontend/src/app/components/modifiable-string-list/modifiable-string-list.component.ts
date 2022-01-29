@@ -38,7 +38,7 @@ export class ModifiableStringListComponent implements OnInit, OnDestroy {
   formGroup$!: Observable<FormGroup>;
 
   @Output()
-  add = new EventEmitter();
+  addEmpty = new EventEmitter();
 
   @Output()
   remove = new EventEmitter<number>();
@@ -84,11 +84,13 @@ export class ModifiableStringListComponent implements OnInit, OnDestroy {
   }
 
   addElement(): void {
+    // this is needed to keep form and state in sync
     this.controlElements.push(initForm('', this.formBuilder));
-    this.add.emit();
+    this.addEmpty.emit();
   }
 
   removeElement(index: number): void {
+    // this is needed to keep form and state in sync
     this.controlElements.removeAt(index);
     this.remove.emit(index);
   }

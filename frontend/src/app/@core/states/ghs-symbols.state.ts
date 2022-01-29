@@ -30,7 +30,7 @@ export class LoadGHSSymbols {
   },
 })
 @Injectable()
-export class GHSSYmbolState {
+export class GHSSymbolState {
   constructor(private configService: IConfigService, private alertService: AlertService) {}
 
   @Action(LoadGHSSymbols)

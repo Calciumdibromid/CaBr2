@@ -4,7 +4,7 @@ import { StringListStateModel } from '../interfaces/string-list-state-model.inte
 
 import * as RulesOfConductActions from '../actions/rules-of-conduct-acitons';
 import { addEmptySentence, rearrangeSentences, removeSentence } from '../operators/string-list-operators';
-import { GenericSentenceState } from './generic.state';
+import { GenericSentenceState } from './@generic.state';
 import TEMPLATES from '../../../assets/docsTemplate.json';
 
 const RULES_OF_CONDUCT_TEMPLATE = TEMPLATES.docsTemplate.rulesOfConduct;
@@ -31,7 +31,7 @@ export class RulesOfConductState extends GenericSentenceState<RulesOfConductActi
     super.fillSentence(context, action);
   }
 
-  @Action(RulesOfConductActions.AddSentence)
+  @Action(RulesOfConductActions.AddLine)
   addSentence(context: StateContext<StringListStateModel>): void {
     context.setState(addEmptySentence());
   }

@@ -71,6 +71,7 @@ export class SubstanceDataState {
     const substanceData = state.substanceData;
     const viewData = substanceData.map((value) => value.convertToViewSubstanceData());
 
+    // to prefill or fill up at least 5 substance data rows
     for (let i = viewData.length; i < 5; i++) {
       viewData.push(EMPTY_VIEW_SUBSTANCE_DATA);
     }

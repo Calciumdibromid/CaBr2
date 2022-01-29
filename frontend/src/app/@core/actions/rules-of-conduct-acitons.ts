@@ -6,8 +6,8 @@ export class FillSentence {
   constructor(public strings: string[]) {}
 }
 
-export class AddSentence {
-  static readonly type = '[RulesOfConduct] add sentence';
+export class AddLine {
+  static readonly type = '[RulesOfConduct] add line';
 }
 
 export class RemoveSentence {

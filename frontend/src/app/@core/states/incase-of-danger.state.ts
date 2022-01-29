@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 import * as InCaseOfDangerActions from '../actions/in-case-of-danger.actions';
 import { addEmptySentence, rearrangeSentences, removeSentence } from '../operators/string-list-operators';
-import { GenericSentenceState } from './generic.state';
+import { GenericSentenceState } from './@generic.state';
 import { StringListStateModel } from '../interfaces/string-list-state-model.interface';
 import TEMPLATES from '../../../assets/docsTemplate.json';
 
@@ -31,7 +31,7 @@ export class InCaseOfDangerState extends GenericSentenceState<InCaseOfDangerActi
     super.fillSentence(context, action);
   }
 
-  @Action(InCaseOfDangerActions.AddSentence)
+  @Action(InCaseOfDangerActions.AddLine)
   addSentence(context: StateContext<StringListStateModel>): void {
     context.setState(addEmptySentence());
   }
