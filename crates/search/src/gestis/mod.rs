@@ -1,6 +1,10 @@
 mod error;
+pub mod functions;
 pub mod types;
 pub mod xml_parser;
+
+#[cfg(test)]
+mod tests;
 
 use async_trait::async_trait;
 use reqwest::Client;
@@ -32,7 +36,8 @@ impl Gestis {
   }
 
   async fn get_article(&self, identifier: String) -> Result<(GestisResponse, String)> {
-    let url = format!("{}/{}/de/{}", BASE_URL, ARTICLE, identifier);
+    // create gestis url and left fill the identifier with zeros if it's smaller than 6
+    let url = format!("{BASE_URL}/{ARTICLE}/de/{identifier:0>6}");
     let res = self.make_request(&url).await?;
 
     Ok((res, url))
@@ -59,13 +64,13 @@ impl Gestis {
         match response.json().await {
           Ok(json) => Ok(json),
           Err(err) => {
-            log::error!("deserializing response failed: {:?}", err);
+            log::error!("deserializing response failed: {err:?}");
             Err(err.into())
           }
         }
       }
       Err(err) => {
-        log::error!("error when requesting url: {} -> {:?}", &url, err);
+        log::error!("error when requesting url: {url} -> {err:?}");
         if let Some(code) = err.status() {
           if code.as_u16() == 429 {
             return Err(GestisError::RateLimit);
@@ -109,13 +114,7 @@ impl Provider for Gestis {
       .map(|a| format!("{}={}", a.search_type.as_str(), a.pattern))
       .collect();
 
-    let url = format!(
-      "{}/{}/de?{}&exact={}",
-      BASE_URL,
-      SEARCH,
-      args.join("&"),
-      arguments.exact,
-    );
+    let url = format!("{BASE_URL}/{SEARCH}/de?{}&exact={}", args.join("&"), arguments.exact,);
     let res = self.make_request(&url).await?;
 
     Ok(res)
@@ -124,24 +123,26 @@ impl Provider for Gestis {
   async fn get_substance_data(&self, identifier: String) -> SearchResult<::types::SubstanceData> {
     let (json, url) = self.get_article(identifier).await?;
 
-    let data = xml_parser::parse_response(&json)?;
+    // If you don't have to, save yourself the pain and don't look deeper.
+    // See the line below as black box that extracts the substance data you need from the response.
+    let data = xml_parser::parse_response(&json, false)?;
 
     let res_data = SubstanceData {
       name: Data::new(json.name),
       alternative_names: json.aliases.into_iter().map(|a| a.name).collect(),
-      cas: Data::new(data.cas),
-      molecular_formula: Data::new(data.molecular_formula),
-      molar_mass: Data::new(data.molar_mass),
-      melting_point: Data::new(data.melting_point),
-      boiling_point: Data::new(data.boiling_point),
-      water_hazard_class: Data::new(data.water_hazard_class),
-      lethal_dose: Data::new(data.lethal_dose),
-      signal_word: Data::new(data.signal_word),
-      mak: Data::new(data.mak),
+      cas: Data::new(vec_to_option(data.cas)),
+      molecular_formula: Data::new(vec_to_option(data.molecular_formula)),
+      molar_mass: Data::new(vec_to_option(data.molar_mass)),
+      melting_point: Data::new(vec_to_option(data.melting_point)),
+      boiling_point: Data::new(vec_to_option(data.boiling_point)),
+      water_hazard_class: Data::new(vec_to_option(data.water_hazard_class)),
+      lethal_dose: Data::new(vec_to_option(data.lethal_dose)),
+      signal_word: Data::new(vec_to_option(data.signal_word)),
+      mak: Data::new(vec_to_option(data.mak)),
       amount: None,
-      h_phrases: Data::new(data.h_phrases.unwrap_or_default()),
-      p_phrases: Data::new(data.p_phrases.unwrap_or_default()),
-      symbols: Data::new(data.symbols.unwrap_or_default()),
+      h_phrases: Data::new(vec_vec_to_vec(data.h_phrases)),
+      p_phrases: Data::new(vec_vec_to_vec(data.p_phrases)),
+      symbols: Data::new(vec_vec_to_vec(data.symbols)),
       source: Source {
         provider: "gestis".to_string(),
         url,
@@ -164,5 +165,23 @@ impl SearchType {
       SearchType::Numbers => "nummern",
       SearchType::FullText => "volltextsuche",
     }
+  }
+}
+
+// TODO(#1085) remove again when SubstanceData was reworked
+
+fn vec_to_option<T>(mut vec: Vec<T>) -> Option<T> {
+  if vec.is_empty() {
+    None
+  } else {
+    Some(vec.swap_remove(0))
+  }
+}
+
+fn vec_vec_to_vec<T>(mut vec: Vec<Vec<T>>) -> Vec<T> {
+  if vec.is_empty() {
+    Vec::with_capacity(0)
+  } else {
+    vec.swap_remove(0)
   }
 }
