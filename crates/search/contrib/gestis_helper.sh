@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cargo run --bin gestis_helper --features="gestis_helper" -- $@
+cargo run --bin gestis_helper --no-default-features --features="gestis_helper" -- $@

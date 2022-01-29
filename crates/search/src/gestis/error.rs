@@ -5,26 +5,19 @@ use thiserror::Error;
 
 #[derive(Error, Debug)]
 pub enum GestisError {
-  #[error("no xml found")]
-  NoXML,
-
-  // the value is explicitly empty
-  #[error("no value")]
-  Empty,
-
   #[error("missing information: {0}")]
-  MissingInfo(String),
-
-  #[error("more values than expected")]
-  Multiple(String),
+  MissingInfo(&'static str),
 
   #[error("rate limited")]
   RateLimit,
 
+  #[error("unexpected event: {0}")]
+  UnexpectedEvent(String),
+
   #[error(transparent)]
   RequestError(#[from] reqwest::Error),
   #[error(transparent)]
-  XmlError(#[from] roxmltree::Error),
+  XmlError(#[from] quick_xml::Error),
   #[error(transparent)]
   IOError(#[from] std::io::Error),
 }
@@ -36,7 +29,7 @@ impl Serialize for GestisError {
   {
     match self {
       GestisError::MissingInfo(value) => serialize_string(serializer, "missingInfo", value),
-      GestisError::Multiple(value) => serialize_string(serializer, "multiple", value),
+      GestisError::UnexpectedEvent(value) => serialize_string(serializer, "unexpectedEvent", value),
 
       GestisError::RequestError(err) => serialize_string(serializer, "requestError", err),
       GestisError::XmlError(err) => serialize_string(serializer, "xmlError", err),
