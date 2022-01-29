@@ -7,7 +7,7 @@ import { translate } from '@ngneat/transloco';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Data, Source, SubstanceData } from '../../@core/models/substances.model';
 import { Provider, ProviderMapping, SearchArgument } from '../../@core/services/provider/provider.model';
-import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
+import { AlertService } from '../../@core/services/alertsnackbar/alertsnackbar.service';
 import { GlobalModel } from '../../@core/models/global.model';
 import { INativeService } from '../../@core/services/native/native.interface';
 import { IProviderService } from '../../@core/services/provider/provider.interface';
