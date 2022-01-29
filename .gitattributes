@@ -1,2 +1,2 @@
-# All files hav linux line endings
-*.* eol=lf
+# All text files have linux line endings
+* text=auto eol=lf
