@@ -12,7 +12,7 @@ import {
   ConfigModel,
   configObservable,
 } from './@core/models/config.model';
-import { AlertService } from './@core/services/alertsnackbar/altersnackbar.service';
+import { AlertService } from './@core/services/alertsnackbar/alertsnackbar.service';
 import { ConsentComponent } from './components/consent/consent.component';
 import { IConfigService } from './@core/services/config/config.interface';
 import { LoadGHSSymbols } from './@core/states/ghs-symbols.state';

@@ -14,7 +14,7 @@ import {
 } from '../../@core/states/substance-data.state';
 import { Provider, ProviderMapping } from '../../@core/services/provider/provider.model';
 import { Source, SubstanceData } from '../../@core/models/substances.model';
-import { AlertService } from '../../@core/services/alertsnackbar/altersnackbar.service';
+import { AlertService } from '../../@core/services/alertsnackbar/alertsnackbar.service';
 import { INativeService } from '../../@core/services/native/native.interface';
 import { IProviderService } from '../../@core/services/provider/provider.interface';
 import Logger from '../../@core/utils/logger';

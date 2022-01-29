@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { translate } from '@ngneat/transloco';
 
 import { Provider, SearchArgument, SearchResult } from '../../../@core/services/provider/provider.model';
-import { AlertService } from '../../../@core/services/alertsnackbar/altersnackbar.service';
+import { AlertService } from '../../../@core/services/alertsnackbar/alertsnackbar.service';
 import { IProviderService } from '../../../@core/services/provider/provider.interface';
 import Logger from '../../../@core/utils/logger';
 

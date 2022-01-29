@@ -8,7 +8,7 @@ import { translate } from '@ngneat/transloco';
 
 import DocsTemplate, { Header } from '../../interfaces/DocTemplate';
 import { FillHeader, HeaderState } from '../../states/header.state';
-import { AlertService } from '../alertsnackbar/altersnackbar.service';
+import { AlertService } from '../alertsnackbar/alertsnackbar.service';
 import { CaBr2Document } from '../loadSave/loadSave.model';
 import { compareArrays } from '../../utils/compare';
 import { DisposalState } from '../../states/disposal.state';
