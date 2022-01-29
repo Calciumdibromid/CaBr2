@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
 import { translate } from '@ngneat/transloco';
 
-import { AlertService } from '../services/alertsnackbar/altersnackbar.service';
+import { AlertService } from '../services/alertsnackbar/alertsnackbar.service';
 import { IConfigService } from '../services/config/config.interface';
 import Logger from '../utils/logger';
 

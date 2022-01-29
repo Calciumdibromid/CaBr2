@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { translate } from '@ngneat/transloco';
 
 import { Data, EMPTY_VIEW_SUBSTANCE_DATA, SubstanceData, ViewSubstanceData } from '../models/substances.model';
-import { AlertService } from '../services/alertsnackbar/altersnackbar.service';
+import { AlertService } from '../services/alertsnackbar/alertsnackbar.service';
 import { IProviderService } from '../services/provider/provider.interface';
 import Logger from '../utils/logger';
 import { ProviderMapping } from '../services/provider/provider.model';
