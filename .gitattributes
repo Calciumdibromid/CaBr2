@@ -1,2 +1,2 @@
-# All files hav linux line endings
-*.* eol=lf
+# Save all text files with linux line endings
+* text=auto eol=lf
