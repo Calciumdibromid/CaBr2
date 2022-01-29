@@ -31,7 +31,7 @@ export class DisposalState extends GenericSentenceState<DisposalActions.FillSent
     super.fillSentence(context, action);
   }
 
-  @Action(DisposalActions.AddLine)
+  @Action(DisposalActions.AddEmptyLine)
   addSentence(context: StateContext<StringListStateModel>): void {
     context.setState(addEmptySentence());
   }

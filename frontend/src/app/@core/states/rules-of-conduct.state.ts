@@ -31,7 +31,7 @@ export class RulesOfConductState extends GenericSentenceState<RulesOfConductActi
     super.fillSentence(context, action);
   }
 
-  @Action(RulesOfConductActions.AddLine)
+  @Action(RulesOfConductActions.AddEmptyLine)
   addSentence(context: StateContext<StringListStateModel>): void {
     context.setState(addEmptySentence());
   }

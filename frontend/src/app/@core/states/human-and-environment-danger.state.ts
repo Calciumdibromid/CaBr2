@@ -34,7 +34,7 @@ export class HumanAndEnvironmentDangerState extends GenericSentenceState<HumanAn
     super.fillSentence(context, action);
   }
 
-  @Action(HumanAndEnvironmentDangerActions.AddLine)
+  @Action(HumanAndEnvironmentDangerActions.AddEmptyLine)
   addSentence(context: StateContext<StringListStateModel>): void {
     context.setState(addEmptySentence());
   }

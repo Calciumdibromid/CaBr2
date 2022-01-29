@@ -6,8 +6,8 @@ export class FillSentence {
   constructor(public strings: string[]) {}
 }
 
-export class AddLine {
-  static readonly type = '[Disposal] add line';
+export class AddEmptyLine {
+  static readonly type = '[Disposal] add empty line';
 }
 
 export class RemoveSentence {

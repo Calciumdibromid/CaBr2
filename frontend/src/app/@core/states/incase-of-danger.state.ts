@@ -31,7 +31,7 @@ export class InCaseOfDangerState extends GenericSentenceState<InCaseOfDangerActi
     super.fillSentence(context, action);
   }
 
-  @Action(InCaseOfDangerActions.AddLine)
+  @Action(InCaseOfDangerActions.AddEmptyLine)
   addSentence(context: StateContext<StringListStateModel>): void {
     context.setState(addEmptySentence());
   }

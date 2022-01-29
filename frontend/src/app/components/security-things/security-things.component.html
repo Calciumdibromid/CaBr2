@@ -3,7 +3,7 @@
     ngxsIdentifier="human_and_environment_danger"
     [title]="t('humanAndEnvironmentDanger')"
     [formGroup$]="initFormGroup('human_and_environment_danger')"
-    (addEmpty)="add(HumanAndEnvironmentDanger.AddLine)"
+    (addEmpty)="add(HumanAndEnvironmentDanger.AddEmptyLine)"
     (remove)="remove(HumanAndEnvironmentDanger.RemoveSentence, $event)"
     (rearrange)="rearrange(HumanAndEnvironmentDanger.RearrangeSentences, $event)"
   >
@@ -13,7 +13,7 @@
     ngxsIdentifier="rules_of_conduct_state"
     [title]="t('rulesOfConduct')"
     [formGroup$]="initFormGroup('rules_of_conduct_state')"
-    (addEmpty)="add(RulesOfConduct.AddLine)"
+    (addEmpty)="add(RulesOfConduct.AddEmptyLine)"
     (remove)="remove(RulesOfConduct.RemoveSentence, $event)"
     (rearrange)="rearrange(RulesOfConduct.RearrangeSentences, $event)"
   >
@@ -23,7 +23,7 @@
     ngxsIdentifier="in_case_of_danger"
     [title]="t('inCaseOfDanger')"
     [formGroup$]="initFormGroup('in_case_of_danger')"
-    (addEmpty)="add(InCaseOfDanger.AddLine)"
+    (addEmpty)="add(InCaseOfDanger.AddEmptyLine)"
     (remove)="remove(InCaseOfDanger.RemoveSentence, $event)"
     (rearrange)="rearrange(InCaseOfDanger.RearrangeSentences, $event)"
   >
@@ -33,7 +33,7 @@
     ngxsIdentifier="disposal"
     [title]="t('disposal')"
     [formGroup$]="initFormGroup('disposal')"
-    (addEmpty)="add(Disposal.AddLine)"
+    (addEmpty)="add(Disposal.AddEmptyLine)"
     (remove)="remove(Disposal.RemoveSentence, $event)"
     (rearrange)="rearrange(Disposal.RearrangeSentences, $event)"
   >
