@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { translate } from '@ngneat/transloco';
 
-import { AlertService } from '../alertsnackbar/altersnackbar.service';
+import { AlertService } from '../alertsnackbar/alertsnackbar.service';
 import { CaBr2Document } from '../loadSave/loadSave.model';
 import { compareArrays } from '../../utils/compare';
 import { DialogFilter } from '@tauri-apps/api/dialog';
