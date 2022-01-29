@@ -1,4 +1,4 @@
-import { Alert, AlertType } from './altersnackbar.model';
+import { Alert, AlertType } from './alertsnackbar.model';
 import { Observable, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 

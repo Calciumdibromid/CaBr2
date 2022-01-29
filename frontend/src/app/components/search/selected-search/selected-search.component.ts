@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
 import { SearchArgument, SearchType, searchTypes } from '../../../@core/services/provider/provider.model';
-import { AlertService } from '../../../@core/services/alertsnackbar/altersnackbar.service';
+import { AlertService } from '../../../@core/services/alertsnackbar/alertsnackbar.service';
 import { IProviderService } from '../../../@core/services/provider/provider.interface';
 import Logger from '../../../@core/utils/logger';
 import { translate } from '@ngneat/transloco';
