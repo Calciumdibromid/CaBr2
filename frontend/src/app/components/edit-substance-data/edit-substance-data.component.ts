@@ -173,9 +173,10 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
   localizeUnit(unit: UnitType): string {
     const name = getViewName({ type: unit });
-    const localizedName = translate<any>('units')[name];
+    const path = `units.${name}`;
+    const localizedName: string = translate(path);
 
-    if (localizedName) {
+    if (localizedName !== path) {
       return localizedName;
     } else {
       return name;
