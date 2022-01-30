@@ -1,11 +1,10 @@
 #!/bin/bash
 
-cd "$(dirname "$0")/../src-tauri"
-crate_root="$(pwd)"
-echo "crate_root=$crate_root"
+cd "$(dirname "$0")/.."
 
-find "$crate_root" -name Cargo.toml | while read line; do
-  cd "$(dirname "$line")"
+for i in 'webserver/Cargo.toml' 'frontend/src-wasm/Cargo.toml' 'frontend/src-tauri/Cargo.toml'; do
   echo "context: $(pwd)"
-  sed -i "/^version = /cversion = \"$1\"" Cargo.toml
+  sed -i "/^version = /cversion = \"$1\"" ${i}
 done
+
+sed -i "/^\ \ \"version\": /c\ \ \"version\": \"$1\"," frontend/package.json
