@@ -115,3 +115,10 @@ img {
     margin-left: 10px;
   }
 }
+
+.symbol-grid {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 5px;
+  margin-bottom: 5px;
+}
