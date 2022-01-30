@@ -1,8 +1,7 @@
 import { BehaviorSubject, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 
-import { GlobalModel } from '../../models/global.model';
 import { IProviderService } from './provider.interface';
 
 import { Provider, ProviderMapping, SearchArguments, SearchResult, SearchType } from './provider.model';
@@ -15,7 +14,7 @@ export class ProviderService implements IProviderService {
 
   providerMappingsObservable = this.providerMappingsSubject.asObservable();
 
-  constructor(private nativeService: INativeService, private globals: GlobalModel) {
+  constructor(private nativeService: INativeService) {
     this.getAvailableProviders()
       .pipe(first())
       .subscribe((providers) => this.providerMappingsSubject.next(new Map(providers.map((p) => [p.identifier, p]))));
@@ -41,9 +40,11 @@ export class ProviderService implements IProviderService {
   }
 
   substanceData(provider: string, identifier: string): Observable<SubstanceData> {
-    return this.nativeService.promisified('plugin:cabr2_search|get_substance_data', {
-      provider,
-      identifier,
-    });
+    return this.nativeService
+      .promisified<SubstanceData>('plugin:cabr2_search|get_substance_data', {
+        provider,
+        identifier,
+      })
+      .pipe(map((data) => new SubstanceData(data)));
   }
 }

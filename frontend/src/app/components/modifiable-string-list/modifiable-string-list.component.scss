@@ -5,14 +5,12 @@ ul {
   padding: 0;
 }
 
-.width-100 {
-  width: 100%;
-}
-
 .cdk-drag-handle {
   &:hover {
     cursor: grab;
   }
+
+  font-size: 1.1em !important;
 }
 
 .cdk-drag-preview {

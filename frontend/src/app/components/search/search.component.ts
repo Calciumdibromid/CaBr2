@@ -1,14 +1,20 @@
 import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { Select, Store } from '@ngxs/store';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import { Observable } from 'rxjs';
 import { translate } from '@ngneat/transloco';
 
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Data, Source, SubstanceData } from '../../@core/models/substances.model';
-import { Provider, ProviderMapping, SearchArgument } from '../../@core/services/provider/provider.model';
+import {
+  AddSubstanceData,
+  ModifySubstanceData,
+  RearrangeSubstanceData,
+  RemoveSubstanceData,
+} from '../../@core/states/substance-data.state';
+import { Provider, ProviderMapping } from '../../@core/services/provider/provider.model';
+import { Source, SubstanceData } from '../../@core/models/substances.model';
 import { AlertService } from '../../@core/services/alertsnackbar/alertsnackbar.service';
-import { GlobalModel } from '../../@core/models/global.model';
 import { INativeService } from '../../@core/services/native/native.interface';
 import { IProviderService } from '../../@core/services/provider/provider.interface';
 import Logger from '../../@core/utils/logger';
@@ -30,7 +36,7 @@ export class SearchComponent implements OnInit {
   @ViewChildren(SelectedSearchComponent)
   selectedSearchComponents!: QueryList<SelectedSearchComponent>;
 
-  res: SearchArgument[] = [];
+  @Select((state: any) => state.substance_data.substanceData) substanceData$!: Observable<SubstanceData[]>;
 
   addButtonHover = false;
 
@@ -40,23 +46,21 @@ export class SearchComponent implements OnInit {
 
   index = 0;
 
-  substanceData: SubstanceData[] = [];
-
   displayedColumns = ['edited', 'name', 'cas', 'source', 'actions'];
 
-  dataSource!: MatTableDataSource<SubstanceData>;
+  dataSource = new MatTableDataSource<SubstanceData>([]);
 
   constructor(
     private providerService: IProviderService,
     private nativeService: INativeService,
     private alertService: AlertService,
     private dialog: MatDialog,
-    public globals: GlobalModel,
+    private store: Store,
   ) {}
 
   ngOnInit(): void {
-    this.globals.substanceDataObservable.subscribe((data) => {
-      this.dataSource = new MatTableDataSource(data);
+    this.substanceData$.subscribe((data) => {
+      this.dataSource.connect().next(data);
     });
 
     this.providerService.providerMappingsObservable.subscribe((providerMap) => {
@@ -84,18 +88,7 @@ export class SearchComponent implements OnInit {
         this.providerService.substanceData(provider.identifier, result.zvgNumber).subscribe({
           next: (value) => {
             logger.debug(value);
-            const cas = this.modifiedOrOriginal(value.cas);
-            if (
-              cas &&
-              this.globals.substanceDataSubject.getValue().some((s) => cas === this.modifiedOrOriginal(s.cas))
-            ) {
-              logger.warning('substance with same cas number already present:', cas);
-              this.alertService.error(translate('error.substanceWithCASExist'));
-              return;
-            }
-            const data = [...this.globals.substanceDataSubject.getValue(), value];
-            this.dataSource.connect().next(data);
-            this.globals.substanceDataSubject.next(data);
+            this.store.dispatch(new AddSubstanceData(value));
           },
           error: (err) => {
             logger.error('could not get substance information:', err);
@@ -109,7 +102,6 @@ export class SearchComponent implements OnInit {
   }
 
   openEditDialog(origData: SubstanceData): void {
-    origData.checked = true;
     this.dialog
       .open(EditSubstanceDataComponent, {
         data: origData,
@@ -124,10 +116,7 @@ export class SearchComponent implements OnInit {
         next: (substanceData?: SubstanceData) => {
           // substanceData is only filled if editing was successful
           if (substanceData) {
-            const newData = this.globals.substanceDataSubject.getValue();
-            const index = newData.indexOf(origData);
-            newData[index] = substanceData;
-            this.globals.substanceDataSubject.next(newData);
+            this.store.dispatch(new ModifySubstanceData(origData, substanceData));
           }
         },
         error: (err) => {
@@ -141,12 +130,7 @@ export class SearchComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
 
-    this.globals.substanceDataObservable.pipe(first()).subscribe((value) => {
-      const index = value.indexOf(data);
-      value.splice(index, 1);
-      this.globals.substanceDataSubject.next(value);
-      this.dataSource.connect().next(value);
-    });
+    this.store.dispatch(new RemoveSubstanceData(data));
   }
 
   sourceButtonDisabled(source: Source): boolean {
@@ -164,13 +148,7 @@ export class SearchComponent implements OnInit {
   }
 
   addCustomSubstanceData(): void {
-    const data = [
-      ...this.globals.substanceDataSubject.getValue(),
-      // create new custom SubstanceData
-      new SubstanceData({ checked: true }),
-    ];
-    this.dataSource.connect().next(data);
-    this.globals.substanceDataSubject.next(data);
+    this.store.dispatch(new AddSubstanceData(new SubstanceData({ checked: true })));
   }
 
   getProviderName(source: Source): string {
@@ -183,14 +161,6 @@ export class SearchComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]> | any): void {
-    moveItemInArray(this.dataSource.data, event.previousIndex, event.currentIndex);
-    const data = this.dataSource.data.slice();
-    this.dataSource.connect().next(data);
-    this.globals.substanceDataSubject.next(data);
-  }
-
-  // TODO move to SubstanceData class
-  private modifiedOrOriginal<T>(obj: Data<T>): T {
-    return obj.modifiedData ?? obj.originalData;
+    this.store.dispatch(new RearrangeSubstanceData(event));
   }
 }

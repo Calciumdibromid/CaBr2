@@ -38,6 +38,7 @@ export class ProviderService implements IProviderService {
   substanceData(provider: string, identifier: string): Observable<SubstanceData> {
     return from(wasm.substance_data(provider, identifier) as Promise<string>).pipe(
       map((substance) => JSON.parse(substance)),
+      map((data) => new SubstanceData(data)),
     );
   }
 }

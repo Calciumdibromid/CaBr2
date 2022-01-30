@@ -1,3 +1,7 @@
+import { SafeResourceUrl } from '@angular/platform-browser';
+
+export type GHSSymbols = Map<string, SafeResourceUrl>;
+
 interface EmptyData<T> {
   originalData: T;
 }
@@ -7,6 +11,22 @@ interface EmptyData<T> {
 const EMPTY_DATA = (): EmptyData<undefined> => ({ originalData: undefined });
 const EMPTY_STRING_DATA = (): EmptyData<string> => ({ originalData: '' });
 const EMPTY_LIST_DATA = (): EmptyData<[]> => ({ originalData: [] });
+
+export const EMPTY_VIEW_SUBSTANCE_DATA: ViewSubstanceData = {
+  name: '',
+  cas: '',
+  molecularFormula: '',
+  molarMass: '',
+  meltingPoint: '',
+  boilingPoint: '',
+  waterHazardClass: '',
+  hPhrases: [],
+  pPhrases: [],
+  signalWord: '',
+  symbols: [],
+  lethalDose: '',
+  mak: '',
+};
 
 export class SubstanceData {
   name: Data<string>;
@@ -103,6 +123,25 @@ export class SubstanceData {
 
     return false;
   }
+
+  convertToViewSubstanceData(): ViewSubstanceData {
+    return {
+      name: this.name.modifiedData ?? this.name.originalData,
+      cas: this.cas.modifiedData ?? this.cas.originalData,
+      molecularFormula: this.molecularFormula.modifiedData ?? this.molecularFormula.originalData,
+      molarMass: this.molarMass.modifiedData ?? this.molarMass.originalData,
+      meltingPoint: this.meltingPoint.modifiedData ?? this.meltingPoint.originalData,
+      boilingPoint: this.boilingPoint.modifiedData ?? this.boilingPoint.originalData,
+      waterHazardClass: this.waterHazardClass.modifiedData ?? this.waterHazardClass.originalData,
+      hPhrases: this.hPhrases.modifiedData ?? this.hPhrases.originalData,
+      pPhrases: this.pPhrases.modifiedData ?? this.pPhrases.originalData,
+      signalWord: this.signalWord.modifiedData ?? this.signalWord.originalData,
+      symbols: this.symbols.modifiedData ?? this.symbols.originalData,
+      lethalDose: this.lethalDose.modifiedData ?? this.lethalDose.originalData,
+      mak: this.mak.modifiedData ?? this.mak.originalData,
+      amount: this.amount,
+    };
+  }
 }
 
 /**
@@ -133,6 +172,23 @@ export interface Source {
 export interface Amount {
   value: string;
   unit: Unit;
+}
+
+export interface ViewSubstanceData {
+  name: string;
+  cas?: string;
+  molecularFormula?: string;
+  molarMass?: string;
+  meltingPoint?: string;
+  boilingPoint?: string;
+  waterHazardClass?: string;
+  hPhrases: [string, string][];
+  pPhrases: [string, string][];
+  signalWord?: string;
+  symbols: string[];
+  lethalDose?: string;
+  mak?: string;
+  amount?: Amount;
 }
 
 export interface Unit {

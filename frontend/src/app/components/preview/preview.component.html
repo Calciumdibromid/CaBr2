@@ -7,33 +7,33 @@
     <table class="unselectable">
       <!-- header -->
       <tr>
-        <th colspan="8">{{ header.documentTitle }}</th>
+        <th colspan="8">{{ (header | async)?.documentTitle }}</th>
       </tr>
       <tr>
-        <th colspan="8">{{ header.organisation }}</th>
+        <th colspan="8">{{ (header | async)?.organisation }}</th>
       </tr>
       <tr>
-        <th colspan="8">{{ header.labCourse }}</th>
+        <th colspan="8">{{ (header | async)?.labCourse }}</th>
       </tr>
       <ng-container *transloco="let t; read: 'header'">
         <tr>
           <td colspan="3">
             {{ t('name') }}<br />
-            {{ header.name }}
+            {{ (header | async)?.name }}
           </td>
           <td colspan="2">
             {{ t('place') }}<br />
-            {{ header.place }}
+            {{ (header | async)?.place }}
           </td>
           <td colspan="3">
             {{ t('assistant') }}<br />
-            {{ header.assistant }}
+            {{ (header | async)?.assistant }}
           </td>
         </tr>
         <tr>
           <td colspan="8">
             {{ t('preparation') }}<br />
-            <b>{{ header.preparation }}</b>
+            <b>{{ (header | async)?.preparation }}</b>
           </td>
         </tr>
       </ng-container>
@@ -51,7 +51,7 @@
         </tr>
       </ng-container>
 
-      <tr *ngFor="let data of substanceData">
+      <tr *ngFor="let data of substanceData$ | async">
         <td class="min-width-5cm" colspan="2">
           {{ data.name }}<br />
           <div class="padding-top-5px"><span [outerHTML]="data.molecularFormula | subMolecularFormula"></span></div>
@@ -59,7 +59,7 @@
         <td class="min-width-2cm">{{ data.molarMass }}</td>
         <td class="min-width-2cm">{{ data.boilingPoint }}<br />{{ data.meltingPoint }}</td>
         <td>
-          <img *ngFor="let key of data.symbols" [src]="globals.ghsSymbols.get(key)" alt="{{ key }}" />
+          <img *ngFor="let key of data.symbols" [src]="(symbols$ | async)?.get(key)" alt="{{ key }}" />
           <span class="signalword">{{ data.signalWord }}</span>
         </td>
         <td>{{ getPhraseNumber(data.hPhrases).join(', ') }}<br />{{ getPhraseNumber(data.pPhrases).join(', ') }}</td>
@@ -74,12 +74,12 @@
         </tr>
         <tr>
           <td colspan="4" class="full-height top">
-            <div class="phrase" *ngFor="let phrase of getHPhrases()">
+            <div class="phrase" *ngFor="let phrase of getHPhrases() | async">
               {{ phrase }}
             </div>
           </td>
           <td colspan="4" class="full-height top">
-            <div class="phrase" *ngFor="let phrase of getPPhrases()">
+            <div class="phrase" *ngFor="let phrase of getPPhrases() | async">
               {{ phrase }}
             </div>
           </td>
@@ -87,7 +87,7 @@
         <tr>
           <td colspan="8">
             <b>{{ t('sources') }}:</b>
-            {{ getProviders() }}
+            {{ sources$ | async }}
           </td>
         </tr>
       </ng-container>
@@ -102,7 +102,7 @@
         <tr>
           <td colspan="2" class="top height-5cm9">
             <b>{{ t('humanAndEnvironmentDanger') }}</b>
-            <ul *ngFor="let entry of globals.humanAndEnvironmentDangerObservable | async">
+            <ul *ngFor="let entry of humanAndEnvironmentDanger$ | async">
               <li *ngIf="entry">
                 {{ entry }}
               </li>
@@ -112,7 +112,7 @@
         <tr>
           <td colspan="2" class="top height-5cm9">
             <b>{{ t('rulesOfConduct') }}</b>
-            <ul *ngFor="let entry of globals.rulesOfConductObservable | async">
+            <ul *ngFor="let entry of rulesOfConduct$ | async">
               <li *ngIf="entry">
                 {{ entry }}
               </li>
@@ -122,7 +122,7 @@
         <tr>
           <td colspan="2" class="top height-5cm9">
             <b>{{ t('inCaseOfDanger') }}</b>
-            <ul *ngFor="let entry of globals.inCaseOfDangerObservable | async">
+            <ul *ngFor="let entry of inCaseOfDanger$ | async">
               <li *ngIf="entry">
                 {{ entry }}
               </li>
@@ -132,7 +132,7 @@
         <tr>
           <td colspan="2" class="top height-5cm9">
             <b>{{ t('disposal') }}</b>
-            <ul *ngFor="let entry of globals.disposalObservable | async">
+            <ul *ngFor="let entry of disposal$ | async">
               <li *ngIf="entry">
                 {{ entry }}
               </li>

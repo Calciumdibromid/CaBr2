@@ -1,67 +1,107 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Actions, ofActionDispatched, Store } from '@ngxs/store';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
+
+import { elementsToFormGroup, initForm, stateToElements } from 'src/app/@core/utils/forms.helper';
+import {
+  FillSentence as FillDisposalSentence,
+  ResetSentences as ResetDisposalSentence,
+} from '../../@core/actions/disposal.actions';
+import {
+  FillSentence as FillHumanAndEnvironmentDangerSentence,
+  ResetSentences as ResetHumanAndEnvironmentDangerSentences,
+} from '../../@core/actions/human-and-environment-danger.actions';
+import {
+  FillSentence as FillInCaseOfDangerSentence,
+  ResetSentences as ResetInCaseOfDangerSentences,
+} from '../../@core/actions/in-case-of-danger.actions';
+import {
+  FillSentence as FillRulesOfConductSentence,
+  ResetSentences as ResetRulesOfConductSentences,
+} from '../../@core/actions/rules-of-conduct-acitons';
 
 @Component({
   selector: 'app-modifiable-string-list',
   templateUrl: './modifiable-string-list.component.html',
   styleUrls: ['./modifiable-string-list.component.scss'],
 })
-export class ModifiableStringListComponent implements OnInit {
+export class ModifiableStringListComponent implements OnInit, OnDestroy {
+  @Input()
+  ngxsIdentifier!: string;
+
+  @Input()
+  title!: string;
+
+  @Input()
+  formGroup$!: Observable<FormGroup>;
+
   @Output()
-  elementEmitter = new EventEmitter<string[]>();
+  addEmpty = new EventEmitter();
 
-  @Input()
-  title = '';
+  @Output()
+  remove = new EventEmitter<number>();
 
-  @Input()
-  elements!: Observable<string[]>;
+  @Output()
+  rearrange = new EventEmitter<CdkDragDrop<FormGroup[]>>();
 
-  form: FormGroup;
+  formGroup!: FormGroup;
 
   addHover = false;
 
-  constructor(private formBuilder: FormBuilder) {
-    this.form = this.formBuilder.group({});
-  }
+  private subscription!: Subscription;
+
+  constructor(private formBuilder: FormBuilder, private actions$: Actions, private store: Store) {}
 
   get controlElements(): FormArray {
-    return this.form.get('elements') as FormArray;
+    return this.formGroup.get('elements') as FormArray;
   }
 
   ngOnInit(): void {
-    this.elements.subscribe(
-      (elements) =>
-        (this.form = this.formBuilder.group({
-          elements: this.formBuilder.array(elements.map((value) => this.initForm(value)) ?? []),
-        })),
-    );
+    this.formGroup$.subscribe((formGroup) => (this.formGroup = formGroup));
+    this.actions$
+      .pipe(
+        ofActionDispatched(
+          ResetHumanAndEnvironmentDangerSentences,
+          ResetRulesOfConductSentences,
+          ResetInCaseOfDangerSentences,
+          ResetDisposalSentence,
+
+          FillHumanAndEnvironmentDangerSentence,
+          FillRulesOfConductSentence,
+          FillInCaseOfDangerSentence,
+          FillDisposalSentence,
+        ),
+      )
+      .subscribe(() => {
+        this.initFormGroup(this.ngxsIdentifier);
+      });
   }
 
-  initForm(value: string): FormGroup {
-    return this.formBuilder.group({
-      value,
-      hover: false,
-    });
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   addElement(): void {
-    this.controlElements.push(this.initForm(''));
-    this.emitChange();
+    // this is needed to keep form and state in sync
+    this.controlElements.push(initForm('', this.formBuilder));
+    this.addEmpty.emit();
   }
 
   removeElement(index: number): void {
+    // this is needed to keep form and state in sync
     this.controlElements.removeAt(index);
-    this.emitChange();
-  }
-
-  emitChange(): void {
-    this.elementEmitter.emit(this.controlElements.controls.map((control) => control.get('value')?.value));
+    this.remove.emit(index);
   }
 
   drop(event: CdkDragDrop<FormGroup[]>): void {
-    moveItemInArray(this.controlElements.controls, event.previousIndex, event.currentIndex);
-    this.emitChange();
+    this.rearrange.emit(event);
+  }
+
+  initFormGroup(identifier: string): void {
+    stateToElements(this.store, identifier).subscribe((elements) => {
+      this.formGroup = elementsToFormGroup(this.formBuilder, elements);
+    });
   }
 }

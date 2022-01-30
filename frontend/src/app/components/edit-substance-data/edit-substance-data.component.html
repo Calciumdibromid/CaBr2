@@ -235,10 +235,10 @@
           <div class="symbols-grid">
             <img
               class="symbol undragable"
-              *ngFor="let key of globals.ghsSymbolKeys"
+              *ngFor="let key of symbolKeys$ | async"
               [ngClass]="isSymbolActive(key) ? '' : 'grayscale'"
               (click)="toggleSymbol(key)"
-              [src]="globals.ghsSymbols.get(key)"
+              [src]="(symbols$ | async)?.get(key)"
               alt="{{ key }}"
             />
           </div>

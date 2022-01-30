@@ -1,32 +1,32 @@
 <ng-container *transloco="let t; read: 'header'">
-  <mat-card class="flex-column onepager-mat-card unselectable">
+  <mat-card class="flex-column onepager-mat-card unselectable" [formGroup]="formGroup" ngxsForm="header.headerForm">
     <mat-form-field>
       <mat-label>{{ t('docTitle') }}</mat-label>
-      <input matInput [(ngModel)]="header.documentTitle" />
+      <input matInput formControlName="documentTitle" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>{{ t('organisation') }}</mat-label>
-      <input matInput [(ngModel)]="header.organisation" />
+      <input matInput formControlName="organisation" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>{{ t('labCourse') }}</mat-label>
-      <input matInput [(ngModel)]="header.labCourse" />
+      <input matInput formControlName="labCourse" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>{{ t('name') }}</mat-label>
-      <input matInput [(ngModel)]="header.name" />
+      <input matInput formControlName="name" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>{{ t('place') }}</mat-label>
-      <input matInput [(ngModel)]="header.place" />
+      <input matInput formControlName="place" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>{{ t('assistant') }}</mat-label>
-      <input matInput [(ngModel)]="header.assistant" />
+      <input matInput formControlName="assistant" />
     </mat-form-field>
     <mat-form-field>
       <mat-label>{{ t('preparation') }}</mat-label>
-      <input matInput [(ngModel)]="header.preparation" />
+      <input matInput formControlName="preparation" />
     </mat-form-field>
   </mat-card>
 </ng-container>

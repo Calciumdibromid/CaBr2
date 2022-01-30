@@ -1,30 +1,53 @@
 import { combineLatest, Observable } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
-import { GlobalModel } from '../../models/global.model';
+import { Select, Store } from '@ngxs/store';
+import { DialogFilter } from '@tauri-apps/api/dialog';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { translate } from '@ngneat/transloco';
 
+import DocsTemplate, { Header } from '../../interfaces/DocTemplate';
+import { FillHeader, HeaderState } from '../../states/header.state';
 import { AlertService } from '../alertsnackbar/alertsnackbar.service';
 import { CaBr2Document } from '../loadSave/loadSave.model';
 import { compareArrays } from '../../utils/compare';
-import { DialogFilter } from '@tauri-apps/api/dialog';
-import DocsTemplate from '../../interfaces/DocTemplate';
+import { DisposalState } from '../../states/disposal.state';
+import { FillSentence as FillDisposalSentence } from '../../actions/disposal.actions';
+import { FillSentence as FillHumanAndEnvironmentDangerSentence } from '../../actions/human-and-environment-danger.actions';
+import { FillSentence as FillInCaseOfDangerSentence } from '../../actions/in-case-of-danger.actions';
+import { FillSentence as FillRulesOfConductSentence } from '../../actions/rules-of-conduct-acitons';
+import { FillSubstanceData } from '../../states/substance-data.state';
+import { HumanAndEnvironmentDangerState } from '../../states/human-and-environment-danger.state';
 import { ILoadSaveService } from '../loadSave/loadSave.interface';
 import { INativeService } from '../native/native.interface';
+import { InCaseOfDangerState } from '../../states/incase-of-danger.state';
 import Logger from '../../utils/logger';
-import { YesNoDialogComponent } from 'src/app/components/yes-no-dialog/yes-no-dialog.component';
+import { RulesOfConductState } from '../../states/rules-of-conduct.state';
+import { SubstanceData } from '../../models/substances.model';
+import { YesNoDialogComponent } from '../../../components/yes-no-dialog/yes-no-dialog.component';
 
 const logger = new Logger('documentService');
 
 @Injectable()
 export default class DocumentService {
+  @Select(HeaderState.header) private header$!: Observable<Header>;
+
+  @Select((state: any) => state.substance_data.substanceData) private substanceData$!: Observable<SubstanceData[]>;
+
+  @Select(DisposalState.elements) private disposal$!: Observable<string[]>;
+
+  @Select(HumanAndEnvironmentDangerState.elements) private humanAndEnvironmentDanger$!: Observable<string[]>;
+
+  @Select(InCaseOfDangerState.elements) private inCaseOfDanger$!: Observable<string[]>;
+
+  @Select(RulesOfConductState.elements) private rulesConduct$!: Observable<string[]>;
+
   private loadFilter: DialogFilter[] = [];
 
   private saveFilter: DialogFilter[] = [];
 
   constructor(
-    private globals: GlobalModel,
+    private store: Store,
     private nativeService: INativeService,
     private loadSaveService: ILoadSaveService,
     private alertService: AlertService,
@@ -55,7 +78,9 @@ export default class DocumentService {
         next: (path) => {
           // this is intentional, because we have to handle both errors independently
           this.loadSaveService.loadDocument(path).subscribe({
-            next: (res) => this.documentToModel(res),
+            next: (res) => {
+              this.documentToModel(res);
+            },
             error: (err) => {
               logger.error('loading file failed:', err);
               this.alertService.error(translate('error.loadFile'));
@@ -147,12 +172,12 @@ export default class DocumentService {
 
   private modelToDocument(): Observable<CaBr2Document> {
     return combineLatest([
-      this.globals.headerObservable,
-      this.globals.substanceDataObservable,
-      this.globals.disposalObservable,
-      this.globals.humanAndEnvironmentDangerObservable,
-      this.globals.inCaseOfDangerObservable,
-      this.globals.rulesOfConductObservable,
+      this.header$,
+      this.substanceData$,
+      this.disposal$,
+      this.humanAndEnvironmentDanger$,
+      this.inCaseOfDanger$,
+      this.rulesConduct$,
     ]).pipe(
       map((value) => ({
         header: value[0],
@@ -166,12 +191,14 @@ export default class DocumentService {
   }
 
   private documentToModel(doc: CaBr2Document): void {
-    this.globals.headerSubject.next(doc.header);
-    this.globals.substanceDataSubject.next(doc.substanceData);
-    this.globals.disposalSubject.next(doc.disposal);
-    this.globals.humanAndEnvironmentDangerSubject.next(doc.humanAndEnvironmentDanger);
-    this.globals.inCaseOfDangerSubject.next(doc.inCaseOfDanger);
-    this.globals.rulesOfConductSubject.next(doc.rulesOfConduct);
+    this.store.dispatch([
+      new FillHeader(doc.header),
+      new FillSubstanceData(doc.substanceData),
+      new FillDisposalSentence(doc.disposal),
+      new FillHumanAndEnvironmentDangerSentence(doc.humanAndEnvironmentDanger),
+      new FillInCaseOfDangerSentence(doc.inCaseOfDanger),
+      new FillRulesOfConductSentence(doc.rulesOfConduct),
+    ]);
   }
 
   /**
