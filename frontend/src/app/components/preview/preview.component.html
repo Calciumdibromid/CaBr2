@@ -59,7 +59,9 @@
         <td class="min-width-2cm">{{ data.molarMass }}</td>
         <td class="min-width-2cm">{{ data.boilingPoint }}<br />{{ data.meltingPoint }}</td>
         <td>
-          <img *ngFor="let key of data.symbols" [src]="(symbols$ | async)?.get(key)" alt="{{ key }}" />
+          <div class="symbol-gird">
+            <img *ngFor="let key of data.symbols; let i = index" [src]="(symbols$ | async)?.get(key)" alt="{{ key }}" />
+          </div>
           <span class="signalword">{{ data.signalWord }}</span>
         </td>
         <td>{{ getPhraseNumber(data.hPhrases).join(', ') }}<br />{{ getPhraseNumber(data.pPhrases).join(', ') }}</td>
