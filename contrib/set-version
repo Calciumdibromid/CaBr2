@@ -1,10 +1,14 @@
 #!/bin/bash
 
+source "$(dirname "$0")/settings"
 cd "$(dirname "$0")/.."
 
-for i in 'webserver/Cargo.toml' 'frontend/src-wasm/Cargo.toml' 'frontend/src-tauri/Cargo.toml'; do
-  echo "context: $(pwd)"
-  sed -i "/^version = /cversion = \"$1\"" ${i}
+for i in $RUST_WORKSPACES; do
+  echo "rust workspace: ${i}"
+  sed -i "/^version = /cversion = \"$1\"" ${i}/Cargo.toml
 done
 
-sed -i "/^\ \ \"version\": /c\ \ \"version\": \"$1\"," frontend/package.json
+for i in $YARN_WORKSPACES; do
+  echo "yarn workspace: ${i}"
+  sed -i "/^\ \ \"version\": /c\ \ \"version\": \"$1\"," ${i}/package.json
+done
