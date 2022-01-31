@@ -1,0 +1,2 @@
+RUST_WORKSPACES='webserver frontend/src-wasm frontend/src-tauri'
+YARN_WORKSPACES=frontend
