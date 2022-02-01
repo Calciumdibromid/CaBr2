@@ -19,9 +19,7 @@ export class ConfigService implements IConfigService {
   loadConfig(): Observable<Config> {
     return this.nativeService.promisified('plugin:cabr2_config|get_config').pipe(
       map<any, Config>((config) => ({
-        darkTheme: config.global.darkTheme,
-        language: config.global.language,
-        acceptedConsent: config.global.acceptedConsent,
+        ...config.global,
       })),
     );
   }
