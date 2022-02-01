@@ -108,7 +108,7 @@ export default class DocumentService {
       )
       .subscribe({
         next: (res) => {
-          logger.debug(res === undefined ? 'saving successful:' : 'saving not successful:', res);
+          logger.debug(res === null ? 'saving successful:' : 'saving not successful:', res);
 
           switch (extension) {
             case 'pdf':
