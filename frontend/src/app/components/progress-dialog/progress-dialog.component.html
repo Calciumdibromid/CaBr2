@@ -11,18 +11,16 @@
         {{ t('download') }}
       </button>
     </div>
-  </ng-container>
 
-  <ng-template #loading>
-    <app-loading class="margin-bottom"></app-loading>
-  </ng-template>
+    <ng-template #loading>
+      <app-loading class="margin-bottom"></app-loading>
+    </ng-template>
 
-  <div *ngIf="error">
-    <ng-container *transloco="let t; read: 'dialogs.pdfGeneration'">
+    <div *ngIf="error">
       <mat-divider></mat-divider>
       <p class="error-message">{{ t('errorMessage') }}</p>
-    </ng-container>
-  </div>
+    </div>
+  </ng-container>
 
   <mat-divider></mat-divider>
   <ng-container *transloco="let t; read: 'base'">
