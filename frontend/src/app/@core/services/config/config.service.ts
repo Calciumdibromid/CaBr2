@@ -1,13 +1,12 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 
-import { ConfigModel } from '../../models/config.model';
+import { Config } from '../../interfaces/config.interface';
 import { GHSSymbols } from '../../models/substances.model';
-
 import { IConfigService } from './config.interface';
 import { INativeService } from '../native/native.interface';
-import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ConfigService implements IConfigService {
@@ -17,12 +16,22 @@ export class ConfigService implements IConfigService {
     return this.nativeService.promisified('plugin:cabr2_config|get_program_version');
   }
 
-  getConfig(): Observable<ConfigModel> {
-    return this.nativeService.promisified('plugin:cabr2_config|get_config');
+  loadConfig(): Observable<Config> {
+    return this.nativeService.promisified('plugin:cabr2_config|get_config').pipe(
+      map<any, Config>((config) => ({
+        darkTheme: config.global.darkTheme,
+        language: config.global.language,
+        acceptedConsent: config.global.acceptedConsent,
+      })),
+    );
   }
 
-  saveConfig(config: ConfigModel): Observable<void> {
-    return this.nativeService.promisified('plugin:cabr2_config|save_config', { config });
+  saveConfig(config: Config): Observable<void> {
+    return this.nativeService.promisified('plugin:cabr2_config|save_config', {
+      config: {
+        global: config,
+      },
+    });
   }
 
   getHazardSymbols(): Observable<GHSSymbols> {
