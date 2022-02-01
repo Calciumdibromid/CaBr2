@@ -14,7 +14,7 @@ token="$1"
     echo "token not set"
     exit 1
   }
-  sed "s/-TOKEN-/${token}/g" crowdin.example.yml >crowdin.yml
+  sed "s/-TOKEN-/${token}/g" crowdin.example.yml > crowdin.yml
 }
 
 # crowdin action
