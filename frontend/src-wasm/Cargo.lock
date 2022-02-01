@@ -146,6 +146,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "error-ser"
+version = "0.0.0"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "fastrand"
 version = "1.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -395,6 +402,7 @@ version = "0.0.0"
 dependencies = [
  "async-trait",
  "chrono",
+ "error-ser",
  "lazy_static",
  "log",
  "quick-xml 0.22.0",
@@ -693,6 +701,7 @@ dependencies = [
  "async-trait",
  "cfg-if",
  "chrono",
+ "error-ser",
  "lazy_static",
  "log",
  "quick-xml 0.23.0-alpha3",

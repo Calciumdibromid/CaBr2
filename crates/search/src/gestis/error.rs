@@ -1,7 +1,9 @@
 use std::fmt::Debug;
 
-use serde::{ser::SerializeStruct, Serialize, Serializer};
+use serde::{Serialize, Serializer};
 use thiserror::Error;
+
+use error_ser::SerializableError;
 
 #[derive(Error, Debug)]
 pub enum GestisError {
@@ -28,26 +30,18 @@ impl Serialize for GestisError {
     S: Serializer,
   {
     match self {
-      GestisError::MissingInfo(value) => serialize_string(serializer, "missingInfo", value),
-      GestisError::UnexpectedEvent(value) => serialize_string(serializer, "unexpectedEvent", value),
+      GestisError::MissingInfo(value) => SerializableError::with_message("MissingInfo", value).serialize(serializer),
+      GestisError::UnexpectedEvent(value) => {
+        SerializableError::with_message("UnexpectedEvent", value).serialize(serializer)
+      }
 
-      GestisError::RequestError(err) => serialize_string(serializer, "requestError", err),
-      GestisError::XmlError(err) => serialize_string(serializer, "xmlError", err),
-      GestisError::IOError(err) => serialize_string(serializer, "ioError", err),
+      GestisError::RequestError(err) => SerializableError::with_message("RequestError", err).serialize(serializer),
+      GestisError::XmlError(err) => SerializableError::with_message("XmlError", err).serialize(serializer),
+      GestisError::IOError(err) => SerializableError::with_message("IOError", err).serialize(serializer),
 
-      _ => serialize_string(serializer, "error", &format!("{self}")),
+      GestisError::RateLimit => SerializableError::new("RateLimit").serialize(serializer),
     }
   }
-}
-
-fn serialize_string<S: Serializer, ST: Debug>(
-  ser: S,
-  name: &'static str,
-  field_value: ST,
-) -> std::result::Result<S::Ok, S::Error> {
-  let mut st = ser.serialize_struct("Error", 1)?;
-  st.serialize_field(name, &format!("{field_value:?}"))?;
-  st.end()
 }
 
 pub type Result<T> = std::result::Result<T, GestisError>;

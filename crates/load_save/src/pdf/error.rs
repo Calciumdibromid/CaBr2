@@ -1,5 +1,7 @@
-use serde::{ser::SerializeStruct, Serialize, Serializer};
+use serde::{Serialize, Serializer};
 use thiserror::Error;
+
+use error_ser::SerializableError;
 
 #[derive(Error, Debug)]
 pub enum PdfError {
@@ -27,22 +29,12 @@ impl Serialize for PdfError {
     S: Serializer,
   {
     match self {
-      PdfError::PdfMergeError(value) => serialize_string(serializer, "pdfMergeError", value),
+      PdfError::PdfMergeError(value) => SerializableError::with_message("PdfMergeError", value).serialize(serializer),
 
-      PdfError::TemplateError(err) => serialize_string(serializer, "templateError", err),
-      PdfError::RenderError(err) => serialize_string(serializer, "renderError", err),
-      PdfError::Wkhtml(err) => serialize_string(serializer, "wkhtmltopdfError", err),
-      PdfError::IOError(err) => serialize_string(serializer, "ioError", err),
+      PdfError::TemplateError(err) => SerializableError::with_message("TemplateError", err).serialize(serializer),
+      PdfError::RenderError(err) => SerializableError::with_message("RenderError", err).serialize(serializer),
+      PdfError::Wkhtml(err) => SerializableError::with_message("Wkhtml", err).serialize(serializer),
+      PdfError::IOError(err) => SerializableError::with_message("IOError", err).serialize(serializer),
     }
   }
-}
-
-fn serialize_string<S: Serializer, ST: ToString>(
-  ser: S,
-  name: &'static str,
-  field_value: ST,
-) -> std::result::Result<S::Ok, S::Error> {
-  let mut st = ser.serialize_struct("Error", 1)?;
-  st.serialize_field(name, &field_value.to_string())?;
-  st.end()
 }
