@@ -43,6 +43,7 @@ const logImplTauri = (() => {
   });
 
   return (level: LogLevel, path: string, ...messages: any[]) => {
+    logImplWeb(level, path, ...messages);
     invoke('plugin:cabr2_logger|log', {
       level,
       path,
