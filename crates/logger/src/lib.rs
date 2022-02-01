@@ -23,6 +23,8 @@ pub async fn setup_logger() -> Result<(), fern::InitError> {
     })
     .logging;
 
+  let cabr2_level = convert_level(config.cabr2);
+
   Dispatch::new()
     .format(|out, message, record| {
       out.finish(format_args!(
@@ -35,11 +37,14 @@ pub async fn setup_logger() -> Result<(), fern::InitError> {
       ))
     })
     .level(convert_level(config.all))
-    .level_for("cabr2", convert_level(config.cabr2.clone()))
-    .level_for("cabr2_config", convert_level(config.cabr2.clone()))
-    .level_for("cabr2_load_save", convert_level(config.cabr2.clone()))
-    .level_for("cabr2_logger", convert_level(config.cabr2.clone()))
-    .level_for("cabr2_search", convert_level(config.cabr2))
+    .level_for("cabr2", cabr2_level)
+    .level_for("cabr2_wasm_lib", cabr2_level)
+    .level_for("webserver", cabr2_level)
+    .level_for("config", cabr2_level)
+    .level_for("load_save", cabr2_level)
+    .level_for("logger", cabr2_level)
+    .level_for("search", cabr2_level)
+    .level_for("types", cabr2_level)
     .level_for("reqwest", convert_level(config.reqwest))
     .chain(std::io::stdout())
     .chain(fs::OpenOptions::new().create(true).write(true).open(&log_file)?)
