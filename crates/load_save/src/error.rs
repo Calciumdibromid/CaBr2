@@ -1,5 +1,7 @@
-use serde::{ser::SerializeStruct, Serialize, Serializer};
+use serde::{Serialize, Serializer};
 use thiserror::Error;
+
+use error_ser::SerializableError;
 
 #[derive(Error, Debug)]
 pub enum LoadSaveError {
@@ -31,23 +33,20 @@ impl Serialize for LoadSaveError {
     S: Serializer,
   {
     match self {
-      LoadSaveError::UnknownFileType(value) => serialize_string(serializer, "unknownFileType", value),
-      LoadSaveError::FileExists(value) => serialize_string(serializer, "fileExists", value),
-      LoadSaveError::IOError(err) => serialize_string(serializer, "ioError", err),
+      LoadSaveError::UnknownFileType(value) => {
+        SerializableError::with_message("UnknownFileType", value).serialize(serializer)
+      }
+      LoadSaveError::FileExists(value) => SerializableError::with_message("FileExists", value).serialize(serializer),
+      LoadSaveError::IOError(err) => SerializableError::with_message("IOError", err).serialize(serializer),
 
-      _ => self.serialize(serializer),
+      #[cfg(feature = "beryllium")]
+      LoadSaveError::BerylliumError(err) => err.serialize(serializer),
+      #[cfg(feature = "cabr2")]
+      LoadSaveError::Cabr2Error(err) => err.serialize(serializer),
+      #[cfg(feature = "pdf")]
+      LoadSaveError::PdfError(err) => err.serialize(serializer),
     }
   }
-}
-
-fn serialize_string<S: Serializer, ST: ToString>(
-  ser: S,
-  name: &'static str,
-  field_value: ST,
-) -> std::result::Result<S::Ok, S::Error> {
-  let mut st = ser.serialize_struct("Error", 1)?;
-  st.serialize_field(name, &field_value.to_string())?;
-  st.end()
 }
 
 pub type Result<T> = std::result::Result<T, LoadSaveError>;

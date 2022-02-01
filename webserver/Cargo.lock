@@ -323,6 +323,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "error-ser"
+version = "0.0.0"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "fake-simd"
 version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -687,6 +694,7 @@ dependencies = [
  "async-trait",
  "chrono",
  "config",
+ "error-ser",
  "handlebars",
  "lazy_static",
  "log",
@@ -1257,6 +1265,7 @@ dependencies = [
  "async-trait",
  "cfg-if",
  "chrono",
+ "error-ser",
  "lazy_static",
  "log",
  "quick-xml 0.23.0-alpha3",
