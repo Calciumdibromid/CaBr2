@@ -64,7 +64,7 @@
       "unsupportedProviderInfo": "not supported",
       "error": "An error occurred while retrieving data",
       "disclaimer": {
-          "gestis": "The data comes from Gestis and it does not provide mixtures."
+          "gestis": "Gestis provides only sometimes data for the products of experiments."
       }
     },
     "substance": {
