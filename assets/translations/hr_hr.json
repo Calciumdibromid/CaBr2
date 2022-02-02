@@ -59,6 +59,7 @@
       "removeOption": "Ukloni opcije pretraživanja",
       "addOption": "Dodaj opcije pretraživanja",
       "resultsHeader": "Rezultati pretraživanja",
+      "noResult": "{{provider}} nije dao nikakve rezultate.\nPokušajte ponovo sa sinonimima ili djelomičnim riječima.",
       "customSubstance": "Prilagođeno",
       "unsupportedProviderInfo": "nepodržano",
       "error": "Došlo je do pogreške prilikom dohvaćanja podataka"
@@ -99,7 +100,8 @@
       "ghsSymbolsColorInfo": "sivo: nije odabrano / u boji: odabrano",
       "addCustomSubstanceData": "Dodaj prilagođenu supstancu",
       "dragAndDrop": "povlačenje i ispuštanje",
-      "resetTooltip": "Vraćanje trenutne tvari na izvorne vrijednosti"
+      "resetTooltip": "Vraćanje trenutne tvari na izvorne vrijednosti",
+      "phraseFormatTooltip": "Očekivani format: {{format}}"
     },
     "units": {
       "groups": {
@@ -120,7 +122,9 @@
       "inCaseOfDangerShort": "Slučaj opasnosti",
       "disposalShort": "Odlaganje",
       "signatureFieldStudent": "Time potvrđujem da ću izvršiti zadatak/pripremu prema ovdje predstavljenim uputama za sigurnosne podatke.",
-      "signatureFieldAssistant": "Student smije obaviti predstavljeni zadatak/ pripremu."
+      "signatureFieldAssistant": "Student smije obaviti predstavljeni zadatak/ pripremu.",
+      "signature": "Potpis",
+      "locationAndDate": "Lokacija, Datum"
     },
     "preview": {
       "info": "Ovo je samo pregled. Generirani PDF može izgledati drugačije!",
@@ -173,7 +177,8 @@
       "pdfGeneration": {
         "generatingPdf": "Stvaranje PDF datoteke...",
         "downloadPdf": "Preuzmite PDF",
-        "download": "Preuzimanja"
+        "download": "Preuzimanja",
+        "errorMessage": "Poslužitelj ne reagira.\nTo može imati nekoliko uzroka.\nSada možete pričekati ili zatvoriti ovaj dijaloški okvir i pokušati ponovo kasnije."
       }
     }
   }
