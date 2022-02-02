@@ -62,10 +62,7 @@
       "noResult": "{{provider}} nije dao nikakve rezultate.\nPokušajte ponovo sa sinonimima ili djelomičnim riječima.",
       "customSubstance": "Prilagođeno",
       "unsupportedProviderInfo": "nepodržano",
-      "error": "Došlo je do pogreške prilikom dohvaćanja podataka",
-      "disclaimer": {
-        "gestis": "Gestis rarely provides data for products of experiments."
-      }
+      "error": "Došlo je do pogreške prilikom dohvaćanja podataka"
     },
     "substance": {
       "invalidFormsTitle": "Nešto nije u redu",

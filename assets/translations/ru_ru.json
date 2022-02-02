@@ -62,10 +62,7 @@
       "noResult": "{{provider}} не дал результатов.\nПожалуйста, попробуйте снова с синонимами или частичными словами.",
       "customSubstance": "Пользовательский",
       "unsupportedProviderInfo": "не поддерживается",
-      "error": "Ошибка при получении данных",
-      "disclaimer": {
-        "gestis": "Gestis rarely provides data for products of experiments."
-      }
+      "error": "Ошибка при получении данных"
     },
     "substance": {
       "invalidFormsTitle": "Что-то не так",
