@@ -66,7 +66,6 @@ export class ConfigState {
       .pipe(first())
       .subscribe({
         next: (newConfig) => {
-          console.log(newConfig);
           context.setState({
             ...state,
             ...newConfig,
