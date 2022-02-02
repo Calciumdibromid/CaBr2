@@ -25,14 +25,14 @@
   * Add .gitattributes file to force lf on checkout (#1044)
 * BUILD
   * Update contrib scripts (#1095)
+  * Fix wasm-bindgen (#1077)
+  * Fix clippy in ci (#1076)
+  * Migrate angular to 13 (#1031)
   * Bump rust edition to 2021 (#1020)
 * DOCS
   * Improve READMEs and IntelliJ support (#1036)
   * Update Develop and Build instructions (#826)
 * MISC
-  * Fix wasm-bindgen (#1077)
-  * Fix clippy in ci (#1076)
-  * Migrate angular to 13 (#1031)
 
 ## [v0.4.1](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.4.1) - 2022-01-15
 
