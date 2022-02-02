@@ -64,7 +64,7 @@
       "unsupportedProviderInfo": "nicht unterstützt",
       "error": "Fehler beim Anfragen der Daten",
       "disclaimer": {
-        "gestis": "Die Daten stammen von Gestis und Gestis bietet keine Daten zu Verbindungen."
+        "gestis": "Gestis bietet nur selten Daten zu Versuchsprodukten."
       }
     },
     "substance": {
