@@ -1,3 +1,8 @@
+## [v0.5.1](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.5.1) - 2022-02-02
+
+* BUGFIXES
+  * Add migration of config in local storage (#1127)
+
 ## [v0.5.0](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.5.0) - 2022-02-02
 
 * FEATURES
