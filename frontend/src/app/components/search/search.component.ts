@@ -1,9 +1,9 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable } from 'rxjs';
 import { translate } from '@ngneat/transloco';
 
 import {
@@ -32,11 +32,13 @@ const GESTIS_URL_RE = new RegExp('https:\\/\\/gestis-api\\.dguv\\.de\\/api\\/art
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   @ViewChildren(SelectedSearchComponent)
   selectedSearchComponents!: QueryList<SelectedSearchComponent>;
 
   @Select((state: any) => state.substance_data.substanceData) substanceData$!: Observable<SubstanceData[]>;
+
+  subscriptions: Subscription[] = [];
 
   addButtonHover = false;
 
@@ -59,15 +61,21 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.substanceData$.subscribe((data) => {
-      this.dataSource.connect().next(data);
-    });
+    this.subscriptions.push(
+      this.substanceData$.subscribe((data) => {
+        this.dataSource.connect().next(data);
+      }),
 
-    this.providerService.providerMappingsObservable.subscribe((providerMap) => {
-      logger.debug(providerMap);
-      this.providerMapping = providerMap;
-      this.providers = Array.from(providerMap.values()).filter((provider) => provider.identifier !== 'custom');
-    });
+      this.providerService.providerMappingsObservable.subscribe((providerMap) => {
+        logger.debug(providerMap);
+        this.providerMapping = providerMap;
+        this.providers = Array.from(providerMap.values()).filter((provider) => provider.identifier !== 'custom');
+      }),
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   openDialog(index: number): void {

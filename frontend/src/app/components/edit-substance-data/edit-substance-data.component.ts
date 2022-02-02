@@ -31,7 +31,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
   @Select((state: any) => state.ghs_symbols.symbolKeys) symbolKeys$!: Observable<SymbolKeys>;
 
-  form: FormGroup;
+  form!: FormGroup;
 
   addHPhraseHover = false;
 
@@ -50,9 +50,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: SubstanceData,
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
-  ) {
-    this.form = this.initControls();
-  }
+  ) {}
 
   get hPhrases(): FormArray {
     return this.form?.get('hPhrases') as FormArray;
@@ -71,6 +69,8 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.form = this.initControls();
+
     this.customSubscription = this.amount.get('unit')?.valueChanges.subscribe((value: UnitType) => {
       this.customUnitVisible = value === UnitType.CUSTOM;
     });

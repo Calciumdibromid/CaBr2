@@ -50,7 +50,7 @@ export class ModifiableStringListComponent implements OnInit, OnDestroy {
 
   addHover = false;
 
-  private subscription!: Subscription;
+  private subscriptions: Subscription[] = [];
 
   constructor(private formBuilder: FormBuilder, private actions$: Actions, private store: Store) {}
 
@@ -59,28 +59,30 @@ export class ModifiableStringListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.formGroup$.subscribe((formGroup) => (this.formGroup = formGroup));
-    this.actions$
-      .pipe(
-        ofActionDispatched(
-          ResetHumanAndEnvironmentDangerSentences,
-          ResetRulesOfConductSentences,
-          ResetInCaseOfDangerSentences,
-          ResetDisposalSentence,
+    this.subscriptions.push(
+      this.formGroup$.subscribe((formGroup) => (this.formGroup = formGroup)),
+      this.actions$
+        .pipe(
+          ofActionDispatched(
+            ResetHumanAndEnvironmentDangerSentences,
+            ResetRulesOfConductSentences,
+            ResetInCaseOfDangerSentences,
+            ResetDisposalSentence,
 
-          FillHumanAndEnvironmentDangerSentence,
-          FillRulesOfConductSentence,
-          FillInCaseOfDangerSentence,
-          FillDisposalSentence,
-        ),
-      )
-      .subscribe(() => {
-        this.initFormGroup(this.ngxsIdentifier);
-      });
+            FillHumanAndEnvironmentDangerSentence,
+            FillRulesOfConductSentence,
+            FillInCaseOfDangerSentence,
+            FillDisposalSentence,
+          ),
+        )
+        .subscribe(() => {
+          this.initFormGroup(this.ngxsIdentifier);
+        }),
+    );
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   addElement(): void {

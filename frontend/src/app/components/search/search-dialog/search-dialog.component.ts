@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { translate } from '@ngneat/transloco';
 
 import { Provider, SearchArgument, SearchResult } from '../../../@core/services/provider/provider.model';
@@ -20,7 +20,9 @@ interface Data {
   templateUrl: './search-dialog.component.html',
   styleUrls: ['./search-dialog.component.scss'],
 })
-export class SearchDialogComponent implements OnInit {
+export class SearchDialogComponent implements OnInit, OnDestroy {
+  searchResults$?: Observable<SearchResult[]>;
+
   searchResults: SearchResult[] = [];
 
   searchFinished = false;
@@ -29,9 +31,9 @@ export class SearchDialogComponent implements OnInit {
 
   exactSearch = false;
 
-  subscription?: Observable<SearchResult[]>;
-
   selected?: SearchResult;
+
+  subscription!: Subscription;
 
   constructor(
     public dialogRef: MatDialogRef<SearchDialogComponent>,
@@ -42,7 +44,7 @@ export class SearchDialogComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.subscription = this.providerService.search(this.data.provider.identifier, {
+    this.searchResults$ = this.providerService.search(this.data.provider.identifier, {
       arguments: this.data.arguments,
       exact: this.exactSearch,
     });
@@ -50,7 +52,7 @@ export class SearchDialogComponent implements OnInit {
     this.searchResults = [];
     this.searchFinished = false;
     this.searchFailed = false;
-    this.subscription.subscribe({
+    this.subscription = this.searchResults$.subscribe({
       next: (response) => {
         this.searchResults = response;
         this.searchFinished = true;
@@ -62,6 +64,10 @@ export class SearchDialogComponent implements OnInit {
         this.alertService.error(translate('loadSearchResults'));
       },
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   setSelected(selected: SearchResult): void {

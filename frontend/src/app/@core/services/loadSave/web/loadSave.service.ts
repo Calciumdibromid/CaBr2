@@ -57,6 +57,7 @@ export class LoadSaveService implements ILoadSaveService {
               subscriber: sub,
             },
           });
+          sub.next();
           break;
 
         case 'cb2':
