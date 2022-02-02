@@ -14,11 +14,11 @@ export class ConfigWebService implements IConfigService {
   }
 
   loadConfig(): Observable<Config> {
-    throw Error('Loadconfig is for web not required');
+    throw Error('Loadconfig is not required for web');
   }
 
   saveConfig(_: any): Observable<void> {
-    throw Error('Saveconfig is for web not required');
+    throw Error('Saveconfig is not required for web');
   }
 
   getHazardSymbols(): Observable<GHSSymbols> {
