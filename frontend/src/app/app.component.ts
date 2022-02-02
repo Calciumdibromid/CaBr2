@@ -48,7 +48,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(first())
       .subscribe(() => {
         this.store
-          .selectOnce((store: any) => store.config)
+          .select((store: any) => store.config)
           .subscribe((config: Config) => {
             this.switchMode(config.darkTheme);
             this.translocoService.setActiveLang(config.language);
