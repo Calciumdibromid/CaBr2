@@ -5,10 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { NgxsModule as NgrxModule } from '@ngxs/store';
 import { NgxsFormPluginModule } from '@ngxs/form-plugin';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 
 import { AlertModule } from './@core/modules/alert.module';
 import { AppComponent } from './app.component';
 import { BugReportButtonComponent } from './components/bug-report-button/bug-report-button.component';
+import { ConfigState } from './@core/states/config.state';
 import { ConsentComponent } from './components/consent/consent.component';
 import { EditSubstanceDataComponent } from './components/edit-substance-data/edit-substance-data.component';
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
@@ -74,6 +76,7 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
     TranslocoRootModule,
     NgrxModule.forRoot(States, ngxsConfig),
     NgxsFormPluginModule.forRoot(),
+    NgxsStoragePluginModule.forRoot({ key: ConfigState }),
   ],
   bootstrap: [AppComponent],
 })

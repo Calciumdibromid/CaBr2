@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
 
@@ -21,9 +21,6 @@ const DOCS_TEMPLATE = TEMPLATES.docsTemplate;
   styleUrls: ['./navbar-menu.component.scss'],
 })
 export class NavbarMenuComponent implements OnInit {
-  @Output()
-  readonly darkModeSwitched = new EventEmitter<boolean>();
-
   constructor(
     private nativeService: INativeService,
     private documentService: DocumentService,
@@ -59,11 +56,7 @@ export class NavbarMenuComponent implements OnInit {
   }
 
   openSettingsDialog(): void {
-    const dialogRef = this.dialog.open(SettingsComponent);
-
-    dialogRef.componentInstance.darkModeSwitched.subscribe((checked: boolean) => {
-      this.darkModeSwitched.emit(checked);
-    });
+    this.dialog.open(SettingsComponent);
   }
 
   openManualDialog(): void {

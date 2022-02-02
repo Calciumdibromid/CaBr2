@@ -2,9 +2,9 @@ import { Observable, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import * as wasm from 'cabr2_wasm';
-import { ConfigModel } from 'src/app/@core/models/config.model';
 import { GHSSymbols } from 'src/app/@core/models/substances.model';
 
+import { Config } from '../../../interfaces/config.interface';
 import { IConfigService } from '../config.interface';
 
 @Injectable()
@@ -13,17 +13,12 @@ export class ConfigWebService implements IConfigService {
     return of(wasm.get_program_version());
   }
 
-  getConfig(): Observable<ConfigModel> {
-    const config = localStorage.getItem('config');
-    if (config) {
-      return of(new ConfigModel(JSON.parse(config).global));
-    } else {
-      return of(new ConfigModel());
-    }
+  loadConfig(): Observable<Config> {
+    throw Error('Loadconfig is not required for web');
   }
 
-  saveConfig(config: ConfigModel): Observable<void> {
-    return of(localStorage.setItem('config', JSON.stringify(config)));
+  saveConfig(_: any): Observable<void> {
+    throw Error('Saveconfig is not required for web');
   }
 
   getHazardSymbols(): Observable<GHSSymbols> {

@@ -1,25 +1,15 @@
+import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { Component, HostBinding, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { first, switchMap } from 'rxjs/operators';
-import { translate, TranslocoService } from '@ngneat/transloco';
+import { first, Observable, Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { Store } from '@ngxs/store';
-import { Subscription } from 'rxjs';
 
-import {
-  configChangeObservable,
-  configLoadObservable,
-  ConfigModel,
-  configObservable,
-} from './@core/models/config.model';
-import { AlertService } from './@core/services/alertsnackbar/alertsnackbar.service';
+import { AcceptConsent, LoadConfig, ToggleDarkTheme } from './@core/states/config.state';
+import { Config } from './@core/interfaces/config.interface';
 import { ConsentComponent } from './components/consent/consent.component';
-import { IConfigService } from './@core/services/config/config.interface';
 import { LoadGHSSymbols } from './@core/states/ghs-symbols.state';
-import Logger from './@core/utils/logger';
 import packageInfo from '../../package.json';
-
-const logger = new Logger('main');
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-root',
@@ -27,105 +17,71 @@ const logger = new Logger('main');
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
+  @Select((store: any) => store.config) config$!: Observable<Config>;
+
   name = packageInfo.name;
 
   version = packageInfo.version;
 
-  private config!: ConfigModel;
+  darkTheme = false;
 
-  private subscriptions: Subscription[] = [];
+  dispatchSubscription!: Subscription;
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private renderer: Renderer2,
     private dialog: MatDialog,
 
-    private configService: IConfigService,
-    private alertService: AlertService,
     private translocoService: TranslocoService,
     private store: Store,
+    private actions$: Actions,
   ) {}
 
   @HostBinding('class')
   get themeMode(): string {
-    return this.config?.globalSection.darkTheme ? 'theme-dark' : 'theme-light';
-  }
-
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    return this.darkTheme ? 'theme-dark' : 'theme-light';
   }
 
   ngOnInit(): void {
-    this.configService
-      .getConfig()
+    this.store
+      .dispatch([new LoadConfig(), new LoadGHSSymbols()])
       .pipe(first())
-      .subscribe({
-        next: (newConfig) => ConfigModel.setLoadedConfig(newConfig),
-        error: (err) => {
-          logger.error('loading config failed:', err);
-          this.alertService.error(translate('error.configLoad'));
-        },
+      .subscribe(() => {
+        this.store
+          .select((store: any) => store.config)
+          .subscribe((config: Config) => {
+            this.switchMode(config.darkTheme);
+            this.translocoService.setActiveLang(config.language);
+            if (!config.acceptedConsent) {
+              this.dialog
+                .open(ConsentComponent, {
+                  data: {
+                    duration: 5,
+                  },
+                  disableClose: true,
+                })
+                .afterClosed()
+                .subscribe(() => {
+                  this.store.dispatch(new AcceptConsent());
+                });
+            }
+          });
       });
 
-    this.subscriptions.push(
-      configChangeObservable
-        .pipe(switchMap((config) => this.configService.saveConfig(config).pipe(first())))
-        .subscribe({
-          next: () => logger.info('config saved'),
-          error: (err) => {
-            logger.error('saving config failed:', err);
-            this.alertService.error(translate('error.configSave'));
-          },
-        }),
+    this.dispatchSubscription = this.actions$
+      .pipe(ofActionDispatched(ToggleDarkTheme))
+      .subscribe((action: ToggleDarkTheme) => {
+        this.switchMode(action.darkTheme);
+      });
+  }
 
-      configObservable.subscribe((config) => {
-        // config is undefined before first call of this function
-        if (!(this.config?.globalSection.language === config.globalSection.language)) {
-          this.translocoService.setActiveLang(config.globalSection.language);
-        }
-
-        this.switchMode(config.globalSection.darkTheme);
-
-        this.config = config;
-      }),
-    );
-
-    this.store.dispatch(new LoadGHSSymbols());
-
-    configLoadObservable.pipe(first()).subscribe((config) => {
-      if (!config.globalSection.acceptedConsent) {
-        this.dialog
-          .open(ConsentComponent, {
-            data: {
-              duration: 5,
-            },
-            disableClose: true,
-          })
-          .afterClosed()
-          .subscribe(() => {
-            this.config.setAcceptedConsent(true);
-            this.configService
-              .saveConfig(this.config)
-              .pipe(first())
-              .subscribe({
-                next: () => logger.info('config saved'),
-                error: (err) => {
-                  logger.error('saving config failed:', err);
-                  this.alertService.error(translate('error.configSave'));
-                },
-              });
-          });
-      }
-    });
+  ngOnDestroy(): void {
+    this.dispatchSubscription.unsubscribe();
   }
 
   switchMode(isDarkMode: boolean): void {
+    this.darkTheme = isDarkMode;
     const hostClass = isDarkMode ? 'theme-dark' : 'theme-light';
     this.renderer.setAttribute(this.document.body, 'class', hostClass);
-  }
-
-  switchModeSink(isDarkMode: boolean): void {
-    this.switchMode(isDarkMode);
-    this.config.setDarkMode(isDarkMode);
   }
 }

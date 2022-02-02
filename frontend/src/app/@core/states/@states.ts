@@ -1,3 +1,4 @@
+import { ConfigState } from './config.state';
 import { DisposalState } from './disposal.state';
 import { GHSSymbolState } from './ghs-symbols.state';
 import { HeaderState } from './header.state';
@@ -14,6 +15,7 @@ const States = [
   RulesOfConductState,
   InCaseOfDangerState,
   DisposalState,
+  ConfigState,
 ];
 
 export default States;
