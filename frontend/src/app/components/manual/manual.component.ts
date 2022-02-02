@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -7,11 +7,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./manual.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ManualComponent implements OnInit {
+export class ManualComponent {
   constructor(
     public dialogRef: MatDialogRef<ManualComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { content: string },
   ) {}
-
-  ngOnInit(): void {}
 }

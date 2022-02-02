@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Observable, Subscriber } from 'rxjs';
+import { Observable, Subscriber, Subscription } from 'rxjs';
 
 import { INativeService } from '../../@core/services/native/native.interface';
 
@@ -18,7 +18,7 @@ export interface ProgressDialogData {
   templateUrl: './progress-dialog.component.html',
   styleUrls: ['./progress-dialog.component.scss'],
 })
-export class ProgressDialogComponent implements OnInit {
+export class ProgressDialogComponent implements OnInit, OnDestroy {
   pdfUrl?: string;
 
   finished = false;
@@ -27,24 +27,14 @@ export class ProgressDialogComponent implements OnInit {
 
   closeEnabled = false;
 
+  subscription!: Subscription;
+
   constructor(
     public dialogRef: MatDialogRef<ProgressDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ProgressDialogData,
 
     private nativeService: INativeService,
-  ) {
-    data.download.subscribe({
-      next: (res) => {
-        this.setPdfUrl(res.downloadUrl);
-        this.closeEnabled = true;
-        data.subscriber.next();
-      },
-      error: (err) => {
-        data.subscriber.error(err);
-        this.dialogRef.close();
-      },
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
     this.finished = false;
@@ -57,6 +47,22 @@ export class ProgressDialogComponent implements OnInit {
       // set only if pdfUrl wasn't set
       this.error = !this.pdfUrl;
     }, 10000);
+
+    this.subscription = this.data.download.subscribe({
+      next: (res) => {
+        this.setPdfUrl(res.downloadUrl);
+        this.closeEnabled = true;
+        this.data.subscriber.next();
+      },
+      error: (err) => {
+        this.data.subscriber.error(err);
+        this.dialogRef.close();
+      },
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   downloadPdf(): void {
