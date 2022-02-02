@@ -1,11 +1,14 @@
 #!/bin/bash
 
-cd "$(dirname "$0")/../src-tauri"
-crate_root="$(pwd)"
-echo "crate_root=$crate_root"
+source "$(dirname "$0")/settings"
+cd "$(dirname "$0")/.."
 
-find "$crate_root" -name Cargo.toml | while read line; do
-  cd "$(dirname "$line")"
-  echo "context: $(pwd)"
-  sed -i "/^version = /cversion = \"$1\"" Cargo.toml
+for i in $RUST_WORKSPACES; do
+  echo "rust workspace: ${i}"
+  sed -i "/^version = /cversion = \"$1\"" ${i}/Cargo.toml
+done
+
+for i in $YARN_WORKSPACES; do
+  echo "yarn workspace: ${i}"
+  sed -i "/^\ \ \"version\": /c\ \ \"version\": \"$1\"," ${i}/package.json
 done

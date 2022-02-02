@@ -1,0 +1,5 @@
+@use '@angular/material' as mat;
+
+$ang-CaBr2-primary: mat.define-palette(mat.$orange-palette);
+$ang-CaBr2-accent: mat.define-palette(mat.$indigo-palette, A200, A100, A400);
+$ang-CaBr2-warn: mat.define-palette(mat.$red-palette);

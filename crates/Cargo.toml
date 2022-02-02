@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "config",
+    "error-ser",
+    "load_save",
+    "logger",
+    "search",
+    "types",
+]

@@ -1,0 +1,35 @@
+@use '@angular/material' as mat;
+
+ul {
+  margin-left: 20px;
+  padding: 0;
+}
+
+.cdk-drag-handle {
+  &:hover {
+    cursor: grab;
+  }
+
+  font-size: 1.1em !important;
+}
+
+.cdk-drag-preview {
+  @include mat.elevation(2);
+  margin-left: -20px !important;
+}
+
+mat-card {
+  @include mat.elevation(0);
+  padding-top: 10px;
+  padding-bottom: 0;
+}
+
+button:not(.add-button) {
+  mat-icon {
+    font-size: 1.3em !important;
+  }
+}
+
+.add-button {
+  margin-bottom: 16px !important; // material angular... -.-
+}

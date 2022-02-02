@@ -1,8 +1,0 @@
-@use '~@angular/material' as mat;
-@import '../../../styles/color';
-
-a {
-  text-decoration: underline;
-  color: mat.get-color-from-palette($ang-CaBr2-primary);
-  cursor: pointer;
-}

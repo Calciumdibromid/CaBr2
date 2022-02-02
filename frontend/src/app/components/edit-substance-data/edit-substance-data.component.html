@@ -1,0 +1,263 @@
+<ng-container *transloco="let t">
+  <form [formGroup]="form" (submit)="onSubmit()" class="center">
+    <mat-dialog-content class="grid unselectable">
+      <mat-card class="mini-grid">
+        <mat-form-field>
+          <mat-label>{{ t('substance.name') }}</mat-label>
+          <input matInput formControlName="name" required />
+          <mat-error *ngIf="this.form.get('name')?.errors?.required">{{ t('substance.needsName') }}</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ t('substance.casNumber') }}</mat-label>
+          <input matInput formControlName="cas" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ t('substance.molecularFormula') }}</mat-label>
+          <input matInput formControlName="molecularFormula" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ t('substance.waterHazardClass') }}</mat-label>
+          <input matInput formControlName="waterHazardClass" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ t('substance.signalWord') }}</mat-label>
+          <input matInput formControlName="signalWord" />
+        </mat-form-field>
+      </mat-card>
+
+      <mat-card>
+        <div>
+          <mat-form-field>
+            <mat-label>{{ t('substance.molarMass') }}</mat-label>
+            <input matInput formControlName="molarMass" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ t('substance.unit') }}</mat-label>
+            <mat-select [value]="unit.GRAM_PER_MOL" [disabled]="true">
+              <mat-option [value]="unit.GRAM_PER_MOL">
+                {{ localizeUnit(unit.GRAM_PER_MOL) }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>{{ t('substance.lethalDose') }}</mat-label>
+            <input matInput formControlName="lethalDose" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ t('substance.unit') }}</mat-label>
+            <mat-select [value]="unit.MILLIGRAM_PER_KILOGRAM" [disabled]="true">
+              <mat-option *ngFor="let unit of unitGroups.lethalUnits" [value]="unit">
+                {{ localizeUnit(unit) }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <mat-form-field>
+          <mat-label>{{ t('substance.mak') }}</mat-label>
+          <input matInput formControlName="mak" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>{{ t('substance.unit') }}</mat-label>
+          <mat-select [value]="unit.PARTS_PER_MILLION" [disabled]="true">
+            <mat-option [value]="unit.PARTS_PER_MILLION">
+              {{ localizeUnit(unit.PARTS_PER_MILLION) }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div>
+          <mat-form-field>
+            <mat-label>{{ t('substance.meltingPoint') }}</mat-label>
+            <input matInput formControlName="meltingPoint" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ t('substance.unit') }}</mat-label>
+            <mat-select [value]="unit.CELSIUS" [disabled]="true">
+              <mat-option *ngFor="let unit of unitGroups.temperatureUnits" [value]="unit">
+                {{ localizeUnit(unit) }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field>
+            <mat-label>{{ t('substance.boilingPoint') }}</mat-label>
+            <input matInput formControlName="boilingPoint" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ t('substance.unit') }}</mat-label>
+            <mat-select [value]="unit.CELSIUS" [disabled]="true">
+              <mat-option *ngFor="let unit of unitGroups.temperatureUnits" [value]="unit">
+                {{ localizeUnit(unit) }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div formGroupName="amount">
+          <mat-form-field>
+            <mat-label>{{ t('substance.amount') }}</mat-label>
+            <input matInput formControlName="value" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>{{ t('substance.unit') }}</mat-label>
+            <mat-select formControlName="unit">
+              <mat-optgroup
+                *ngFor="let group of unitGroups.defaultUnitGroups"
+                [label]="t('units.groups.' + group.viewValue)"
+              >
+                <mat-option *ngFor="let option of group.unitMappings" [value]="option">
+                  {{ localizeUnit(option) }}
+                </mat-option>
+              </mat-optgroup>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field *ngIf="customUnitVisible">
+            <mat-label>{{ t('substance.customUnit') }}</mat-label>
+            <input matInput formControlName="unitName" />
+          </mat-form-field>
+        </div>
+      </mat-card>
+
+      <div class="flex">
+        <mat-card formArrayName="hPhrases">
+          <mat-card-header>
+            <mat-card-title>{{ t('substance.hPhrases') }}</mat-card-title>
+          </mat-card-header>
+          <div class="flex" *ngFor="let control of hPhrases.controls; let i = index">
+            <div [formGroupName]="i">
+              <mat-form-field>
+                <input matInput formControlName="hNumber" />
+                <mat-error
+                  *ngIf="hPhrases.at(i).get('hNumber')?.invalid"
+                  [matTooltip]="t('substance.phraseFormatTooltip', { format: 'Hxxx+Hxxx ...' })"
+                  matTooltipPosition="above"
+                >
+                  {{ t('substance.noHPhrase') }}
+                  <mat-icon>info</mat-icon>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="phrases-form-field">
+                <textarea
+                  matInput
+                  formControlName="hPhrase"
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"
+                ></textarea>
+                <button
+                  matSuffix
+                  mat-icon-button
+                  (click)="removePhrase(i, hPhrases)"
+                  (mouseenter)="hPhrases.at(i).get('hover')?.patchValue(true)"
+                  (mouseleave)="hPhrases.at(i).get('hover')?.patchValue(false)"
+                  [matTooltip]="t('substance.removeHPhrase')"
+                  matTooltipPosition="left"
+                >
+                  <mat-icon *ngIf="!hPhrases.at(i).get('hover')?.value">remove_circle_outline</mat-icon>
+                  <mat-icon color="primary" *ngIf="hPhrases.at(i).get('hover')?.value">remove_circle</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+          <div>
+            <a
+              mat-icon-button
+              (click)="addNewHPhrase()"
+              (mouseenter)="addHPhraseHover = true"
+              (mouseleave)="addHPhraseHover = false"
+              [matTooltip]="t('substance.addHPhrase')"
+              matTooltipPosition="right"
+            >
+              <mat-icon *ngIf="!addHPhraseHover"> add_circle_outline</mat-icon>
+              <mat-icon color="primary" *ngIf="addHPhraseHover"> add_circle</mat-icon>
+            </a>
+          </div>
+        </mat-card>
+
+        <mat-card formArrayName="pPhrases">
+          <mat-card-header>
+            <mat-card-title>{{ t('substance.pPhrases') }}</mat-card-title>
+          </mat-card-header>
+          <div class="flex" *ngFor="let control of pPhrases.controls; let i = index">
+            <div [formGroupName]="i">
+              <mat-form-field>
+                <input matInput formControlName="pNumber" />
+                <mat-error
+                  *ngIf="pPhrases.at(i).get('pNumber')?.invalid"
+                  [matTooltip]="t('substance.phraseFormatTooltip', { format: 'Pxxx+Pxxx ...' })"
+                  matTooltipPosition="above"
+                >
+                  {{ t('substance.noPPhrase') }}
+                  <mat-icon>info</mat-icon>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="phrases-form-field">
+                <textarea
+                  matInput
+                  formControlName="pPhrase"
+                  cdkTextareaAutosize
+                  cdkAutosizeMinRows="1"
+                  cdkAutosizeMaxRows="5"
+                ></textarea>
+                <button
+                  matSuffix
+                  mat-icon-button
+                  (click)="removePhrase(i, pPhrases)"
+                  (mouseenter)="pPhrases.at(i).get('hover')?.patchValue(true)"
+                  (mouseleave)="pPhrases.at(i).get('hover')?.patchValue(false)"
+                  [matTooltip]="t('substance.removePPhrase')"
+                  matTooltipPosition="left"
+                >
+                  <mat-icon *ngIf="!pPhrases.at(i).get('hover')?.value">remove_circle_outline</mat-icon>
+                  <mat-icon color="primary" *ngIf="pPhrases.at(i).get('hover')?.value">remove_circle</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
+          <div>
+            <a
+              mat-icon-button
+              (click)="addNewPPhrase()"
+              (mouseenter)="addPPhraseHover = true"
+              (mouseleave)="addPPhraseHover = false"
+              [matTooltip]="t('substance.addPPhrase')"
+              matTooltipPosition="right"
+            >
+              <mat-icon *ngIf="!addPPhraseHover"> add_circle_outline</mat-icon>
+              <mat-icon color="primary" *ngIf="addPPhraseHover"> add_circle</mat-icon>
+            </a>
+          </div>
+        </mat-card>
+      </div>
+
+      <mat-card class="center" formArrayName="symbols">
+        <p>{{ t('substance.ghsSymbolsAddOrRemoveInfo') }}</p>
+        <p>{{ t('substance.ghsSymbolsColorInfo') }}</p>
+        <div class="center">
+          <div class="symbols-grid">
+            <img
+              class="symbol undragable"
+              *ngFor="let key of symbolKeys$ | async"
+              [ngClass]="isSymbolActive(key) ? '' : 'grayscale'"
+              (click)="toggleSymbol(key)"
+              [src]="(symbols$ | async)?.get(key)"
+              alt="{{ key }}"
+            />
+          </div>
+        </div>
+      </mat-card>
+
+      <div class="padder">
+        <!--      mat-card don't like margin-bottom at the end-->
+      </div>
+    </mat-dialog-content>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>{{ t('base.cancel') }}</button>
+      <button mat-button type="submit">{{ t('base.save') }}</button>
+      <button mat-icon-button (click)="resetToOriginalData($event)" [matTooltip]="t('substance.resetTooltip')">
+        <mat-icon>replay</mat-icon>
+      </button>
+    </div>
+  </form>
+</ng-container>

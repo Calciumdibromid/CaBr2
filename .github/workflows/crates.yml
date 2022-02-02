@@ -1,0 +1,36 @@
+name: checks
+
+on:
+  # Triggers the workflow on push or pull request events but only for the main and develop branches
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - '.github/workflows/crates.yml'
+      - 'crates/**'
+
+jobs:
+  crates:
+    runs-on: ubuntu-20.04
+    container: a6543/cabr2_ci:latest
+    strategy:
+      fail-fast: true
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+
+      - name: Set Rust Toolchain
+        run: rustup default stable
+
+      - name: Check formatting crates
+        run: cd crates && cargo fmt -- --check
+
+      - name: Lint crates
+        run: cd crates && cargo clippy --workspace --all-features -- --deny clippy::all --deny warnings
+
+      - name: Build crates
+        run: cd crates && cargo build --workspace --all-features
+
+      - name: Test crates
+        run: cd crates && cargo test --workspace --all-features

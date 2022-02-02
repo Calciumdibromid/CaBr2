@@ -1,0 +1,23 @@
+[package]
+name = "types"
+version = "0.0.0"
+authors = [
+  "crapStone <crapstone01@gmail.com>",
+  "6543 <6543@obermui.de>",
+]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+cfg-if = { version = "1.0.0", optional = true }
+chrono = { version = "0.4.19", features = ["serde"] }
+log = "0.4.14"
+serde = { version = "1.0.133", features = ["derive"] }
+tokio = { version = "1.15.0", features = ["sync"], default-features = false, optional = true }
+
+[features]
+lock = ["cfg-if"]
+rt-tokio = ["tokio"]
+
+default = []

@@ -1,0 +1,43 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "frontend"
+    },
+    {
+      "path": "frontend/src-wasm"
+    },
+    {
+      "path": "frontend/src-tauri"
+    },
+    {
+      "path": "crates"
+    },
+    {
+      "path": "webserver"
+    }
+  ],
+  "settings": {
+    "cSpell.words": [
+      "cabr",
+      "Calciumdibromid",
+      "fuzzer",
+      "gestis",
+      "promisified",
+      "tauri",
+      "ureq",
+      "wasm"
+    ],
+    "eslint.options": {
+      "extensions": [".ts", ".html"]
+    },
+    "eslint.validate": [
+      "javascript",
+      "typescript",
+      "html"
+    ],
+    "eslint.packageManager": "yarn"
+  }
+}
