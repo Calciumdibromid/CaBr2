@@ -59,9 +59,13 @@
       "removeOption": "Удалить опцию поиска",
       "addOption": "Добавить опцию поиска",
       "resultsHeader": "Найти результаты",
+      "noResult": "{{provider}} не дал результатов.\nПожалуйста, попробуйте снова с синонимами или частичными словами.",
       "customSubstance": "Пользовательский",
       "unsupportedProviderInfo": "не поддерживается",
-      "error": "Ошибка при получении данных"
+      "error": "Ошибка при получении данных",
+      "disclaimer": {
+        "gestis": "Gestis rarely provides data for products of experiments."
+      }
     },
     "substance": {
       "invalidFormsTitle": "Что-то не так",
@@ -99,7 +103,8 @@
       "ghsSymbolsColorInfo": "серый: не выбрано / раскрашено: выбрано",
       "addCustomSubstanceData": "Добавить обычай субстанция",
       "dragAndDrop": "перетащить",
-      "resetTooltip": "Сбросить текущее вещество к исходным значениям"
+      "resetTooltip": "Сбросить текущее вещество к исходным значениям",
+      "phraseFormatTooltip": "Ожидаемый формат: {{format}}"
     },
     "units": {
       "groups": {
@@ -120,7 +125,9 @@
       "inCaseOfDangerShort": "Случай опасности",
       "disposalShort": "Удаления",
       "signatureFieldStudent": "Я подтверждаю, что выполняю задание/подготовку в соответствии с инструкциями по безопасности, представленными здесь.",
-      "signatureFieldAssistant": "Студенту разрешается выполнить представленное задание или подготовку."
+      "signatureFieldAssistant": "Студенту разрешается выполнить представленное задание или подготовку.",
+      "signature": "Сигнатура",
+      "locationAndDate": "Расположение, дата"
     },
     "preview": {
       "info": "Это только предварительный просмотр. Созданный PDF может выглядеть иначе!",
@@ -173,7 +180,8 @@
       "pdfGeneration": {
         "generatingPdf": "Генерация PDF...",
         "downloadPdf": "Скачать PDF",
-        "download": "Скачать"
+        "download": "Скачать",
+        "errorMessage": "Сервер не отвечает.\nЭто может иметь несколько причин.\nВы можете подождать или закрыть этот диалог сейчас и повторите попытку позже."
       }
     }
   }
