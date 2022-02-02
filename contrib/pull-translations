@@ -22,7 +22,7 @@ token="$1"
 crowdin pull || exit 1
 
 # normalize locales
-for i in $(ls translations/??_??.json); do
+for i in $(ls assets/translations/??_??.json); do
   file_old=$i
   file_new=$(echo "$file_old" | tr '[:upper:]' '[:lower:]')
   [ "$file_old" == "$file_new" ] || {
