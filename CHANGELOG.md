@@ -1,3 +1,39 @@
+## [v0.5.0](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.5.0) - 2022-02-02
+
+* FEATURES
+  * Introduce NGXS (#1048)
+* ENHANCEMENTS
+  * Destroy all Observables and fix bad code (#1118)
+  * Move search icon to the beginning (#1117)
+  * Change message for gestis disclaimer (#1116)
+  * Replace config-model hack with ngxs approach (#1111)
+  * Remove unnecessary transloco object (#1106)
+  * Gestis parser rewrite (#1060)
+  * Add tests (#1053)
+  * New error handling in crates (#1051)
+  * Rename ureq to request in config (#1041)
+  * Feature/airbnb style guide (#1037)
+  * Wrap RwLock to simplify code (#1028)
+  * Remove version reqirement from config handler (#1023)
+  * Restructure project (#1018)
+* BUGFIXES
+  * Fix logging message when saving file (#1110)
+  * Print all log messages in tauri also via `console.*` methods (#1109)
+  * Fix log level filter (#1105)
+  * New error implementation for serialization (#1104)
+  * Fix unit translation (#1096)
+  * Add .gitattributes file to force lf on checkout (#1044)
+* BUILD
+  * Update contrib scripts (#1095)
+  * Bump rust edition to 2021 (#1020)
+* DOCS
+  * Improve READMEs and IntelliJ support (#1036)
+  * Update Develop and Build instructions (#826)
+* MISC
+  * Fix wasm-bindgen (#1077)
+  * Fix clippy in ci (#1076)
+  * Migrate angular to 13 (#1031)
+
 ## [v0.4.1](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.4.1) - 2022-01-15
 
 * ENHANCEMENTS
