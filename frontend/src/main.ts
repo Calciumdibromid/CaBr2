@@ -14,6 +14,14 @@ if (environment.production) {
   enableProdMode();
 }
 
+// TODO(#1126) remove after some time
+const config = localStorage.getItem('config');
+if (config?.startsWith('{"config":{')) {
+  logger.warning('migrating local storage config');
+  const newConfig = config.slice(10, config.length - 1);
+  localStorage.setItem('config', newConfig);
+}
+
 platformBrowserDynamic()
   .bootstrapModule(AppModule)
   .catch((err) => logger.error(err));
