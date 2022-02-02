@@ -267,7 +267,7 @@ dependencies = [
 
 [[package]]
 name = "cabr2"
-version = "0.5.0"
+version = "0.5.1"
 dependencies = [
  "config",
  "load_save",
