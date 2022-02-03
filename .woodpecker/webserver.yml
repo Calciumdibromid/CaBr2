@@ -1,0 +1,19 @@
+pipeline:
+  webserver:
+    image: a6543/cabr2_ci:root
+    pull: true
+    when:
+      path:
+        - '.woodpecker/webserver.yml'
+        - 'webserver/**'
+
+    commands:
+      - rustup default stable
+      - cd webserver
+      - cargo fmt -- --check
+      - cargo clippy --all-features -- --deny clippy::all --deny warnings
+      - cargo build --all-features
+      - cargo build --all-features --release
+
+      # TODO(692) reactivate when tests are written
+      #- cargo test --all-features

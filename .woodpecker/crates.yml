@@ -1,0 +1,16 @@
+pipeline:
+  crates:
+    image: a6543/cabr2_ci:root
+    pull: true
+    when:
+      path:
+        - '.woodpecker/crates.yml'
+        - 'crates/**'
+
+    commands:
+      - rustup default stable
+      - cd crates
+      - cargo fmt -- --check
+      - cargo clippy --workspace --all-features -- --deny clippy::all --deny warnings
+      - cargo build --workspace --all-features
+      - cargo test --workspace --all-features
