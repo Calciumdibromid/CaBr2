@@ -3,11 +3,6 @@ pipeline:
     image: a6543/cabr2_ci:root
     pull: true
     when:
-      event:
-        - pull_request
-      branch:
-        - develop
-        - main
       path:
         - '.woodpecker/tauri-app.yml'
         - 'frontend/src-tauri/**'
