@@ -1,0 +1,24 @@
+pipeline:
+  frontend:
+    image: a6543/cabr2_ci:root
+    pull: true
+    when:
+      path:
+        - '.woodpecker/frontend.yml'
+        - 'frontend/src/**'
+        - 'frontend/*.json'
+        - 'frontend/*.js'
+        - 'frontend/.prettierignore'
+        - 'frontend/yarn.lock'
+        - 'frontend/src-wasm/**'
+
+    commands:
+      - rustup default stable
+      - cd frontend
+      - yarn install --frozen-lockfile
+      - yarn prettier -c src
+      - yarn lint
+      - yarn ng build --configuration production
+      # debug compiles faster and everything gets checked in the dedicated wasm ci pipeline
+      - yarn wasm_lib:debug
+      - yarn ng build --configuration webProd

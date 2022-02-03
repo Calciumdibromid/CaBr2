@@ -1,0 +1,19 @@
+pipeline:
+  wasm-lib:
+    image: a6543/cabr2_ci:root
+    pull: true
+    when:
+      path:
+        - '.woodpecker/wasm-lib.yml'
+        - 'frontend/src-wasm/**'
+
+    commands:
+      - rustup default stable
+      - cd frontend/src-wasm
+      - cargo fmt -- --check
+      - cargo clippy --all-features -- --deny clippy::all --deny warnings
+      - wasm-pack build --out-dir ../cabr2_wasm --dev -- --features debug_build
+      - wasm-pack build --out-dir ../cabr2_wasm --release
+
+      # TODO(692) reactivate when tests are written
+      #- cargo test --all-features
