@@ -14,6 +14,6 @@ chrono = "0.4.19"
 config = { path = "../config/" }
 fern = "0.6.0"
 log = "0.4.14"
-serde = { version = "1.0.133", features = ["derive"], optional = true }
+serde = { version = "1.0.136", features = ["derive"], optional = true }
 tokio = "1.15.0"
 types = { path = "../types/" }
