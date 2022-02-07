@@ -3,5 +3,16 @@
   "extends": [
     "config:base"
   ],
-  "dependencyDashboard": true
+  "dependencyDashboard": true,
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "matchPackagePatterns": ["js"],
+      "labels": ["typescript"]
+    },
+    {
+      "matchPackagePatterns": ["rust"],
+      "labels": ["rust"]
+    }
+  ]
 }
