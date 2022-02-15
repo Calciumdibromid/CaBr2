@@ -1,0 +1,5 @@
+#blank_issues_enabled: false
+contact_links:
+  - name: Open a Issue
+    url: https://codeberg.org/Calciumdibromid/CaBr2/issues/new
+    about: Open a new Issue on [Codeberg.org](https://codeberg.org).
