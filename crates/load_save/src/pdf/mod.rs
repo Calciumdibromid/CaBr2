@@ -313,13 +313,12 @@ mod handlebar_helpers {
 
     let phrases: BTreeSet<String> = substances
       .into_iter()
-      .map(|s| {
+      .flat_map(|s| {
         map_phrases(match phrases_selector {
           PhraseType::H => s.h_phrases.data,
           PhraseType::P => s.p_phrases.data,
         })
       })
-      .flatten()
       .collect();
 
     for p in phrases.iter() {

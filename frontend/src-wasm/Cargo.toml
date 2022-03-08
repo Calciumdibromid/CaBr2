@@ -34,5 +34,6 @@ debug_build = ["console_error_panic_hook"]
 [profile.release]
 panic = "abort"
 opt-level = "s"
+strip = true
 codegen-units = 1
 lto = true
