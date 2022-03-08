@@ -6,6 +6,8 @@
 
 Generate "experiment wise safety sheets" in compliance to European law.
 
+<a href="https://codeberg.org/Calciumdibromid/CaBr2"> <img src="assets/get-it-on-blue-on-white.svg" alt="Get It On Codeberg" width="250"/> <a/>
+
 ## Description
 
 Calciumdibromid (short: CaBr2) is a tool to generate safety data sheets for experiments.
