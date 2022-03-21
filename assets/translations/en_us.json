@@ -33,7 +33,7 @@
     "bugreport": {
       "title": "Report a bug",
       "sentence": "Report a bug on following email:",
-      "githubSentence": "Alternatively you can open an issue in Github:"
+      "codebergSentence": "Alternatively you can open an issue in Codeberg:"
     },
     "header": {
       "docTitle": "Document title:",

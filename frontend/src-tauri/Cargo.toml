@@ -8,7 +8,7 @@ authors = [
   "6543 <6543@obermui.de>",
 ]
 license = "GPLv3+"
-repository = "https://github.com/Calciumdibromid/CaBr2/"
+repository = "https://codeberg.org/Calciumdibromid/CaBr2"
 default-run = "cabr2"
 edition = "2021"
 build = "src/build.rs"

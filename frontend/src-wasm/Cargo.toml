@@ -7,7 +7,7 @@ authors = [
   "crapStone <crapstone01@gmail.com>",
 ]
 license = "GPLv3+"
-repository = "https://github.com/Calciumdibromid/CaBr2/"
+repository = "https://codeberg.org/Calciumdibromid/CaBr2"
 
 [lib]
 crate-type = ["cdylib", "rlib"]

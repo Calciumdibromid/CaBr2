@@ -1,9 +1,9 @@
-## [v0.5.1](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.5.1) - 2022-02-02
+## [v0.5.1](https://codeberg.org/Calciumdibromid/CaBr2/releases/tag/v0.5.1) - 2022-02-02
 
 * BUGFIXES
   * Add migration of config in local storage (#1127)
 
-## [v0.5.0](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.5.0) - 2022-02-02
+## [v0.5.0](https://codeberg.org/Calciumdibromid/CaBr2/releases/tag/v0.5.0) - 2022-02-02
 
 * FEATURES
   * Introduce NGXS (#1048)
@@ -39,7 +39,7 @@
   * Update Develop and Build instructions (#826)
 * MISC
 
-## [v0.4.1](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.4.1) - 2022-01-15
+## [v0.4.1](https://codeberg.org/Calciumdibromid/CaBr2/releases/tag/v0.4.1) - 2022-01-15
 
 * ENHANCEMENTS
   * Add signature and location, date to preview and template (#1009)
@@ -57,7 +57,7 @@
   * Update wasm dependencies (#1003)
   * Add codespell into backend & frontend pipeline (#990)
 
-## [v0.4.0](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.4.0) - 2021-09-20
+## [v0.4.0](https://codeberg.org/Calciumdibromid/CaBr2/releases/tag/v0.4.0) - 2021-09-20
 
 * FEATURES
   * Add angular splashscreen on app loading (#802)
