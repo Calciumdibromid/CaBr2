@@ -13,10 +13,10 @@ pipeline:
       - mkdir -p frontend/dist/CaBr2 && echo "Hello" > frontend/dist/CaBr2/index.html
       - cd frontend/src-tauri
       - cargo fmt -- --check
-      - cargo clippy --all-features -- --deny clippy::all --deny warnings
-      - cargo build --all-features
-      # does not work, because we need an `yarn install` before
+      - cargo clippy --locked --all-features -- --deny clippy::all --deny warnings
+      - cargo build --locked --all-features
+      # does not work, because we need a `yarn install` before
       # - yarn build:release
 
       # TODO(692) reactivate when tests are written
-      #- cargo test --all-features
+      #- cargo test --locked --all-features

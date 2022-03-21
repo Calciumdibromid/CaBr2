@@ -11,9 +11,9 @@ pipeline:
       - rustup default stable
       - cd webserver
       - cargo fmt -- --check
-      - cargo clippy --all-features -- --deny clippy::all --deny warnings
-      - cargo build --all-features
-      - cargo build --all-features --release
+      - cargo clippy --locked --all-features -- --deny clippy::all --deny warnings
+      - cargo build --locked --all-features
+      - cargo build --locked --all-features --release
 
       # TODO(692) reactivate when tests are written
       #- cargo test --all-features
