@@ -15,7 +15,7 @@ repository = "https://codeberg.org/Calciumdibromid/CaBr2"
 [dependencies]
 config = { path = "../crates/config/", features = [ "webserver" ]}
 load_save = { path = "../crates/load_save/" }
-log = "0.4.14"
+log = "0.4.16"
 logger = { path = "../crates/logger/" }
 search = { path = "../crates/search/" }
 serde = { version = "1.0.136", features = ["derive"] }
