@@ -15,6 +15,11 @@
 }
 
 .center {
+  display: flex;
+  justify-content: center;
+}
+
+.symbol-center {
   display: grid;
   place-content: center;
 }
