@@ -14,6 +14,7 @@ import { ConfigState } from './@core/states/config.state';
 import { ConsentComponent } from './components/consent/consent.component';
 import { EditSubstanceDataComponent } from './components/edit-substance-data/edit-substance-data.component';
 import { ExportButtonsComponent } from './components/export-buttons/export-buttons.component';
+import { FocusDirective } from './@core/directives/autofocus.directive';
 import { HeaderComponent } from './components/header/header.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { ManualComponent } from './components/manual/manual.component';
@@ -63,6 +64,7 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
     SecurityThingsComponent,
     ExportButtonsComponent,
     BugReportButtonComponent,
+    FocusDirective,
   ],
   imports: [
     BrowserModule,

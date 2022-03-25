@@ -4,7 +4,7 @@
       <mat-card class="mini-grid">
         <mat-form-field>
           <mat-label>{{ t('substance.name') }}</mat-label>
-          <input matInput formControlName="name" required />
+          <input matInput formControlName="name" required [appAutofocus]="true" />
           <mat-error *ngIf="this.form.get('name')?.errors?.required">{{ t('substance.needsName') }}</mat-error>
         </mat-form-field>
         <mat-form-field>
@@ -127,7 +127,7 @@
           <div class="flex" *ngFor="let control of hPhrases.controls; let i = index">
             <div [formGroupName]="i">
               <mat-form-field>
-                <input matInput formControlName="hNumber" />
+                <input matInput formControlName="hNumber" [appAutofocus]="true" />
                 <mat-error
                   *ngIf="hPhrases.at(i).get('hNumber')?.invalid"
                   [matTooltip]="t('substance.phraseFormatTooltip', { format: 'Hxxx+Hxxx ...' })"
@@ -182,7 +182,7 @@
           <div class="flex" *ngFor="let control of pPhrases.controls; let i = index">
             <div [formGroupName]="i">
               <mat-form-field>
-                <input matInput formControlName="pNumber" />
+                <input matInput formControlName="pNumber" [appAutofocus]="true" />
                 <mat-error
                   *ngIf="pPhrases.at(i).get('pNumber')?.invalid"
                   [matTooltip]="t('substance.phraseFormatTooltip', { format: 'Pxxx+Pxxx ...' })"

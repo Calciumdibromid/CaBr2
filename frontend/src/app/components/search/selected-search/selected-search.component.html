@@ -14,7 +14,7 @@
           <mat-form-field class="width-100">
             <mat-icon class="search-icon" matPrefix>search</mat-icon>
             <mat-label>{{ t('searchButton') }}</mat-label>
-            <input matInput formControlName="userInput" [matAutocomplete]="auto" />
+            <input matInput formControlName="userInput" [matAutocomplete]="auto" [appAutofocus]="true" />
             <mat-autocomplete #auto="matAutocomplete">
               <mat-option
                 *ngFor="let result of suggestionResults.get(selections.at(i).get('searchOption')?.value)"
