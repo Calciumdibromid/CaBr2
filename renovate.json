@@ -9,6 +9,7 @@
   "enabledManagers": ["cargo", "npm"],
   "packageRules": [
     {
+      "matchPaths": ["*"],
       "lockFileMaintenance": { "enabled": true }
     },
     {
