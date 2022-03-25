@@ -14,7 +14,7 @@ edition = "2021"
 build = "src/build.rs"
 
 [build-dependencies]
-tauri-build = { version = "1.0.0-rc.4" }
+tauri-build = { version = "1.0.0-rc.4", features = [] }
 
 [dependencies]
 config = { path = "../../crates/config/", features = [ "tauri-app" ] }
