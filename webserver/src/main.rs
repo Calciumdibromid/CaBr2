@@ -109,14 +109,14 @@ pub async fn main() {
   #[cfg(debug_assertions)]
   {
     cors = warp::cors()
-      .allow_origin("http://localhost:4200")
+      .allow_any_origin()
       .allow_methods(vec!["GET", "POST"])
       .allow_headers(vec!["content-type"]);
     address = ([127, 0, 0, 1], 3030);
   }
 
   let api = warp::path("api").and(warp::path("v1"));
-  let routes = api.and(search.or(config.or(load_save))).with(cors).or(downloads_folder);
+  let routes = api.and(downloads_folder.or(load_save.or(search.or(config)))).with(cors);
 
   /*
   /api/v1/..

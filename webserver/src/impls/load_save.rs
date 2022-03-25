@@ -99,7 +99,7 @@ pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, 
   match fs::write(&path, contents).await {
     Ok(_) => Ok(warp::reply::with_status(
       warp::reply::json(&SaveDocumentResponse {
-        download_url: format!("{}/download/{}.{}", SERVER_URL, uuid_str, body.file_type),
+        download_url: format!("{}/api/v1/download/{}.{}", SERVER_URL, uuid_str, body.file_type),
       }),
       StatusCode::CREATED,
     )),

@@ -13,6 +13,8 @@ import { ProgressDialogComponent } from 'src/app/components/progress-dialog/prog
 
 const logger = new Logger('loadSaveService.web');
 
+const URL = window.webkitURL || window.URL;
+
 const SERVER_URL =
   ((): string => {
     if (environment.production) {
@@ -28,11 +30,17 @@ const getFileType = (file: File): string => {
 };
 
 const downloadFile = (contents: Blob, fileType: string): void => {
+  const data = URL.createObjectURL(contents);
+
   const anchor = document.createElement('a');
   anchor.download = 'Unbenannt.' + fileType;
-  anchor.href = (window.webkitURL || window.URL).createObjectURL(contents);
-  anchor.dataset.downloadurl = [contents.type, anchor.download, anchor.href].join(':');
+  anchor.href = data;
   anchor.click();
+
+  setTimeout(() => {
+    URL.revokeObjectURL(data);
+    anchor.remove();
+  }, 100);
 };
 
 @Injectable()
@@ -55,9 +63,24 @@ export class LoadSaveService implements ILoadSaveService {
             data: {
               download,
               subscriber: sub,
+              callback: (url: string) => {
+                this.httpClient.get(url, { observe: 'response', responseType: 'blob' }).subscribe((response) => {
+                  const body = response.body;
+
+                  if (body === null) {
+                    logger.error('server returned no pdf');
+                    sub.error('server returned no pdf');
+                    return;
+                  }
+
+                  // with every other type Firefox opens the file in a new tab -.-
+                  downloadFile(new Blob([body], { type: 'text/plain' }), fileType);
+
+                  sub.next();
+                });
+              },
             },
           });
-          sub.next();
           break;
 
         case 'cb2':

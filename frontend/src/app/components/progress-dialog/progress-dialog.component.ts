@@ -4,6 +4,8 @@ import { Observable, Subscriber, Subscription } from 'rxjs';
 
 import { INativeService } from '../../@core/services/native/native.interface';
 
+type ProgressDialogCallback = (url: string) => void;
+
 interface SaveDocumentResponse {
   downloadUrl: string;
 }
@@ -11,6 +13,7 @@ interface SaveDocumentResponse {
 export interface ProgressDialogData {
   download: Observable<SaveDocumentResponse>;
   subscriber: Subscriber<string>;
+  callback: ProgressDialogCallback;
 }
 
 @Component({
@@ -68,7 +71,7 @@ export class ProgressDialogComponent implements OnInit, OnDestroy {
   downloadPdf(): void {
     // if this function can be called the url has been set
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.nativeService.openUrl(this.pdfUrl!);
+    this.data.callback(this.pdfUrl!);
   }
 
   setPdfUrl(url: string): void {
