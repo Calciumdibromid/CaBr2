@@ -1,5 +1,6 @@
 use std::{convert::Infallible, path::PathBuf, time::Duration};
 
+use once_cell::sync::OnceCell;
 use serde::{Deserialize, Serialize};
 use tokio::fs;
 use uuid::Uuid;
@@ -10,15 +11,20 @@ use types::ProviderMapping;
 
 use super::types::generate_error_reply;
 
-pub const DOWNLOAD_FOLDER: &str = "/tmp/cabr2_server/created";
-pub const CACHE_FOLDER: &str = "/tmp/cabr2_server/cache";
+static DOWNLOAD_FOLDER: OnceCell<PathBuf> = OnceCell::new();
+static CACHE_FOLDER: OnceCell<PathBuf> = OnceCell::new();
+static SERVER_URL: OnceCell<String> = OnceCell::new();
 
-#[cfg(not(debug_assertions))]
-const SERVER_URL: &str = "https://api.cabr2.de";
-#[cfg(debug_assertions)]
-const SERVER_URL: &str = "http://localhost:3030";
+pub async fn init(
+  download_folder: PathBuf,
+  cache_folder: PathBuf,
+  server_url: String,
+  provider_mapping: ProviderMapping,
+) {
+  DOWNLOAD_FOLDER.set(download_folder).expect("can only be set once");
+  CACHE_FOLDER.set(cache_folder).expect("can only be set once");
+  SERVER_URL.set(server_url).expect("can only be set once");
 
-pub async fn init(provider_mapping: ProviderMapping) {
   handler::init_handlers(provider_mapping).await;
 }
 
@@ -68,10 +74,10 @@ struct SaveDocumentResponse {
 }
 
 pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, Infallible> {
-  let mut path;
-  let mut uuid_str;
+  let mut path: PathBuf;
+  let mut uuid_str: String;
   loop {
-    path = PathBuf::from(DOWNLOAD_FOLDER);
+    path = DOWNLOAD_FOLDER.get().unwrap().to_path_buf();
     uuid_str = Uuid::new_v4().to_hyphenated().to_string();
     path.push(format!("{}.{}", uuid_str, body.file_type));
 
@@ -99,7 +105,12 @@ pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, 
   match fs::write(&path, contents).await {
     Ok(_) => Ok(warp::reply::with_status(
       warp::reply::json(&SaveDocumentResponse {
-        download_url: format!("{}/api/v1/download/{}.{}", SERVER_URL, uuid_str, body.file_type),
+        download_url: format!(
+          "{}/api/v1/download/{}.{}",
+          SERVER_URL.get().unwrap(),
+          uuid_str,
+          body.file_type
+        ),
       }),
       StatusCode::CREATED,
     )),
@@ -118,8 +129,10 @@ pub async fn cleanup_thread() {
   // This logic should ignore every error and continue working on the next file
   // but we want to know what went wrong.
 
+  let download_folder = DOWNLOAD_FOLDER.get().unwrap();
+
   loop {
-    let mut res = match fs::read_dir(DOWNLOAD_FOLDER).await {
+    let mut res = match fs::read_dir(&download_folder).await {
       Ok(iter) => iter,
       Err(err) => {
         log::error!("{:?}", err);

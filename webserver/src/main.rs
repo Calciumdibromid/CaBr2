@@ -1,26 +1,61 @@
 mod impls;
 
-use std::fs;
-
+use std::{fs, path::PathBuf};
+use structopt::StructOpt;
 use warp::Filter;
 
 use crate::impls::{
   config,
-  load_save::{self, CACHE_FOLDER, DOWNLOAD_FOLDER},
+  load_save::{self},
   search,
 };
+
+/// Options for the webserver binary
+#[derive(StructOpt, Debug)]
+#[structopt(name = "basic")]
+struct Opt {
+  // socket address the webserver will start listening on
+  #[structopt(short, long, default_value = "0.0.0.0:3030")]
+  address: String,
+
+  // folder where created pdfs to download are stored
+  #[structopt(long, default_value = "/tmp/cabr2_server/created")]
+  download_folder: PathBuf,
+
+  // cache folder
+  #[structopt(long, default_value = "/tmp/cabr2_server/cache")]
+  cache_folder: PathBuf,
+
+  // public address that will be used to generate the download links
+  #[structopt(short, long, default_value = "https://api.cabr2.de")]
+  public_address: String,
+
+  // domain which is allowed to make requests to the webserver,
+  // this is a security header which will be set on responses
+  #[structopt(short, long, default_value = "")]
+  cors_allow_origin: String,
+}
 
 #[tokio::main]
 pub async fn main() {
   // must be initialized first
   logger::setup_logger().await.unwrap();
 
+  let opt = Opt::from_args();
+  log::debug!("args: {:#?}", opt);
+
   search::init().await;
-  load_save::init(search::get_provider_mapping().await).await;
+  load_save::init(
+    opt.download_folder.clone(),
+    opt.cache_folder.clone(),
+    opt.public_address,
+    search::get_provider_mapping().await,
+  )
+  .await;
 
   // create tmp folders
-  handle_result(fs::create_dir_all(DOWNLOAD_FOLDER));
-  handle_result(fs::create_dir(CACHE_FOLDER));
+  handle_result(fs::create_dir_all(&opt.download_folder));
+  handle_result(fs::create_dir(opt.cache_folder));
 
   let search_available_providers = warp::path("availableProviders")
     .and(warp::path::end())
@@ -94,26 +129,19 @@ pub async fn main() {
       .or(load_save_save_document),
   );
 
-  let downloads_folder = warp::path("download").and(warp::fs::dir(DOWNLOAD_FOLDER));
+  let downloads_folder = warp::path("download").and(warp::fs::dir(opt.download_folder));
 
-  let cors;
-  let address;
-  #[cfg(not(debug_assertions))]
-  {
-    cors = warp::cors()
-      .allow_origin("https://app.cabr2.de")
-      .allow_methods(vec!["GET", "POST"])
-      .allow_headers(vec!["content-type"]);
-    address = ([0, 0, 0, 0], 80);
-  }
-  #[cfg(debug_assertions)]
-  {
-    cors = warp::cors()
+  let cors = if opt.cors_allow_origin.is_empty() {
+    warp::cors()
       .allow_any_origin()
       .allow_methods(vec!["GET", "POST"])
-      .allow_headers(vec!["content-type"]);
-    address = ([127, 0, 0, 1], 3030);
-  }
+      .allow_headers(vec!["content-type"])
+  } else {
+    warp::cors()
+      .allow_origin(opt.cors_allow_origin.as_str())
+      .allow_methods(vec!["GET", "POST"])
+      .allow_headers(vec!["content-type"])
+  };
 
   let api = warp::path("api").and(warp::path("v1"));
   let routes = api.and(downloads_folder.or(load_save.or(search.or(config)))).with(cors);
@@ -140,9 +168,8 @@ pub async fn main() {
   log::info!("Starting cleanup thread...");
   tokio::spawn(load_save::cleanup_thread());
 
+  let address: std::net::SocketAddr = opt.address.parse().expect("failed to parse socket address");
   log::info!("server starting...");
-  // On debug builds it runs on `http://localhost:3030`,
-  // on release builds it runs on port 80 and listens on every interface.
   warp::serve(routes).run(address).await;
 }
 
