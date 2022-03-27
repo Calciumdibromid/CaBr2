@@ -8,14 +8,14 @@ class FillSentence {
 
 export abstract class GenericSentenceState<FILL extends FillSentence> {
   static elements(state: StringListStateModel): string[] {
-    return (state.form.model?.elements ?? []).map((element) => element.value);
+    return state.form.model?.elements ?? [];
   }
 
   fillSentence(context: StateContext<StringListStateModel>, action: FILL): void {
     context.setState({
       form: {
         model: {
-          elements: action.strings.map((sentence) => ({ value: sentence })),
+          elements: action.strings,
         },
       },
     });
@@ -25,7 +25,7 @@ export abstract class GenericSentenceState<FILL extends FillSentence> {
     context.setState({
       form: {
         model: {
-          elements: elements.map((sentence) => ({ value: sentence })),
+          elements,
         },
       },
     });

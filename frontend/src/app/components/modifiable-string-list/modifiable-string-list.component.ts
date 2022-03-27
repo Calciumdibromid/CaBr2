@@ -1,10 +1,9 @@
 import { Actions, ofActionDispatched, Store } from '@ngxs/store';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription, switchMap } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
-import { elementsToFormGroup, initForm, stateToElements } from 'src/app/@core/utils/forms.helper';
 import {
   FillSentence as FillDisposalSentence,
   ResetSentences as ResetDisposalSentence,
@@ -21,21 +20,19 @@ import {
   FillSentence as FillRulesOfConductSentence,
   ResetSentences as ResetRulesOfConductSentences,
 } from '../../@core/actions/rules-of-conduct-acitons';
+import { fixNumberOfControls, stateToElements } from 'src/app/@core/utils/forms.helper';
 
 @Component({
   selector: 'app-modifiable-string-list',
   templateUrl: './modifiable-string-list.component.html',
   styleUrls: ['./modifiable-string-list.component.scss'],
 })
-export class ModifiableStringListComponent implements OnInit, OnDestroy {
+export class ModifiableStringListComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input()
   ngxsIdentifier!: string;
 
   @Input()
   title!: string;
-
-  @Input()
-  formGroup$!: Observable<FormGroup>;
 
   @Output()
   addEmpty = new EventEmitter();
@@ -46,7 +43,9 @@ export class ModifiableStringListComponent implements OnInit, OnDestroy {
   @Output()
   rearrange = new EventEmitter<CdkDragDrop<FormGroup[]>>();
 
-  formGroup!: FormGroup;
+  formGroup: FormGroup = this.formBuilder.group({
+    elements: this.formBuilder.array([]),
+  });
 
   addHover = false;
 
@@ -60,7 +59,6 @@ export class ModifiableStringListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.formGroup$.subscribe((formGroup) => (this.formGroup = formGroup)),
       this.actions$
         .pipe(
           ofActionDispatched(
@@ -74,11 +72,26 @@ export class ModifiableStringListComponent implements OnInit, OnDestroy {
             FillInCaseOfDangerSentence,
             FillDisposalSentence,
           ),
+          switchMap(() => stateToElements(this.store, this.ngxsIdentifier)),
         )
-        .subscribe(() => {
-          this.initFormGroup(this.ngxsIdentifier);
+        .subscribe((es) => {
+          const elements = es ?? [];
+
+          fixNumberOfControls(this.controlElements, elements?.length, this.controlElements.length, () =>
+            this.formBuilder.control(''),
+          );
+          this.controlElements.patchValue(elements);
         }),
     );
+  }
+
+  ngAfterViewInit(): void {
+    this.store.dispatch([
+      new ResetHumanAndEnvironmentDangerSentences(),
+      new ResetRulesOfConductSentences(),
+      new ResetInCaseOfDangerSentences(),
+      new ResetDisposalSentence(),
+    ]);
   }
 
   ngOnDestroy(): void {
@@ -87,7 +100,7 @@ export class ModifiableStringListComponent implements OnInit, OnDestroy {
 
   addElement(): void {
     // this is needed to keep form and state in sync
-    this.controlElements.push(initForm('', this.formBuilder));
+    this.controlElements.push(this.formBuilder.control(''));
     this.addEmpty.emit();
   }
 
@@ -99,11 +112,5 @@ export class ModifiableStringListComponent implements OnInit, OnDestroy {
 
   drop(event: CdkDragDrop<FormGroup[]>): void {
     this.rearrange.emit(event);
-  }
-
-  initFormGroup(identifier: string): void {
-    stateToElements(this.store, identifier).subscribe((elements) => {
-      this.formGroup = elementsToFormGroup(this.formBuilder, elements);
-    });
   }
 }

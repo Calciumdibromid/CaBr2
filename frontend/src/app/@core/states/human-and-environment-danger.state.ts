@@ -14,7 +14,7 @@ const HUMAN_AND_ENVIRONMENT_DANGER_TEMPLATE = TEMPLATES.docsTemplate.humanAndEnv
   defaults: {
     form: {
       model: {
-        elements: HUMAN_AND_ENVIRONMENT_DANGER_TEMPLATE.map((sentence) => ({ value: sentence })),
+        elements: HUMAN_AND_ENVIRONMENT_DANGER_TEMPLATE,
       },
     },
   },

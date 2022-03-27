@@ -14,7 +14,7 @@ const DISPOSAL_TEMPLATE = TEMPLATES.docsTemplate.disposal;
   defaults: {
     form: {
       model: {
-        elements: DISPOSAL_TEMPLATE.map((sentence) => ({ value: sentence })),
+        elements: DISPOSAL_TEMPLATE,
       },
     },
   },

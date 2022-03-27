@@ -16,6 +16,6 @@ export class TextAreaFieldComponent {
   hover = false;
 
   get formControl(): FormControl {
-    return this.abstractControl.get('value') as FormControl;
+    return this.abstractControl as FormControl;
   }
 }

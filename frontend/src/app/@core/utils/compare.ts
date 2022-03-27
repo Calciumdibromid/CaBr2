@@ -6,8 +6,9 @@ export const compareArrays = <T>(array1: Array<T>, array2: Array<T>): boolean =>
     return false;
   }
 
-  const array1sorted = array1.sort((a, b) => (a === b ? 0 : a > b ? 1 : -1));
-  const array2sorted = array2.sort((a, b) => (a === b ? 0 : a > b ? 1 : -1));
+  // deep clone of arrays, because they can be write protected
+  const array1sorted = JSON.parse(JSON.stringify(array1)).sort((a: T, b: T) => (a === b ? 0 : a > b ? 1 : -1));
+  const array2sorted = JSON.parse(JSON.stringify(array2)).sort((a: T, b: T) => (a === b ? 0 : a > b ? 1 : -1));
 
   for (let i = 0, l = array1sorted.length; i < l; i++) {
     const a1 = array1sorted[i];

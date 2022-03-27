@@ -1,11 +1,7 @@
 export interface StringListStateModel {
   form: {
     model?: {
-      elements: ElementModel[];
+      elements: string[];
     };
   };
-}
-
-export interface ElementModel {
-  value: string;
 }
