@@ -1546,10 +1546,10 @@
     cosmiconfig "^7.0.0"
     tslib "^2.3.0"
 
-"@ngneat/transloco@3.2.0":
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-3.2.0.tgz#cc4e59ce2338953ff0d37061b4d476d43d6f9048"
-  integrity sha512-S9Lh3T5I9ck/HPD93HzGwLFBzjzoeUUBr4xL58lXtCHjGMVi9A9oCSgscKOZn/XfQiUwIO0dRhCVhqdT+sUGlQ==
+"@ngneat/transloco@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-4.0.0.tgz#7f6fa38203c63ae5959e0d3a9c1015cc21c95f6c"
+  integrity sha512-xK8Nwmfd66J1hxGjxwGZJVt50OssBoSmAGxZAeu+wXf+6gE96Vj8qnr+7mY78qW4J6AmwXsh81S1I0TFH2Nyjg==
   dependencies:
     "@ngneat/transloco-utils" "^3.0.1"
     flat "5.0.2"
