@@ -16,6 +16,7 @@ import {
 } from '../../@core/models/substances.model';
 import { GHSSymbolMap, SymbolKeys } from 'src/app/@core/states/ghs-symbols.state';
 import { compareArrays } from '../../@core/utils/compare';
+import { fixNumberOfControls } from 'src/app/@core/utils/forms.helper';
 import Logger from '../../@core/utils/logger';
 import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
@@ -186,25 +187,6 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   resetToOriginalData(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-
-    // https://youtu.be/-AQfQFcXac8
-    const fixNumberOfControls = (
-      control: FormArray,
-      needed: number,
-      current: number,
-      newCallback: () => AbstractControl,
-    ): void => {
-      const diff = needed - current;
-      if (diff > 0) {
-        for (let i = diff; i > 0; i--) {
-          control.push(newCallback());
-        }
-      } else if (diff < 0) {
-        for (let i = diff; i < 0; i++) {
-          control.removeAt(0);
-        }
-      }
-    };
 
     fixNumberOfControls(this.hPhrases, this.data.hPhrases.originalData.length, this.hPhrases.length, () =>
       this.initHPhrases(['', '']),

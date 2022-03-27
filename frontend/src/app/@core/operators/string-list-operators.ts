@@ -8,11 +8,7 @@ export const addEmptySentence = (): StateOperator<StringListStateModel> =>
   patch<StringListStateModel>({
     form: patch({
       model: patch({
-        elements: append([
-          {
-            value: '',
-          },
-        ]),
+        elements: append(['']),
       }),
     }),
   });

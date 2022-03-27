@@ -1,6 +1,6 @@
 [package]
 name = "webserver"
-version = "0.5.1"
+version = "0.5.2"
 edition = "2021"
 description = 'CaBr2 backend as webserver.'
 authors = [

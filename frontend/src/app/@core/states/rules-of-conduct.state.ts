@@ -14,7 +14,7 @@ const RULES_OF_CONDUCT_TEMPLATE = TEMPLATES.docsTemplate.rulesOfConduct;
   defaults: {
     form: {
       model: {
-        elements: RULES_OF_CONDUCT_TEMPLATE.map((sentence) => ({ value: sentence })),
+        elements: RULES_OF_CONDUCT_TEMPLATE,
       },
     },
   },

@@ -14,7 +14,7 @@ const IN_CASE_OF_DANGER_TEMPLATE = TEMPLATES.docsTemplate.inCaseOfDanger;
   defaults: {
     form: {
       model: {
-        elements: IN_CASE_OF_DANGER_TEMPLATE.map((sentence) => ({ value: sentence })),
+        elements: IN_CASE_OF_DANGER_TEMPLATE,
       },
     },
   },

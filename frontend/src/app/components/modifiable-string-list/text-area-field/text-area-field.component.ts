@@ -18,7 +18,7 @@ export class TextAreaFieldComponent implements OnInit {
   isAutoFocus = false;
 
   get formControl(): FormControl {
-    return this.abstractControl.get('value') as FormControl;
+    return this.abstractControl as FormControl;
   }
 
   ngOnInit(): void {

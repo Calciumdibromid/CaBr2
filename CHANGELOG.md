@@ -1,4 +1,9 @@
-## [v0.5.1](https://codeberg.org/Calciumdibromid/CaBr2/releases/tag/v0.5.1) - 2022-02-02
+## [v0.5.2](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.5.2) - 2022-03.28
+
+* BUGFIXES
+  *  Fix security things bug caused by ngxs rewrite (#1260)
+
+## [v0.5.1](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.5.1) - 2022-02-02
 
 * BUGFIXES
   * Add migration of config in local storage (#1127)
