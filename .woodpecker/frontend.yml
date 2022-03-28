@@ -1,3 +1,5 @@
+branches: ["develop", "main"]
+
 pipeline:
   frontend:
     image: a6543/cabr2_ci:root
