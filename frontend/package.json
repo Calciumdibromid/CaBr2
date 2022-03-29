@@ -51,7 +51,7 @@
     "@angular-eslint/template-parser": "13.1.0",
     "@angular/cli": "13.3.0",
     "@angular/compiler-cli": "13.3.0",
-    "@tauri-apps/cli": "1.0.0-rc.7",
+    "@tauri-apps/cli": "1.0.0-rc.8",
     "@types/jasmine": "4.0.0",
     "@types/node": "17.0.14",
     "@typescript-eslint/eslint-plugin": "5.17.0",
