@@ -24,7 +24,7 @@ search = { path = "../../crates/search/", default-features = false }
 serde = "1.0.136"
 serde_json = "1.0.79"
 types = { path = "../../crates/types/" }
-wasm-bindgen = { version = "=0.2.78", features = ["serde-serialize"] } # TODO(#1078)
+wasm-bindgen = { version = "=0.2.80", features = ["serde-serialize"] } # TODO(#1078)
 wasm-bindgen-futures = "0.4.28"
 
 [features]
