@@ -32,7 +32,7 @@ pub struct CaBr2Document {
 #[serde(rename_all = "camelCase")]
 pub struct Header {
   pub document_title: String,
-  pub organisation: String,
+  pub organization: String,
   pub lab_course: String,
   pub name: String,
   pub place: String,

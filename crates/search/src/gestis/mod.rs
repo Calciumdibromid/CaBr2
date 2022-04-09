@@ -20,6 +20,7 @@ use crate::{
 
 pub use self::error::GestisError;
 
+const NAME: &str = "Gestis";
 const BASE_URL: &str = "https://gestis-api.dguv.de/api";
 const SEARCH_SUGGESTIONS: &str = "search_suggestions";
 const SEARCH: &str = "search";
@@ -92,7 +93,7 @@ impl Gestis {
 #[cfg_attr(target_family = "wasm", async_trait(?Send))]
 impl Provider for Gestis {
   fn get_name(&self) -> String {
-    "Gestis".into()
+    NAME.to_string()
   }
 
   async fn get_quick_search_suggestions(&self, search_type: SearchType, pattern: String) -> SearchResult<Vec<String>> {
@@ -127,24 +128,29 @@ impl Provider for Gestis {
     // See the line below as black box that extracts the substance data you need from the response.
     let data = xml_parser::parse_response(&json, false)?;
 
+    let mut names = Vec::with_capacity(json.aliases.len() + 1);
+    names.push(json.name);
+    for alias in json.aliases {
+      names.push(alias.name);
+    }
+
     let res_data = SubstanceData {
-      name: Data::new(json.name),
-      alternative_names: json.aliases.into_iter().map(|a| a.name).collect(),
-      cas: Data::new(vec_to_option(data.cas)),
-      molecular_formula: Data::new(vec_to_option(data.molecular_formula)),
-      molar_mass: Data::new(vec_to_option(data.molar_mass)),
-      melting_point: Data::new(vec_to_option(data.melting_point)),
-      boiling_point: Data::new(vec_to_option(data.boiling_point)),
-      water_hazard_class: Data::new(vec_to_option(data.water_hazard_class)),
-      lethal_dose: Data::new(vec_to_option(data.lethal_dose)),
-      signal_word: Data::new(vec_to_option(data.signal_word)),
-      mak: Data::new(vec_to_option(data.mak)),
+      name: Data::new(names),
+      cas: Data::new(data.cas),
+      molecular_formula: Data::new(data.molecular_formula),
+      molar_mass: Data::new(data.molar_mass),
+      melting_point: Data::new(data.melting_point),
+      boiling_point: Data::new(data.boiling_point),
+      water_hazard_class: Data::new(data.water_hazard_class),
+      lethal_dose: Data::new(data.lethal_dose),
+      signal_word: Data::new(data.signal_word),
+      mak: Data::new(data.mak),
       amount: None,
-      h_phrases: Data::new(vec_vec_to_vec(data.h_phrases)),
-      p_phrases: Data::new(vec_vec_to_vec(data.p_phrases)),
-      symbols: Data::new(vec_vec_to_vec(data.symbols)),
+      h_phrases: Data::new(data.h_phrases),
+      p_phrases: Data::new(data.p_phrases),
+      symbols: Data::new(data.symbols),
       source: Source {
-        provider: "gestis".to_string(),
+        provider: self.get_name().to_lowercase(),
         url,
         last_updated: chrono::Utc::now(),
       },
@@ -165,23 +171,5 @@ impl SearchType {
       SearchType::Numbers => "nummern",
       SearchType::FullText => "volltextsuche",
     }
-  }
-}
-
-// TODO(#1085) remove again when SubstanceData was reworked
-
-fn vec_to_option<T>(mut vec: Vec<T>) -> Option<T> {
-  if vec.is_empty() {
-    None
-  } else {
-    Some(vec.swap_remove(0))
-  }
-}
-
-fn vec_vec_to_vec<T>(mut vec: Vec<Vec<T>>) -> Vec<T> {
-  if vec.is_empty() {
-    Vec::with_capacity(0)
-  } else {
-    vec.swap_remove(0)
   }
 }

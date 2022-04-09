@@ -13,19 +13,18 @@ use serde::{Deserialize, Serialize};
 #[serde(rename_all = "camelCase")]
 pub struct SubstanceData {
   pub name: Data<String>,
-  pub alternative_names: Vec<String>,
-  pub cas: Data<Option<String>>,
-  pub molecular_formula: Data<Option<String>>,
-  pub molar_mass: Data<Option<String>>,
-  pub melting_point: Data<Option<String>>,
-  pub boiling_point: Data<Option<String>>,
-  pub water_hazard_class: Data<Option<String>>,
+  pub cas: Data<String>,
+  pub molecular_formula: Data<String>,
+  pub molar_mass: Data<String>,
+  pub melting_point: Data<String>,
+  pub boiling_point: Data<String>,
+  pub water_hazard_class: Data<String>,
   pub h_phrases: Data<Vec<(String, String)>>,
   pub p_phrases: Data<Vec<(String, String)>>,
-  pub signal_word: Data<Option<String>>,
+  pub signal_word: Data<String>,
   pub symbols: Data<Vec<String>>,
-  pub lethal_dose: Data<Option<String>>,
-  pub mak: Data<Option<String>>,
+  pub lethal_dose: Data<String>,
+  pub mak: Data<String>,
   pub amount: Option<Amount>,
   pub source: Source,
 
@@ -38,11 +37,11 @@ pub struct SubstanceData {
 pub struct Data<T> {
   #[serde(skip_serializing_if = "Option::is_none")]
   pub modified_data: Option<T>,
-  pub original_data: T,
+  pub original_data: Vec<T>,
 }
 
 impl<T> Data<T> {
-  pub fn new(data: T) -> Data<T> {
+  pub fn new(data: Vec<T>) -> Data<T> {
     Data {
       modified_data: None,
       original_data: data,

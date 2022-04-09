@@ -40,55 +40,54 @@ impl Loader for Beryllium {
         document_title: beryllium_doc.general.title,
         lab_course: beryllium_doc.general.location,
         name: beryllium_doc.personal.name,
-        organisation: beryllium_doc.general.institute,
+        organization: beryllium_doc.general.institute,
         place: beryllium_doc.personal.spot,
         preparation: beryllium_doc.product.name,
       },
       substance_data: beryllium_doc
         .substances
         .into_iter()
-        .map(|mut substance| SubstanceData {
-          name: Data::new(substance.names[0].clone()),
-          alternative_names: substance.names.split_off(1),
-          cas: Data::new(substance.cas),
-          molecular_formula: Data::new(substance.chemical_formula),
-          molar_mass: Data::new(substance.molecular_weight),
-          boiling_point: Data::new(substance.boiling_point),
-          melting_point: Data::new(match substance.melting_point {
-            Some(mp) => Some(mp.value),
-            None => None,
-          }),
-          water_hazard_class: Data::new(substance.wgk),
-          h_phrases: Data::new(match substance.harzard_statements {
-            Some(phrases) => phrases
+        .map(|substance| SubstanceData {
+          name: Data::new(substance.names),
+          cas: Data::new(option_to_vec(substance.cas)),
+          molecular_formula: Data::new(option_to_vec(substance.chemical_formula)),
+          molar_mass: Data::new(option_to_vec(substance.molecular_weight)),
+          boiling_point: Data::new(option_to_vec(substance.boiling_point)),
+          melting_point: Data::new(option_to_vec(substance.melting_point.map(|mp| mp.value))),
+          water_hazard_class: Data::new(option_to_vec(substance.wgk)),
+          h_phrases: Data::new(option_to_vec(substance.harzard_statements.map(|phrases| {
+            phrases
               .split('-')
-              .map(|p| (format!("H{}", p), "".into())) // TODO fill statements
-              .collect(),
-            None => Vec::new(),
-          }),
-          p_phrases: Data::new(match substance.precautionary_statements {
-            Some(phrases) => phrases
+              .map(|p| {
+                let mut s = String::from("H");
+                s.push_str(p);
+                (s, "".to_string()) // TODO(1287) fill statements
+              })
+              .collect()
+          }))),
+          p_phrases: Data::new(option_to_vec(substance.precautionary_statements.map(|phrases| {
+            phrases
               .split('-')
-              .map(|p| (format!("P{}", p), "".into())) // TODO fill statements
-              .collect(),
-            None => Vec::new(),
-          }),
-          signal_word: Data::new(substance.signal_word),
-          symbols: Data::new(match substance.symbols {
-            Some(symbols) => symbols
+              .map(|p| {
+                let mut s = String::from("P");
+                s.push_str(p);
+                (s, "".to_string()) // TODO(1287) fill statements
+              })
+              .collect()
+          }))),
+          signal_word: Data::new(option_to_vec(substance.signal_word)),
+          symbols: Data::new(option_to_vec(substance.symbols.map(|symbols| {
+            symbols
               .into_iter()
-              .map(|s| format!("ghs{}", s.trim_end_matches("-neu")))
-              .collect(),
-            None => Vec::new(),
-          }),
-          lethal_dose: Data::new(match substance.lethaldose50 {
-            Some(ld50) => Some(ld50.value),
-            None => None,
-          }),
-          mak: Data::new(match substance.mak {
-            Some(mak) => Some(mak.value),
-            None => None,
-          }),
+              .map(|s| {
+                let mut new_s = String::from("ghs");
+                new_s.push_str(s.trim_end_matches("-neu"));
+                new_s
+              })
+              .collect()
+          }))),
+          lethal_dose: Data::new(option_to_vec(substance.lethaldose50.map(|ld| ld.value))),
+          mak: Data::new(option_to_vec(substance.mak.map(|mak| mak.value))),
           amount: {
             let mut unit = None;
             let mut value = None;
@@ -122,7 +121,7 @@ impl Loader for Beryllium {
           source: Source {
             provider: substance
               .source_provider
-              .unwrap_or_else(|| "custom".into())
+              .unwrap_or_else(|| "custom".to_string())
               .to_lowercase(),
             url: {
               let mut url = substance.source_url.unwrap_or_default();
@@ -157,4 +156,11 @@ fn get_templates_with_category(doc: &BerylliumDocument, category: TemplateCatego
     .filter(|t| t.category == category)
     .map(|t| t.content.clone())
     .collect()
+}
+
+fn option_to_vec<T>(opt: Option<T>) -> Vec<T> {
+  match opt {
+    Some(contents) => vec![contents],
+    None => Vec::with_capacity(0),
+  }
 }
