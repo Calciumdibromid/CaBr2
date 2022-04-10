@@ -15,14 +15,7 @@ const logger = new Logger('loadSaveService.web');
 
 const URL = window.webkitURL || window.URL;
 
-const SERVER_URL =
-  ((): string => {
-    if (environment.production) {
-      return 'https://api.cabr2.de/';
-    } else {
-      return 'http://localhost:3030/';
-    }
-  })() + 'api/v1/';
+const SERVER_URL = environment.serverUrl;
 
 const getFileType = (file: File): string => {
   const fileTypeSplit = file.name.split('.');
@@ -108,27 +101,17 @@ export class LoadSaveService implements ILoadSaveService {
     const fileType = getFileType(file);
 
     const reader = new FileReader();
-
-    switch (fileType) {
-      case 'cb2':
-        return new Observable((sub) => {
-          reader.onload = () => sub.next(JSON.parse(reader.result as string));
-          reader.readAsText(file);
-        });
-
-      default:
-        logger.debug('opening file with wasm:', file.name);
-        return new Observable((sub) => {
-          reader.onload = () => {
-            const res = reader.result as ArrayBuffer;
-            wasm
-              .load_document(fileType, new Uint8Array(res))
-              .then((contents: string) => sub.next(JSON.parse(contents)))
-              .catch((err: any) => sub.error(err));
-          };
-          reader.readAsArrayBuffer(file);
-        });
-    }
+    logger.debug('opening file with wasm:', file.name);
+    return new Observable((sub) => {
+      reader.onload = () => {
+        const res = reader.result as ArrayBuffer;
+        wasm
+          .load_document(fileType, new Uint8Array(res))
+          .then((contents: string) => sub.next(JSON.parse(contents)))
+          .catch((err: any) => sub.error(err));
+      };
+      reader.readAsArrayBuffer(file);
+    });
   }
 
   getAvailableDocumentTypes(): Observable<DocumentTypes> {

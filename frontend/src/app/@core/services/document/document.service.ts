@@ -204,11 +204,11 @@ export default class DocumentService {
   /**
    * Returns `true` if the `CaBr2Document has some unchecked default values
    */
-  private checkUnmodified(document: CaBr2Document, docsTemplate: DocsTemplate): string[] {
+  private checkUnmodified(document: CaBr2Document, docsTemplate: DocsTemplate, index = 0): string[] {
     const unmodified: string[] = [];
     for (const substance of document.substanceData) {
       if (!substance.checked) {
-        unmodified.push(substance.name.modifiedData ?? substance.name.originalData);
+        unmodified.push(substance.name.modifiedData ?? substance.name.originalData[index]);
       }
     }
     for (const section of [

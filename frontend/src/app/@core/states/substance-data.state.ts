@@ -4,7 +4,12 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Injectable } from '@angular/core';
 import { translate } from '@ngneat/transloco';
 
-import { Data, EMPTY_VIEW_SUBSTANCE_DATA, SubstanceData, ViewSubstanceData } from '../models/substances.model';
+import {
+  EMPTY_VIEW_SUBSTANCE_DATA,
+  modifiedOrOriginal,
+  SubstanceData,
+  ViewSubstanceData,
+} from '../models/substances.model';
 import { AlertService } from '../services/alertsnackbar/alertsnackbar.service';
 import { IProviderService } from '../services/provider/provider.interface';
 import Logger from '../utils/logger';
@@ -96,8 +101,8 @@ export class SubstanceDataState {
   addSubstanceData(context: StateContext<SubstanceDataStateModel>, action: AddSubstanceData): void {
     const substanceState = context.getState().substanceData;
     const providers = new Set(context.getState().providers);
-    const cas = this.modifiedOrOriginal(action.substanceData.cas);
-    if (cas && substanceState.some((s) => cas === this.modifiedOrOriginal(s.cas))) {
+    const cas = modifiedOrOriginal(action.substanceData.cas);
+    if (cas && substanceState.some((s) => cas === modifiedOrOriginal(s.cas))) {
       logger.warning('substance with same cas number already present:', cas);
       this.alertService.error(translate('error.substanceWithCASExist'));
       return;
@@ -149,10 +154,6 @@ export class SubstanceDataState {
       substanceData: [],
       providers: new Set(),
     });
-  }
-
-  private modifiedOrOriginal<T>(obj: Data<T>): T {
-    return obj.modifiedData ?? obj.originalData;
   }
 
   private setProviders(providers: Set<string>, data: SubstanceData): void {

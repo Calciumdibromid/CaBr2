@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   web: false,
+  serverUrl: 'not implemented in tauri-target',
 };
 
 /*

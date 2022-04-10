@@ -3,7 +3,7 @@ export interface Header {
   documentTitle: string;
   labCourse: string;
   name: string;
-  organisation: string;
+  organization: string;
   place: string;
   preparation: string;
 }

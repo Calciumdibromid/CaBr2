@@ -3,4 +3,5 @@
 export const environment = {
   production: false,
   web: true,
+  serverUrl: 'http://localhost:3030/api/v1/',
 };

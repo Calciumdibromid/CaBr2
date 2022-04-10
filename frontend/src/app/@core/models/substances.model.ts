@@ -3,14 +3,13 @@ import { SafeResourceUrl } from '@angular/platform-browser';
 export type GHSSymbols = Map<string, SafeResourceUrl>;
 
 interface EmptyData<T> {
-  originalData: T;
+  originalData: T[];
 }
 
 // these are needed to create new objects every time and don't copy a reference
 // because otherwise every field would reference the same values
-const EMPTY_DATA = (): EmptyData<undefined> => ({ originalData: undefined });
-const EMPTY_STRING_DATA = (): EmptyData<string> => ({ originalData: '' });
-const EMPTY_LIST_DATA = (): EmptyData<[]> => ({ originalData: [] });
+const EMPTY_DATA = <T>(): EmptyData<T> => ({ originalData: [] });
+const EMPTY_LIST_DATA = <T>(): EmptyData<T[]> => ({ originalData: [] });
 
 export const EMPTY_VIEW_SUBSTANCE_DATA: ViewSubstanceData = {
   name: '',
@@ -31,33 +30,31 @@ export const EMPTY_VIEW_SUBSTANCE_DATA: ViewSubstanceData = {
 export class SubstanceData {
   name: Data<string>;
 
-  readonly alternativeNames: string[];
+  cas: Data<string>;
 
-  cas: Data<string | undefined>;
+  molecularFormula: Data<string>;
 
-  molecularFormula: Data<string | undefined>;
+  molarMass: Data<string>;
 
-  molarMass: Data<string | undefined>;
+  meltingPoint: Data<string>;
 
-  meltingPoint: Data<string | undefined>;
+  boilingPoint: Data<string>;
 
-  boilingPoint: Data<string | undefined>;
+  waterHazardClass: Data<string>;
 
-  waterHazardClass: Data<string | undefined>;
+  hPhrases: Data<Parameters<(phraseNumber: string, phrase: string) => void>[]>;
 
-  hPhrases: Data<[string, string][]>;
+  pPhrases: Data<Parameters<(phraseNumber: string, phrase: string) => void>[]>;
 
-  pPhrases: Data<[string, string][]>;
-
-  signalWord: Data<string | undefined>;
+  signalWord: Data<string>;
 
   symbols: Data<string[]>;
 
-  lethalDose: Data<string | undefined>;
+  lethalDose: Data<string>;
 
-  mak: Data<string | undefined>;
+  mak: Data<string>;
 
-  amount: Amount | undefined;
+  amount?: Amount;
 
   readonly source: Source;
 
@@ -69,7 +66,7 @@ export class SubstanceData {
    * If `source` is empty it will be treated as custom substance.
    */
   constructor(data?: Partial<SubstanceData>) {
-    this.name = EMPTY_STRING_DATA();
+    this.name = EMPTY_DATA();
     this.cas = EMPTY_DATA();
     this.molecularFormula = EMPTY_DATA();
     this.molarMass = EMPTY_DATA();
@@ -82,8 +79,6 @@ export class SubstanceData {
     this.symbols = EMPTY_LIST_DATA();
     this.lethalDose = EMPTY_DATA();
     this.mak = EMPTY_DATA();
-
-    this.alternativeNames = [];
 
     this.source = { url: '', provider: 'custom', lastUpdated: new Date() };
 
@@ -125,20 +120,22 @@ export class SubstanceData {
   }
 
   convertToViewSubstanceData(): ViewSubstanceData {
+    const evaluate = <T>(data: Data<T>): T | undefined => data.modifiedData ?? data.originalData[0];
+
     return {
-      name: this.name.modifiedData ?? this.name.originalData,
-      cas: this.cas.modifiedData ?? this.cas.originalData,
-      molecularFormula: this.molecularFormula.modifiedData ?? this.molecularFormula.originalData,
-      molarMass: this.molarMass.modifiedData ?? this.molarMass.originalData,
-      meltingPoint: this.meltingPoint.modifiedData ?? this.meltingPoint.originalData,
-      boilingPoint: this.boilingPoint.modifiedData ?? this.boilingPoint.originalData,
-      waterHazardClass: this.waterHazardClass.modifiedData ?? this.waterHazardClass.originalData,
-      hPhrases: this.hPhrases.modifiedData ?? this.hPhrases.originalData,
-      pPhrases: this.pPhrases.modifiedData ?? this.pPhrases.originalData,
-      signalWord: this.signalWord.modifiedData ?? this.signalWord.originalData,
-      symbols: this.symbols.modifiedData ?? this.symbols.originalData,
-      lethalDose: this.lethalDose.modifiedData ?? this.lethalDose.originalData,
-      mak: this.mak.modifiedData ?? this.mak.originalData,
+      name: evaluate(this.name) ?? '',
+      cas: evaluate(this.cas),
+      molecularFormula: evaluate(this.molecularFormula),
+      molarMass: evaluate(this.molarMass),
+      meltingPoint: evaluate(this.meltingPoint),
+      boilingPoint: evaluate(this.boilingPoint),
+      waterHazardClass: evaluate(this.waterHazardClass),
+      hPhrases: evaluate(this.hPhrases) ?? [],
+      pPhrases: evaluate(this.pPhrases) ?? [],
+      signalWord: evaluate(this.signalWord),
+      symbols: evaluate(this.symbols) ?? [],
+      lethalDose: evaluate(this.lethalDose),
+      mak: evaluate(this.mak),
       amount: this.amount,
     };
   }
@@ -148,14 +145,10 @@ export class SubstanceData {
  * If the Data object has a modified value set it returns this modified value
  * else it returns the original value.
  */
-// eslint-disable-next-line prefer-arrow/prefer-arrow-functions
-function modifiedOrOriginal<T>(obj: Data<T>): T {
-  return obj.modifiedData ?? obj.originalData;
-}
-
+const modifiedOrOriginal = <T>(obj: Data<T>, index = 0): T => obj.modifiedData ?? obj.originalData[index];
 export interface Data<T> {
   modifiedData?: T;
-  readonly originalData: T;
+  readonly originalData: T[];
 }
 
 export interface Image {
@@ -168,37 +161,31 @@ export interface Source {
   url: string;
   lastUpdated: Date;
 }
-
-export interface Amount {
-  value: string;
-  unit: Unit;
-}
-
 export interface ViewSubstanceData {
-  name: string;
-  cas?: string;
-  molecularFormula?: string;
-  molarMass?: string;
-  meltingPoint?: string;
-  boilingPoint?: string;
-  waterHazardClass?: string;
-  hPhrases: [string, string][];
-  pPhrases: [string, string][];
-  signalWord?: string;
-  symbols: string[];
-  lethalDose?: string;
-  mak?: string;
-  amount?: Amount;
-}
-
-export interface Unit {
-  type: UnitType;
-  name?: string;
+  readonly name: string;
+  readonly cas?: string;
+  readonly molecularFormula?: string;
+  readonly molarMass?: string;
+  readonly meltingPoint?: string;
+  readonly boilingPoint?: string;
+  readonly waterHazardClass?: string;
+  readonly hPhrases: Parameters<(phraseNumber: string, phrase: string) => void>[];
+  readonly pPhrases: Parameters<(phraseNumber: string, phrase: string) => void>[];
+  readonly signalWord?: string;
+  readonly symbols: string[];
+  readonly lethalDose?: string;
+  readonly mak?: string;
+  readonly amount?: Amount;
 }
 
 export interface GroupMapping {
   viewValue: string;
   unitMappings: UnitType[];
+}
+export interface Amount {
+  value: string;
+  type: UnitType;
+  name?: string;
 }
 
 export enum UnitType {
@@ -263,8 +250,8 @@ const unitMapping = new Map<UnitType, string>([
   [UnitType.FAHRENHEIT, 'F'],
 ]);
 
-const getViewName = (unit: Unit): string => {
-  const value = unitMapping.get(unit.type);
+const getViewName = ({ type }: Pick<Amount, 'type'>): string => {
+  const value = unitMapping.get(type);
 
   if (value === undefined) {
     throw Error('unknown unit');
@@ -273,12 +260,11 @@ const getViewName = (unit: Unit): string => {
   return value;
 };
 
-const getViewValue = (unit: Unit): string => {
-  if (unit.type === UnitType.CUSTOM) {
-    return unit.name ?? '';
+const getViewValue = (amount: Amount): string => {
+  if (amount.type === UnitType.CUSTOM) {
+    return amount.name ?? '';
   }
-
-  return getViewName(unit);
+  return getViewName(amount);
 };
 
 class UnitGroups {

@@ -1,8 +1,8 @@
-use types::{Data, SubstanceData};
+use types::{Amount, Data, SubstanceData};
 
 use crate::types::{CaBr2Document, Header};
 
-use super::types::{CaBr2DocumentV0, DataV0, SubstanceDataV0};
+use super::types::{AmountV0, CaBr2DocumentV0, DataV0, SubstanceDataV0};
 
 impl From<CaBr2DocumentV0> for CaBr2Document {
   fn from(old: CaBr2DocumentV0) -> Self {
@@ -48,9 +48,18 @@ impl From<SubstanceDataV0> for SubstanceData {
       symbols: old.symbols.into(),
       lethal_dose: old.lethal_dose.into(),
       mak: old.mak.into(),
-      amount: old.amount,
+      amount: old.amount.map(|a| a.into()),
       source: old.source,
       checked: old.checked,
+    }
+  }
+}
+
+impl From<AmountV0> for Amount {
+  fn from(old: AmountV0) -> Self {
+    Amount {
+      value: old.value,
+      unit: old.unit,
     }
   }
 }

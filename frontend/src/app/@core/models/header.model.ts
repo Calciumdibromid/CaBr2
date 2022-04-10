@@ -5,7 +5,7 @@ export const EMPTY_HEADER: Header = {
   documentTitle: '',
   labCourse: '',
   name: '',
-  organisation: '',
+  organization: '',
   place: '',
   preparation: '',
 };

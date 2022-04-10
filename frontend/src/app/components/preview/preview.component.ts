@@ -58,7 +58,7 @@ export class PreviewComponent implements OnInit {
       .pipe(map((state) => state.form.model?.elements ?? []));
   }
 
-  getPhraseNumber(phrases: [string, string][]): string[] {
+  getPhraseNumber(phrases: Parameters<(phraseNumber: string, phrase: string) => void>[]): string[] {
     return phrases.map((p) => p[0]);
   }
 

@@ -85,8 +85,8 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     let amount;
 
     if (this.data.amount) {
-      const a = this.data.amount;
-      amount = { value: a.value, unit: a.unit.type, unitName: a.unit.name ?? '' };
+      const amountData = this.data.amount;
+      amount = { value: amountData.value, unit: amountData.type, unitName: amountData.name ?? '' };
     } else {
       amount = { value: '', unit: UnitType.GRAM, unitName: '' };
     }
@@ -100,13 +100,13 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       boilingPoint: modifiedOrOriginal(this.data.boilingPoint) ?? '',
       waterHazardClass: modifiedOrOriginal(this.data.waterHazardClass) ?? '',
       hPhrases: this.formBuilder.array(
-        modifiedOrOriginal<[string, string][]>(this.data.hPhrases).map((hPhrase) => this.initHPhrases(hPhrase)),
+        (modifiedOrOriginal<[string, string][]>(this.data.hPhrases) ?? []).map((hPhrase) => this.initHPhrases(hPhrase)),
       ),
       pPhrases: this.formBuilder.array(
-        modifiedOrOriginal<[string, string][]>(this.data.pPhrases).map((pPhrase) => this.initPPhrases(pPhrase)),
+        (modifiedOrOriginal<[string, string][]>(this.data.pPhrases) ?? []).map((pPhrase) => this.initPPhrases(pPhrase)),
       ),
       signalWord: modifiedOrOriginal(this.data.signalWord) ?? '',
-      symbols: this.formBuilder.array(modifiedOrOriginal(this.data.symbols)),
+      symbols: this.formBuilder.array(modifiedOrOriginal(this.data.symbols) ?? []),
       lethalDose: modifiedOrOriginal(this.data.lethalDose) ?? '',
       mak: modifiedOrOriginal(this.data.mak) ?? '',
       amount: this.formBuilder.group(amount),
@@ -188,44 +188,44 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     event.preventDefault();
     event.stopPropagation();
 
-    fixNumberOfControls(this.hPhrases, this.data.hPhrases.originalData.length, this.hPhrases.length, () =>
+    fixNumberOfControls(this.hPhrases, this.data.hPhrases.originalData[0].length, this.hPhrases.length, () =>
       this.initHPhrases(['', '']),
     );
 
-    fixNumberOfControls(this.pPhrases, this.data.pPhrases.originalData.length, this.pPhrases.length, () =>
+    fixNumberOfControls(this.pPhrases, this.data.pPhrases.originalData[0].length, this.pPhrases.length, () =>
       this.initPPhrases(['', '']),
     );
 
     fixNumberOfControls(
       this.symbols,
-      this.data.symbols.originalData.length,
+      this.data.symbols.originalData[0].length,
       this.symbols.length,
       () => new FormControl(),
     );
 
     this.form.patchValue({
-      name: this.data.name.originalData,
-      cas: this.data.cas.originalData ?? '',
-      molecularFormula: this.data.molecularFormula.originalData ?? '',
-      molarMass: this.data.molarMass.originalData ?? '',
-      meltingPoint: this.data.meltingPoint.originalData ?? '',
-      boilingPoint: this.data.boilingPoint.originalData ?? '',
-      waterHazardClass: this.data.waterHazardClass.originalData ?? '',
-      signalWord: this.data.signalWord.originalData ?? '',
-      lethalDose: this.data.lethalDose.originalData ?? '',
-      mak: this.data.mak.originalData ?? '',
+      name: this.data.name.originalData[0],
+      cas: this.data.cas.originalData[0] ?? '',
+      molecularFormula: this.data.molecularFormula.originalData[0] ?? '',
+      molarMass: this.data.molarMass.originalData[0] ?? '',
+      meltingPoint: this.data.meltingPoint.originalData[0] ?? '',
+      boilingPoint: this.data.boilingPoint.originalData[0] ?? '',
+      waterHazardClass: this.data.waterHazardClass.originalData[0] ?? '',
+      signalWord: this.data.signalWord.originalData[0] ?? '',
+      lethalDose: this.data.lethalDose.originalData[0] ?? '',
+      mak: this.data.mak.originalData[0] ?? '',
       amount: { value: '', unit: UnitType.GRAM },
-      hPhrases: this.data.hPhrases.originalData.map((phrase) => ({
+      hPhrases: this.data.hPhrases.originalData[0].map((phrase) => ({
         hNumber: phrase[0],
         hPhrase: phrase[1],
         hover: false,
       })),
-      pPhrases: this.data.pPhrases.originalData.map((phrase) => ({
+      pPhrases: this.data.pPhrases.originalData[0].map((phrase) => ({
         pNumber: phrase[0],
         pPhrase: phrase[1],
         hover: false,
       })),
-      symbols: this.data.symbols.originalData,
+      symbols: this.data.symbols.originalData[0],
     });
 
     this.form.markAllAsTouched();
@@ -308,10 +308,10 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       const unit = this.amount.get('unit')?.value;
 
       if ((unit as UnitType) === UnitType.CUSTOM) {
-        return { value, unit: { type: unit, name: this.amount.get('unitName')?.value } };
+        return { value, type: unit, name: this.amount.get('unitName')?.value };
       }
 
-      return { value, unit: { type: unit } };
+      return { value, type: unit };
     } else {
       return this.data.amount;
     }
@@ -339,13 +339,14 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     formArray: FormArray,
     mapCallback: (value: AbstractControl) => T,
     currentData: Data<T[]>,
+    index = 0,
   ): Data<T[]> {
     if (formArray.touched) {
       const newArray = formArray.controls.map(mapCallback);
       let retData: Data<T[]> = { originalData: currentData.originalData };
       // if new value is still/again the original value don't set modified field
       // arrays won't be undefined, so we don't need the extra check here
-      if (!compareArrays(newArray, currentData.originalData)) {
+      if (!compareArrays(newArray, currentData.originalData[index] ?? [])) {
         retData = { ...retData, modifiedData: newArray };
       }
       return retData;

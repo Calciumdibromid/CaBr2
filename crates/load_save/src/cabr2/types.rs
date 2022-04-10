@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use types::{Amount, Source};
+use types::{Source, Unit};
 
 use crate::types::CaBr2Document;
 
@@ -52,9 +52,15 @@ pub struct SubstanceDataV0 {
   pub symbols: DataV0<Vec<String>>,
   pub lethal_dose: DataV0<Option<String>>,
   pub mak: DataV0<Option<String>>,
-  pub amount: Option<Amount>,
+  pub amount: Option<AmountV0>,
   pub source: Source,
   pub checked: bool,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct AmountV0 {
+  pub value: String,
+  pub unit: Unit,
 }
 
 #[derive(Deserialize, Serialize)]

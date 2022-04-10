@@ -60,6 +60,7 @@ pub struct Source {
 #[derive(Debug, Deserialize, Serialize)]
 pub struct Amount {
   pub value: String,
+  #[serde(flatten)]
   pub unit: Unit,
 }
 
