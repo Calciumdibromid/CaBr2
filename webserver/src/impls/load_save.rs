@@ -78,7 +78,7 @@ pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, 
   let mut uuid_str: String;
   loop {
     path = DOWNLOAD_FOLDER.get().unwrap().to_path_buf();
-    uuid_str = Uuid::new_v4().to_hyphenated().to_string();
+    uuid_str = Uuid::new_v4().as_hyphenated().to_string();
     path.push(format!("{}.{}", uuid_str, body.file_type));
 
     if !path.exists() {
