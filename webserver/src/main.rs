@@ -14,26 +14,30 @@ use crate::impls::{
 #[derive(StructOpt, Debug)]
 #[structopt(name = "basic")]
 struct Opt {
-  // socket address the webserver will start listening on
-  #[structopt(short, long, default_value = "0.0.0.0:3030")]
+  /// socket address the webserver will start listening on
+  #[structopt(short, long, default_value = "127.0.0.1:3030")]
   address: String,
 
-  // folder where created pdfs to download are stored
+  /// folder where created pdfs to download are stored
   #[structopt(long, default_value = "/tmp/cabr2_server/created")]
   download_folder: PathBuf,
 
-  // cache folder
+  /// cache folder
   #[structopt(long, default_value = "/tmp/cabr2_server/cache")]
   cache_folder: PathBuf,
 
-  // public address that will be used to generate the download links
+  /// public address that will be used to generate the download links
   #[structopt(short, long, default_value = "https://api.cabr2.de")]
   public_address: String,
 
-  // domain which is allowed to make requests to the webserver,
-  // this is a security header which will be set on responses
-  #[structopt(short, long, default_value = "")]
-  cors_allow_origin: String,
+  /// domain which is allowed to make requests to the webserver,
+  /// this is a security header which will be set on responses
+  #[structopt(short, long)]
+  cors_allow_origin: Vec<String>,
+
+  /// allow any origin when requests are sent with CORS
+  #[structopt(long)]
+  cors_allow_any: bool,
 }
 
 #[tokio::main]
@@ -131,14 +135,19 @@ pub async fn main() {
 
   let downloads_folder = warp::path("download").and(warp::fs::dir(opt.download_folder));
 
-  let cors = if opt.cors_allow_origin.is_empty() {
+  let cors = if opt.cors_allow_any {
+    log::warn!("Every origin is allowed for CORS requests!");
     warp::cors()
       .allow_any_origin()
       .allow_methods(vec!["GET", "POST"])
       .allow_headers(vec!["content-type"])
   } else {
+    if opt.cors_allow_origin.is_empty() {
+      log::warn!("No origin(s) specified for CORS requests! Every CORS request will fail!");
+    }
+
     warp::cors()
-      .allow_origin(opt.cors_allow_origin.as_str())
+      .allow_origins(opt.cors_allow_origin.iter().map(|s| s.as_str()).collect::<Vec<&str>>())
       .allow_methods(vec!["GET", "POST"])
       .allow_headers(vec!["content-type"])
   };
