@@ -12,7 +12,7 @@ edition = "2018"
 [dependencies]
 cfg-if = { version = "1.0.0", optional = true }
 chrono = { version = "0.4.19", features = ["serde"] }
-log = "0.4.16"
+log = "0.4.17"
 serde = { version = "1.0.136", features = ["derive"] }
 tokio = { version = "1.18.0", features = ["sync"], default-features = false, optional = true }
 
