@@ -22,10 +22,6 @@ struct Opt {
   #[structopt(long, default_value = "/tmp/cabr2_server/created")]
   download_folder: PathBuf,
 
-  /// cache folder
-  #[structopt(long, default_value = "/tmp/cabr2_server/cache")]
-  cache_folder: PathBuf,
-
   /// public address that will be used to generate the download links
   #[structopt(short, long, default_value = "https://api.cabr2.de")]
   public_address: String,
@@ -51,15 +47,21 @@ pub async fn main() {
   search::init().await;
   load_save::init(
     opt.download_folder.clone(),
-    opt.cache_folder.clone(),
     opt.public_address,
     search::get_provider_mapping().await,
   )
   .await;
 
-  // create tmp folders
-  handle_result(fs::create_dir_all(&opt.download_folder));
-  handle_result(fs::create_dir(opt.cache_folder));
+  // create tmp folder
+  if let Err(why) = fs::create_dir_all(&opt.download_folder) {
+    match why.kind() {
+      std::io::ErrorKind::AlreadyExists => (),
+      _ => {
+        log::error!("{why:?}");
+        panic!("temporary downloads folder could not be created");
+      }
+    }
+  }
 
   let search_available_providers = warp::path("availableProviders")
     .and(warp::path::end())
@@ -180,16 +182,4 @@ pub async fn main() {
   let address: std::net::SocketAddr = opt.address.parse().expect("failed to parse socket address");
   log::info!("server starting...");
   warp::serve(routes).run(address).await;
-}
-
-/// handles a directory creation result, if the folder was created or already existed
-/// everything is ok otherwise it logs the error and panics
-fn handle_result(res: std::io::Result<()>) {
-  res.unwrap_or_else(|err| match err.kind() {
-    std::io::ErrorKind::AlreadyExists => {}
-    _ => {
-      log::error!("{:?}", err);
-      panic!("")
-    }
-  });
 }

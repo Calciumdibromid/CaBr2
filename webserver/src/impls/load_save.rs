@@ -12,17 +12,10 @@ use types::ProviderMapping;
 use super::types::generate_error_reply;
 
 static DOWNLOAD_FOLDER: OnceCell<PathBuf> = OnceCell::new();
-static CACHE_FOLDER: OnceCell<PathBuf> = OnceCell::new();
 static SERVER_URL: OnceCell<String> = OnceCell::new();
 
-pub async fn init(
-  download_folder: PathBuf,
-  cache_folder: PathBuf,
-  server_url: String,
-  provider_mapping: ProviderMapping,
-) {
+pub async fn init(download_folder: PathBuf, server_url: String, provider_mapping: ProviderMapping) {
   DOWNLOAD_FOLDER.set(download_folder).expect("can only be set once");
-  CACHE_FOLDER.set(cache_folder).expect("can only be set once");
   SERVER_URL.set(server_url).expect("can only be set once");
 
   handler::init_handlers(provider_mapping).await;
