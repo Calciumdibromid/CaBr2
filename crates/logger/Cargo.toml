@@ -15,5 +15,5 @@ config = { path = "../config/" }
 fern = "0.6.1"
 log = "0.4.17"
 serde = { version = "1.0.136", features = ["derive"], optional = true }
-tokio = "1.18.0"
+tokio = "1.18.2"
 types = { path = "../types/" }
