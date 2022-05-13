@@ -20,7 +20,8 @@ use crate::{
 
 pub use self::error::GestisError;
 
-const NAME: &str = "Gestis";
+const NAME: &str = "GESTIS-Stoffdatenbank";
+const IDENTIFIER: &str = "gestis";
 const BASE_URL: &str = "https://gestis-api.dguv.de/api";
 const SEARCH_SUGGESTIONS: &str = "search_suggestions";
 const SEARCH: &str = "search";
@@ -150,7 +151,7 @@ impl Provider for Gestis {
       p_phrases: Data::new(data.p_phrases),
       symbols: Data::new(data.symbols),
       source: Source {
-        provider: self.get_name().to_lowercase(),
+        provider: IDENTIFIER.to_string(),
         url,
         last_updated: chrono::Utc::now(),
       },
