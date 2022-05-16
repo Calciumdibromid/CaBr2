@@ -56,11 +56,11 @@ checksum = "c4872d67bab6358e59559027aa3b9157c53d9358c51423c17554809a8858e0f8"
 name = "cabr2_wasm_lib"
 version = "0.5.2"
 dependencies = [
- "base64",
  "cfg-if",
  "chrono",
  "console_error_panic_hook",
  "console_log",
+ "js-sys",
  "load_save",
  "log",
  "search",
@@ -408,6 +408,7 @@ dependencies = [
  "quick-xml 0.22.0",
  "regex",
  "serde",
+ "serde_json",
  "thiserror",
  "types",
 ]

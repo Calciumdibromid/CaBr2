@@ -2,8 +2,8 @@ mod impls;
 
 use std::{env, future::Future};
 
-use base64::encode;
 use cfg_if::cfg_if;
+use js_sys::Uint8Array;
 use log::Level;
 use serde::Serialize;
 use wasm_bindgen::prelude::*;
@@ -35,20 +35,18 @@ pub async fn init() {
   load_save::init(search::get_provider_mapping().await).await;
 }
 
-/// Converts a `CaBr2Document` into a `base64` encoded `string` that can be saved by the client.
+/// Converts a `CaBr2Document` into a binary array that can be saved by the client.
 ///
 /// May throw errors.
 #[wasm_bindgen]
-pub async fn save_document(file_type: String, document: String) -> Result<String> {
-  // TODO change back to original signature when it is supported by `wasm-bindgen`
-  // pub async fn save_document(file_type: String, document: String) -> Result<Vec<u8>> {
+pub async fn save_document(file_type: String, document: String) -> Result<Uint8Array> {
   let document: CaBr2Document = match serde_json::from_str(&document) {
     Ok(document) => document,
     Err(err) => return Err(JsValue::from(err.to_string())),
   };
 
   match load_save::save_document(file_type, document).await {
-    Ok(res) => Ok(encode(res)),
+    Ok(res) => Ok(Uint8Array::from(res.as_slice())),
     Err(err) => Err(JsValue::from(err.to_string())),
   }
 }

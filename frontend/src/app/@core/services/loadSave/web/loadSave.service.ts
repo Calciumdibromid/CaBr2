@@ -76,18 +76,12 @@ export class LoadSaveService implements ILoadSaveService {
           });
           break;
 
-        case 'cb2':
-          const blob = new Blob([JSON.stringify(document)], { type: 'text/plain' });
-          downloadFile(blob, fileType);
-          sub.next();
-          break;
-
         default:
           logger.debug('saving file with wasm:', fileType);
           wasm
             .save_document(fileType, JSON.stringify(document))
-            .then((contents: string) => {
-              const blob2 = new Blob([window.atob(contents)], { type: 'application/octet-stream' });
+            .then((contents: Uint8Array) => {
+              const blob2 = new Blob([contents], { type: 'application/octet-stream' });
               downloadFile(blob2, fileType);
               sub.next();
             })

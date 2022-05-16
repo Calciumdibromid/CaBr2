@@ -13,11 +13,11 @@ repository = "https://codeberg.org/Calciumdibromid/CaBr2"
 crate-type = ["cdylib", "rlib"]
 
 [dependencies]
-base64 = "0.13.0"
 cfg-if = "1.0.0"
 chrono = { version = "0.4.19", features = ["wasmbind"] }
 console_error_panic_hook = { version = "0.1.7", optional = true }
 console_log = { version = "0.2.0", features = ["color"] }
+js-sys = "0.3.57"
 load_save = { path = "../../crates/load_save/", default-features = false }
 log = "0.4.17"
 search = { path = "../../crates/search/", default-features = false }
@@ -28,7 +28,7 @@ wasm-bindgen = { version = "=0.2.80", features = ["serde-serialize"] } # TODO(#1
 wasm-bindgen-futures = "0.4.30"
 
 [features]
-default = ["load_save/beryllium", "search/gestis"]
+default = ["load_save/beryllium", "load_save/cabr2", "search/gestis"]
 debug_build = ["console_error_panic_hook"]
 
 [profile.release]
