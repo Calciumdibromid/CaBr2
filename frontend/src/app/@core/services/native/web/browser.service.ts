@@ -36,7 +36,8 @@ export class BrowserService implements INativeService {
   }
 
   save(options?: any): Observable<string> {
-    return of(options.filter ?? 'cb2');
+    // defaultPath should be set in the document service, so we don't need a check
+    return of(options.defaultPath);
   }
 
   /** This function should never be used! */

@@ -97,11 +97,16 @@ export default class DocumentService {
       throw Error('unsupported file type');
     }
 
-    // there should always be exact one fileextension
+    // there should always be exactly one file extension
     const extension = type.extensions[0];
+    const preparationName = document.header.preparation;
 
     this.nativeService
-      .save({ filters: [type] })
+      .save({
+        filters: [type],
+        defaultPath:
+          (preparationName.length > 0 ? preparationName : translate('loadSave.unnamedFile')) + '.' + extension,
+      })
       .pipe(
         switchMap((filename) => this.loadSaveService.saveDocument(extension, filename as string, document)),
         first(),

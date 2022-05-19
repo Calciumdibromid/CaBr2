@@ -67,6 +67,9 @@
         "gestis": "Gestis bietet nur selten Daten zu Versuchsprodukten."
       }
     },
+    "loadSave": {
+      "unnamedFile": "Unbenannt"
+    },
     "substance": {
       "invalidFormsTitle": "Etwas stimmt nicht",
       "invalidFormsContent": [

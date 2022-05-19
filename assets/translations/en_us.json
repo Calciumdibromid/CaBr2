@@ -67,6 +67,9 @@
           "gestis": "Gestis rarely provides data for products of experiments."
       }
     },
+    "loadSave": {
+      "unnamedFile": "Unnamed"
+    },
     "substance": {
       "invalidFormsTitle": "Something is wrong",
       "invalidFormsContent": ["The substance has invalid or missing data on following items:"],

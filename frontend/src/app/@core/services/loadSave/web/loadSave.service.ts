@@ -22,11 +22,11 @@ const getFileType = (file: File): string => {
   return fileTypeSplit[fileTypeSplit.length - 1];
 };
 
-const downloadFile = (contents: Blob, fileType: string): void => {
+const downloadFile = (contents: Blob, filename: string): void => {
   const data = URL.createObjectURL(contents);
 
   const anchor = document.createElement('a');
-  anchor.download = 'Unbenannt.' + fileType;
+  anchor.download = filename;
   anchor.href = data;
   anchor.click();
 
@@ -40,7 +40,7 @@ const downloadFile = (contents: Blob, fileType: string): void => {
 export class LoadSaveService implements ILoadSaveService {
   constructor(private httpClient: HttpClient, private dialog: MatDialog) {}
 
-  saveDocument(fileType: string, _: string, document: CaBr2Document): Observable<string> {
+  saveDocument(fileType: string, filename: string, document: CaBr2Document): Observable<string> {
     return new Observable((sub) => {
       switch (fileType) {
         case 'pdf':
@@ -67,7 +67,7 @@ export class LoadSaveService implements ILoadSaveService {
                   }
 
                   // with every other type Firefox opens the file in a new tab -.-
-                  downloadFile(new Blob([body], { type: 'text/plain' }), fileType);
+                  downloadFile(new Blob([body], { type: 'text/plain' }), filename);
 
                   sub.next();
                 });
@@ -82,7 +82,7 @@ export class LoadSaveService implements ILoadSaveService {
             .save_document(fileType, JSON.stringify(document))
             .then((contents: Uint8Array) => {
               const blob2 = new Blob([contents], { type: 'application/octet-stream' });
-              downloadFile(blob2, fileType);
+              downloadFile(blob2, filename);
               sub.next();
             })
             .catch((err: any) => sub.error(err));
