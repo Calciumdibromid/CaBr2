@@ -1,4 +1,11 @@
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  UntypedFormArray,
+  UntypedFormBuilder,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscription } from 'rxjs';
@@ -32,7 +39,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
   @Select((state: any) => state.ghs_symbols.symbolKeys) symbolKeys$!: Observable<SymbolKeys>;
 
-  form!: FormGroup;
+  form!: UntypedFormGroup;
 
   addHPhraseHover = false;
 
@@ -49,24 +56,24 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<EditSubstanceDataComponent>,
     @Inject(MAT_DIALOG_DATA) public data: SubstanceData,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private dialog: MatDialog,
   ) {}
 
-  get hPhrases(): FormArray {
-    return this.form?.get('hPhrases') as FormArray;
+  get hPhrases(): UntypedFormArray {
+    return this.form?.get('hPhrases') as UntypedFormArray;
   }
 
-  get pPhrases(): FormArray {
-    return this.form?.get('pPhrases') as FormArray;
+  get pPhrases(): UntypedFormArray {
+    return this.form?.get('pPhrases') as UntypedFormArray;
   }
 
-  get symbols(): FormArray {
-    return this.form?.get('symbols') as FormArray;
+  get symbols(): UntypedFormArray {
+    return this.form?.get('symbols') as UntypedFormArray;
   }
 
-  get amount(): FormGroup {
-    return this.form?.get('amount') as FormGroup;
+  get amount(): UntypedFormGroup {
+    return this.form?.get('amount') as UntypedFormGroup;
   }
 
   ngOnInit(): void {
@@ -81,7 +88,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     this.customSubscription?.unsubscribe();
   }
 
-  initControls(): FormGroup {
+  initControls(): UntypedFormGroup {
     let amount;
 
     if (this.data.amount) {
@@ -119,7 +126,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     return group;
   }
 
-  initHPhrases(value: [string, string]): FormGroup {
+  initHPhrases(value: [string, string]): UntypedFormGroup {
     return this.formBuilder.group({
       hNumber: [value[0], Validators.pattern('^(H\\d{3}\\w?\\+?)+$')],
       hPhrase: value[1],
@@ -127,7 +134,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     });
   }
 
-  initPPhrases(value: [string, string]): FormGroup {
+  initPPhrases(value: [string, string]): UntypedFormGroup {
     return this.formBuilder.group({
       pNumber: [value[0], Validators.pattern('^(?:P\\d{3}\\+?)+$')],
       pPhrase: value[1],
@@ -167,7 +174,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     this.pPhrases.push(this.initPPhrases(['', '']));
   }
 
-  removePhrase(index: number, formArray: FormArray): void {
+  removePhrase(index: number, formArray: UntypedFormArray): void {
     formArray.removeAt(index);
     formArray.markAllAsTouched();
   }
@@ -200,7 +207,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       this.symbols,
       this.data.symbols.originalData[0].length,
       this.symbols.length,
-      () => new FormControl(),
+      () => new UntypedFormControl(),
     );
 
     this.form.patchValue({
@@ -336,7 +343,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   }
 
   private evaluateFormArray<T>(
-    formArray: FormArray,
+    formArray: UntypedFormArray,
     mapCallback: (value: AbstractControl) => T,
     currentData: Data<T[]>,
     index = 0,

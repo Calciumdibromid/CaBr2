@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs/operators';
 
 import { SearchArgument, SearchType, searchTypes } from '../../../@core/services/provider/provider.model';
@@ -24,7 +24,7 @@ export class SelectedSearchComponent {
 
   searchOptions = searchTypes;
 
-  form: FormGroup = this.formBuilder.group({
+  form: UntypedFormGroup = this.formBuilder.group({
     selections: this.formBuilder.array([this.initSelectionForm()]),
   });
 
@@ -37,11 +37,11 @@ export class SelectedSearchComponent {
   constructor(
     private providerService: IProviderService,
     private alertService: AlertService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
   ) {}
 
-  get selections(): FormArray {
-    return this.form?.get('selections') as FormArray;
+  get selections(): UntypedFormArray {
+    return this.form?.get('selections') as UntypedFormArray;
   }
 
   addSearchOption(): void {
@@ -77,7 +77,7 @@ export class SelectedSearchComponent {
     this.selections.controls.map((control) => control.patchValue({ userInput: '' }));
   }
 
-  private initSelectionForm(): FormGroup {
+  private initSelectionForm(): UntypedFormGroup {
     let searchOption;
 
     for (const option of searchTypes) {
@@ -102,7 +102,7 @@ export class SelectedSearchComponent {
     return selectionGroup;
   }
 
-  private registerValueChangeListener(selectionGroup: FormGroup): void {
+  private registerValueChangeListener(selectionGroup: UntypedFormGroup): void {
     selectionGroup
       .get('userInput')
       ?.valueChanges.pipe(debounceTime(500))

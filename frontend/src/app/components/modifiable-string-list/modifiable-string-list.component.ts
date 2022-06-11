@@ -1,7 +1,7 @@
 import { Actions, ofActionDispatched, Store } from '@ngxs/store';
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription, switchMap } from 'rxjs';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 import {
@@ -41,9 +41,9 @@ export class ModifiableStringListComponent implements OnInit, AfterViewInit, OnD
   remove = new EventEmitter<number>();
 
   @Output()
-  rearrange = new EventEmitter<CdkDragDrop<FormGroup[]>>();
+  rearrange = new EventEmitter<CdkDragDrop<UntypedFormGroup[]>>();
 
-  formGroup: FormGroup = this.formBuilder.group({
+  formGroup: UntypedFormGroup = this.formBuilder.group({
     elements: this.formBuilder.array([]),
   });
 
@@ -51,10 +51,10 @@ export class ModifiableStringListComponent implements OnInit, AfterViewInit, OnD
 
   private subscriptions: Subscription[] = [];
 
-  constructor(private formBuilder: FormBuilder, private actions$: Actions, private store: Store) {}
+  constructor(private formBuilder: UntypedFormBuilder, private actions$: Actions, private store: Store) {}
 
-  get controlElements(): FormArray {
-    return this.formGroup.get('elements') as FormArray;
+  get controlElements(): UntypedFormArray {
+    return this.formGroup.get('elements') as UntypedFormArray;
   }
 
   ngOnInit(): void {
@@ -110,7 +110,7 @@ export class ModifiableStringListComponent implements OnInit, AfterViewInit, OnD
     this.remove.emit(index);
   }
 
-  drop(event: CdkDragDrop<FormGroup[]>): void {
+  drop(event: CdkDragDrop<UntypedFormGroup[]>): void {
     this.rearrange.emit(event);
   }
 }

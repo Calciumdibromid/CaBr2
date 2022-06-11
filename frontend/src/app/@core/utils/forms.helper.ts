@@ -1,4 +1,4 @@
-import { AbstractControl, FormArray } from '@angular/forms';
+import { AbstractControl, UntypedFormArray } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { Store } from '@ngxs/store';
 
@@ -17,7 +17,7 @@ export const stateToElements = (store: Store, stateName: string): Observable<str
  */
 // https://youtu.be/-AQfQFcXac8
 export const fixNumberOfControls = (
-  control: FormArray,
+  control: UntypedFormArray,
   needed: number,
   current: number,
   newCallback: () => AbstractControl,

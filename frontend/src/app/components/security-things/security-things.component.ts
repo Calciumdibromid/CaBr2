@@ -1,5 +1,5 @@
 import { Actions, Store } from '@ngxs/store';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { Component } from '@angular/core';
 
@@ -23,7 +23,7 @@ export class SecurityThingsComponent {
 
   Disposal = Disposal;
 
-  constructor(private store: Store, private formBuilder: FormBuilder, private actions$: Actions) {}
+  constructor(private store: Store, private formBuilder: UntypedFormBuilder, private actions$: Actions) {}
 
   add(action: ActionNewable<unknown>): void {
     this.store.dispatch(new action());
@@ -33,7 +33,7 @@ export class SecurityThingsComponent {
     this.store.dispatch(new action(index));
   }
 
-  rearrange(action: ActionNewable<any, CdkDragDrop<FormGroup[]>>, event: CdkDragDrop<FormGroup[]>): void {
+  rearrange(action: ActionNewable<any, CdkDragDrop<UntypedFormGroup[]>>, event: CdkDragDrop<UntypedFormGroup[]>): void {
     this.store.dispatch(new action(event));
   }
 }

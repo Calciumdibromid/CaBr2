@@ -1,4 +1,4 @@
-import { AbstractControl, FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
@@ -16,14 +16,14 @@ import { TranslocoService } from '@ngneat/transloco';
 export class SettingsComponent implements OnInit, OnDestroy {
   langs!: AvailableLanguage[];
 
-  form!: FormGroup;
+  form!: UntypedFormGroup;
 
   subscriptions: Subscription[] = [];
 
   constructor(
     public dialogRef: MatDialogRef<SettingsComponent>,
     private translocoService: TranslocoService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private store: Store,
   ) {}
 

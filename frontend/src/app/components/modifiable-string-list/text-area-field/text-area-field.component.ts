@@ -1,4 +1,4 @@
-import { AbstractControl, FormControl } from '@angular/forms';
+import { AbstractControl, UntypedFormControl } from '@angular/forms';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
@@ -17,8 +17,8 @@ export class TextAreaFieldComponent implements OnInit {
 
   isAutoFocus = false;
 
-  get formControl(): FormControl {
-    return this.abstractControl as FormControl;
+  get formControl(): UntypedFormControl {
+    return this.abstractControl as UntypedFormControl;
   }
 
   ngOnInit(): void {
