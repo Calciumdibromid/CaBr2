@@ -26,7 +26,7 @@
     "@angular/material": "14.0.1",
     "@angular/platform-browser": "14.0.1",
     "@angular/platform-browser-dynamic": "14.0.1",
-    "@ngneat/transloco": "4.0.0",
+    "@ngneat/transloco": "4.1.0",
     "@ngxs/form-plugin": "3.7.4",
     "@ngxs/storage-plugin": "3.7.4",
     "@ngxs/store": "3.7.4",
