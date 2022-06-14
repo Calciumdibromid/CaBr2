@@ -30,7 +30,7 @@
     "@ngxs/form-plugin": "3.7.4",
     "@ngxs/storage-plugin": "3.7.4",
     "@ngxs/store": "3.7.4",
-    "@tauri-apps/api": "1.0.0-rc.6",
+    "@tauri-apps/api": "1.0.0-rc.7",
     "rxjs": "7.5.5",
     "tslib": "2.4.0",
     "zone.js": "0.11.5"
@@ -51,7 +51,7 @@
     "@angular-eslint/template-parser": "14.0.0-alpha.3",
     "@angular/cli": "14.0.1",
     "@angular/compiler-cli": "14.0.1",
-    "@tauri-apps/cli": "1.0.0-rc.13",
+    "@tauri-apps/cli": "1.0.0-rc.14",
     "@types/jasmine": "4.0.3",
     "@types/node": "17.0.14",
     "@typescript-eslint/eslint-plugin": "5.27.1",
