@@ -30,7 +30,7 @@
     "@ngxs/form-plugin": "3.7.4",
     "@ngxs/storage-plugin": "3.7.4",
     "@ngxs/store": "3.7.4",
-    "@tauri-apps/api": "1.0.0",
+    "@tauri-apps/api": "1.0.1",
     "rxjs": "7.5.5",
     "tslib": "2.4.0",
     "zone.js": "0.11.6"
