@@ -13,7 +13,7 @@ edition = "2018"
 cfg-if = { version = "1.0.0", optional = true }
 chrono = { version = "0.4.19", features = ["serde"] }
 log = "0.4.17"
-serde = { version = "1.0.140", features = ["derive"] }
+serde = { version = "1.0.141", features = ["derive"] }
 tokio = { version = "1.20.1", features = ["sync"], default-features = false, optional = true }
 
 [features]
