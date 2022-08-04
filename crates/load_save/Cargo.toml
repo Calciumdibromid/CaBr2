@@ -11,7 +11,7 @@ edition = "2021"
 
 [dependencies]
 async-trait = "0.1.57"
-chrono = { version = "0.4.19", optional = true }
+chrono = { version = "0.4.20", optional = true }
 config = { path = "../config/", optional = true }
 error-ser = { path = "../error-ser" }
 handlebars = { version = "4.3.3", optional = true }

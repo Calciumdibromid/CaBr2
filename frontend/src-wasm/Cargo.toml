@@ -14,7 +14,7 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 cfg-if = "1.0.0"
-chrono = { version = "0.4.19", features = ["wasmbind"] }
+chrono = { version = "0.4.20", features = ["wasmbind"] }
 console_error_panic_hook = { version = "0.1.7", optional = true }
 console_log = { version = "0.2.0", features = ["color"] }
 js-sys = "0.3.59"

@@ -10,7 +10,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-chrono = "0.4.19"
+chrono = "0.4.20"
 config = { path = "../config/" }
 fern = "0.6.1"
 log = "0.4.17"
