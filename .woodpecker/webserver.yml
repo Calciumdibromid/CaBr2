@@ -2,7 +2,7 @@ branches: ["develop", "main"]
 
 pipeline:
   webserver:
-    image: a6543/cabr2_ci:root
+    image: codeberg.org/calciumdibromid/cabr2_ci:root
     pull: true
     when:
       path:
