@@ -43,13 +43,13 @@
     "node": ">=14.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "14.1.1",
+    "@angular-devkit/build-angular": "14.1.2",
     "@angular-eslint/builder": "14.0.2",
     "@angular-eslint/eslint-plugin": "14.0.2",
     "@angular-eslint/eslint-plugin-template": "14.0.2",
     "@angular-eslint/schematics": "14.0.2",
     "@angular-eslint/template-parser": "14.0.2",
-    "@angular/cli": "14.1.1",
+    "@angular/cli": "14.1.2",
     "@angular/compiler-cli": "14.1.2",
     "@tauri-apps/cli": "1.0.5",
     "@types/jasmine": "4.0.3",
