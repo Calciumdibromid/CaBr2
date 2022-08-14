@@ -49,7 +49,7 @@ pub struct Templates {
   pub templates: Vec<Template>,
 }
 
-#[derive(Debug, Deserialize, PartialEq)]
+#[derive(Debug, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "kebab-case")]
 pub enum TemplateCategory {
   Danger,
