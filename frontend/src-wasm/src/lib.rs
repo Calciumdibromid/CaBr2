@@ -125,16 +125,16 @@ where
 {
   match future.await {
     Ok(data) => Ok(serde_json::to_string(&data).map_err(jsify)?),
-    Err(err) => Err(JsValue::from_serde(&err).map_err(jsify)?),
+    Err(err) => Err(serde_wasm_bindgen::to_value(&err).map_err(jsify)?),
   }
 }
 
 #[cfg(feature = "debug_build")]
-fn jsify(err: serde_json::Error) -> JsValue {
+fn jsify(err: impl std::error::Error) -> JsValue {
   JsValue::from_str(&format!("{err:#?}"))
 }
 
 #[cfg(not(feature = "debug_build"))]
-fn jsify(err: serde_json::Error) -> JsValue {
+fn jsify(err: impl std::error::Error) -> JsValue {
   JsValue::from_str(&format!("{err}"))
 }
