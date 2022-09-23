@@ -19,6 +19,7 @@ use std::str;
 use lazy_static::lazy_static;
 use quick_xml::{
   events::{BytesStart, Event},
+  name::QName,
   Reader,
 };
 use regex::Regex;
@@ -83,7 +84,7 @@ pub fn parse_response(json: &GestisResponse, fail_fast: bool) -> Result<ParsedDa
 fn get_value<T, F>(name: &str, f: F, xml: Option<&str>, fail_fast: bool) -> Result<T>
 where
   T: Default,
-  F: Fn(Reader<&[u8]>) -> Result<T>,
+  F: Fn(&mut Reader<&[u8]>) -> Result<T>,
 {
   if let Some(xml) = xml {
     let mut reader = Reader::from_str(xml);
@@ -91,7 +92,7 @@ where
     // gestis responses are malformed anyway ¯\_(ツ)_/¯
     reader.check_end_names(false);
 
-    match f(reader) {
+    match f(&mut reader) {
       Ok(res) => Ok(res),
       Err(GestisError::MissingInfo(i)) => {
         log::warn!("missing info: {i}");
@@ -113,15 +114,19 @@ where
   }
 }
 
-fn read_cas(mut reader: Reader<&[u8]>) -> Result<Vec<String>> {
+fn read_cas(reader: &mut Reader<&[u8]>) -> Result<Vec<String>> {
   let mut cas_numbers = Vec::with_capacity(2);
 
   loop {
-    if let Event::Eof = reader.find_start("casnr")? {
+    if let Event::Eof = reader.find_start(QName(b"casnr"))? {
       break;
     }
 
-    cas_numbers.push(reader.read_text_unbuffered("casnr")?);
+    if let Event::Text(t) = reader.read_event()? {
+      cas_numbers.push(t.unescape()?.to_string());
+    } else {
+      log::warn!("no cas number found");
+    }
   }
 
   log::debug!("CAS: {cas_numbers:?}");
@@ -129,28 +134,35 @@ fn read_cas(mut reader: Reader<&[u8]>) -> Result<Vec<String>> {
   Ok(cas_numbers)
 }
 
-fn read_molecular_formula_molar_mass(mut reader: Reader<&[u8]>) -> Result<(Vec<String>, Vec<String>)> {
+fn read_molecular_formula_molar_mass(reader: &mut Reader<&[u8]>) -> Result<(Vec<String>, Vec<String>)> {
   let mut molecular_formulas = Vec::with_capacity(2);
   let mut molar_mass_values = Vec::with_capacity(2);
 
   loop {
-    match reader.read_event_unbuffered()? {
+    match reader.read_event()? {
       Event::Start(e) => match e.name() {
-        b"summenformel" => loop {
-          match reader.read_event_unbuffered()? {
-            Event::Text(t) => molecular_formulas.push(t.unescape_and_decode(&reader)?),
+        QName(b"summenformel") => loop {
+          match reader.read_event()? {
+            Event::Text(t) => molecular_formulas.push(t.unescape()?.to_string()),
             Event::End(e) => {
-              if e.name() == b"summenformel" {
+              if e.name() == QName(b"summenformel") {
                 break;
               }
             }
             e => log::debug!("unexpected event: {e:?}"),
           }
         },
-        b"b" => {
-          if &reader.read_text_unbuffered("b")? == "Molmasse:" {
-            reader.find_start("td")?;
-            molar_mass_values.push(reader.read_text_unbuffered("td")?);
+        QName(b"b") => {
+          if let Event::Text(t) = reader.read_event()? {
+            if t.unescape()? == "Molmasse:" {
+              reader.find_start(QName(b"td"))?;
+
+              if let Event::Text(text) = reader.read_event()? {
+                molar_mass_values.push(text.unescape()?.to_string());
+              } else {
+                log::warn!("no molar mass found");
+              }
+            }
           }
         }
         _ => {}
@@ -166,7 +178,7 @@ fn read_molecular_formula_molar_mass(mut reader: Reader<&[u8]>) -> Result<(Vec<S
   Ok((molecular_formulas, molar_mass_values))
 }
 
-fn read_mp_bp(mut reader: Reader<&[u8]>) -> Result<Vec<String>> {
+fn read_mp_bp(reader: &mut Reader<&[u8]>) -> Result<Vec<String>> {
   let mut mp_bps = Vec::with_capacity(2);
 
   loop {
@@ -174,10 +186,14 @@ fn read_mp_bp(mut reader: Reader<&[u8]>) -> Result<Vec<String>> {
       break;
     }
 
-    reader.find_start("td")?;
-    reader.find_start("td")?; // skip to next one
+    reader.find_start(QName(b"td"))?;
+    reader.find_start(QName(b"td"))?; // skip to next one
 
-    mp_bps.push(reader.read_text_unbuffered("td")?);
+    if let Event::Text(t) = reader.read_event()? {
+      mp_bps.push(t.unescape()?.to_string());
+    } else {
+      log::warn!("no melting/boiling point found");
+    }
   }
 
   log::debug!("MP/BP: {mp_bps:?}");
@@ -186,14 +202,15 @@ fn read_mp_bp(mut reader: Reader<&[u8]>) -> Result<Vec<String>> {
 }
 
 /// Reads water hazard class
-fn read_whc(mut reader: Reader<&[u8]>) -> Result<Vec<String>> {
+fn read_whc(reader: &mut Reader<&[u8]>) -> Result<Vec<String>> {
   let mut water_hazard_classes = Vec::with_capacity(2);
 
   loop {
-    match reader.read_event_unbuffered()? {
+    match reader.read_event()? {
       Event::Start(e) => {
-        if e.name() == b"td" {
-          if let Ok(text) = reader.read_text_unbuffered("td") {
+        if e.name() == QName(b"td") {
+          if let Event::Text(t) = reader.read_event()? {
+            let text = t.unescape()?;
             if text.starts_with("WGK") {
               water_hazard_classes.push(text.split(' ').take(2).collect::<Vec<&str>>().join(" "));
             }
@@ -217,7 +234,7 @@ type HPSignalSymbolsResult = Result<(
   Vec<String>,
 )>;
 
-fn get_h_p_signal_symbols(mut reader: Reader<&[u8]>) -> HPSignalSymbolsResult {
+fn get_h_p_signal_symbols(reader: &mut Reader<&[u8]>) -> HPSignalSymbolsResult {
   // there shouldn't be more than two entries for each item
   let mut h_phrases = Vec::with_capacity(2);
   let mut p_phrases = Vec::with_capacity(2);
@@ -228,32 +245,41 @@ fn get_h_p_signal_symbols(mut reader: Reader<&[u8]>) -> HPSignalSymbolsResult {
     if Event::Eof == reader.find_table("block")? {
       break;
     };
-    reader.find_start("td")?;
+    reader.find_start(QName(b"td"))?;
 
-    match reader.read_event_unbuffered()? {
+    match reader.read_event()? {
       Event::Start(e) => match e.name() {
-        b"b" => {
-          let name = reader.read_text_unbuffered("b")?;
+        QName(b"b") => {
+          if let Event::Text(t) = reader.read_event()? {
+            let name = t.unescape()?;
 
-          if name.ends_with(" H-Sätze:") {
-            h_phrases.push(read_h_p_phrases(&mut reader)?);
-          } else if name.ends_with(" P-Sätze:") {
-            p_phrases.push(read_h_p_phrases(&mut reader)?);
+            if name.ends_with(" H-Sätze:") {
+              h_phrases.push(read_h_p_phrases(reader)?);
+            } else if name.ends_with(" P-Sätze:") {
+              p_phrases.push(read_h_p_phrases(reader)?);
+            }
+          } else {
+            log::warn!("no h-/p-phrases found");
           }
         }
-        b"table" => {
-          reader.find_start("td")?;
-          reader.find_start("td")?; // skip to next one
-          signal_words.push(reader.read_text_unbuffered("td")?.trim_matches('"').to_string());
+        QName(b"table") => {
+          reader.find_start(QName(b"td"))?;
+          reader.find_start(QName(b"td"))?; // skip to next one
+
+          if let Event::Text(t) = reader.read_event()? {
+            signal_words.push(t.unescape()?.trim_matches('"').to_string());
+          } else {
+            log::warn!("no signal word found");
+          }
         }
         _ => {}
       },
       Event::Empty(e) => {
-        if e.name() == b"img" {
-          symbols.push(get_ghs_symbols(&mut reader, e)?);
+        if e.name() == QName(b"img") {
+          symbols.push(get_ghs_symbols(reader, e)?);
         }
       }
-      Event::Text(e) => log::debug!("found text: {:?}", e.unescape_and_decode(&reader)),
+      Event::Text(e) => log::debug!("found text: {:?}", e.unescape()), // do not fail in debug logging
       Event::Eof => break,
       e => return Err(GestisError::UnexpectedEvent(format!("{e:?}"))),
     }
@@ -269,12 +295,12 @@ fn get_h_p_signal_symbols(mut reader: Reader<&[u8]>) -> HPSignalSymbolsResult {
 
 fn get_ghs_symbols(reader: &mut Reader<&[u8]>, first: BytesStart) -> Result<Vec<String>> {
   #[inline(always)]
-  fn decode_attribute(b: BytesStart, reader: &Reader<&[u8]>) -> Result<Option<String>> {
+  fn decode_attribute(b: BytesStart) -> Result<Option<String>> {
     let symbol = b.try_get_attribute("alt")?;
     log::debug!("src: '{:?}', alt: '{symbol:?}'", b.try_get_attribute("src")?);
 
     Ok(if let Some(s) = symbol {
-      Some(reader.decode(&s.value)?.to_string())
+      Some(s.unescape_value()?.to_string())
     } else {
       None
     })
@@ -283,21 +309,21 @@ fn get_ghs_symbols(reader: &mut Reader<&[u8]>, first: BytesStart) -> Result<Vec<
   // there are never all 9 ghs symbols at the same time so with this we would reallocate at most once
   let mut symbols = Vec::with_capacity(4);
 
-  if let Some(symbol) = decode_attribute(first, reader)? {
+  if let Some(symbol) = decode_attribute(first)? {
     symbols.push(symbol);
   }
 
   loop {
-    match reader.read_event_unbuffered()? {
+    match reader.read_event()? {
       Event::Empty(e) => {
-        if e.name() == b"img" {
-          if let Some(symbol) = decode_attribute(e, reader)? {
+        if e.name() == QName(b"img") {
+          if let Some(symbol) = decode_attribute(e)? {
             symbols.push(symbol);
           }
         }
       }
       Event::End(e) => {
-        if e.name() == b"tr" {
+        if e.name() == QName(b"tr") {
           break;
         }
       }
@@ -314,17 +340,17 @@ fn get_ghs_symbols(reader: &mut Reader<&[u8]>, first: BytesStart) -> Result<Vec<
 fn read_h_p_phrases(reader: &mut Reader<&[u8]>) -> Result<Vec<(String, String)>> {
   let mut phrases = Vec::with_capacity(5); // some random default, may be changed in the future
 
-  reader.find_start("td")?;
+  reader.find_start(QName(b"td"))?;
   loop {
-    match reader.read_event_unbuffered()? {
+    match reader.read_event()? {
       Event::End(e) => {
-        if e.name() == b"td" {
+        if e.name() == QName(b"td") {
           break;
         }
       }
       Event::Eof => break,
       Event::Text(t) => {
-        if let Some((number, phrase)) = t.unescape_and_decode(reader)?.split_once(": ") {
+        if let Some((number, phrase)) = t.unescape()?.split_once(": ") {
           phrases.push((number.to_string(), phrase.to_string()));
         } else {
           log::debug!("wrongly formatted phrase: {t:?}");
@@ -332,8 +358,8 @@ fn read_h_p_phrases(reader: &mut Reader<&[u8]>) -> Result<Vec<(String, String)>>
       }
       Event::Empty(_) => {}
       Event::Start(b) => {
-        if b.name() == b"verstecktercode" {
-          reader.read_to_end_unbuffered("verstecktercode")?;
+        if b.name() == QName(b"verstecktercode") {
+          reader.read_to_end(QName(b"verstecktercode"))?;
         } else {
           log::debug!("unexpected event: {:?}", Event::Start(b));
         }
@@ -347,20 +373,25 @@ fn read_h_p_phrases(reader: &mut Reader<&[u8]>) -> Result<Vec<(String, String)>>
   Ok(phrases)
 }
 
-fn read_ld50(mut reader: Reader<&[u8]>) -> Result<Vec<String>> {
+fn read_ld50(reader: &mut Reader<&[u8]>) -> Result<Vec<String>> {
   let mut ld50_values = Vec::with_capacity(2); // mostly one or two values
 
   loop {
-    if let Event::Eof = reader.find_start("b")? {
+    if let Event::Eof = reader.find_start(QName(b"b"))? {
       break;
     }
 
-    let text = reader.read_text_unbuffered("b")?;
-    if &text == "LD50 oral Ratte" {
-      reader.find_start("td")?;
-      reader.find_start("td")?; // skip to next one
+    if let Event::Text(t) = reader.read_event()? {
+      if t.unescape()? == "LD50 oral Ratte" {
+        reader.find_start(QName(b"td"))?;
+        reader.find_start(QName(b"td"))?; // skip to next one
 
-      ld50_values.push(reader.read_text_unbuffered("td")?);
+        if let Event::Text(t) = reader.read_event()? {
+          ld50_values.push(t.unescape()?.to_string());
+        } else {
+          log::warn!("no ld50 found");
+        }
+      }
     }
   }
 
@@ -369,7 +400,7 @@ fn read_ld50(mut reader: Reader<&[u8]>) -> Result<Vec<String>> {
   Ok(ld50_values)
 }
 
-fn read_mak(mut reader: Reader<&[u8]>) -> Result<Vec<String>> {
+fn read_mak(reader: &mut Reader<&[u8]>) -> Result<Vec<String>> {
   lazy_static! {
     static ref MAK_RE: Regex = Regex::new(r"\d+[,.]\d+ (mg/m³|ppm)").unwrap();
   }
@@ -377,14 +408,17 @@ fn read_mak(mut reader: Reader<&[u8]>) -> Result<Vec<String>> {
   let mut mak_values = Vec::with_capacity(2); // mostly just one or two
 
   loop {
-    if Event::Eof == reader.find_start("td")? {
+    if Event::Eof == reader.find_start(QName(b"td"))? {
       break;
     }
 
-    if let Ok(text) = reader.read_text_unbuffered("td") {
-      if MAK_RE.is_match(&text) {
-        mak_values.push(text);
+    if let Event::Text(t) = reader.read_event()? {
+      let text = t.unescape()?;
+      if MAK_RE.is_match(text.as_ref()) {
+        mak_values.push(text.to_string());
       }
+    } else {
+      log::warn!("no mak found");
     }
   }
 

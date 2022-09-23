@@ -1,4 +1,4 @@
-use quick_xml::{events::Event, Reader};
+use quick_xml::{events::Event, name::QName, Reader};
 
 use super::{
   error::Result,
@@ -75,16 +75,13 @@ pub fn parse_chapters(json: &GestisResponse) -> ChapterMapping {
 pub trait ReaderExt<'a> {
   /// Skips the next n occurrences of the next tag.
   /// Only looks at the current level, sublevels are skipped.
-  fn skip(&mut self, name: &str, times: u8) -> Result<()>;
+  fn skip(&mut self, name: QName, times: u8) -> Result<()>;
 
   /// Finds the next occurrence of tag `name`.
-  fn find_start(&mut self, name: &str) -> Result<Event>;
+  fn find_start(&mut self, name: QName) -> Result<Event>;
 
   /// Finds the next `table` tag with class attribute `class`.
   fn find_table(&mut self, class: &str) -> Result<Event>;
-
-  /// Reads the text with internal buffer.
-  fn read_text_unbuffered(&mut self, end: &str) -> Result<String>;
 
   /// This function should only be use to debug code.
   ///
@@ -94,18 +91,17 @@ pub trait ReaderExt<'a> {
 }
 
 impl<'a> ReaderExt<'a> for Reader<&'a [u8]> {
-  fn skip(&mut self, name: &str, times: u8) -> Result<()> {
+  fn skip(&mut self, name: QName, times: u8) -> Result<()> {
     for _ in 0..times {
-      self.read_to_end_unbuffered(name)?
+      let _ = self.read_to_end(name)?;
     }
 
     Ok(())
   }
 
-  fn find_start(&mut self, name: &str) -> Result<Event> {
-    let name: &[u8] = name.as_ref();
+  fn find_start(&mut self, name: QName) -> Result<Event> {
     loop {
-      match self.read_event_unbuffered()? {
+      match self.read_event()? {
         Event::Start(e) => {
           if e.name() == name {
             return Ok(Event::Start(e));
@@ -120,12 +116,12 @@ impl<'a> ReaderExt<'a> for Reader<&'a [u8]> {
   fn find_table(&mut self, class: &str) -> Result<Event> {
     let class: &[u8] = class.as_ref();
     loop {
-      match self.read_event_unbuffered()? {
+      match self.read_event()? {
         Event::Start(e) => {
-          if e.name() == b"table"
+          if e.name() == QName(b"table")
             && e.attributes().into_iter().any(|a| {
               if let Ok(attr) = a {
-                attr.key == b"class" && attr.value == class
+                attr.key == QName(b"class") && attr.value == class
               } else {
                 false
               }
@@ -140,17 +136,14 @@ impl<'a> ReaderExt<'a> for Reader<&'a [u8]> {
     }
   }
 
-  fn read_text_unbuffered(&mut self, end: &str) -> Result<String> {
-    Ok(self.read_text(end, &mut Vec::with_capacity(32))?)
-  }
-
   #[cfg(debug_assertions)]
   fn print_to_end(&mut self) -> Result<()> {
+    let decoder = self.decoder();
     loop {
-      match self.read_event_unbuffered()? {
-        Event::Start(e) => println!("{}", self.decode(e.name())?),
-        Event::Text(e) => println!("  text: '{}'", e.unescape_and_decode(self)?),
-        Event::Empty(e) => println!("empty: {}", self.decode(e.name())?),
+      match self.read_event()? {
+        Event::Start(e) => println!("{}", decoder.decode(e.name().0)?),
+        Event::Text(e) => println!("  text: '{}'", e.unescape()?),
+        Event::Empty(e) => println!("empty: {}", decoder.decode(e.name().0)?),
         Event::Eof => break,
         _ => {}
       }
