@@ -65,7 +65,7 @@ pub async fn get_available_document_types() -> DocumentTypes {
     .collect();
 
   // set cb2 as first element
-  if let Some((i, _)) = (&load).iter().enumerate().find(|(_, f)| f.extensions[0] == "cb2") {
+  if let Some((i, _)) = load.iter().enumerate().find(|(_, f)| f.extensions[0] == "cb2") {
     if i != 0 {
       log::debug!("setting cb2 as first file type from: {}", i);
       load.swap(i, 0);
