@@ -19,7 +19,7 @@ log = "0.4.17"
 logger = { path = "../crates/logger/" }
 search = { path = "../crates/search/" }
 serde = { version = "1.0.145", features = ["derive"] }
-tokio = { version = "1.21.1", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
 types = { path = "../crates/types/" }
 uuid = { version = "1.1.2", features = ["serde", "v4"] }
 warp = "0.3.2"
