@@ -21,7 +21,7 @@ search = { path = "../crates/search/" }
 serde = { version = "1.0.145", features = ["derive"] }
 tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
 types = { path = "../crates/types/" }
-uuid = { version = "1.1.2", features = ["serde", "v4"] }
+uuid = { version = "1.2.1", features = ["serde", "v4"] }
 warp = "0.3.3"
 structopt = "0.3.26"
 once_cell = "1.15.0"
