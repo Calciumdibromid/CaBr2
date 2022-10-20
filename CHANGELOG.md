@@ -1,7 +1,14 @@
+# Changelog
+
+## [v0.5.3](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.5.3) - 2022-10.19
+
+* BUGFIXES
+  * Fix `rename-all` for `Unit` in `SubstanceData` (#1587)
+
 ## [v0.5.2](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.5.2) - 2022-03.28
 
 * BUGFIXES
-  *  Fix security things bug caused by ngxs rewrite (#1260)
+  * Fix security things bug caused by ngxs rewrite (#1260)
 
 ## [v0.5.1](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.5.1) - 2022-02-02
 
@@ -42,7 +49,6 @@
 * DOCS
   * Improve READMEs and IntelliJ support (#1036)
   * Update Develop and Build instructions (#826)
-* MISC
 
 ## [v0.4.1](https://github.com/Calciumdibromid/CaBr2/releases/tag/v0.4.1) - 2022-01-15
 

@@ -1,6 +1,6 @@
 [package]
 name = "cabr2_wasm_lib"
-version = "0.5.2"
+version = "0.5.3"
 edition = "2021"
 description = 'Wasm implementation for CaBr2.'
 authors = [
