@@ -2111,7 +2111,7 @@ dependencies = [
 
 [[package]]
 name = "webserver"
-version = "0.5.2"
+version = "0.5.3"
 dependencies = [
  "config",
  "load_save",
