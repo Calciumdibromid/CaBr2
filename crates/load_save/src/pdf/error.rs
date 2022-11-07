@@ -9,7 +9,7 @@ pub enum PdfError {
   PdfMergeError(String),
 
   #[error(transparent)]
-  TemplateError(#[from] handlebars::TemplateError),
+  TemplateError(Box<handlebars::TemplateError>),
 
   #[error(transparent)]
   RenderError(#[from] handlebars::RenderError),
@@ -22,6 +22,12 @@ pub enum PdfError {
 }
 
 pub type Result<T> = std::result::Result<T, PdfError>;
+
+impl From<handlebars::TemplateError> for PdfError {
+  fn from(err: handlebars::TemplateError) -> Self {
+    PdfError::TemplateError(Box::new(err))
+  }
+}
 
 impl Serialize for PdfError {
   fn serialize<S>(&self, serializer: S) -> std::result::Result<S::Ok, S::Error>
