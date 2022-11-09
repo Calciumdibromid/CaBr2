@@ -1,4 +1,4 @@
-import { from, Observable } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 
 import * as dialog from '@tauri-apps/api/dialog';
@@ -17,7 +17,15 @@ export class TauriService implements INativeService {
   }
 
   save(options?: dialog.SaveDialogOptions): Observable<string> {
-    return from(dialog.save(options));
+    return from(dialog.save(options)).pipe(
+      map((result) => {
+        if (result == null) {
+          throw new Error('open dialog returned null');
+        } else {
+          return result;
+        }
+      }),
+    );
   }
 
   promisified<T>(cmd: string, args?: InvokeArgs): Observable<T> {
