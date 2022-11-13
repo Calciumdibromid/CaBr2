@@ -74,7 +74,7 @@ impl PDFSubstanceData {
 impl std::default::Default for PDFSubstanceData {
   fn default() -> Self {
     lazy_static! {
-      static ref BEGINNING_OF_TIME: chrono::DateTime<chrono::Utc> = chrono::Utc.ymd(1970, 1, 1).and_hms(0, 0, 0);
+      static ref BEGINNING_OF_TIME: chrono::DateTime<chrono::Utc> = chrono::Utc.timestamp_opt(0, 0).unwrap();
     }
 
     PDFSubstanceData {

@@ -24,7 +24,7 @@ pub struct Beryllium;
 impl Loader for Beryllium {
   async fn load_document(&self, contents: Vec<u8>) -> Result<CaBr2Document> {
     lazy_static! {
-      static ref BEGINNING_OF_TIME: chrono::DateTime<chrono::Utc> = chrono::Utc.ymd(1970, 1, 1).and_hms(0, 0, 0);
+      static ref BEGINNING_OF_TIME: chrono::DateTime<chrono::Utc> = chrono::Utc.timestamp_opt(0, 0).unwrap();
       static ref GESTIS_URL_RE: Regex =
         Regex::new(r"http://gestis\.itrust\.de/nxt/gateway\.dll/gestis_(de|en)/(\d{6})\.xml").unwrap();
     }
