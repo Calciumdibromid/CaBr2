@@ -24,7 +24,7 @@ logger = { path = "../../crates/logger/" }
 search = { path = "../../crates/search/" }
 serde_json = "1.0.89"
 tauri = { version = "1.2.0", features = ["api-all"] }
-tokio = { version = "1.21.2", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.22.0", features = ["macros", "rt-multi-thread"] }
 types = { path = "../../crates/types" }
 
 [features]
