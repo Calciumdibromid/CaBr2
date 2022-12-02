@@ -10,7 +10,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-trait = "0.1.58"
+async-trait = "0.1.59"
 chrono = { version = "0.4.23", optional = true }
 config = { path = "../config/", optional = true }
 error-ser = { path = "../error-ser" }
