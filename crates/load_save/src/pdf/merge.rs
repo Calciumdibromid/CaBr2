@@ -23,8 +23,8 @@ pub fn merge_pdfs(documents: Vec<Document>) -> Result<Document> {
     documents_pages.extend(
       document
         .get_pages()
-        .into_iter()
-        .map(|(_, object_id)| (object_id, document.get_object(object_id).unwrap().to_owned()))
+        .into_values()
+        .map(|object_id| (object_id, document.get_object(object_id).unwrap().to_owned()))
         .collect::<BTreeMap<ObjectId, Object>>(),
     );
     documents_objects.extend(document.objects);
@@ -116,10 +116,7 @@ pub fn merge_pdfs(documents: Vec<Document>) -> Result<Document> {
     // Set new "Kids" list (collected from documents pages) for "Pages"
     dictionary.set(
       "Kids",
-      documents_pages
-        .into_iter()
-        .map(|(object_id, _)| Object::Reference(object_id))
-        .collect::<Vec<_>>(),
+      documents_pages.into_keys().map(Object::Reference).collect::<Vec<_>>(),
     );
 
     document.objects.insert(pages_object.0, Object::Dictionary(dictionary));
