@@ -2,14 +2,17 @@ import { Actions, ofActionDispatched, Select, Store } from '@ngxs/store';
 import { Component, HostBinding, Inject, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { first, Observable, Subscription } from 'rxjs';
 import { DOCUMENT } from '@angular/common';
+import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconRegistry } from '@angular/material/icon';
+import { TranslocoService } from '@ngneat/transloco';
 
 import { AcceptConsent, LoadConfig, ToggleDarkTheme } from './@core/states/config.state';
 import { Config } from './@core/interfaces/config.interface';
 import { ConsentComponent } from './components/consent/consent.component';
+import { initializeCustomIcons } from './customIcons';
 import { LoadGHSSymbols } from './@core/states/ghs-symbols.state';
 import packageInfo from '../../package.json';
-import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-root',
@@ -28,14 +31,18 @@ export class AppComponent implements OnInit, OnDestroy {
   dispatchSubscription!: Subscription;
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
-    private renderer: Renderer2,
-    private dialog: MatDialog,
+    @Inject(DOCUMENT) private readonly document: Document,
+    private readonly renderer: Renderer2,
+    private readonly dialog: MatDialog,
+    private readonly matIconRegistry: MatIconRegistry,
+    private readonly domSanitizer: DomSanitizer,
 
-    private translocoService: TranslocoService,
-    private store: Store,
-    private actions$: Actions,
-  ) {}
+    private readonly translocoService: TranslocoService,
+    private readonly store: Store,
+    private readonly actions$: Actions,
+  ) {
+    initializeCustomIcons(matIconRegistry, domSanitizer);
+  }
 
   @HostBinding('class')
   get themeMode(): string {

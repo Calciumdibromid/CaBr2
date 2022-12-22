@@ -1,12 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
-    <g id="Puzzel" transform="matrix(0.539959,0,0,0.539959,-4.34409,57.7084)">
-        <g transform="matrix(5.19244,0,0,5.19244,-1009.7,-1222.84)">
-            <circle cx="284.673" cy="304.467" r="73.193" style="fill:rgb(224,239,244);stroke:black;stroke-width:1.43px;"/>
+<svg
+   width="100%"
+   height="100%"
+   viewBox="0 0 500 500"
+   version="1.1"
+   xml:space="preserve"
+   style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;"
+   id="svg11"
+   sodipodi:docname="puzzle.svg"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"><defs
+   id="defs15" /><sodipodi:namedview
+   id="namedview13"
+   pagecolor="#ffffff"
+   bordercolor="#000000"
+   borderopacity="0.25"
+   inkscape:showpageshadow="2"
+   inkscape:pageopacity="0.0"
+   inkscape:pagecheckerboard="0"
+   inkscape:deskcolor="#d1d1d1"
+   showgrid="false"
+   inkscape:zoom="1.742"
+   inkscape:cx="250.28703"
+   inkscape:cy="250.57405"
+   inkscape:window-width="1920"
+   inkscape:window-height="1080"
+   inkscape:window-x="0"
+   inkscape:window-y="0"
+   inkscape:window-maximized="1"
+   inkscape:current-layer="svg11" />
+    <g
+   id="Puzzel"
+   transform="matrix(0.65138452,0,0,0.65201707,-55.139446,16.720447)">
+        <g
+   transform="matrix(5.19244,0,0,5.19244,-1009.7,-1222.84)"
+   id="g4">
+            <circle
+   cx="284.673"
+   cy="304.46701"
+   r="73.193001"
+   style="fill:#e0eff4;stroke:#000000;stroke-width:1.43px"
+   id="circle2" />
         </g>
-        <g transform="matrix(6.75273,0,0,6.75273,-4547.15,-142.327)">
-            <path d="M711,53L737,53C736.792,40.698 751.971,40.491 753,53L778,53L778,67C764.832,67.535 765.339,81.54 778,82L778,96L753,96C752.68,82.919 737.353,82.454 737.015,96L711,96L711,83C696.449,82.569 697.003,67.657 711,67L711,53Z" style="fill:rgb(245,99,13);stroke:black;stroke-width:1.1px;"/>
+        <g
+   transform="matrix(6.75273,0,0,6.75273,-4547.15,-142.327)"
+   id="g8">
+            <path
+   d="m 711,53 h 26 c -0.208,-12.302 14.971,-12.509 16,0 h 25 v 14 c -13.168,0.535 -12.661,14.54 0,15 V 96 H 753 C 752.68,82.919 737.353,82.454 737.015,96 H 711 V 83 c -14.551,-0.431 -13.997,-15.343 0,-16 z"
+   style="fill:#f5630d;stroke:#000000;stroke-width:1.1px"
+   id="path6" />
         </g>
     </g>
 </svg>

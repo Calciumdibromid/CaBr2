@@ -6,19 +6,21 @@
       <div *ngIf="finished" class="title">{{ t('downloadPdf') }}</div>
     </h1>
 
-    <div *ngIf="finished; else loading">
-      <button mat-raised-button class="margin-bottom" (click)="downloadPdf()">
-        {{ t('download') }}
-      </button>
-    </div>
+    <div mat-dialog-content>
+      <div *ngIf="finished; else loading">
+        <button mat-raised-button class="margin-bottom" (click)="downloadPdf()">
+          {{ t('download') }}
+        </button>
+      </div>
 
-    <ng-template #loading>
-      <app-loading class="margin-bottom"></app-loading>
-    </ng-template>
+      <ng-template #loading>
+        <app-loading class="margin-bottom"></app-loading>
+      </ng-template>
 
-    <div *ngIf="error">
-      <mat-divider></mat-divider>
-      <p class="error-message">{{ t('errorMessage') }}</p>
+      <div *ngIf="error">
+        <mat-divider></mat-divider>
+        <p class="error-message">{{ t('errorMessage') }}</p>
+      </div>
     </div>
   </ng-container>
 

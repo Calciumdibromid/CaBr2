@@ -1,5 +1,5 @@
 <ng-container *transloco="let t; read: 'header'">
-  <mat-card class="flex-column onepager-mat-card unselectable" [formGroup]="formGroup" ngxsForm="header.headerForm">
+  <form class="flex-column" [formGroup]="formGroup" ngxsForm="header.headerForm">
     <mat-form-field>
       <mat-label>{{ t('docTitle') }}</mat-label>
       <input matInput formControlName="documentTitle" />
@@ -28,5 +28,5 @@
       <mat-label>{{ t('preparation') }}</mat-label>
       <input matInput formControlName="preparation" />
     </mat-form-field>
-  </mat-card>
+  </form>
 </ng-container>

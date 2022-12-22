@@ -1,6 +1,6 @@
 <ng-container *transloco="let t; read: 'menu'">
-  <button class="hamburger icon" mat-icon-button [matMenuTriggerFor]="menu">
-    <img src="assets/icons/menu.svg" />
+  <button class="hamburger icon" mat-fab [matMenuTriggerFor]="menu">
+    <mat-icon class="svg" svgIcon="cb2-menu"></mat-icon>
   </button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="newDocument()">{{ t('newDocument') }}</button>

@@ -8,6 +8,11 @@
   grid-template-columns: auto auto auto;
 }
 
+.phrase-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+
 .symbols-grid {
   display: inline-grid;
   grid-template-columns: 200px 200px 200px;
@@ -53,10 +58,10 @@ mat-form-field {
   height: 10px;
 }
 
-.mat-dialog-actions {
+.mat-mdc-dialog-actions {
   display: flex;
 
-  .mat-icon-button {
+  .mat-mdc-icon-button {
     margin-left: auto;
   }
 }

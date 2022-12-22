@@ -2,36 +2,32 @@
   <mat-sidenav class="navbar-flex unselectable fixed" mode="side" opened disableClose>
     <app-navbar-menu></app-navbar-menu>
 
-    <app-scrollbutton
-      [target]="headerTarget"
-      iconFilePath="assets/icons/flask.svg"
-      [matTooltip]="t('header')"
-    ></app-scrollbutton>
-    <app-scrollbutton
-      [target]="search"
-      iconFilePath="assets/icons/magnifier.svg"
-      [matTooltip]="t('search')"
-    ></app-scrollbutton>
+    <app-scrollbutton [target]="headerTarget" iconFilePath="cb2-flask" [matTooltip]="t('header')"></app-scrollbutton>
+    <app-scrollbutton [target]="search" iconFilePath="cb2-magnifier" [matTooltip]="t('search')"></app-scrollbutton>
     <app-scrollbutton
       [target]="securitythings"
-      iconFilePath="assets/icons/puzzle.svg"
+      iconFilePath="cb2-puzzle"
       [matTooltip]="t('securitythings')"
     ></app-scrollbutton>
-    <app-scrollbutton
-      [target]="preview"
-      iconFilePath="assets/icons/arrow.svg"
-      [matTooltip]="t('preview')"
-    ></app-scrollbutton>
+    <app-scrollbutton [target]="preview" iconFilePath="cb2-arrow" [matTooltip]="t('preview')"></app-scrollbutton>
 
     <app-bug-report-button class="down"></app-bug-report-button>
   </mat-sidenav>
   <mat-sidenav-content class="smooth-scroll unselectable">
     <div #headerTarget>
-      <app-header></app-header>
+      <mat-card appearance="outlined" class="onepager-mat-card unselectable">
+        <mat-card-content>
+          <app-header></app-header>
+        </mat-card-content>
+      </mat-card>
     </div>
 
     <div #search>
-      <app-search></app-search>
+      <mat-card appearance="outlined" class="onepager-mat-card unselectable">
+        <mat-card-content>
+          <app-search></app-search>
+        </mat-card-content>
+      </mat-card>
     </div>
 
     <div #securitythings>
@@ -39,7 +35,11 @@
     </div>
 
     <div #preview>
-      <app-preview></app-preview>
+      <mat-card appearance="outlined" class="onepager-mat-card unselectable">
+        <mat-card-content>
+          <app-preview></app-preview>
+        </mat-card-content>
+      </mat-card>
     </div>
 
     <div class="buttons">

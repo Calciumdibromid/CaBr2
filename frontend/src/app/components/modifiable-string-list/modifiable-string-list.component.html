@@ -1,30 +1,43 @@
 <ng-container *transloco="let t">
-  <mat-card [formGroup]="formGroup" [ngxsForm]="ngxsIdentifier + '.form'" class="onepager-mat-card">
-    <h3 class="mat-h3">{{ title }}</h3>
-    <div formArrayName="elements">
-      <ul cdkDropList (cdkDropListDropped)="drop($event)">
-        <li *ngFor="let element of controlElements.controls; let i = index" [formGroupName]="i">
-          <mat-card [class.mat-elevation-z0]="true" cdkDragLockAxis="y" cdkDrag cdkDragBoundary="ul">
-            <app-text-area-field [abstractControl]="element" (removeEmitter)="removeElement(i)">
-              <button mat-icon-button [matTooltip]="t('substance.dragAndDrop')" cdkDragHandle>
-                <mat-icon class="drag-icon">drag_handle</mat-icon>
-              </button>
-            </app-text-area-field>
-          </mat-card>
-        </li>
-      </ul>
-    </div>
-    <button
-      class="add-button"
-      mat-icon-button
-      (mouseenter)="addHover = true"
-      (mouseleave)="addHover = false"
-      (click)="addElement()"
-      [matTooltip]="t('base.addElement')"
-      matTooltipPosition="right"
-    >
-      <mat-icon *ngIf="!addHover">add_circle_outline</mat-icon>
-      <mat-icon color="primary" *ngIf="addHover">add_circle</mat-icon>
-    </button>
+  <mat-card
+    appearance="outlined"
+    [formGroup]="formGroup"
+    [ngxsForm]="ngxsIdentifier + '.form'"
+    class="onepager-mat-card"
+  >
+    <mat-card-content>
+      <h3 class="mat-h3">{{ title }}</h3>
+      <div formArrayName="elements">
+        <ul cdkDropList (cdkDropListDropped)="drop($event)">
+          <li *ngFor="let element of controlElements.controls; let i = index" [formGroupName]="i">
+            <mat-card
+              appearance="outlined"
+              [class.mat-elevation-z0]="true"
+              cdkDragLockAxis="y"
+              cdkDrag
+              cdkDragBoundary="ul"
+            >
+              <app-text-area-field [abstractControl]="element" (removeEmitter)="removeElement(i)">
+                <button mat-icon-button [matTooltip]="t('substance.dragAndDrop')" cdkDragHandle>
+                  <mat-icon class="drag-icon">drag_handle</mat-icon>
+                </button>
+              </app-text-area-field>
+            </mat-card>
+          </li>
+        </ul>
+      </div>
+      <button
+        class="add-button"
+        mat-icon-button
+        (mouseenter)="addHover = true"
+        (mouseleave)="addHover = false"
+        (click)="addElement()"
+        [matTooltip]="t('base.addElement')"
+        matTooltipPosition="right"
+      >
+        <mat-icon *ngIf="!addHover">add_circle_outline</mat-icon>
+        <mat-icon color="primary" *ngIf="addHover">add_circle</mat-icon>
+      </button>
+    </mat-card-content>
   </mat-card>
 </ng-container>

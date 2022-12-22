@@ -5,11 +5,14 @@
   width: 50px;
   height: 50px;
 
+  border-radius: 100%;
+
   @include mat.elevation-transition;
   @include mat.elevation(1);
 
   &:hover {
     @include mat.elevation(5);
+    cursor: pointer;
   }
 }
 

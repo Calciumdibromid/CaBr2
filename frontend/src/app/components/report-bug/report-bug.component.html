@@ -1,10 +1,12 @@
 <ng-container *transloco="let t">
   <h2 mat-dialog-title>{{ t('bugreport.title') }}</h2>
-  <p>{{ t('bugreport.sentence') }} <a (click)="openMail()">cabr2.help@gmail.com</a></p>
-  <p>
-    {{ t('bugreport.codebergSentence') }}
-    <a href="https://codeberg.org/Calciumdibromid/CaBr2" target="_blank">CaBr2 Codeberg</a>
-  </p>
+  <div mat-dialog-content>
+    <p>{{ t('bugreport.sentence') }} <a (click)="openMail()">cabr2.help@gmail.com</a></p>
+    <p>
+      {{ t('bugreport.codebergSentence') }}
+      <a href="https://codeberg.org/Calciumdibromid/CaBr2" target="_blank">CaBr2 Codeberg</a>
+    </p>
+  </div>
 
   <div mat-dialog-actions>
     <button mat-button (click)="dialogRef.close()">{{ t('base.close') }}</button>
