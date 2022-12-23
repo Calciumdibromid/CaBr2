@@ -1,0 +1,1 @@
+folders = ["webserver", "frontend/src-wasm", "frontend/src-tauri"]
