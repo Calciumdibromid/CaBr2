@@ -48,7 +48,7 @@
     "@types/node": "18.11.17",
     "@typescript-eslint/eslint-plugin": "5.46.0",
     "@typescript-eslint/parser": "5.46.0",
-    "eslint": "8.29.0",
+    "eslint": "8.30.0",
     "@angular-devkit/build-angular": "15.0.4",
     "@angular-eslint/builder": "15.1.0",
     "@angular-eslint/eslint-plugin": "15.1.0",
