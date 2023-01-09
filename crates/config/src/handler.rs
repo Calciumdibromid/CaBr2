@@ -1,5 +1,6 @@
 use std::{collections::HashMap, env, path::PathBuf};
 
+use base64::{prelude::BASE64_STANDARD, Engine};
 use directories_next::ProjectDirs;
 use lazy_static::lazy_static;
 use serde_json::Value;
@@ -14,6 +15,8 @@ use super::{
   error::Result,
   types::{BackendConfig, FrontendConfig, GHSSymbols, LocalizedStrings, LocalizedStringsHeader},
 };
+
+const BASE64_IMAGE_TAG: &str = "data:image/image/png;base64,";
 
 lazy_static! {
   pub static ref PROJECT_DIRS: ProjectDirs = ProjectDirs::from("de", "Calciumdibromid", "CaBr2").unwrap();
@@ -81,6 +84,7 @@ pub async fn get_hazard_symbols() -> Result<GHSSymbols> {
 
   let mut symbols = HashMap::new();
   let mut buf = Vec::new();
+  let mut str_buf = BASE64_IMAGE_TAG.to_string();
 
   for filename in symbol_folder
     .read_dir()?
@@ -88,9 +92,13 @@ pub async fn get_hazard_symbols() -> Result<GHSSymbols> {
     .map(|p| p.unwrap().path())
     .filter(|p| p.is_file())
   {
-    buf.clear();
     let mut file = OpenOptions::new().read(true).open(&filename).await?;
+    buf.clear();
     file.read_to_end(&mut buf).await?;
+
+    // trim only base64 data -> reuse buffer
+    str_buf.truncate(BASE64_IMAGE_TAG.len());
+    BASE64_STANDARD.encode_string(&buf, &mut str_buf);
 
     symbols.insert(
       filename
@@ -99,7 +107,8 @@ pub async fn get_hazard_symbols() -> Result<GHSSymbols> {
         .to_string_lossy()
         .trim_end_matches(".png")
         .into(),
-      format!("data:image/image/png;base64,{}", base64::encode(&buf)),
+      // clone only allocates .len() bytes
+      str_buf.clone(),
     );
   }
 
