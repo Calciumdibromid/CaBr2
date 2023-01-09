@@ -8,6 +8,7 @@ pipeline:
       path:
         - '.woodpecker/wasm-lib.yml'
         - 'frontend/src-wasm/**'
+        - 'crates/**'
 
     commands:
       - rustup default stable

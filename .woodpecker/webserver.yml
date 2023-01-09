@@ -8,6 +8,7 @@ pipeline:
       path:
         - '.woodpecker/webserver.yml'
         - 'webserver/**'
+        - 'crates/**'
 
     commands:
       - rustup default stable
