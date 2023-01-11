@@ -16,6 +16,10 @@ pipeline:
 
     commands:
       - rustup default stable
+      - rustc -V
+      - cargo -V
+      - node -v
+      - yarn --version
       - cd frontend
       - yarn install --frozen-lockfile
       - yarn prettier -c src

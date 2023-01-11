@@ -12,6 +12,9 @@ pipeline:
 
     commands:
       - rustup default stable
+      - rustc -V
+      - cargo -V
+      - wasm-pack -V
       - cd frontend/src-wasm
       - cargo fmt -- --check
       - cargo clippy --locked --all-features -- --deny clippy::all --deny warnings
