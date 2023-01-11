@@ -77,6 +77,10 @@
                 {
                   "replace": "src/app/@core/services/service.module.ts",
                   "with": "src/app/@core/services/web.service.module.ts"
+                },
+                {
+                  "replace": "src/app/@core/utils/logger/logger-impl.ts",
+                  "with": "src/app/@core/utils/logger/web.logger-impl.ts"
                 }
               ],
               "assets": [
@@ -103,6 +107,10 @@
                 {
                   "replace": "src/app/@core/services/service.module.ts",
                   "with": "src/app/@core/services/web.service.module.ts"
+                },
+                {
+                  "replace": "src/app/@core/utils/logger/logger-impl.ts",
+                  "with": "src/app/@core/utils/logger/web.logger-impl.ts"
                 }
               ],
               "optimization": true,
