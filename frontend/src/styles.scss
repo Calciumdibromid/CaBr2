@@ -1,4 +1,9 @@
 @use '@angular/material' as mat;
+
+// TODO(#1715) check if font creation saves us anything
+// @use "@fontsource/roboto/scss/mixins" as Roboto;
+// @use "@fontsource/material-icons/scss/mixins" as MatIcons;
+
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 // Plus imports for other components in your app.
@@ -89,6 +94,9 @@ $ang-CaBr2-theme-dark: mat.define-dark-theme(
     }
   }
 }
+
+@import '~@fontsource/roboto/index.css';
+@import '~@fontsource/material-icons/index.css';
 
 /* You can add global styles to this file, and also import other style files */
 
