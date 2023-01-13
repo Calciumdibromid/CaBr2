@@ -17,14 +17,15 @@ build = "src/build.rs"
 tauri-build = { version = "1.2.1", features = [] }
 
 [dependencies]
-config = { path = "../../crates/config/", features = [ "tauri-app" ] }
-load_save = { path = "../../crates/load_save/" }
 log = "0.4.17"
-logger = { path = "../../crates/logger/" }
-search = { path = "../../crates/search/" }
 serde_json = "1.0.91"
 tauri = { version = "1.2.3", features = ["api-all"] }
 tokio = { version = "1.24.1", features = ["macros", "rt-multi-thread"] }
+
+config = { path = "../../crates/config/", features = [ "tauri-app" ] }
+load_save = { path = "../../crates/load_save/" }
+logger = { path = "../../crates/logger/" }
+search = { path = "../../crates/search/" }
 types = { path = "../../crates/types" }
 
 [features]
