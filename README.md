@@ -2,7 +2,7 @@
 
 [![License: GPL3+](https://img.shields.io/badge/License-GPL3+-blue.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![status-badge](https://ci.codeberg.org/api/badges/Calciumdibromid/CaBr2/status.svg)](https://ci.codeberg.org/Calciumdibromid/CaBr2)
-[![Crowdin](https://badges.crowdin.net/cabr2/localized.svg)](https://crowdin.com/project/cabr2)
+[![Translation status](https://translate.codeberg.org/widgets/cabr2/-/svg-badge.svg)](https://translate.codeberg.org/engage/cabr2/)
 
 Generate "experiment wise safety sheets" in compliance to European law.
 
@@ -43,6 +43,4 @@ To learn more about a specific part of this project, go to the corresponding REA
 
 ## Translate
 
-Translation is done via [Crowdin](https://crowdin.com/project/cabr2).
-
-To improve the translation of a language or add a new one visit [https://crowdin.com/project/cabr2](https://crowdin.com/project/cabr2).
+[![Translation Status](https://translate.codeberg.org/widgets/cabr2/-/open-graph.png)](https://translate.codeberg.org/engage/cabr2/)
