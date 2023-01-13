@@ -1,0 +1,191 @@
+{
+    "strings": {
+        "success": {
+            "exportPDF": "PDF esportato con successo",
+            "loadFile": "File caricato con successo",
+            "saveFile": "File salvato con successo"
+        },
+        "dialogs": {
+            "unchangedValues": {
+                "title": "Valori invariati",
+                "content": [
+                    "I seguenti valori non sono stati modificati."
+                ],
+                "footer": [
+                    "Continuare comunque?"
+                ]
+            },
+            "pdfGeneration": {
+                "generatingPdf": "Generazione PDF…",
+                "downloadPdf": "Scarica PDF",
+                "download": "Scarica",
+                "errorMessage": "Il server non risponde.\nQuesto potrebbe avere più motivi.\nPuoi aspettare o chiudere questa finestra di dialogo ora e riprovare più tardi."
+            }
+        },
+        "base": {
+            "addElement": "Ciao",
+            "removeElement": "Rimuovi voce",
+            "print": "Stampare",
+            "cancel": "Cancellare",
+            "ok": "Ok",
+            "save": "Salva",
+            "close": "Chiudere"
+        },
+        "tooltips": {
+            "header": "Intestazione della scheda di sicurezza",
+            "search": "Ricerca e sostanze selezionate",
+            "securitythings": "Modifica del retro del foglio di sicurezza",
+            "preview": "Anteprima della scheda di sicurezza"
+        },
+        "menu": {
+            "newDocument": "Nuova scheda di sicurezza",
+            "loadFile": "Apri scheda di sicurezza",
+            "saveFile": "Salva scheda di sicurezza",
+            "exportPDF": "Esporta come PDF",
+            "settings": "Impostazioni",
+            "quickStart": "Guida"
+        },
+        "settings": {
+            "language": "Lingua",
+            "reloadRequired": "Ricarica richiesta",
+            "darkModeSwitchInfo": "Attiva/Disattiva tema chiaro/scuro"
+        },
+        "bugreport": {
+            "title": "Segnala un bug",
+            "sentence": "Segnala un bug nella seguente email:",
+            "codebergSentence": ""
+        },
+        "header": {
+            "docTitle": "Titolo documento:",
+            "labCourse": "Laboratorio/Corso:",
+            "name": "Nome:",
+            "place": "Luogo:",
+            "assistant": "Assistente:",
+            "preparation": "Preparazione/Compito:",
+            "organization": ""
+        },
+        "search": {
+            "types": {
+                "chemicalName": "Denominazione chimica",
+                "chemicalFormula": "Formula molecolare",
+                "numbers": "Numero",
+                "fullText": "Testo Completo"
+            },
+            "exact": "Ricerca esatta",
+            "option": "Opzioni di ricerca:",
+            "searchButton": "Cerca",
+            "removeSubstance": "Rimuovi sostanza",
+            "editSubstance": "Modifica sostanza",
+            "removeOption": "Rimuovi opzione di ricerca",
+            "addOption": "Aggiungi opzione di ricerca",
+            "resultsHeader": "Risultati della ricerca",
+            "noResult": "{{provider}} non ha prodotto risultati.\nRiprova con sinonimi o parole parziali.",
+            "customSubstance": "Personalizzato",
+            "unsupportedProviderInfo": "non supportato",
+            "error": "Si è verificato un errore durante il recupero dei dati",
+            "disclaimer": {
+                "gestis": "Gestis fornisce raramente dati per i prodotti degli esperimenti."
+            }
+        },
+        "substance": {
+            "invalidFormsTitle": "Qualcosa è sbagliato",
+            "invalidFormsContent": [
+                "La sostanza ha dati invalidi o mancanti sui seguenti elementi:"
+            ],
+            "edited": "Modificato?",
+            "name": "Nome",
+            "needsName": "Il nome è obbligatorio",
+            "casNumber": "Numero CAS",
+            "molecularFormula": "Formula molecolare",
+            "waterHazardClass": "Classe di pericolo dell’acqua",
+            "signalWord": "Parola del segnale",
+            "molarMass": "Massa molare",
+            "unit": "Unità",
+            "lethalDose": "Dose letale",
+            "mak": "MAK",
+            "meltingPoint": "Punto di fusione",
+            "boilingPoint": "Punto di ebollizione",
+            "amount": "Quantità",
+            "notANumber": "Non è un numero",
+            "customUnit": "Unità personalizzata",
+            "hPhrases": "Frasi H",
+            "noHPhrase": "Numero H Non Valido",
+            "invalidHPhrase": "Frasi H Non Valide",
+            "removeHPhrase": "rimuovi H-phrase",
+            "addHPhrase": "aggiungi frase H",
+            "pPhrases": "Frasi P",
+            "noPPhrase": "Numero P Non Valido",
+            "invalidPPhrase": "Frasi P Non Valide",
+            "removePPhrase": "rimuovi P-phrase",
+            "addPPhrase": "aggiungi frase P",
+            "editingHint": "Clicca sulla sostanza per modificarla.",
+            "ghsSymbolsAddOrRemoveInfo": "Per rimuovere o aggiungere fare clic sul simbolo",
+            "ghsSymbolsColorInfo": "grigio: non selezionato / colorato: selezionato",
+            "addCustomSubstanceData": "Aggiungi sostanza personalizzata",
+            "dragAndDrop": "trascina e rilascia",
+            "resetTooltip": "Reimposta la sostanza corrente ai valori originali",
+            "phraseFormatTooltip": "Formato atteso: {{format}}"
+        },
+        "units": {
+            "groups": {
+                "rawSubstance": "Sostanza Cruda",
+                "solution": "Soluzione",
+                "custom": "Personalizzato"
+            },
+            "custom": "Personalizzato",
+            "pcs.": "pz."
+        },
+        "descriptions": {
+            "humanAndEnvironmentDanger": "Pericoli aggiuntivi per l’uomo e l’ambiente (ad esempio cancerogeni, teratogeni):",
+            "rulesOfConduct": "Misure di protezione e norme di sicurezza:",
+            "inCaseOfDanger": "Comportamento in caso di pericolo e primo aiuto:",
+            "disposal": "Smaltimento:",
+            "humanAndEnvironmentDangerShort": "Pericoli",
+            "rulesOfConductShort": "Misure di protezione",
+            "inCaseOfDangerShort": "Caso di pericolo",
+            "disposalShort": "Smaltimento",
+            "signatureFieldStudent": "Confermo che eseguirò il compito/preparazione secondo le istruzioni qui presentate sui dati di sicurezza.",
+            "signatureFieldAssistant": "Lo studente è autorizzato a svolgere l'attività/preparazione presentata.",
+            "signature": "Firma",
+            "locationAndDate": "Posizione, Data"
+        },
+        "preview": {
+            "info": "Questa è solo un'anteprima. Il PDF generato può sembrare diverso!",
+            "tableSubstanceTitleHeader": "Sostanze e prodotti usati",
+            "tableMolarMassHeader": {
+                "mw": "MW",
+                "grammPerMol": "[g/mol]"
+            },
+            "tableBoilingHeader": "BP",
+            "tableMeltingHeader": "MP",
+            "tableGHSSymbolHeader": "Pittogrammi di pericolo GHS",
+            "tableHPPhrasesHeader": "Frasi H/P",
+            "tableHPPhrasesNumberHeader": "(numeri)",
+            "tableMAKHeader": "MAC, LD50",
+            "tableWHCHeader": "WHC",
+            "tableAmountHeader": "Importo utilizzato",
+            "tableHPPhrasesTitle": "Testo delle frasi H/P essenziali:",
+            "sources": "Sorgenti"
+        },
+        "error": {
+            "substanceWithCASExist": "La sostanza con identico numero CAS esiste già!",
+            "substanceLoadData": "Impossibile caricare i dati della sostanza!",
+            "editSubstance": "Modifica sostanza non riuscita!",
+            "configLoad": "Impossibile leggere la configurazione!",
+            "configSave": "Impossibile salvare la configurazione!",
+            "getHazardSymbols": "Impossibile caricare i simboli di rischio!",
+            "loadSearchSuggestions": "Impossibile caricare i suggerimenti di ricerca!",
+            "loadSearchResults": "Impossibile caricare i risultati della ricerca!",
+            "getAvailableDocumentTypes": "Impossibile caricare i tipi di documenti disponibili!",
+            "loadFile": "Caricamento file fallito!",
+            "saveFile": "Salvataggio file fallito!",
+            "exportPDF": "Esportazione PDF fallita!",
+            "localeLoading": "Impossibile caricare la lingua!"
+        },
+        "loadSave": {
+            "unnamedFile": ""
+        }
+    },
+    "name": "Italiano",
+    "locale": "it"
+}

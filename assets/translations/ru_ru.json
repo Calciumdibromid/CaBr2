@@ -1,185 +1,185 @@
 {
-  "name": "Русский",
-  "locale": "ru_ru",
-  "strings": {
-    "base": {
-      "addElement": "Добавить элемент",
-      "removeElement": "Удалить элемент",
-      "print": "Печать",
-      "cancel": "Отмена",
-      "ok": "Хорошо",
-      "save": "Сохранить",
-      "close": "Закрыть"
-    },
-    "tooltips": {
-      "header": "Заголовок защитного брезента",
-      "search": "Поиск и выбор веществ",
-      "securitythings": "Редактирование задней части защитного брезента",
-      "preview": "Предварительный просмотр защитного брезента"
-    },
-    "menu": {
-      "newDocument": "Новые инструкция",
-      "loadFile": "Открыть новыю инструкцию",
-      "saveFile": "Сохранить новыю инструкцию",
-      "exportPDF": "Вывозить в PDF",
-      "settings": "Отношение",
-      "quickStart": "Руководство"
-    },
-    "settings": {
-      "language": "Язык",
-      "reloadRequired": "Требуется перезагрузка",
-      "darkModeSwitchInfo": "Переключить светлую/темную тему"
-    },
-    "bugreport": {
-      "title": "Сообщить об ошибке",
-      "sentence": "Сообщить об ошибке по следующей почте:",
-      "githubSentence": "В качестве альтернативы вы можете открыть проблему в Github:"
-    },
-    "header": {
-      "docTitle": "Название документа:",
-      "organization": "Организация:",
-      "labCourse": "Лаборатория / Курс:",
-      "name": "Имя:",
-      "place": "Место:",
-      "assistant": "Помощник:",
-      "preparation": "Подготовка/задача:"
-    },
-    "search": {
-      "types": {
-        "chemicalName": "Химический материалы",
-        "chemicalFormula": "Молекулярная формула",
-        "numbers": "Номер",
-        "fullText": "Весь текст"
-      },
-      "exact": "Точное совпадение",
-      "option": "Параметры поиска:",
-      "searchButton": "Поиск",
-      "removeSubstance": "Удалить субстанция",
-      "editSubstance": "Редактировать субстанция",
-      "removeOption": "Удалить опцию поиска",
-      "addOption": "Добавить опцию поиска",
-      "resultsHeader": "Найти результаты",
-      "noResult": "{{provider}} не дал результатов.\nПожалуйста, попробуйте снова с синонимами или частичными словами.",
-      "customSubstance": "Пользовательский",
-      "unsupportedProviderInfo": "не поддерживается",
-      "error": "Ошибка при получении данных"
-    },
-    "substance": {
-      "invalidFormsTitle": "Что-то не так",
-      "invalidFormsContent": [
-        "Вещество имеет недостоверные или отсутствующие данные по следующим пунктам:"
-      ],
-      "edited": "Переработанный?",
-      "name": "Название",
-      "needsName": "Введите имя",
-      "casNumber": "Номер CAS",
-      "molecularFormula": "Молекулярная формула",
-      "waterHazardClass": "Класс опасности для воды",
-      "signalWord": "Сигнальное слово",
-      "molarMass": "Молярная масса",
-      "unit": "Единство",
-      "lethalDose": "Смертельная доза",
-      "mak": "MAK",
-      "meltingPoint": "Температура плавления",
-      "boilingPoint": "Точка кипения",
-      "amount": "Количество",
-      "notANumber": "Нет число",
-      "customUnit": "Нестандартная единица",
-      "hPhrases": "Заявления об опасности",
-      "noHPhrase": "Недействительный Предупреждения об опасности",
-      "invalidHPhrase": "Недопустимые H-фразы",
-      "removeHPhrase": "удалить Предупреждения об опасности",
-      "addHPhrase": "добавить Предупреждение об опасности",
-      "pPhrases": "Предупрежение о безопасности",
-      "noPPhrase": "Недействительный Предупреждения о безопасности",
-      "invalidPPhrase": "Неверные P-фразы",
-      "removePPhrase": "удалить Предупреждения о безопасности",
-      "addPPhrase": "добавить Предупреждение о безопасности",
-      "editingHint": "Нажмите на субстанцу, чтобы изменить ее.",
-      "ghsSymbolsAddOrRemoveInfo": "Нажмите на символ для удаления или добавления",
-      "ghsSymbolsColorInfo": "серый: не выбрано / раскрашено: выбрано",
-      "addCustomSubstanceData": "Добавить обычай субстанция",
-      "dragAndDrop": "перетащить",
-      "resetTooltip": "Сбросить текущее вещество к исходным значениям",
-      "phraseFormatTooltip": "Ожидаемый формат: {{format}}"
-    },
-    "units": {
-      "groups": {
-        "rawSubstance": "Сырая субстанция",
-        "solution": "Решение",
-        "custom": "Пользовательский"
-      },
-      "custom": "Пользовательский",
-      "pcs.": "шт."
-    },
-    "descriptions": {
-      "humanAndEnvironmentDanger": "Дополнительные Опасность для людей и окружающей среды (например: канцерогенная, тератогенная опасность):",
-      "rulesOfConduct": "Защитные меры и правила безопасности:",
-      "inCaseOfDanger": "Поведение в случае опасности и первая помощь:",
-      "disposal": "Удаление:",
-      "humanAndEnvironmentDangerShort": "Опасности",
-      "rulesOfConductShort": "Защитные меры",
-      "inCaseOfDangerShort": "Случай опасности",
-      "disposalShort": "Удаления",
-      "signatureFieldStudent": "Я подтверждаю, что выполняю задание/подготовку в соответствии с инструкциями по безопасности, представленными здесь.",
-      "signatureFieldAssistant": "Студенту разрешается выполнить представленное задание или подготовку.",
-      "signature": "Сигнатура",
-      "locationAndDate": "Расположение, дата"
-    },
-    "preview": {
-      "info": "Это только предварительный просмотр. Созданный PDF может выглядеть иначе!",
-      "tableSubstanceTitleHeader": "Использованные субстанции и продукты",
-      "tableMolarMassHeader": {
-        "mw": "MW",
-        "grammPerMol": "[г/моль]"
-      },
-      "tableBoilingHeader": "BP",
-      "tableMeltingHeader": "МП",
-      "tableGHSSymbolHeader": "Пиктограммы опасности ГХС",
-      "tableHPPhrasesHeader": "Информация об опасностях и безопасности",
-      "tableHPPhrasesNumberHeader": "(номер)",
-      "tableMAKHeader": "MAC, LD50",
-      "tableWHCHeader": "Класс опасности для воды",
-      "tableAmountHeader": "Использованная масса",
-      "tableHPPhrasesTitle": "Текст основных фраз H и P:",
-      "sources": "Источники"
-    },
-    "error": {
-      "substanceWithCASExist": "Уже существует вещество с одинаковым номером CAS!",
-      "substanceLoadData": "Не удалось загрузить данные вещества!",
-      "editSubstance": "Обработка вещества не удалась!",
-      "configLoad": "Не удалось загрузить файл конфигурации!",
-      "configSave": "Не удалось сохранить конфигурацию!",
-      "getHazardSymbols": "Не удалось загрузить символы опасности!",
-      "loadSearchSuggestions": "Не удалось загрузить поисковые предложения!",
-      "loadSearchResults": "Не удалось загрузить результаты поиска!",
-      "getAvailableDocumentTypes": "Не удалось загрузить доступные типы документов!",
-      "loadFile": "Не удалось загрузить файл!",
-      "saveFile": "Не удалось сохранить файл!",
-      "exportPDF": "Не удалось экспортировать файл PDF!",
-      "localeLoading": "Не удалось загрузить язык!"
-    },
-    "success": {
-      "loadFile": "Файл успешно загружен",
-      "saveFile": "Файл успешно сохранен",
-      "exportPDF": "PDF успешно экспортирован"
-    },
-    "dialogs": {
-      "unchangedValues": {
-        "title": "Неизменные значения",
-        "content": [
-          "Следующие значения не были изменены."
-        ],
-        "footer": [
-          "Все равно продолжайте?"
-        ]
-      },
-      "pdfGeneration": {
-        "generatingPdf": "Генерация PDF...",
-        "downloadPdf": "Скачать PDF",
-        "download": "Скачать",
-        "errorMessage": "Сервер не отвечает.\nЭто может иметь несколько причин.\nВы можете подождать или закрыть этот диалог сейчас и повторите попытку позже."
-      }
+    "name": "Русский",
+    "locale": "ru_ru",
+    "strings": {
+        "base": {
+            "addElement": "Добавить элемент",
+            "removeElement": "Удалить элемент",
+            "print": "Печать",
+            "cancel": "Отмена",
+            "ok": "Хорошо",
+            "save": "Сохранить",
+            "close": "Закрыть"
+        },
+        "tooltips": {
+            "header": "Заголовок защитного брезента",
+            "search": "Поиск и выбор веществ",
+            "securitythings": "Редактирование задней части защитного брезента",
+            "preview": "Предварительный просмотр защитного брезента"
+        },
+        "menu": {
+            "newDocument": "Новые инструкция",
+            "loadFile": "Открыть новыю инструкцию",
+            "saveFile": "Сохранить новыю инструкцию",
+            "exportPDF": "Вывозить в PDF",
+            "settings": "Отношение",
+            "quickStart": "Руководство"
+        },
+        "settings": {
+            "language": "Язык",
+            "reloadRequired": "Требуется перезагрузка",
+            "darkModeSwitchInfo": "Переключить светлую/темную тему"
+        },
+        "bugreport": {
+            "title": "Сообщить об ошибке",
+            "sentence": "Сообщить об ошибке по следующей почте:",
+            "codebergSentence": "В качестве альтернативы вы можете открыть проблему в Codeberg:"
+        },
+        "header": {
+            "docTitle": "Название документа:",
+            "organization": "Организация:",
+            "labCourse": "Лаборатория / Курс:",
+            "name": "Имя:",
+            "place": "Место:",
+            "assistant": "Помощник:",
+            "preparation": "Подготовка/задача:"
+        },
+        "search": {
+            "types": {
+                "chemicalName": "Химический материалы",
+                "chemicalFormula": "Молекулярная формула",
+                "numbers": "Номер",
+                "fullText": "Весь текст"
+            },
+            "exact": "Точное совпадение",
+            "option": "Параметры поиска:",
+            "searchButton": "Поиск",
+            "removeSubstance": "Удалить субстанция",
+            "editSubstance": "Редактировать субстанция",
+            "removeOption": "Удалить опцию поиска",
+            "addOption": "Добавить опцию поиска",
+            "resultsHeader": "Найти результаты",
+            "noResult": "{{provider}} не дал результатов.\nПожалуйста, попробуйте снова с синонимами или частичными словами.",
+            "customSubstance": "Пользовательский",
+            "unsupportedProviderInfo": "не поддерживается",
+            "error": "Ошибка при получении данных"
+        },
+        "substance": {
+            "invalidFormsTitle": "Что-то не так",
+            "invalidFormsContent": [
+                "Вещество имеет недостоверные или отсутствующие данные по следующим пунктам:"
+            ],
+            "edited": "Переработанный?",
+            "name": "Название",
+            "needsName": "Введите имя",
+            "casNumber": "Номер CAS",
+            "molecularFormula": "Молекулярная формула",
+            "waterHazardClass": "Класс опасности для воды",
+            "signalWord": "Сигнальное слово",
+            "molarMass": "Молярная масса",
+            "unit": "Единство",
+            "lethalDose": "Смертельная доза",
+            "mak": "MAK",
+            "meltingPoint": "Температура плавления",
+            "boilingPoint": "Точка кипения",
+            "amount": "Количество",
+            "notANumber": "Нет число",
+            "customUnit": "Нестандартная единица",
+            "hPhrases": "Заявления об опасности",
+            "noHPhrase": "Недействительный Предупреждения об опасности",
+            "invalidHPhrase": "Недопустимые H-фразы",
+            "removeHPhrase": "удалить Предупреждения об опасности",
+            "addHPhrase": "добавить Предупреждение об опасности",
+            "pPhrases": "Предупрежение о безопасности",
+            "noPPhrase": "Недействительный Предупреждения о безопасности",
+            "invalidPPhrase": "Неверные P-фразы",
+            "removePPhrase": "удалить Предупреждения о безопасности",
+            "addPPhrase": "добавить Предупреждение о безопасности",
+            "editingHint": "Нажмите на субстанцу, чтобы изменить ее.",
+            "ghsSymbolsAddOrRemoveInfo": "Нажмите на символ для удаления или добавления",
+            "ghsSymbolsColorInfo": "серый: не выбрано / раскрашено: выбрано",
+            "addCustomSubstanceData": "Добавить обычай субстанция",
+            "dragAndDrop": "перетащить",
+            "resetTooltip": "Сбросить текущее вещество к исходным значениям",
+            "phraseFormatTooltip": "Ожидаемый формат: {{format}}"
+        },
+        "units": {
+            "groups": {
+                "rawSubstance": "Сырая субстанция",
+                "solution": "Решение",
+                "custom": "Пользовательский"
+            },
+            "custom": "Пользовательский",
+            "pcs.": "шт."
+        },
+        "descriptions": {
+            "humanAndEnvironmentDanger": "Дополнительные Опасность для людей и окружающей среды (например: канцерогенная, тератогенная опасность):",
+            "rulesOfConduct": "Защитные меры и правила безопасности:",
+            "inCaseOfDanger": "Поведение в случае опасности и первая помощь:",
+            "disposal": "Удаление:",
+            "humanAndEnvironmentDangerShort": "Опасности",
+            "rulesOfConductShort": "Защитные меры",
+            "inCaseOfDangerShort": "Случай опасности",
+            "disposalShort": "Удаления",
+            "signatureFieldStudent": "Я подтверждаю, что выполняю задание/подготовку в соответствии с инструкциями по безопасности, представленными здесь.",
+            "signatureFieldAssistant": "Студенту разрешается выполнить представленное задание или подготовку.",
+            "signature": "Сигнатура",
+            "locationAndDate": "Расположение, дата"
+        },
+        "preview": {
+            "info": "Это только предварительный просмотр. Созданный PDF может выглядеть иначе!",
+            "tableSubstanceTitleHeader": "Использованные субстанции и продукты",
+            "tableMolarMassHeader": {
+                "mw": "MW",
+                "grammPerMol": "[г/моль]"
+            },
+            "tableBoilingHeader": "BP",
+            "tableMeltingHeader": "МП",
+            "tableGHSSymbolHeader": "Пиктограммы опасности ГХС",
+            "tableHPPhrasesHeader": "Информация об опасностях и безопасности",
+            "tableHPPhrasesNumberHeader": "(номер)",
+            "tableMAKHeader": "MAC, LD50",
+            "tableWHCHeader": "Класс опасности для воды",
+            "tableAmountHeader": "Использованная масса",
+            "tableHPPhrasesTitle": "Текст основных фраз H и P:",
+            "sources": "Источники"
+        },
+        "error": {
+            "substanceWithCASExist": "Уже существует вещество с одинаковым номером CAS!",
+            "substanceLoadData": "Не удалось загрузить данные вещества!",
+            "editSubstance": "Обработка вещества не удалась!",
+            "configLoad": "Не удалось загрузить файл конфигурации!",
+            "configSave": "Не удалось сохранить конфигурацию!",
+            "getHazardSymbols": "Не удалось загрузить символы опасности!",
+            "loadSearchSuggestions": "Не удалось загрузить поисковые предложения!",
+            "loadSearchResults": "Не удалось загрузить результаты поиска!",
+            "getAvailableDocumentTypes": "Не удалось загрузить доступные типы документов!",
+            "loadFile": "Не удалось загрузить файл!",
+            "saveFile": "Не удалось сохранить файл!",
+            "exportPDF": "Не удалось экспортировать файл PDF!",
+            "localeLoading": "Не удалось загрузить язык!"
+        },
+        "success": {
+            "loadFile": "Файл успешно загружен",
+            "saveFile": "Файл успешно сохранен",
+            "exportPDF": "PDF успешно экспортирован"
+        },
+        "dialogs": {
+            "unchangedValues": {
+                "title": "Неизменные значения",
+                "content": [
+                    "Следующие значения не были изменены."
+                ],
+                "footer": [
+                    "Все равно продолжайте?"
+                ]
+            },
+            "pdfGeneration": {
+                "generatingPdf": "Генерация PDF…",
+                "downloadPdf": "Скачать PDF",
+                "download": "Скачать",
+                "errorMessage": "Сервер не отвечает.\nЭто может иметь несколько причин.\nВы можете подождать или закрыть этот диалог сейчас и повторите попытку позже."
+            }
+        }
     }
-  }
 }

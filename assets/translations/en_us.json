@@ -1,185 +1,191 @@
 {
-  "name": "English",
-  "locale": "en_us",
-  "strings": {
-    "base": {
-      "addElement": "Add entry",
-      "removeElement": "Remove entry",
-      "print": "Print",
-      "cancel": "Cancel",
-      "ok": "Ok",
-      "save": "Save",
-      "close": "Close"
-    },
-    "tooltips": {
-      "header": "Header of the safety sheet",
-      "search": "Search and selected substances",
-      "securitythings": "Editing of the back of the safety sheet",
-      "preview": "Preview of the safety sheet"
-    },
-    "menu": {
-      "newDocument": "New safety datasheet",
-      "loadFile": "Open safety datasheet",
-      "saveFile": "Save safety datasheet",
-      "exportPDF": "Export as PDF",
-      "settings": "Settings",
-      "quickStart": "Guide"
-    },
-    "settings": {
-      "language": "Language",
-      "reloadRequired": "Reload required",
-      "darkModeSwitchInfo": "Toggle light/dark theme"
-    },
-    "bugreport": {
-      "title": "Report a bug",
-      "sentence": "Report a bug on following email:",
-      "codebergSentence": "Alternatively you can open an issue in Codeberg:"
-    },
-    "header": {
-      "docTitle": "Document title:",
-      "organization": "Organization:",
-      "labCourse": "Lab/Course:",
-      "name": "Name:",
-      "place": "Place:",
-      "assistant": "Assistant:",
-      "preparation": "Preparation/Task:"
-    },
-    "search": {
-      "types": {
-        "chemicalName": "Chemical name",
-        "chemicalFormula": "Molecular formula",
-        "numbers": "Number",
-        "fullText": "Full Text"
-      },
-      "exact": "Exact search",
-      "option": "Search options:",
-      "searchButton": "Search",
-      "removeSubstance": "Remove substance",
-      "editSubstance": "Edit substance",
-      "removeOption": "Remove search option",
-      "addOption": "Add search option",
-      "resultsHeader": "Search results",
-      "noResult": "{{provider}} returned no results.\nPlease try again with synonyms or partial words.",
-      "customSubstance": "Custom",
-      "unsupportedProviderInfo": "not supported",
-      "error": "An error occurred while retrieving data",
-      "disclaimer": {
-          "gestis": "Gestis rarely provides data for products of experiments."
-      }
-    },
-    "loadSave": {
-      "unnamedFile": "Unnamed"
-    },
-    "substance": {
-      "invalidFormsTitle": "Something is wrong",
-      "invalidFormsContent": ["The substance has invalid or missing data on following items:"],
-      "edited": "Edited?",
-      "name": "Name",
-      "needsName": "Name is required",
-      "casNumber": "CAS number",
-      "molecularFormula": "Molecular formula",
-      "waterHazardClass": "Water hazard class",
-      "signalWord": "Signal word",
-      "molarMass": "Molar mass",
-      "unit": "Unit",
-      "lethalDose": "Lethal dose",
-      "mak": "MAK",
-      "meltingPoint": "Melting point",
-      "boilingPoint": "Boiling point",
-      "amount": "Quantity",
-      "notANumber": "Not a number",
-      "customUnit": "Custom unit",
-      "hPhrases": "H-phrases",
-      "noHPhrase": "Invalid H-number",
-      "invalidHPhrase": "Invalid H-Phrases",
-      "removeHPhrase": "remove H-phrase",
-      "addHPhrase": "add H-phrase",
-      "pPhrases": "P-phrases",
-      "noPPhrase": "Invalid P-number",
-      "invalidPPhrase": "Invalid P-Phrases",
-      "removePPhrase": "remove P-phrase",
-      "addPPhrase": "add P-phrase",
-      "editingHint": "Click on substance to edit.",
-      "ghsSymbolsAddOrRemoveInfo": "To remove or add click on the symbol",
-      "ghsSymbolsColorInfo": "gray: not selected / colorized: selected",
-      "addCustomSubstanceData": "Add custom substance",
-      "dragAndDrop": "drag & drop",
-      "resetTooltip": "Reset current substance to original values",
-      "phraseFormatTooltip": "Expected format: {{format}}"
-    },
-    "units": {
-      "groups": {
-        "rawSubstance": "Raw Substance",
-        "solution": "Solution",
-        "custom": "Custom"
-      },
-      "custom": "Custom",
-      "pcs.": "pcs."
-    },
-    "descriptions": {
-      "humanAndEnvironmentDanger": "Additional dangers for humans and environment (e.g. carcinogenic, teratogenic):",
-      "rulesOfConduct": "Protective measures and safety rules:",
-      "inCaseOfDanger": "Behavior in case of danger and first aid:",
-      "disposal": "Disposal:",
-      "humanAndEnvironmentDangerShort": "Dangers",
-      "rulesOfConductShort": "Protection measures",
-      "inCaseOfDangerShort": "Hazard case",
-      "disposalShort": "Disposal",
-      "signatureFieldStudent": "I hereby confirm that I will execute the task/preparation according to the here presented safety data instructions.",
-      "signatureFieldAssistant": "The student is allowed to perform the presented task/preparation.",
-      "signature": "Signature",
-      "locationAndDate": "Location, Date"
-    },
-    "preview": {
-      "info": "This is only a preview. The generated PDF may look different!",
-      "tableSubstanceTitleHeader": "Used substances and products",
-      "tableMolarMassHeader": {
-        "mw": "MW",
-        "grammPerMol": "[g/mol]"
-      },
-      "tableBoilingHeader": "BP",
-      "tableMeltingHeader": "MP",
-      "tableGHSSymbolHeader": "GHS hazard pictograms",
-      "tableHPPhrasesHeader": "H/P-phrases",
-      "tableHPPhrasesNumberHeader": "(numbers)",
-      "tableMAKHeader": "MAC, LD50",
-      "tableWHCHeader": "WHC",
-      "tableAmountHeader": "Amount used",
-      "tableHPPhrasesTitle": "Text of essential H/P phrases:",
-      "sources": "Sources"
-    },
-    "error": {
-      "substanceWithCASExist": "Substance with identical CAS number exists already!",
-      "substanceLoadData": "Failed to load substance data!",
-      "editSubstance": "Edit substance failed!",
-      "configLoad": "Failed to read configuration!",
-      "configSave": "Failed to save configuration!",
-      "getHazardSymbols": "Failed to load hazard symbols!",
-      "loadSearchSuggestions": "Failed to load search suggestions!",
-      "loadSearchResults": "Failed to load search results!",
-      "getAvailableDocumentTypes": "Failed to load available document types!",
-      "loadFile": "Failed loading file!",
-      "saveFile": "Saving file failed!",
-      "exportPDF": "Exporting PDF failed!",
-      "localeLoading": "Failed to load language!"
-    },
-    "success": {
-      "loadFile": "File successfully loaded",
-      "saveFile": "File saved successfully",
-      "exportPDF": "PDF exported successfully"
-    },
-    "dialogs": {
-      "unchangedValues": {
-        "title": "Unchanged values",
-        "content": ["The following values were not changed."],
-        "footer": ["Continue anyway?"]
-      },
-      "pdfGeneration": {
-        "generatingPdf": "Generating PDF...",
-        "downloadPdf": "Download PDF",
-        "download": "Download",
-        "errorMessage": "The Server is not responding.\nThis could have multiple reasons.\nYou can wait or close this dialog now and try again later."
-      }
+    "name": "English",
+    "locale": "en_us",
+    "strings": {
+        "base": {
+            "addElement": "Add entry",
+            "removeElement": "Remove entry",
+            "print": "Print",
+            "cancel": "Cancel",
+            "ok": "Ok",
+            "save": "Save",
+            "close": "Close"
+        },
+        "tooltips": {
+            "header": "Header of the safety sheet",
+            "search": "Search and selected substances",
+            "securitythings": "Editing of the back of the safety sheet",
+            "preview": "Preview of the safety sheet"
+        },
+        "menu": {
+            "newDocument": "New safety datasheet",
+            "loadFile": "Open safety datasheet",
+            "saveFile": "Save safety datasheet",
+            "exportPDF": "Export as PDF",
+            "settings": "Settings",
+            "quickStart": "Guide"
+        },
+        "settings": {
+            "language": "Language",
+            "reloadRequired": "Reload required",
+            "darkModeSwitchInfo": "Toggle light/dark theme"
+        },
+        "bugreport": {
+            "title": "Report a bug",
+            "sentence": "Report a bug on following email:",
+            "codebergSentence": "Alternatively you can open an issue in Codeberg:"
+        },
+        "header": {
+            "docTitle": "Document title:",
+            "organization": "Organization:",
+            "labCourse": "Lab/Course:",
+            "name": "Name:",
+            "place": "Place:",
+            "assistant": "Assistant:",
+            "preparation": "Preparation/Task:"
+        },
+        "search": {
+            "types": {
+                "chemicalName": "Chemical name",
+                "chemicalFormula": "Molecular formula",
+                "numbers": "Number",
+                "fullText": "Full Text"
+            },
+            "exact": "Exact search",
+            "option": "Search options:",
+            "searchButton": "Search",
+            "removeSubstance": "Remove substance",
+            "editSubstance": "Edit substance",
+            "removeOption": "Remove search option",
+            "addOption": "Add search option",
+            "resultsHeader": "Search results",
+            "noResult": "{{provider}} returned no results.\nPlease try again with synonyms or partial words.",
+            "customSubstance": "Custom",
+            "unsupportedProviderInfo": "not supported",
+            "error": "An error occurred while retrieving data",
+            "disclaimer": {
+                "gestis": "Gestis rarely provides data for products of experiments."
+            }
+        },
+        "loadSave": {
+            "unnamedFile": "Unnamed"
+        },
+        "substance": {
+            "invalidFormsTitle": "Something is wrong",
+            "invalidFormsContent": [
+                "The substance has invalid or missing data on following items:"
+            ],
+            "edited": "Edited?",
+            "name": "Name",
+            "needsName": "Name is required",
+            "casNumber": "CAS number",
+            "molecularFormula": "Molecular formula",
+            "waterHazardClass": "Water hazard class",
+            "signalWord": "Signal word",
+            "molarMass": "Molar mass",
+            "unit": "Unit",
+            "lethalDose": "Lethal dose",
+            "mak": "MAK",
+            "meltingPoint": "Melting point",
+            "boilingPoint": "Boiling point",
+            "amount": "Quantity",
+            "notANumber": "Not a number",
+            "customUnit": "Custom unit",
+            "hPhrases": "H-phrases",
+            "noHPhrase": "Invalid H-number",
+            "invalidHPhrase": "Invalid H-Phrases",
+            "removeHPhrase": "remove H-phrase",
+            "addHPhrase": "add H-phrase",
+            "pPhrases": "P-phrases",
+            "noPPhrase": "Invalid P-number",
+            "invalidPPhrase": "Invalid P-Phrases",
+            "removePPhrase": "remove P-phrase",
+            "addPPhrase": "add P-phrase",
+            "editingHint": "Click on substance to edit.",
+            "ghsSymbolsAddOrRemoveInfo": "To remove or add click on the symbol",
+            "ghsSymbolsColorInfo": "gray: not selected / colorized: selected",
+            "addCustomSubstanceData": "Add custom substance",
+            "dragAndDrop": "drag & drop",
+            "resetTooltip": "Reset current substance to original values",
+            "phraseFormatTooltip": "Expected format: {{format}}"
+        },
+        "units": {
+            "groups": {
+                "rawSubstance": "Raw Substance",
+                "solution": "Solution",
+                "custom": "Custom"
+            },
+            "custom": "Custom",
+            "pcs.": "pcs."
+        },
+        "descriptions": {
+            "humanAndEnvironmentDanger": "Additional dangers for humans and environment (e.g. carcinogenic, teratogenic):",
+            "rulesOfConduct": "Protective measures and safety rules:",
+            "inCaseOfDanger": "Behavior in case of danger and first aid:",
+            "disposal": "Disposal:",
+            "humanAndEnvironmentDangerShort": "Dangers",
+            "rulesOfConductShort": "Protection measures",
+            "inCaseOfDangerShort": "Hazard case",
+            "disposalShort": "Disposal",
+            "signatureFieldStudent": "I hereby confirm that I will execute the task/preparation according to the here presented safety data instructions.",
+            "signatureFieldAssistant": "The student is allowed to perform the presented task/preparation.",
+            "signature": "Signature",
+            "locationAndDate": "Location, Date"
+        },
+        "preview": {
+            "info": "This is only a preview. The generated PDF may look different!",
+            "tableSubstanceTitleHeader": "Used substances and products",
+            "tableMolarMassHeader": {
+                "mw": "MW",
+                "grammPerMol": "[g/mol]"
+            },
+            "tableBoilingHeader": "BP",
+            "tableMeltingHeader": "MP",
+            "tableGHSSymbolHeader": "GHS hazard pictograms",
+            "tableHPPhrasesHeader": "H/P-phrases",
+            "tableHPPhrasesNumberHeader": "(numbers)",
+            "tableMAKHeader": "MAC, LD50",
+            "tableWHCHeader": "WHC",
+            "tableAmountHeader": "Amount used",
+            "tableHPPhrasesTitle": "Text of essential H/P phrases:",
+            "sources": "Sources"
+        },
+        "error": {
+            "substanceWithCASExist": "Substance with identical CAS number exists already!",
+            "substanceLoadData": "Failed to load substance data!",
+            "editSubstance": "Edit substance failed!",
+            "configLoad": "Failed to read configuration!",
+            "configSave": "Failed to save configuration!",
+            "getHazardSymbols": "Failed to load hazard symbols!",
+            "loadSearchSuggestions": "Failed to load search suggestions!",
+            "loadSearchResults": "Failed to load search results!",
+            "getAvailableDocumentTypes": "Failed to load available document types!",
+            "loadFile": "Failed loading file!",
+            "saveFile": "Saving file failed!",
+            "exportPDF": "Exporting PDF failed!",
+            "localeLoading": "Failed to load language!"
+        },
+        "success": {
+            "loadFile": "File successfully loaded",
+            "saveFile": "File saved successfully",
+            "exportPDF": "PDF exported successfully"
+        },
+        "dialogs": {
+            "unchangedValues": {
+                "title": "Unchanged values",
+                "content": [
+                    "The following values were not changed."
+                ],
+                "footer": [
+                    "Continue anyway?"
+                ]
+            },
+            "pdfGeneration": {
+                "generatingPdf": "Generating PDF…",
+                "downloadPdf": "Download PDF",
+                "download": "Download",
+                "errorMessage": "The Server is not responding.\nThis could have multiple reasons.\nYou can wait or close this dialog now and try again later."
+            }
+        }
     }
-  }
 }

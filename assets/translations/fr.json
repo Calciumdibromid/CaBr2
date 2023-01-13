@@ -1,0 +1,191 @@
+{
+    "name": "Anglais",
+    "strings": {
+        "header": {
+            "name": "Nom:",
+            "docTitle": "Titre du document:",
+            "labCourse": "Labo / Cours :",
+            "place": "Lieu :",
+            "preparation": "Préparation/Tâche:",
+            "organization": "",
+            "assistant": ""
+        },
+        "search": {
+            "resultsHeader": "Résultats de recherche",
+            "types": {
+                "chemicalName": "Nom chimique",
+                "chemicalFormula": "Formule moléculaire",
+                "numbers": "Numéros",
+                "fullText": "Texte complet"
+            },
+            "exact": "Recherche exacte",
+            "option": "Options de recherche :",
+            "searchButton": "Chercher",
+            "removeSubstance": "Supprimer la substance",
+            "editSubstance": "Modifier la substance",
+            "removeOption": "Supprimer l'option de recherche",
+            "addOption": "Ajouter une option de recherche",
+            "noResult": "{{provider}} n'a renvoyé aucun résultat.\nVeuillez réessayer avec des synonymes ou des mots partiels.",
+            "customSubstance": "Personnalisé",
+            "unsupportedProviderInfo": "non pris en charge",
+            "error": "Une erreur s'est produite lors de la récupération des données",
+            "disclaimer": {
+                "gestis": "Les Gestis fournissent rarement des données pour les produits des expériences."
+            }
+        },
+        "preview": {
+            "tableSubstanceTitleHeader": "Substances et produits utilisés",
+            "tableMolarMassHeader": {
+                "mw": "MW",
+                "grammPerMol": "[g/mol]"
+            },
+            "info": "Ceci n'est qu'une prévisualisation. Le PDF généré peut sembler différent !",
+            "tableBoilingHeader": "BP",
+            "tableMeltingHeader": "MP",
+            "tableGHSSymbolHeader": "Pictogrammes de risque GHS",
+            "tableHPPhrasesHeader": "Phrases H/P",
+            "tableHPPhrasesNumberHeader": "(chiffres)",
+            "tableMAKHeader": "MAC, LD50",
+            "tableWHCHeader": "WHC",
+            "tableAmountHeader": "Montant utilisé",
+            "tableHPPhrasesTitle": "Texte des phrases H/P essentielles :",
+            "sources": ""
+        },
+        "base": {
+            "addElement": "Ajouter une entrée",
+            "removeElement": "Supprimer l'entrée",
+            "print": "Imprimer",
+            "cancel": "Abandonner",
+            "ok": "Ok",
+            "save": "Enregistrer",
+            "close": "Fermer"
+        },
+        "tooltips": {
+            "header": "En-tête de la feuille de sécurité",
+            "search": "Recherche et substances sélectionnées",
+            "securitythings": "Édition du verso de la feuille de sécurité",
+            "preview": "Aperçu de la fiche de sécurité"
+        },
+        "menu": {
+            "newDocument": "Nouvelle feuille de données de sécurité",
+            "loadFile": "Ouvrir la fiche technique de sécurité",
+            "saveFile": "Enregistrer la fiche de données de sécurité",
+            "exportPDF": "Exporter en PDF",
+            "settings": "Réglages",
+            "quickStart": "Tutoriel"
+        },
+        "settings": {
+            "language": "Langue",
+            "reloadRequired": "Rechargement requis",
+            "darkModeSwitchInfo": "Activer/désactiver le thème clair/sombre"
+        },
+        "bugreport": {
+            "title": "Signaler un bug",
+            "sentence": "Signaler un bug sur l'e-mail suivant :",
+            "codebergSentence": ""
+        },
+        "substance": {
+            "invalidFormsTitle": "Quelque chose ne va pas",
+            "invalidFormsContent": [
+                "La substance a des données non valides ou manquantes sur les éléments suivants :"
+            ],
+            "edited": "Modifié ?",
+            "name": "Nom",
+            "needsName": "Le nom est requis",
+            "casNumber": "Numéro CAS",
+            "molecularFormula": "Formule moléculaire",
+            "waterHazardClass": "Classe de danger de l'eau",
+            "signalWord": "Mot de signal",
+            "molarMass": "Masse molaire",
+            "unit": "Unité",
+            "lethalDose": "Posologie mortelle",
+            "mak": "MAK",
+            "meltingPoint": "Point de fusion",
+            "boilingPoint": "Point d'ébullition",
+            "amount": "Quantité",
+            "notANumber": "Pas un nombre",
+            "customUnit": "Unité personnalisée",
+            "hPhrases": "Phrases H",
+            "noHPhrase": "Numéro H non valide",
+            "invalidHPhrase": "Phrases H invalides",
+            "removeHPhrase": "supprimer la phrase H",
+            "addHPhrase": "ajouter une phrase H",
+            "pPhrases": "Phrases P",
+            "noPPhrase": "Numéro P-non valide",
+            "invalidPPhrase": "Phrases P-non valides",
+            "removePPhrase": "supprimer la phrase P",
+            "addPPhrase": "ajouter une phrase P",
+            "editingHint": "Cliquez sur la substance pour modifier.",
+            "ghsSymbolsAddOrRemoveInfo": "Pour supprimer ou ajouter cliquez sur le symbole",
+            "addCustomSubstanceData": "Ajouter une substance personnalisée",
+            "dragAndDrop": "glisser-déposer",
+            "resetTooltip": "Réinitialiser la substance actuelle aux valeurs d'origine",
+            "phraseFormatTooltip": "Format attendu : {{format}}",
+            "ghsSymbolsColorInfo": "gris: non sélectionné / colorisé: sélectionné"
+        },
+        "units": {
+            "groups": {
+                "rawSubstance": "Substance brute",
+                "custom": "Personnalisé",
+                "solution": ""
+            },
+            "custom": "Personnalisé",
+            "pcs.": "pièces."
+        },
+        "descriptions": {
+            "humanAndEnvironmentDanger": "Dangers supplémentaires pour l'homme et l'environnement (ex. cancérogène, tératogène):",
+            "rulesOfConduct": "Mesures de protection et règles de sécurité:",
+            "inCaseOfDanger": "Comportement en cas de danger et première aide :",
+            "disposal": "Disposition :",
+            "rulesOfConductShort": "Mesures de protection",
+            "inCaseOfDangerShort": "Cas de danger",
+            "disposalShort": "Immersion",
+            "signatureFieldStudent": "Je confirme par la présente que je vais exécuter la tâche/préparation conformément aux instructions présentées ici sur les données de sécurité.",
+            "signatureFieldAssistant": "L'étudiant est autorisé à effectuer la tâche/préparation présentée.",
+            "signature": "Signature",
+            "locationAndDate": "Emplacement, Date",
+            "humanAndEnvironmentDangerShort": ""
+        },
+        "error": {
+            "substanceWithCASExist": "La substance avec le numéro CAS identique existe déjà!",
+            "substanceLoadData": "Impossible de charger les données de la substance !",
+            "editSubstance": "La modification de la substance a échoué!",
+            "configLoad": "Impossible de lire la configuration !",
+            "configSave": "Échec de l'enregistrement de la configuration !",
+            "getHazardSymbols": "Impossible de charger les symboles de danger !",
+            "loadSearchSuggestions": "Impossible de charger les suggestions de recherche !",
+            "loadSearchResults": "Impossible de charger les résultats de recherche !",
+            "getAvailableDocumentTypes": "Impossible de charger les types de document disponibles !",
+            "loadFile": "Échec du chargement du fichier !",
+            "saveFile": "La sauvegarde du fichier a échoué!",
+            "exportPDF": "L'exportation du PDF a échoué!",
+            "localeLoading": "Impossible de charger la langue !"
+        },
+        "success": {
+            "loadFile": "Fichier chargé avec succès",
+            "saveFile": "Fichier enregistré avec succès",
+            "exportPDF": "PDF exporté avec succès"
+        },
+        "dialogs": {
+            "unchangedValues": {
+                "title": "Valeurs inchangées",
+                "content": [
+                    "Les valeurs suivantes n'ont pas été modifiées."
+                ],
+                "footer": [
+                    "Continuer quand même?"
+                ]
+            },
+            "pdfGeneration": {
+                "generatingPdf": "Génération du PDF…",
+                "downloadPdf": "Télécharger le PDF",
+                "download": "Télécharger",
+                "errorMessage": "Le serveur ne répond pas.\nCela peut avoir plusieurs raisons.\nVous pouvez attendre ou fermer cette boîte de dialogue maintenant et réessayer plus tard."
+            }
+        },
+        "loadSave": {
+            "unnamedFile": ""
+        }
+    },
+    "locale": "en_us"
+}
