@@ -10,8 +10,8 @@ export class ConsentComponent implements OnInit {
   timer = this.data.duration;
 
   constructor(
-    public dialogRef: MatDialogRef<ConsentComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { duration: number },
+    public readonly dialogRef: MatDialogRef<ConsentComponent>,
+    @Inject(MAT_DIALOG_DATA) public readonly data: { duration: number },
   ) {}
 
   ngOnInit(): void {

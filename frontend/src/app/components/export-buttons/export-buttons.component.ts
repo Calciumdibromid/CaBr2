@@ -12,7 +12,7 @@ export class ExportButtonsComponent {
   @Input()
   docsTemplate!: DocsTemplate;
 
-  constructor(private documentsService: DocumentService) {}
+  constructor(private readonly documentsService: DocumentService) {}
 
   exportCB2File(): void {
     this.documentsService.exportFile({ name: 'CaBr2', extensions: ['cb2'] }, this.docsTemplate);

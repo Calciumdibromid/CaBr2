@@ -1,11 +1,11 @@
 <ng-container *transloco="let t; read: 'search'">
   <form [formGroup]="form" (keydown.enter)="onEnter($event)">
     <div formArrayName="selections">
-      <div *ngFor="let control of selections.controls; let i = index">
+      <div *ngFor="let _ of selections.controls; let i = index">
         <div class="flex" [formGroupName]="i">
           <mat-form-field class="select">
             <mat-label>{{ t('option') }}</mat-label>
-            <mat-select formControlName="searchOption">
+            <mat-select formControlName="searchType">
               <mat-option *ngFor="let option of searchOptions" [value]="option" [disabled]="isDisabled(option)">
                 {{ t('types.' + option) }}
               </mat-option>
@@ -14,10 +14,10 @@
           <mat-form-field class="width-100">
             <mat-icon class="search-icon" matPrefix>search</mat-icon>
             <mat-label>{{ t('searchButton') }}</mat-label>
-            <input matInput formControlName="userInput" [matAutocomplete]="auto" [appAutofocus]="true" />
+            <input matInput formControlName="pattern" [matAutocomplete]="auto" [appAutofocus]="true" />
             <mat-autocomplete #auto="matAutocomplete">
               <mat-option
-                *ngFor="let result of suggestionResults.get(selections.at(i).get('searchOption')?.value)"
+                *ngFor="let result of suggestionResults.get(selections.at(i).get('searchType')!.value)"
                 [value]="result"
               >
                 {{ result }}

@@ -1,27 +1,29 @@
 <ng-container *transloco="let t">
-  <h2 mat-dialog-title>{{ t('menu.settings') }}</h2>
-  <form [formGroup]="form">
-    <div>
-      <mat-form-field appearance="fill">
-        <mat-label>{{ t('settings.language') }}</mat-label>
-        <mat-select formControlName="language">
-          <mat-option *ngFor="let language of langs" [value]="language.id">
-            {{ language.label }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+  <div mat-dialog-content>
+    <h2 mat-dialog-title>{{ t('menu.settings') }}</h2>
+    <form [formGroup]="form">
+      <div>
+        <mat-form-field appearance="fill">
+          <mat-label>{{ t('settings.language') }}</mat-label>
+          <mat-select formControlName="language">
+            <mat-option *ngFor="let language of langs" [value]="language.id">
+              {{ language.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
 
-    <div>
-      <mat-slide-toggle formControlName="theme" class="toggle" color="primary">
-        {{ t('settings.darkModeSwitchInfo') }}
-      </mat-slide-toggle>
-    </div>
-    <mat-divider></mat-divider>
-    <mat-dialog-actions>
-      <button (click)="dialogRef.close()" mat-button>
-        {{ t('base.ok') }}
-      </button>
-    </mat-dialog-actions>
-  </form>
+      <div>
+        <mat-slide-toggle formControlName="theme" class="toggle" color="primary">
+          {{ t('settings.darkModeSwitchInfo') }}
+        </mat-slide-toggle>
+      </div>
+      <mat-divider></mat-divider>
+      <mat-dialog-actions>
+        <button (click)="dialogRef.close()" mat-button>
+          {{ t('base.ok') }}
+        </button>
+      </mat-dialog-actions>
+    </form>
+  </div>
 </ng-container>

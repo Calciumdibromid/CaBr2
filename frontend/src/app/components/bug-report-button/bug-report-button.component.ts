@@ -13,7 +13,7 @@ import { ReportBugComponent } from '../report-bug/report-bug.component';
 export class BugReportButtonComponent implements OnInit {
   PROGRAM_VERSION!: string;
 
-  constructor(private dialog: MatDialog, private config: IConfigService) {}
+  constructor(private readonly dialog: MatDialog, private readonly config: IConfigService) {}
 
   ngOnInit(): void {
     this.config

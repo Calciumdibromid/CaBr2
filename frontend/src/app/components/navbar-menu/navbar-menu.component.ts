@@ -22,10 +22,10 @@ const DOCS_TEMPLATE = TEMPLATES.docsTemplate;
 })
 export class NavbarMenuComponent implements OnInit {
   constructor(
-    private nativeService: INativeService,
-    private documentService: DocumentService,
-    private dialog: MatDialog,
-    private store: Store,
+    private readonly nativeService: INativeService,
+    private readonly documentService: DocumentService,
+    private readonly dialog: MatDialog,
+    private readonly store: Store,
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +60,6 @@ export class NavbarMenuComponent implements OnInit {
   }
 
   openManualDialog(): void {
-    this.nativeService.openUrl('http://cabr2.de/anleitung.html');
+    this.nativeService.openUrl('https://cabr2.de/anleitung.html');
   }
 }

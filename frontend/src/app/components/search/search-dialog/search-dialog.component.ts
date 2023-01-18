@@ -1,14 +1,12 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { catchError, Observable, of } from 'rxjs';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Observable, Subscription } from 'rxjs';
 import { translate } from '@ngneat/transloco';
 
 import { Provider, SearchArgument, SearchResult } from '../../../@core/services/provider/provider.model';
 import { AlertService } from '../../../@core/services/alertsnackbar/alertsnackbar.service';
 import { IProviderService } from '../../../@core/services/provider/provider.interface';
 import Logger from '../../../@core/utils/logger';
-
-const logger = new Logger('search-dialog');
 
 interface Data {
   arguments: SearchArgument[];
@@ -20,12 +18,8 @@ interface Data {
   templateUrl: './search-dialog.component.html',
   styleUrls: ['./search-dialog.component.scss'],
 })
-export class SearchDialogComponent implements OnInit, OnDestroy {
+export class SearchDialogComponent implements OnInit {
   searchResults$?: Observable<SearchResult[]>;
-
-  searchResults: SearchResult[] = [];
-
-  searchFinished = false;
 
   searchFailed = false;
 
@@ -33,41 +27,31 @@ export class SearchDialogComponent implements OnInit, OnDestroy {
 
   selected?: SearchResult;
 
-  subscription!: Subscription;
+  private logger = new Logger(SearchDialogComponent.name);
 
   constructor(
-    public dialogRef: MatDialogRef<SearchDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Data,
+    public readonly dialogRef: MatDialogRef<SearchDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public readonly data: Data,
 
-    private providerService: IProviderService,
-    private alertService: AlertService,
+    private readonly providerService: IProviderService,
+    private readonly alertService: AlertService,
   ) {}
 
   ngOnInit(): void {
-    this.searchResults$ = this.providerService.search(this.data.provider.identifier, {
-      arguments: this.data.arguments,
-      exact: this.exactSearch,
-    });
-
-    this.searchResults = [];
-    this.searchFinished = false;
     this.searchFailed = false;
-    this.subscription = this.searchResults$.subscribe({
-      next: (response) => {
-        this.searchResults = response;
-        this.searchFinished = true;
-      },
-      error: (err) => {
-        this.searchFinished = true;
-        this.searchFailed = true;
-        logger.error('loading search results failed:', err);
-        this.alertService.error(translate('loadSearchResults'));
-      },
-    });
-  }
-
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.searchResults$ = this.providerService
+      .search(this.data.provider.identifier, {
+        arguments: this.data.arguments,
+        exact: this.exactSearch,
+      })
+      .pipe(
+        catchError((err) => {
+          this.searchFailed = true;
+          this.logger.error('loading search results failed:', err);
+          this.alertService.error(translate('error.loadSearchResults'));
+          return of([]);
+        }),
+      );
   }
 
   setSelected(selected: SearchResult): void {
@@ -82,6 +66,7 @@ export class SearchDialogComponent implements OnInit, OnDestroy {
   }
 
   toggleExactSearch(): void {
+    // this.exactSearch is toggled inside the HTML
     this.ngOnInit();
   }
 }

@@ -18,7 +18,7 @@ export class AlertsnackbarComponent implements OnInit, OnDestroy {
 
   alerts: Alert[] = [];
 
-  constructor(private alertService: AlertService, private snackBar: MatSnackBar) {}
+  constructor(private readonly alertService: AlertService, private readonly snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     // subscribe to new alert notifications

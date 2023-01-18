@@ -41,7 +41,7 @@ export class AppComponent implements OnInit, OnDestroy {
     private readonly store: Store,
     private readonly actions$: Actions,
   ) {
-    initializeCustomIcons(matIconRegistry, domSanitizer);
+    initializeCustomIcons(this.matIconRegistry, this.domSanitizer);
   }
 
   @HostBinding('class')

@@ -118,7 +118,7 @@
               </mat-form-field>
               <mat-form-field *ngIf="customUnitVisible">
                 <mat-label>{{ t('substance.customUnit') }}</mat-label>
-                <input matInput formControlName="unitName" />
+                <input matInput formControlName="name" />
               </mat-form-field>
             </div>
           </mat-card-content>
@@ -133,9 +133,9 @@
               <div class="flex" *ngFor="let control of hPhrases.controls; let i = index">
                 <div [formGroupName]="i" class="phrase-grid">
                   <mat-form-field>
-                    <input matInput formControlName="hNumber" [appAutofocus]="true" />
+                    <input matInput formControlName="phraseNumber" [appAutofocus]="true" />
                     <mat-error
-                      *ngIf="hPhrases.at(i).get('hNumber')?.invalid"
+                      *ngIf="hPhrases.at(i).get('phraseNumber')?.invalid"
                       [matTooltip]="t('substance.phraseFormatTooltip', { format: 'Hxxx+Hxxx ...' })"
                       matTooltipPosition="above"
                     >
@@ -146,7 +146,7 @@
                   <mat-form-field class="phrases-form-field">
                     <textarea
                       matInput
-                      formControlName="hPhrase"
+                      formControlName="phrase"
                       cdkTextareaAutosize
                       cdkAutosizeMinRows="1"
                       cdkAutosizeMaxRows="5"
@@ -190,9 +190,9 @@
               <div class="flex" *ngFor="let control of pPhrases.controls; let i = index">
                 <div [formGroupName]="i" class="phrase-grid">
                   <mat-form-field>
-                    <input matInput formControlName="pNumber" [appAutofocus]="true" />
+                    <input matInput formControlName="phraseNumber" [appAutofocus]="true" />
                     <mat-error
-                      *ngIf="pPhrases.at(i).get('pNumber')?.invalid"
+                      *ngIf="pPhrases.at(i).get('phraseNumber')?.invalid"
                       [matTooltip]="t('substance.phraseFormatTooltip', { format: 'Pxxx+Pxxx ...' })"
                       matTooltipPosition="above"
                     >
@@ -203,7 +203,7 @@
                   <mat-form-field class="phrases-form-field">
                     <textarea
                       matInput
-                      formControlName="pPhrase"
+                      formControlName="phrase"
                       cdkTextareaAutosize
                       cdkAutosizeMinRows="1"
                       cdkAutosizeMaxRows="5"

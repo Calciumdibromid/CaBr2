@@ -75,12 +75,12 @@
       </tr>
       <tr>
         <td colspan="4" class="full-height top">
-          <div class="phrase" *ngFor="let phrase of getHPhrases() | async">
+          <div class="phrase" *ngFor="let phrase of hPhrases | async">
             {{ phrase }}
           </div>
         </td>
         <td colspan="4" class="full-height top">
-          <div class="phrase" *ngFor="let phrase of getPPhrases() | async">
+          <div class="phrase" *ngFor="let phrase of pPhrases | async">
             {{ phrase }}
           </div>
         </td>

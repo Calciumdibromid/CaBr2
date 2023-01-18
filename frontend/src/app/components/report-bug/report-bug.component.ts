@@ -9,7 +9,10 @@ import { INativeService } from '../../@core/services/native/native.interface';
   styleUrls: ['./report-bug.component.scss'],
 })
 export class ReportBugComponent {
-  constructor(private nativeService: INativeService, public dialogRef: MatDialogRef<ReportBugComponent>) {}
+  constructor(
+    private readonly nativeService: INativeService,
+    public readonly dialogRef: MatDialogRef<ReportBugComponent>,
+  ) {}
 
   openMail(): void {
     this.nativeService.openUrl('mailto:cabr2.help@gmail.com');

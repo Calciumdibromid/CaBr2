@@ -1,6 +1,7 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { debounceTime, switchMap, takeUntil } from 'rxjs/operators';
+import { FormArray, FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
+import { Subject } from 'rxjs';
 
 import { SearchArgument, SearchType, searchTypes } from '../../../@core/services/provider/provider.model';
 import { AlertService } from '../../../@core/services/alertsnackbar/alertsnackbar.service';
@@ -8,14 +9,22 @@ import { IProviderService } from '../../../@core/services/provider/provider.inte
 import Logger from '../../../@core/utils/logger';
 import { translate } from '@ngneat/transloco';
 
-const logger = new Logger('selected-search');
+type SearchForm = {
+  searchType: FormControl<SearchType>;
+  pattern: FormControl<string>;
+  hover: FormControl<boolean>;
+};
+
+type SelectionForm = {
+  selections: FormArray<FormGroup<SearchForm>>;
+};
 
 @Component({
   selector: 'app-selected-search',
   templateUrl: './selected-search.component.html',
   styleUrls: ['./selected-search.component.scss'],
 })
-export class SelectedSearchComponent {
+export class SelectedSearchComponent implements OnInit {
   @Output()
   triggerSearch = new EventEmitter();
 
@@ -24,24 +33,32 @@ export class SelectedSearchComponent {
 
   searchOptions = searchTypes;
 
-  form: UntypedFormGroup = this.formBuilder.group({
-    selections: this.formBuilder.array([this.initSelectionForm()]),
-  });
+  form!: FormGroup<SelectionForm>;
 
   suggestionResults: Map<SearchType, string[]> = new Map(searchTypes.map((t) => [t, []]));
 
   addButtonHover = false;
 
-  bpLoaded = false;
+  private destroyed$ = new Subject<void>();
+
+  private bpLoaded = false;
+
+  private logger = new Logger(SelectedSearchComponent.name);
 
   constructor(
-    private providerService: IProviderService,
-    private alertService: AlertService,
-    private formBuilder: UntypedFormBuilder,
+    private readonly providerService: IProviderService,
+    private readonly alertService: AlertService,
+    private readonly formBuilder: NonNullableFormBuilder,
   ) {}
 
-  get selections(): UntypedFormArray {
-    return this.form?.get('selections') as UntypedFormArray;
+  get selections(): FormArray<FormGroup<SearchForm>> {
+    return this.form?.get('selections') as FormArray<FormGroup<SearchForm>>;
+  }
+
+  ngOnInit(): void {
+    this.form = this.formBuilder.group<SelectionForm>({
+      selections: this.formBuilder.array([this.initSelectionForm()]),
+    });
   }
 
   addSearchOption(): void {
@@ -53,7 +70,7 @@ export class SelectedSearchComponent {
   }
 
   isDisabled(option: SearchType): boolean {
-    return this.selections.controls.some((selection) => selection.get('searchOption')?.value === option);
+    return this.selections.controls.some((selection) => selection.get('searchType')?.value === option);
   }
 
   onEnter(event: any): boolean {
@@ -66,35 +83,35 @@ export class SelectedSearchComponent {
   }
 
   getSearchArguments(): SearchArgument[] {
-    return this.selections.controls.map<SearchArgument>((control) => ({
-      searchType: control.get('searchOption')?.value,
-      pattern: control.get('userInput')?.value,
+    return this.selections.value.map((value) => ({
+      searchType: value.searchType as SearchType,
+      pattern: value.pattern ?? '',
     }));
   }
 
   clear(): void {
     // reset() also clears searchOption
-    this.selections.controls.map((control) => control.patchValue({ userInput: '' }));
+    this.selections.controls.map((control) => control.patchValue({ pattern: '' }));
   }
 
-  private initSelectionForm(): UntypedFormGroup {
-    let searchOption;
+  private initSelectionForm(): FormGroup<SearchForm> {
+    let searchType;
 
     for (const option of searchTypes) {
-      if (!this.selections?.controls.some((selection) => selection.get('searchOption')?.value === option)) {
-        searchOption = option;
+      if (!this.selections?.controls.some((selection) => selection.get('searchType')?.value === option)) {
+        searchType = option;
         break;
       }
     }
 
-    if (!searchOption) {
+    if (!searchType) {
       throw new Error('searchOption is undefined');
     }
 
-    const selectionGroup = this.formBuilder.group({
-      searchOption,
-      userInput: '',
-      hover: false,
+    const selectionGroup = this.formBuilder.group<SearchForm>({
+      searchType: this.formBuilder.control(searchType),
+      pattern: this.formBuilder.control(''),
+      hover: this.formBuilder.control(false),
     });
 
     this.registerValueChangeListener(selectionGroup);
@@ -102,25 +119,34 @@ export class SelectedSearchComponent {
     return selectionGroup;
   }
 
-  private registerValueChangeListener(selectionGroup: UntypedFormGroup): void {
+  private registerValueChangeListener(selectionGroup: FormGroup<SearchForm>): void {
     selectionGroup
-      .get('userInput')
-      ?.valueChanges.pipe(debounceTime(500))
-      .subscribe((result) => {
-        if (['mane six', 'ponies', 'mlp'].includes(result)) {
-          this.loadBP();
-        }
-        this.providerService
-          .searchSuggestions(this.providerIdentifier, selectionGroup.get('searchOption')?.value, result)
-          .subscribe({
-            next: (response) => {
-              this.suggestionResults.set(selectionGroup.get('searchOption')?.value, response);
-            },
-            error: (err) => {
-              logger.error('loading search suggestions failed:', err);
-              this.alertService.error(translate('loadSearchSuggestions'));
-            },
-          });
+      .get('pattern')
+      ?.valueChanges.pipe(
+        debounceTime(500),
+        switchMap((result) => {
+          if (['mane six', 'ponies', 'mlp'].includes(result)) {
+            this.loadBP();
+          }
+
+          return this.providerService.searchSuggestions(
+            this.providerIdentifier,
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            selectionGroup.get('searchType')!.value, // this exist all the time! `undefined` is not possible
+            result,
+          );
+        }),
+        takeUntil(this.destroyed$),
+      )
+      .subscribe({
+        next: (response) => {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          this.suggestionResults.set(selectionGroup.get('searchType')!.value, response);
+        },
+        error: (err) => {
+          this.logger.error('loading search suggestions failed:', err);
+          this.alertService.error(translate('error.loadSearchSuggestions'));
+        },
       });
   }
 

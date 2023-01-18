@@ -18,13 +18,6 @@ ul {
   margin-left: -20px !important;
 }
 
-/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version.*/
-mat-card {
-  @include mat.elevation(0);
-  margin-top: 10px;
-  padding-bottom: 0;
-}
-
 button:not(.add-button) {
   mat-icon {
     font-size: 1.3em !important;

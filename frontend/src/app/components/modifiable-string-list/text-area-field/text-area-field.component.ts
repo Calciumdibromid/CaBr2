@@ -1,5 +1,5 @@
-import { AbstractControl, UntypedFormControl } from '@angular/forms';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-text-area-field',
@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class TextAreaFieldComponent implements OnInit {
   @Input()
-  abstractControl!: AbstractControl;
+  form!: FormControl<string>;
 
   @Output()
   removeEmitter = new EventEmitter();
@@ -17,12 +17,12 @@ export class TextAreaFieldComponent implements OnInit {
 
   isAutoFocus = false;
 
-  get formControl(): UntypedFormControl {
-    return this.abstractControl as UntypedFormControl;
+  get formControl(): FormControl<string> {
+    return this.form as FormControl<string>;
   }
 
   ngOnInit(): void {
-    if (this.formControl.value.length === 0) {
+    if (this.form.value.length === 0) {
       this.isAutoFocus = true;
     }
   }

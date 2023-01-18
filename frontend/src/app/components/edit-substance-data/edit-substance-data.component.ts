@@ -1,14 +1,8 @@
-import {
-  AbstractControl,
-  UntypedFormArray,
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { ChangeDetectionStrategy } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { translate } from '@ngneat/transloco';
 
@@ -20,6 +14,7 @@ import {
   SubstanceData,
   unitGroups,
   UnitType,
+  ViewSubstanceData,
 } from '../../@core/models/substances.model';
 import { GHSSymbolMap, SymbolKeys } from 'src/app/@core/states/ghs-symbols.state';
 import { compareArrays } from '../../@core/utils/compare';
@@ -27,19 +22,41 @@ import { fixNumberOfControls } from 'src/app/@core/utils/forms.helper';
 import Logger from '../../@core/utils/logger';
 import { YesNoDialogComponent } from '../yes-no-dialog/yes-no-dialog.component';
 
-const logger = new Logger('edit-substance-data');
+type SubstanceDataKeys = keyof ViewSubstanceData;
+
+type AmountForm = {
+  [a in keyof Amount]: FormControl<Amount[a] | null>;
+};
+
+type SubstanceDataForm =
+  | {
+      [x in SubstanceDataKeys]: FormControl<string | null> | FormArray<FormGroup> | FormArray<FormControl>;
+    }
+  | {
+      amount: FormGroup<AmountForm>;
+    };
+
+type PhrasesForm = {
+  phraseNumber: FormControl<string | null>;
+  phrase: FormControl<string | null>;
+  hover: FormControl<boolean>;
+};
+
+const H_PHRASE_PATTERN = /^(H\d{3}\w?\+?)+$/;
+const P_PHRASE_PATTERN = /^(?:P\d{3}\+?)+$/;
 
 @Component({
   selector: 'app-edit-substance-data',
   templateUrl: './edit-substance-data.component.html',
   styleUrls: ['./edit-substance-data.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   @Select((state: any) => state.ghs_symbols.symbols) symbols$!: Observable<GHSSymbolMap>;
 
   @Select((state: any) => state.ghs_symbols.symbolKeys) symbolKeys$!: Observable<SymbolKeys>;
 
-  form!: UntypedFormGroup;
+  form!: FormGroup<SubstanceDataForm>;
 
   addHPhraseHover = false;
 
@@ -51,94 +68,103 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
 
   customUnitVisible = false;
 
-  customSubscription?: Subscription;
+  private destroyed$ = new Subject<void>();
+
+  private logger = new Logger(EditSubstanceDataComponent.name);
 
   constructor(
-    public dialogRef: MatDialogRef<EditSubstanceDataComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: SubstanceData,
-    private formBuilder: UntypedFormBuilder,
-    private dialog: MatDialog,
+    public readonly dialogRef: MatDialogRef<EditSubstanceDataComponent>,
+    @Inject(MAT_DIALOG_DATA) public readonly data: SubstanceData,
+    private readonly formBuilder: FormBuilder,
+    private readonly dialog: MatDialog,
   ) {}
 
-  get hPhrases(): UntypedFormArray {
-    return this.form?.get('hPhrases') as UntypedFormArray;
+  get hPhrases(): FormArray<FormGroup<PhrasesForm>> {
+    return this.form?.get('hPhrases') as FormArray<FormGroup<PhrasesForm>>;
   }
 
-  get pPhrases(): UntypedFormArray {
-    return this.form?.get('pPhrases') as UntypedFormArray;
+  get pPhrases(): FormArray<FormGroup<PhrasesForm>> {
+    return this.form?.get('pPhrases') as FormArray<FormGroup<PhrasesForm>>;
   }
 
-  get symbols(): UntypedFormArray {
-    return this.form?.get('symbols') as UntypedFormArray;
+  get symbols(): FormArray<FormControl<string>> {
+    return this.form?.get('symbols') as FormArray<FormControl<string>>;
   }
 
-  get amount(): UntypedFormGroup {
-    return this.form?.get('amount') as UntypedFormGroup;
+  get amount(): FormGroup<{ [a in keyof Amount]: FormControl<Amount[a]> }> {
+    return this.form?.get('amount') as FormGroup<{ [a in keyof Amount]: FormControl<Amount[a]> }>;
   }
 
   ngOnInit(): void {
     this.form = this.initControls();
 
-    this.customSubscription = this.amount.get('unit')?.valueChanges.subscribe((value: UnitType) => {
-      this.customUnitVisible = value === UnitType.CUSTOM;
-    });
+    this.amount
+      .get('unit')
+      ?.valueChanges.pipe(takeUntil(this.destroyed$))
+      .subscribe((value: UnitType) => {
+        this.customUnitVisible = value === UnitType.CUSTOM;
+      });
   }
 
   ngOnDestroy(): void {
-    this.customSubscription?.unsubscribe();
+    this.destroyed$.next();
   }
 
-  initControls(): UntypedFormGroup {
-    let amount;
+  initControls(): FormGroup {
+    let amount: AmountForm;
 
     if (this.data.amount) {
       const amountData = this.data.amount;
-      amount = { value: amountData.value, unit: amountData.type, unitName: amountData.name ?? '' };
+      amount = {
+        value: this.formBuilder.control(amountData.value),
+        unit: this.formBuilder.control(amountData.unit),
+        name: this.formBuilder.control(amountData.name),
+      };
     } else {
-      amount = { value: '', unit: UnitType.GRAM, unitName: '' };
+      amount = {
+        value: this.formBuilder.control(''),
+        unit: this.formBuilder.control(UnitType.GRAM),
+        name: this.formBuilder.control(''),
+      };
     }
 
-    const group = this.formBuilder.group({
-      name: [modifiedOrOriginal(this.data.name), Validators.required],
-      cas: modifiedOrOriginal(this.data.cas) ?? '',
-      molecularFormula: modifiedOrOriginal(this.data.molecularFormula) ?? '',
-      molarMass: modifiedOrOriginal(this.data.molarMass) ?? '',
-      meltingPoint: modifiedOrOriginal(this.data.meltingPoint) ?? '',
-      boilingPoint: modifiedOrOriginal(this.data.boilingPoint) ?? '',
-      waterHazardClass: modifiedOrOriginal(this.data.waterHazardClass) ?? '',
+    const group = this.formBuilder.group<SubstanceDataForm>({
+      name: this.formBuilder.control(modifiedOrOriginal(this.data.name), Validators.required),
+      cas: this.formBuilder.control(modifiedOrOriginal(this.data.cas)),
+      molecularFormula: this.formBuilder.control(modifiedOrOriginal(this.data.molecularFormula)),
+      molarMass: this.formBuilder.control(modifiedOrOriginal(this.data.molarMass)),
+      meltingPoint: this.formBuilder.control(modifiedOrOriginal(this.data.meltingPoint)),
+      boilingPoint: this.formBuilder.control(modifiedOrOriginal(this.data.boilingPoint)),
+      waterHazardClass: this.formBuilder.control(modifiedOrOriginal(this.data.waterHazardClass)),
       hPhrases: this.formBuilder.array(
-        (modifiedOrOriginal<[string, string][]>(this.data.hPhrases) ?? []).map((hPhrase) => this.initHPhrases(hPhrase)),
+        (modifiedOrOriginal<[string, string][]>(this.data.hPhrases) ?? []).map<FormGroup<PhrasesForm>>((hPhrase) =>
+          this.initPhrases(hPhrase, H_PHRASE_PATTERN),
+        ),
       ),
       pPhrases: this.formBuilder.array(
-        (modifiedOrOriginal<[string, string][]>(this.data.pPhrases) ?? []).map((pPhrase) => this.initPPhrases(pPhrase)),
+        (modifiedOrOriginal<[string, string][]>(this.data.pPhrases) ?? []).map<FormGroup<PhrasesForm>>((pPhrase) =>
+          this.initPhrases(pPhrase, P_PHRASE_PATTERN),
+        ),
       ),
-      signalWord: modifiedOrOriginal(this.data.signalWord) ?? '',
+      signalWord: this.formBuilder.control(modifiedOrOriginal(this.data.signalWord)),
       symbols: this.formBuilder.array(modifiedOrOriginal(this.data.symbols) ?? []),
-      lethalDose: modifiedOrOriginal(this.data.lethalDose) ?? '',
-      mak: modifiedOrOriginal(this.data.mak) ?? '',
-      amount: this.formBuilder.group(amount),
+      lethalDose: this.formBuilder.control(modifiedOrOriginal(this.data.lethalDose)),
+      mak: this.formBuilder.control(modifiedOrOriginal(this.data.mak)),
+      amount: this.formBuilder.group<AmountForm>(amount),
     });
 
-    if (amount.unit === UnitType.CUSTOM) {
+    if (amount.unit.value === UnitType.CUSTOM) {
       this.customUnitVisible = true;
     }
 
     return group;
   }
 
-  initHPhrases(value: [string, string]): UntypedFormGroup {
-    return this.formBuilder.group({
-      hNumber: [value[0], Validators.pattern('^(H\\d{3}\\w?\\+?)+$')],
-      hPhrase: value[1],
-      hover: false,
-    });
-  }
-
-  initPPhrases(value: [string, string]): UntypedFormGroup {
-    return this.formBuilder.group({
-      pNumber: [value[0], Validators.pattern('^(?:P\\d{3}\\+?)+$')],
-      pPhrase: value[1],
-      hover: false,
+  initPhrases(value: [string, string], validationPattern: RegExp): FormGroup<PhrasesForm> {
+    return this.formBuilder.group<PhrasesForm>({
+      phraseNumber: this.formBuilder.control(value[0], Validators.pattern(validationPattern)),
+      phrase: this.formBuilder.control(value[1]),
+      hover: this.formBuilder.nonNullable.control(false),
     });
   }
 
@@ -162,25 +188,25 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      this.symbols.push(this.formBuilder.control(key));
+      this.symbols.push(this.formBuilder.nonNullable.control(key));
     }
   }
 
   addNewHPhrase(): void {
-    this.hPhrases.push(this.initHPhrases(['', '']));
+    this.hPhrases.push(this.initPhrases(['', ''], H_PHRASE_PATTERN));
   }
 
   addNewPPhrase(): void {
-    this.pPhrases.push(this.initPPhrases(['', '']));
+    this.pPhrases.push(this.initPhrases(['', ''], P_PHRASE_PATTERN));
   }
 
-  removePhrase(index: number, formArray: UntypedFormArray): void {
+  removePhrase(index: number, formArray: FormArray<FormGroup<PhrasesForm>>): void {
     formArray.removeAt(index);
     formArray.markAllAsTouched();
   }
 
   localizeUnit(unit: UnitType): string {
-    const name = getViewName({ type: unit });
+    const name = getViewName({ unit });
     const path = `units.${name}`;
     const localizedName: string = translate(path);
 
@@ -195,22 +221,19 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
     event.preventDefault();
     event.stopPropagation();
 
-    fixNumberOfControls(this.hPhrases, this.data.hPhrases.originalData[0].length, this.hPhrases.length, () =>
-      this.initHPhrases(['', '']),
+    fixNumberOfControls(this.hPhrases, (this.data.hPhrases.originalData[0] ?? []).length, this.hPhrases.length, () =>
+      this.initPhrases(['', ''], H_PHRASE_PATTERN),
     );
 
-    fixNumberOfControls(this.pPhrases, this.data.pPhrases.originalData[0].length, this.pPhrases.length, () =>
-      this.initPPhrases(['', '']),
+    fixNumberOfControls(this.pPhrases, (this.data.pPhrases.originalData[0] ?? []).length, this.pPhrases.length, () =>
+      this.initPhrases(['', ''], P_PHRASE_PATTERN),
     );
 
-    fixNumberOfControls(
-      this.symbols,
-      this.data.symbols.originalData[0].length,
-      this.symbols.length,
-      () => new UntypedFormControl(),
+    fixNumberOfControls(this.symbols, (this.data.symbols.originalData[0] ?? []).length, this.symbols.length, () =>
+      this.formBuilder.control(''),
     );
 
-    this.form.patchValue({
+    this.form.reset({
       name: this.data.name.originalData[0],
       cas: this.data.cas.originalData[0] ?? '',
       molecularFormula: this.data.molecularFormula.originalData[0] ?? '',
@@ -222,16 +245,20 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       lethalDose: this.data.lethalDose.originalData[0] ?? '',
       mak: this.data.mak.originalData[0] ?? '',
       amount: { value: '', unit: UnitType.GRAM },
-      hPhrases: this.data.hPhrases.originalData[0].map((phrase) => ({
-        hNumber: phrase[0],
-        hPhrase: phrase[1],
-        hover: false,
-      })),
-      pPhrases: this.data.pPhrases.originalData[0].map((phrase) => ({
-        pNumber: phrase[0],
-        pPhrase: phrase[1],
-        hover: false,
-      })),
+      hPhrases: (this.data.hPhrases.originalData[0] ?? []).map<{ [x in keyof PhrasesForm]: string | boolean }>(
+        (phrase) => ({
+          phraseNumber: phrase[0],
+          phrase: phrase[1],
+          hover: false,
+        }),
+      ),
+      pPhrases: (this.data.pPhrases.originalData[0] ?? []).map<{ [x in keyof PhrasesForm]: string | boolean }>(
+        (phrase) => ({
+          phraseNumber: phrase[0],
+          phrase: phrase[1],
+          hover: false,
+        }),
+      ),
       symbols: this.data.symbols.originalData[0],
     });
 
@@ -265,12 +292,12 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       waterHazardClass: this.evaluateForm('waterHazardClass', this.data.waterHazardClass),
       hPhrases: this.evaluateFormArray(
         this.hPhrases,
-        (value) => [value.get('hNumber')?.value, value.get('hPhrase')?.value],
+        (value) => [value.get('phraseNumber')?.value, value.get('phrase')?.value],
         this.data.hPhrases,
       ),
       pPhrases: this.evaluateFormArray(
         this.pPhrases,
-        (value) => [value.get('pNumber')?.value, value.get('pPhrase')?.value],
+        (value) => [value.get('phraseNumber')?.value, value.get('phrase')?.value],
         this.data.pPhrases,
       ),
       signalWord: this.evaluateForm('signalWord', this.data.signalWord),
@@ -281,7 +308,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
       amount: this.evaluateAmount(),
     });
 
-    logger.trace('closing with data:', returnData);
+    this.logger.trace('closing with data:', returnData);
 
     this.dialogRef.close(returnData);
   }
@@ -306,29 +333,32 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   /** Custom helper to evaluate whether amount was set or not */
   private evaluateAmount(): Amount | undefined {
     if (this.amount.dirty) {
-      const value = this.amount.get('value')?.value;
+      const { value, unit, name } = this.amount.value;
+
+      if (unit === undefined) {
+        this.logger.error('type is undefined');
+        return;
+      }
 
       if (!value) {
-        return undefined;
+        return;
       }
-
-      const unit = this.amount.get('unit')?.value;
 
       if ((unit as UnitType) === UnitType.CUSTOM) {
-        return { value, type: unit, name: this.amount.get('unitName')?.value };
+        return { value, unit, name };
       }
 
-      return { value, type: unit };
+      return { value, unit };
     } else {
       return this.data.amount;
     }
   }
 
-  private evaluateForm<T>(formControlName: string, currentData: Data<T>): Data<T> {
+  private evaluateForm<T>(formControlName: SubstanceDataKeys, currentData: Data<T>): Data<T> {
     const control = this.form?.get(formControlName);
 
     if (control?.touched) {
-      let retData: Data<T> = { originalData: currentData.originalData };
+      let retData: Data<T | any> = { originalData: currentData.originalData };
       // if originalData was undefined and the current value is an empty string just return the original data
       if (control.value === '' && currentData.originalData === null) {
         return retData;
@@ -343,7 +373,7 @@ export class EditSubstanceDataComponent implements OnInit, OnDestroy {
   }
 
   private evaluateFormArray<T>(
-    formArray: UntypedFormArray,
+    formArray: FormArray<FormGroup<PhrasesForm>> | FormArray<FormControl<string>>,
     mapCallback: (value: AbstractControl) => T,
     currentData: Data<T[]>,
     index = 0,

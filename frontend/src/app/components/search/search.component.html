@@ -20,7 +20,7 @@
 
   <div class="editing-hint margin-top margin-left-small">{{ t('substance.editingHint') }}</div>
 
-  <div class="mat-elevation-z8 margin-top-small">
+  <div class="mat-elevation-z8 margin-top-small" *ngIf="substanceData$ | async as dataSource">
     <mat-table [dataSource]="dataSource" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="dataSource">
       <ng-container matColumnDef="edited">
         <mat-header-cell *matHeaderCellDef [ngClass]="'edited-column'"> {{ t('substance.edited') }}</mat-header-cell>

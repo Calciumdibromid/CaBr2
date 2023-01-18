@@ -9,7 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class ManualComponent {
   constructor(
-    public dialogRef: MatDialogRef<ManualComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { content: string },
+    public readonly dialogRef: MatDialogRef<ManualComponent>,
+    @Inject(MAT_DIALOG_DATA) public readonly data: { content: string },
   ) {}
 }

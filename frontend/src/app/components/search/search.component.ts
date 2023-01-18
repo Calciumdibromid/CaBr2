@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Select, Store } from '@ngxs/store';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import { MatDialog } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import {
   ModifySubstanceData,
   RearrangeSubstanceData,
   RemoveSubstanceData,
+  SubstanceDataState,
 } from '../../@core/states/substance-data.state';
 import { Provider, ProviderMapping } from '../../@core/services/provider/provider.model';
 import { Source, SubstanceData } from '../../@core/models/substances.model';
@@ -23,8 +24,6 @@ import { EditSubstanceDataComponent } from '../edit-substance-data/edit-substanc
 import { SearchDialogComponent } from './search-dialog/search-dialog.component';
 import { SelectedSearchComponent } from './selected-search/selected-search.component';
 
-const logger = new Logger('search');
-
 const GESTIS_URL_RE = new RegExp('https:\\/\\/gestis-api\\.dguv\\.de\\/api\\/article\\/(de|en)\\/(\\d{6})');
 
 @Component({
@@ -36,9 +35,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   @ViewChildren(SelectedSearchComponent)
   selectedSearchComponents!: QueryList<SelectedSearchComponent>;
 
-  @Select((state: any) => state.substance_data.substanceData) substanceData$!: Observable<SubstanceData[]>;
-
-  subscriptions: Subscription[] = [];
+  @Select(SubstanceDataState.substanceDataSource) substanceData$!: Observable<MatTableDataSource<SubstanceData>>;
 
   addButtonHover = false;
 
@@ -50,32 +47,28 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   displayedColumns = ['edited', 'name', 'cas', 'source', 'actions'];
 
-  dataSource = new MatTableDataSource<SubstanceData>([]);
+  private destroyed$ = new Subject<void>();
+
+  private logger = new Logger(SearchComponent.name);
 
   constructor(
-    private providerService: IProviderService,
-    private nativeService: INativeService,
-    private alertService: AlertService,
-    private dialog: MatDialog,
-    private store: Store,
+    private readonly providerService: IProviderService,
+    private readonly nativeService: INativeService,
+    private readonly alertService: AlertService,
+    private readonly dialog: MatDialog,
+    private readonly store: Store,
   ) {}
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.substanceData$.subscribe((data) => {
-        this.dataSource.connect().next(data);
-      }),
-
-      this.providerService.providerMappingsObservable.subscribe((providerMap) => {
-        logger.debug(providerMap);
-        this.providerMapping = providerMap;
-        this.providers = Array.from(providerMap.values()).filter((provider) => provider.identifier !== 'custom');
-      }),
-    );
+    this.providerService.providerMappingsObservable.pipe(takeUntil(this.destroyed$)).subscribe((providerMap) => {
+      this.logger.debug(providerMap);
+      this.providerMapping = providerMap;
+      this.providers = Array.from(providerMap.values()).filter((provider) => provider.identifier !== 'custom');
+    });
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.destroyed$.next();
   }
 
   openDialog(index: number): void {
@@ -93,16 +86,19 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.providerService.substanceData(provider.identifier, result.zvgNumber).subscribe({
-          next: (value) => {
-            logger.debug(value);
-            this.store.dispatch(new AddSubstanceData(value));
-          },
-          error: (err) => {
-            logger.error('could not get substance information:', err);
-            this.alertService.error(translate('error.substanceLoadData'));
-          },
-        });
+        this.providerService
+          .substanceData(provider.identifier, result.zvgNumber)
+          .pipe(takeUntil(this.destroyed$))
+          .subscribe({
+            next: (value) => {
+              this.logger.debug(value);
+              this.store.dispatch(new AddSubstanceData(value));
+            },
+            error: (err) => {
+              this.logger.error('could not get substance information:', err);
+              this.alertService.error(translate('error.substanceLoadData'));
+            },
+          });
 
         currentSearchComponent?.clear();
       }
@@ -120,6 +116,7 @@ export class SearchComponent implements OnInit, OnDestroy {
         autoFocus: false,
       })
       .afterClosed()
+      .pipe(takeUntil(this.destroyed$))
       .subscribe({
         next: (substanceData?: SubstanceData) => {
           // substanceData is only filled if editing was successful
@@ -128,7 +125,7 @@ export class SearchComponent implements OnInit, OnDestroy {
           }
         },
         error: (err) => {
-          logger.error('editing substance failed:', err);
+          this.logger.error('editing substance failed:', err);
           this.alertService.error(translate('error.editSubstance'));
         },
       });

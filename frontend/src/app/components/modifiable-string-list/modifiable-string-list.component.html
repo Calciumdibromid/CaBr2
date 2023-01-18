@@ -17,7 +17,7 @@
               cdkDrag
               cdkDragBoundary="ul"
             >
-              <app-text-area-field [abstractControl]="element" (removeEmitter)="removeElement(i)">
+              <app-text-area-field [form]="element" (removeEmitter)="removeElement(i)">
                 <button mat-icon-button [matTooltip]="t('substance.dragAndDrop')" cdkDragHandle>
                   <mat-icon class="drag-icon">drag_handle</mat-icon>
                 </button>

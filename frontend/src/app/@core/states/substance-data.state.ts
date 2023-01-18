@@ -2,6 +2,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { append, patch, removeItem, updateItem } from '@ngxs/store/operators';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Injectable } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 import { translate } from '@ngneat/transloco';
 
 import {
@@ -82,6 +83,11 @@ export class SubstanceDataState {
     }
 
     return viewData;
+  }
+
+  @Selector()
+  static substanceDataSource(state: SubstanceDataStateModel): MatTableDataSource<SubstanceData> {
+    return new MatTableDataSource<SubstanceData>(state.substanceData);
   }
 
   @Action(FillSubstanceData)

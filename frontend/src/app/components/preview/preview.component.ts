@@ -32,7 +32,15 @@ export class PreviewComponent implements OnInit {
 
   getViewValue = getViewValue;
 
-  constructor(private store: Store) {}
+  constructor(private readonly store: Store) {}
+
+  get pPhrases(): Observable<Set<string>> {
+    return this.getPhrases((data) => data.pPhrases);
+  }
+
+  get hPhrases(): Observable<Set<string>> {
+    return this.getPhrases((data) => data.hPhrases);
+  }
 
   ngOnInit(): void {
     this.header = this.store.select((state) => state.header.headerForm.model);
@@ -62,21 +70,13 @@ export class PreviewComponent implements OnInit {
     return phrases.map((p) => p[0]);
   }
 
-  getHPhrases(): Observable<Set<string>> {
+  private getPhrases(
+    flatMapCallback: (data: ViewSubstanceData) => [phraseNumber: string, phrase: string][],
+  ): Observable<Set<string>> {
     return this.substanceData$.pipe(
       map((value) => {
         const phraseSet = new Set<string>();
-        value?.flatMap((data) => data.hPhrases).forEach((phrase) => phraseSet.add(phrase.join(':\u00A0')));
-        return phraseSet;
-      }),
-    );
-  }
-
-  getPPhrases(): Observable<Set<string>> {
-    return this.substanceData$.pipe(
-      map((value) => {
-        const phraseSet = new Set<string>();
-        value?.flatMap((data) => data.pPhrases).forEach((phrase) => phraseSet.add(phrase.join(':\u00A0')));
+        value?.flatMap(flatMapCallback).forEach((phrase) => phraseSet.add(phrase.join(':\u00A0')));
         return phraseSet;
       }),
     );

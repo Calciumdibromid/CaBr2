@@ -1,12 +1,17 @@
-import { AbstractControl, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngxs/store';
-import { Subscription } from 'rxjs';
 
 import { ChangeLanguage, ToggleDarkTheme } from 'src/app/@core/states/config.state';
 import { AvailableLanguage } from '../../@core/services/i18n/i18n.interface';
 import { TranslocoService } from '@ngneat/transloco';
+
+type SettingsForm = {
+  language: FormControl<string>;
+  theme: FormControl<string>;
+};
 
 @Component({
   selector: 'app-settings',
@@ -16,15 +21,15 @@ import { TranslocoService } from '@ngneat/transloco';
 export class SettingsComponent implements OnInit, OnDestroy {
   langs!: AvailableLanguage[];
 
-  form!: UntypedFormGroup;
+  form!: FormGroup<SettingsForm>;
 
-  subscriptions: Subscription[] = [];
+  private destroyed$ = new Subject<void>();
 
   constructor(
-    public dialogRef: MatDialogRef<SettingsComponent>,
-    private translocoService: TranslocoService,
-    private formBuilder: UntypedFormBuilder,
-    private store: Store,
+    public readonly dialogRef: MatDialogRef<SettingsComponent>,
+    private readonly translocoService: TranslocoService,
+    private readonly formBuilder: NonNullableFormBuilder,
+    private readonly store: Store,
   ) {}
 
   get f(): { [p: string]: AbstractControl } {
@@ -32,15 +37,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.form = this.formBuilder.group({
-      language: '',
-      theme: '',
+    this.form = this.formBuilder.group<SettingsForm>({
+      language: this.formBuilder.control(''),
+      theme: this.formBuilder.control(''),
     });
 
     this.langs = this.translocoService.getAvailableLangs() as AvailableLanguage[];
 
     this.store
       .selectOnce((state: any) => state.config)
+      .pipe(takeUntil(this.destroyed$))
       .subscribe((config) => {
         this.form.patchValue(
           {
@@ -51,16 +57,16 @@ export class SettingsComponent implements OnInit, OnDestroy {
         );
       });
 
-    this.subscriptions.push(
-      this.f.theme.valueChanges.subscribe((change) => this.store.dispatch(new ToggleDarkTheme(change))),
+    this.f.theme.valueChanges
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((change) => this.store.dispatch(new ToggleDarkTheme(change)));
 
-      this.f.language.valueChanges.subscribe((change) => {
-        this.store.dispatch(new ChangeLanguage(change));
-      }),
-    );
+    this.f.language.valueChanges.pipe(takeUntil(this.destroyed$)).subscribe((change) => {
+      this.store.dispatch(new ChangeLanguage(change));
+    });
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.destroyed$.next();
   }
 }

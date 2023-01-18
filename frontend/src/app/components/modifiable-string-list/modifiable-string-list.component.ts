@@ -1,7 +1,7 @@
 import { Actions, ofActionDispatched, Store } from '@ngxs/store';
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Subscription, switchMap } from 'rxjs';
-import { UntypedFormArray, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 import {
@@ -21,6 +21,7 @@ import {
   ResetSentences as ResetRulesOfConductSentences,
 } from '../../@core/actions/rules-of-conduct-acitons';
 import { fixNumberOfControls, stateToElements } from 'src/app/@core/utils/forms.helper';
+import { StringListForm } from 'src/app/@core/types';
 
 @Component({
   selector: 'app-modifiable-string-list',
@@ -41,48 +42,51 @@ export class ModifiableStringListComponent implements OnInit, AfterViewInit, OnD
   remove = new EventEmitter<number>();
 
   @Output()
-  rearrange = new EventEmitter<CdkDragDrop<UntypedFormGroup[]>>();
+  rearrange = new EventEmitter<CdkDragDrop<FormGroup<StringListForm>>>();
 
-  formGroup: UntypedFormGroup = this.formBuilder.group({
-    elements: this.formBuilder.array([]),
+  formGroup: FormGroup<StringListForm> = this.formBuilder.group<StringListForm>({
+    elements: this.formBuilder.array<FormControl<string>>([]),
   });
 
   addHover = false;
 
-  private subscriptions: Subscription[] = [];
+  private destroyed$ = new Subject<void>();
 
-  constructor(private formBuilder: UntypedFormBuilder, private actions$: Actions, private store: Store) {}
+  constructor(
+    private readonly formBuilder: NonNullableFormBuilder,
+    private readonly actions$: Actions,
+    private readonly store: Store,
+  ) {}
 
-  get controlElements(): UntypedFormArray {
-    return this.formGroup.get('elements') as UntypedFormArray;
+  get controlElements(): FormArray<FormControl<string>> {
+    return this.formGroup.get('elements') as FormArray<FormControl<string>>;
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.actions$
-        .pipe(
-          ofActionDispatched(
-            ResetHumanAndEnvironmentDangerSentences,
-            ResetRulesOfConductSentences,
-            ResetInCaseOfDangerSentences,
-            ResetDisposalSentence,
+    this.actions$
+      .pipe(
+        ofActionDispatched(
+          ResetHumanAndEnvironmentDangerSentences,
+          ResetRulesOfConductSentences,
+          ResetInCaseOfDangerSentences,
+          ResetDisposalSentence,
 
-            FillHumanAndEnvironmentDangerSentence,
-            FillRulesOfConductSentence,
-            FillInCaseOfDangerSentence,
-            FillDisposalSentence,
-          ),
-          switchMap(() => stateToElements(this.store, this.ngxsIdentifier)),
-        )
-        .subscribe((es) => {
-          const elements = es ?? [];
+          FillHumanAndEnvironmentDangerSentence,
+          FillRulesOfConductSentence,
+          FillInCaseOfDangerSentence,
+          FillDisposalSentence,
+        ),
+        switchMap(() => stateToElements(this.store, this.ngxsIdentifier)),
+        takeUntil(this.destroyed$),
+      )
+      .subscribe((es) => {
+        const elements = es ?? [];
 
-          fixNumberOfControls(this.controlElements, elements?.length, this.controlElements.length, () =>
-            this.formBuilder.control(''),
-          );
-          this.controlElements.patchValue(elements);
-        }),
-    );
+        fixNumberOfControls(this.controlElements, elements?.length, this.controlElements.length, () =>
+          this.formBuilder.control(''),
+        );
+        this.controlElements.patchValue(elements);
+      });
   }
 
   ngAfterViewInit(): void {
@@ -95,7 +99,7 @@ export class ModifiableStringListComponent implements OnInit, AfterViewInit, OnD
   }
 
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.destroyed$.next();
   }
 
   addElement(): void {
@@ -110,7 +114,7 @@ export class ModifiableStringListComponent implements OnInit, AfterViewInit, OnD
     this.remove.emit(index);
   }
 
-  drop(event: CdkDragDrop<UntypedFormGroup[]>): void {
+  drop(event: CdkDragDrop<FormGroup<StringListForm>>): void {
     this.rearrange.emit(event);
   }
 }

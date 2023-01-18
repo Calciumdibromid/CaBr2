@@ -37,7 +37,7 @@ export class YesNoDialogComponent {
    * ```
    */
   constructor(
-    public dialogRef: MatDialogRef<YesNoDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: YesNoDialogData,
+    public readonly dialogRef: MatDialogRef<YesNoDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public readonly data: YesNoDialogData,
   ) {}
 }

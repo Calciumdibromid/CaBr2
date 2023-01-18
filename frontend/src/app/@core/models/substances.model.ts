@@ -184,7 +184,7 @@ export interface GroupMapping {
 }
 export interface Amount {
   value: string;
-  type: UnitType;
+  unit: UnitType;
   name?: string;
 }
 
@@ -250,8 +250,8 @@ const unitMapping = new Map<UnitType, string>([
   [UnitType.FAHRENHEIT, 'F'],
 ]);
 
-const getViewName = ({ type }: Pick<Amount, 'type'>): string => {
-  const value = unitMapping.get(type);
+const getViewName = ({ unit }: Pick<Amount, 'unit'>): string => {
+  const value = unitMapping.get(unit);
 
   if (value === undefined) {
     throw Error('unknown unit');
@@ -261,7 +261,7 @@ const getViewName = ({ type }: Pick<Amount, 'type'>): string => {
 };
 
 const getViewValue = (amount: Amount): string => {
-  if (amount.type === UnitType.CUSTOM) {
+  if (amount.unit === UnitType.CUSTOM) {
     return amount.name ?? '';
   }
   return getViewName(amount);

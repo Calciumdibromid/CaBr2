@@ -2,8 +2,6 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subscriber, Subscription } from 'rxjs';
 
-import { INativeService } from '../../@core/services/native/native.interface';
-
 type ProgressDialogCallback = (url: string) => void;
 
 interface SaveDocumentResponse {
@@ -33,10 +31,8 @@ export class ProgressDialogComponent implements OnInit, OnDestroy {
   subscription!: Subscription;
 
   constructor(
-    public dialogRef: MatDialogRef<ProgressDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: ProgressDialogData,
-
-    private nativeService: INativeService,
+    public readonly dialogRef: MatDialogRef<ProgressDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public readonly data: ProgressDialogData,
   ) {}
 
   ngOnInit(): void {

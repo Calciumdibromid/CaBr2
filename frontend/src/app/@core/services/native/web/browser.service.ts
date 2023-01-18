@@ -1,23 +1,26 @@
+import { Inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 import * as wasm from 'cabr2_wasm';
-import Logger from 'src/app/@core/utils/logger';
 
 import { INativeService } from '../native.interface';
-
-const logger = new Logger('service.browser');
+import Logger from 'src/app/@core/utils/logger';
 
 wasm.init();
 
 @Injectable()
 export class BrowserService implements INativeService {
-  openUrl(url: string, _?: string): Promise<void> {
-    window.open(url, '_blank');
+  private logger = new Logger(BrowserService.name);
+
+  constructor(@Inject(DOCUMENT) private document: Document) {}
+
+  openUrl(url: string): Promise<void> {
+    this.document.open(url, '_blank', 'noopener,noreferrer');
     return Promise.resolve();
   }
 
-  open(_?: any): Observable<File> {
+  open(): Observable<File> {
     const inputField = document.createElement('input');
     inputField.type = 'file';
     inputField.style.display = 'none';
@@ -41,8 +44,8 @@ export class BrowserService implements INativeService {
   }
 
   /** This function should never be used! */
-  promisified<T>(cmd: string, _: any): Observable<T> {
-    logger.error('called inaccessible tauri service: [', cmd, ']');
+  promisified<T>(cmd: string): Observable<T> {
+    this.logger.error('called inaccessible tauri service: [', cmd, ']');
     throw new Error('Method not available.');
   }
 }
