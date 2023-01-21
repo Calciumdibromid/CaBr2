@@ -2,7 +2,7 @@
 
 mod impls;
 
-use tauri::async_runtime;
+use tauri::{async_runtime, Manager, PhysicalSize};
 
 use impls::{config, load_save, logger, search};
 
@@ -23,7 +23,10 @@ pub fn main() {
     .plugin(config)
     .plugin(search)
     .plugin(load_save)
-    .setup(|_| {
+    .setup(|app| {
+      let main_window = app.get_window("main").unwrap();
+      main_window.set_min_size(Some(PhysicalSize::new(300, 300))).unwrap();
+
       log::debug!("tauri setup complete");
       Ok(())
     })
