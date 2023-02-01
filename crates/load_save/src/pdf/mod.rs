@@ -308,7 +308,7 @@ mod handlebar_helpers {
     let substances: Vec<PDFSubstanceData> =
       match serde_json::from_value(ctx.data()["document"]["substanceData"].clone()) {
         Ok(substances) => substances,
-        Err(err) => return Err(RenderError::new(format!("json deserialize error: {:?}", err))),
+        Err(err) => return Err(RenderError::new(format!("json deserialize error: {err:?}"))),
       };
 
     let phrases: BTreeSet<String> = substances
@@ -355,7 +355,7 @@ mod handlebar_helpers {
     let substances: Vec<PDFSubstanceData> =
       match serde_json::from_value(ctx.data()["document"]["substanceData"].clone()) {
         Ok(substances) => substances,
-        Err(err) => return Err(RenderError::new(format!("json deserialize error: {:?}", err))),
+        Err(err) => return Err(RenderError::new(format!("json deserialize error: {err:?}"))),
       };
 
     let providers: BTreeSet<String> = substances.into_iter().map(|s| s.source.provider).collect();

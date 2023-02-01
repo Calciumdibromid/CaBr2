@@ -39,7 +39,7 @@ pub async fn handle_load_document(body: LoadDocumentBody) -> Result<impl Reply, 
   match handler::load_document(&body.file_type, body.document).await {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
     Err(LoadSaveError::UnknownFileType(filetype)) => {
-      let message = format!("unknown file type: {}", filetype);
+      let message = format!("unknown file type: {filetype}");
       log::error!("{}", message);
       Ok(generate_error_reply(StatusCode::BAD_REQUEST, message))
     }
@@ -82,7 +82,7 @@ pub async fn handle_save_document(body: SaveDocumentBody) -> Result<impl Reply, 
   let contents = match handler::save_document(body.file_type.as_str(), body.document).await {
     Ok(contents) => contents,
     Err(LoadSaveError::UnknownFileType(filetype)) => {
-      let message = format!("unknown file type: {}", filetype);
+      let message = format!("unknown file type: {filetype}");
       log::error!("{}", message);
       return Ok(generate_error_reply(StatusCode::BAD_REQUEST, message));
     }

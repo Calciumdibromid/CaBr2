@@ -26,7 +26,7 @@ pub async fn init_providers(_version: &str) -> Result<()> {
       if #[cfg(target_family = "wasm")] {
         let client = reqwest::ClientBuilder::new().build().map_err(crate::gestis::GestisError::from)?;
       } else {
-        let client = reqwest::ClientBuilder::new().user_agent(&format!("cabr2/v{}", _version)).build().map_err(crate::gestis::GestisError::from)?;
+        let client = reqwest::ClientBuilder::new().user_agent(&format!("cabr2/v{_version}")).build().map_err(crate::gestis::GestisError::from)?;
       }
     }
 

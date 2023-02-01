@@ -90,7 +90,7 @@ fn extract_xmls(res: &GestisResponse) -> std::io::Result<()> {
     ("molecular_formula_molar_mass", mapping.molecular_formula_molar_mass),
     ("water_hazard_class", mapping.water_hazard_class),
   ] {
-    print!("  trying: {} ... ", chapter_name);
+    print!("  trying: {chapter_name} ... ");
 
     match xml {
       Some(xml) => {

@@ -17,7 +17,7 @@ pub async fn setup_logger() -> Result<(), fern::InitError> {
   let config = read_config().await;
   let config = config
     .unwrap_or_else(|e| {
-      eprintln!("loading config failed: {}", e);
+      eprintln!("loading config failed: {e}");
       eprintln!("continuing with default config");
       BackendConfig::default()
     })

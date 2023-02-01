@@ -40,7 +40,7 @@ pub async fn handle_suggestions(body: SuggestionBody) -> Result<impl Reply, Infa
   {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
     Err(SearchError::UnknownProvider(provider)) => {
-      let message = format!("unknown provider: {}", provider);
+      let message = format!("unknown provider: {provider}");
       log::error!("{}", message);
       Ok(generate_error_reply(StatusCode::BAD_REQUEST, message))
     }
@@ -58,7 +58,7 @@ pub async fn handle_results(body: ResultBody) -> Result<impl Reply, Infallible> 
   match handler::get_search_results(body.provider, body.search_arguments).await {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
     Err(SearchError::UnknownProvider(provider)) => {
-      let message = format!("unknown provider: {}", provider);
+      let message = format!("unknown provider: {provider}");
       log::error!("{}", message);
       Ok(generate_error_reply(StatusCode::BAD_REQUEST, message))
     }
@@ -76,7 +76,7 @@ pub async fn handle_substances(body: SubstanceBody) -> Result<impl Reply, Infall
   match handler::get_substance_data(body.provider, body.identifier).await {
     Ok(res) => Ok(warp::reply::with_status(warp::reply::json(&res), StatusCode::OK)),
     Err(SearchError::UnknownProvider(provider)) => {
-      let message = format!("unknown provider: {}", provider);
+      let message = format!("unknown provider: {provider}");
       log::error!("{}", message);
       Ok(generate_error_reply(StatusCode::BAD_REQUEST, message))
     }
