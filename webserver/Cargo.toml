@@ -19,7 +19,7 @@ tokio = { version = "1.25.0", features = ["macros", "rt-multi-thread"] }
 uuid = { version = "1.3.0", features = ["v4"] }
 warp = { version = "0.3.3", default-features = false, features = ["compression"] }
 structopt = "0.3.26"
-once_cell = "1.17.0"
+once_cell = "1.17.1"
 
 config = { path = "../crates/config/", features = [ "webserver" ]}
 load_save = { path = "../crates/load_save/" }
