@@ -2780,10 +2780,10 @@
     cosmiconfig "^7.0.0"
     tslib "^2.3.0"
 
-"@ngneat/transloco@4.2.2":
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-4.2.2.tgz#a58726a825977a05879637c492e3007670bc36c9"
-  integrity sha512-IyLNUiC0O4aCRtvZ5D6KER9KP3UWoONJTAT7hhtBNWuLNNwamV29tlq08cYuMOKpp8i+YUWf9vTcRNeHsIQgYg==
+"@ngneat/transloco@4.2.5":
+  version "4.2.5"
+  resolved "https://registry.yarnpkg.com/@ngneat/transloco/-/transloco-4.2.5.tgz#8445a6d45d90a184323ec77e44fa7a0697b0bbe6"
+  integrity sha512-z2FTqXgTb/1xE7Zc0Oe6sTrzte94tzrUhjaZWiGhiqszAF4gfPHuL7Tbc5rgZcucFGPct9XYNVETJ8hSVWqDJg==
   dependencies:
     "@ngneat/transloco-utils" "^3.0.1"
     flat "5.0.2"
