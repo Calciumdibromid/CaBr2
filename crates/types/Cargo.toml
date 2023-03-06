@@ -14,7 +14,7 @@ cfg-if = { version = "1.0.0", optional = true }
 chrono = { version = "0.4.23", features = ["serde"] }
 log = "0.4.17"
 serde = { version = "1.0.152", features = ["derive"] }
-tokio = { version = "1.25.0", features = ["sync"], default-features = false, optional = true }
+tokio = { version = "1.26.0", features = ["sync"], default-features = false, optional = true }
 
 [features]
 lock = ["cfg-if"]
