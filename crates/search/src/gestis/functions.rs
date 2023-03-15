@@ -119,7 +119,7 @@ impl<'a> ReaderExt<'a> for Reader<&'a [u8]> {
       match self.read_event()? {
         Event::Start(e) => {
           if e.name() == QName(b"table")
-            && e.attributes().into_iter().any(|a| {
+            && e.attributes().any(|a| {
               if let Ok(attr) = a {
                 attr.key == QName(b"class") && attr.value == class
               } else {
