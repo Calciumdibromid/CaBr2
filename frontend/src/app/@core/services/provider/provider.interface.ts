@@ -52,9 +52,9 @@ export abstract class IProviderService {
    *
    * ```ts
    * [
-   *   {name: 'Wasser', casNumber: '7732-18-5', zvgNumber: '001140'},
-   *   {name: 'Wasserstoff', casNumber: '1333-74-0', zvgNumber: '007010'},
-   *   {name: 'wasserstoffperoxid', casNumber: '7722-84-1', zvgNumber: '536373'}
+   *   {name: 'Wasser', casNumber: '7732-18-5', identifier: '001140'},
+   *   {name: 'Wasserstoff', casNumber: '1333-74-0', identifier: '007010'},
+   *   {name: 'wasserstoffperoxid', casNumber: '7722-84-1', identifier: '536373'}
    * ]
    * ```
    */

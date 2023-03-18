@@ -44,11 +44,8 @@ pub struct SearchArguments {
 }
 
 #[derive(Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct SearchResponse {
-  #[serde(rename(deserialize = "zvg_nr"))]
-  pub zvg_number: String,
-  #[serde(rename(deserialize = "cas_nr"))]
+  pub identifier: String,
   pub cas_number: Option<String>,
   pub name: String,
 }

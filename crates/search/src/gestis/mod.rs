@@ -117,9 +117,9 @@ impl Provider for Gestis {
       .collect();
 
     let url = format!("{BASE_URL}/{SEARCH}/de?{}&exact={}", args.join("&"), arguments.exact,);
-    let res = self.make_request(&url).await?;
+    let res: Vec<types::SearchResponse> = self.make_request(&url).await?;
 
-    Ok(res)
+    Ok(res.into_iter().map(|x| x.into()).collect())
   }
 
   async fn get_substance_data(&self, identifier: String) -> SearchResult<::types::SubstanceData> {

@@ -17,7 +17,7 @@ export interface SearchArguments {
 }
 
 export interface SearchResult {
-  zvgNumber: string;
+  identifier: string;
   casNumber: string;
   name: string;
 }

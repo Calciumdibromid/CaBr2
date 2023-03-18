@@ -87,7 +87,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.providerService
-          .substanceData(provider.identifier, result.zvgNumber)
+          .substanceData(provider.identifier, result.identifier)
           .pipe(takeUntil(this.destroyed$))
           .subscribe({
             next: (value) => {

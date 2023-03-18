@@ -1,5 +1,15 @@
 use serde::{Deserialize, Serialize};
 
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct SearchResponse {
+  #[serde(rename(deserialize = "zvg_nr"))]
+  pub zvg_number: String,
+  #[serde(rename(deserialize = "cas_nr"))]
+  pub cas_number: Option<String>,
+  pub name: String,
+}
+
 #[derive(Debug, PartialEq, Eq)]
 pub struct ParsedData {
   pub cas: Vec<String>,
@@ -59,4 +69,14 @@ pub struct ChapterMapping<'a> {
   pub melting_point: Option<&'a str>,
   pub molecular_formula_molar_mass: Option<&'a str>,
   pub water_hazard_class: Option<&'a str>,
+}
+
+impl From<SearchResponse> for crate::types::SearchResponse {
+  fn from(value: SearchResponse) -> Self {
+    crate::types::SearchResponse {
+      identifier: value.zvg_number,
+      cas_number: value.cas_number,
+      name: value.name,
+    }
+  }
 }
