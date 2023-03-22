@@ -17,7 +17,7 @@ type Result<T> = std::result::Result<T, JsValue>;
 
 /// Must be run first to initialize all things on webassembly side.
 #[wasm_bindgen]
-pub async fn init() {
+pub async fn init_cabr2() {
   cfg_if! {
     if #[cfg(feature = "debug_build")] {
       console_error_panic_hook::set_once();

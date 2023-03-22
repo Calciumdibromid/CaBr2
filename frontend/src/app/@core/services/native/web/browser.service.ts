@@ -7,7 +7,7 @@ import * as wasm from 'cabr2_wasm';
 import { INativeService } from '../native.interface';
 import Logger from 'src/app/@core/utils/logger';
 
-wasm.init();
+wasm.init_cabr2();
 
 @Injectable()
 export class BrowserService implements INativeService {
