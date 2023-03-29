@@ -2814,26 +2814,26 @@
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-15.1.6.tgz#8fd657bbeb9958e89851810b74010925a2d6c4f8"
   integrity sha512-ieHO6c3m+LZ93/B4n4QD908tUCkyNPFF9spMjJFZf8SRpLLvzOISMgiAej7UUxcBiB2kOfdVrpHf4Os4D9CsrQ==
 
-"@ngxs/form-plugin@3.7.6":
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/@ngxs/form-plugin/-/form-plugin-3.7.6.tgz#8c27754712c8aa3b716612eaacc58b3f4249d13a"
-  integrity sha512-eOS7YbIrQjn05kArbuIpK+ftiTAJLg59SoUWPW0CYcIc6B+usPaUJ5xY9XtRJ5BhJP3ruSCivFmX2xItkbdpqA==
+"@ngxs/form-plugin@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@ngxs/form-plugin/-/form-plugin-3.8.0.tgz#39e66a5933a2c6bc1d0115a79bb0d4db42afa023"
+  integrity sha512-3AevWar7BMvJctPUZTM6dOFouYd5sdML0IK2xPUJ8o0iEZuIn0S7chrrtXaWOuYV2Cc/CTaiCh1bUzQww69qqA==
   dependencies:
-    tslib "^1.9.0"
+    tslib "^2.2.0"
 
-"@ngxs/storage-plugin@3.7.6":
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/@ngxs/storage-plugin/-/storage-plugin-3.7.6.tgz#29da7025491bc988e3462f2990f5f64ce41c4f00"
-  integrity sha512-jeeoUgsMdb4M8kIHdnO0X6I73okmRJhMW9znaqhYF/aZ+PiQrogdJ5xvSXmoQ7Gg57YfQEhVErM+zf/HD7fnMA==
+"@ngxs/storage-plugin@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@ngxs/storage-plugin/-/storage-plugin-3.8.0.tgz#3a7ac206d335b887cf3df76f17a456edf2e306c7"
+  integrity sha512-uYjfp3R8cJLFceiBAaveoIdnUo9DgZLfizCUI1tPCCriTAK3hv8K3GgpHeCLJR3MBv76a44fKdc1ZpMaxcVsHw==
   dependencies:
-    tslib "^1.9.0"
+    tslib "^2.2.0"
 
-"@ngxs/store@3.7.6":
-  version "3.7.6"
-  resolved "https://registry.yarnpkg.com/@ngxs/store/-/store-3.7.6.tgz#567190b17e1111ec7f9bcc451c99bbdac82c950a"
-  integrity sha512-ljnrkVrO/HmDakQImWr9G2NbpbNd8MjoPI3Ad2GsIbK/Ey4psEyMGgg6jcaMyhDfDAs2Z69Q+5TVJS0GV4euMw==
+"@ngxs/store@3.8.0":
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/@ngxs/store/-/store-3.8.0.tgz#2bf76d326c5d91763cf747ca8be152254ea3543c"
+  integrity sha512-ZIVM2ftudeB3VSjULJjb31RS3WKYVgs/67IHdDjukn1S0X8ZRk07QNH6cUCfUB5h345sMLCwliwVuqh+IXbYSw==
   dependencies:
-    tslib "^1.9.0"
+    tslib "^2.2.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
