@@ -63,15 +63,21 @@ $ang-CaBr2-theme-dark: mat.define-dark-theme(
   @include mat.all-component-colors($ang-CaBr2-theme-dark);
   .mat-mdc-snack-bar-container {
     &.alert-info {
-      background: cornflowerblue;
+      .mdc-snackbar__surface {
+        background: cornflowerblue;
+      }
     }
 
     &.alert-success {
-      background: greenyellow;
+      .mdc-snackbar__surface {
+        background: greenyellow;
+      }
     }
 
     &.alert-error {
-      background: mat.get-color-from-palette($ang-CaBr2-warn);
+      .mdc-snackbar__surface {
+        background: mat.get-color-from-palette($ang-CaBr2-warn);
+      }
     }
   }
 }
@@ -79,18 +85,33 @@ $ang-CaBr2-theme-dark: mat.define-dark-theme(
 .theme-light {
   .mat-mdc-snack-bar-container {
     &.alert-info {
-      background: cornflowerblue;
-      color: black;
+      .mdc-snackbar__label {
+        color: black;
+      }
+
+      .mdc-snackbar__surface {
+        background: cornflowerblue;
+      }
     }
 
     &.alert-success {
-      background: greenyellow;
-      color: black;
+      .mdc-snackbar__label {
+        color: black !important;
+      }
+
+      .mdc-snackbar__surface {
+        background: greenyellow;
+      }
     }
 
     &.alert-error {
-      background: mat.get-color-from-palette($ang-CaBr2-warn);
-      color: black;
+      .mdc-snackbar__label {
+        color: black;
+      }
+
+      .mdc-snackbar__surface {
+        background: mat.get-color-from-palette($ang-CaBr2-warn);
+      }
     }
   }
 }
