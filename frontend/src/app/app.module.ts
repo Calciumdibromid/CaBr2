@@ -17,7 +17,6 @@ import { ExportButtonsComponent } from './components/export-buttons/export-butto
 import { FocusDirective } from './@core/directives/autofocus.directive';
 import { HeaderComponent } from './components/header/header.component';
 import { LoadingComponent } from './components/loading/loading.component';
-import { ManualComponent } from './components/manual/manual.component';
 import { MatModules } from './@core/modules/mat.module';
 import { ModifiableStringListComponent } from './components/modifiable-string-list/modifiable-string-list.component';
 import { NavbarMenuComponent } from './components/navbar-menu/navbar-menu.component';
@@ -50,7 +49,6 @@ import { YesNoDialogComponent } from './components/yes-no-dialog/yes-no-dialog.c
     SelectedSearchComponent,
     SearchDialogComponent,
     EditSubstanceDataComponent,
-    ManualComponent,
     YesNoDialogComponent,
     SettingsComponent,
     ReportBugComponent,
