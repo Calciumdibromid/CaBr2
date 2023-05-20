@@ -10,10 +10,11 @@ Generate "experiment wise safety sheets" in compliance to European law.
 
 ## Description
 
-Calciumdibromid (short: CaBr2) is a tool to generate safety data sheets for experiments.
+Calciumdibromid (short: CaBr2) is a free program to generate safety data sheets for experiments in accordance to
+Regulation (EC) No 1272/2008 (CLP).
 
 It is written in [Angular](https://angular.io/) and can be either used as a standalone
-desktop application or as a static webpage with WASM bindings and an API server to
+desktop application or as a SPA with WASM bindings and an API server to
 generate PDFs.
 
 ## Structure

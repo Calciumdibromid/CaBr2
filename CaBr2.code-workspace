@@ -23,12 +23,13 @@
     "cSpell.words": [
       "cabr",
       "Calciumdibromid",
+      "clippy",
       "fuzzer",
       "gestis",
       "promisified",
       "tauri",
       "ureq",
-      "wasm"
+      "wasm",
     ],
     "eslint.options": {
       "extensions": [".ts", ".html"]

@@ -11,7 +11,7 @@ The webserver is written in rust with [`warp`](https://lib.rs/crates/warp).
 
 In order to build the webserver you must first install [rust](https://www.rust-lang.org/tools/install).
 
-If you want to generate PDFs hava a look at the
+If you want to generate PDFs have a look at the
 [wkhtmltopdf section in the frontend README](../frontend/README.md#wkhtmltopdf)
 
 The webserver will be built with all features enabled by default with the following command:
@@ -34,7 +34,7 @@ These features are available:
 | `portable`   | the config and all required assets are located in the same folder as the binary |
 | `beryllium`  | the Beryllium10 file reader                                                     |
 | `cabr2`      | load and save CaBr2 files                                                       |
-| `pdf`        | export the safety datasheet as PDF                                              |
+| `pdf`        | export the safety data sheet as PDF                                             |
 | `gestis`     | search for substances in the Gestis database                                    |
 
 ## Code Checking
@@ -42,6 +42,6 @@ These features are available:
 We use `clippy` for linting and `cargo fmt` to check the formatting of the code:
 
 ```bash
-cargo clippy --all-features -- --deny clippy::all
 cargo fmt
+cargo lint # alias for our very restrictive clippy command
 ```

@@ -35,8 +35,8 @@ Jump to the corresponding section to learn how to build this project:
 
 [Tauri](https://tauri.studio) is an alternative to [Electron](https://www.electronjs.org/) that enables us to build
 smaller apps and write a Rust backend.
-It is still in beta and because of this not everything works at the moment.
-We advise you to use the web app until Tauri is stable.
+It is now out of beta, but because of wkhtmltopdf not everything works at the moment.
+We advise you to use the web app until we removed the dependency on wkhtmltopdf.
 
 ### Develop
 
@@ -73,7 +73,7 @@ Then you just have to run:
 yarn build:release
 ```
 
-> This step most likely fails on linux. We are trying to fix the problem but haven't found a solution yet.
+> This step most likely fails on Linux. We are trying to fix the problem but haven't found a solution yet.
 
 ## Web App
 
@@ -112,7 +112,7 @@ yarn build:web
 
 ## wkhtmltopdf
 
-> We will soon switch to another method of generating PDFs
+> We will soon(tm) switch to another method of generating PDFs
 
 We generate the PDFs from html templates using `wkhtmltopdf`, so you have to install
 [`wkhtmltox`](https://wkhtmltopdf.org/downloads.html).
