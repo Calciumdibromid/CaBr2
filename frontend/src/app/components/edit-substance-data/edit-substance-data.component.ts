@@ -1,8 +1,7 @@
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { Select } from '@ngxs/store';
 import { translate } from '@ngneat/transloco';
 
