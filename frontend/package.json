@@ -26,7 +26,7 @@
     "@angular/material": "16.0.1",
     "@angular/platform-browser": "16.0.2",
     "@angular/platform-browser-dynamic": "16.0.2",
-    "@fontsource/material-icons": "4.5.4",
+    "@fontsource/material-icons": "5.0.2",
     "@fontsource/roboto": "4.5.8",
     "@ngneat/transloco": "4.2.7",
     "@ngxs/form-plugin": "3.8.1",

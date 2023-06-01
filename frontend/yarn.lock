@@ -1580,10 +1580,10 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.41.0.tgz#080321c3b68253522f7646b55b577dd99d2950b3"
   integrity sha512-LxcyMGxwmTh2lY9FwHPGWOHmYFCZvbrFCBZL4FzSSsxsRPuhrYUg/49/0KDfW8tnIEaEHtfmn6+NPN+1DqaNmA==
 
-"@fontsource/material-icons@4.5.4":
-  version "4.5.4"
-  resolved "https://registry.yarnpkg.com/@fontsource/material-icons/-/material-icons-4.5.4.tgz#bfedde9352c36dbbacb6b49d190a1ce1e5917756"
-  integrity sha512-YGmXkkEdu6EIgpFKNmB/nIXzZocwSmbI01Ninpmml8x8BT0M6RR++V1KqOfpzZ6Cw/FQ2/KYonQ3x4IY/4VRRA==
+"@fontsource/material-icons@5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@fontsource/material-icons/-/material-icons-5.0.2.tgz#dbe0b39eae3993f7914918cab41e251004b36149"
+  integrity sha512-dICflVHYxSvAe6VOP+BSnxTV1xSrQguwAMOIS31gaYZOP96SLweqq3iMU7kOE9aoVDNWFrCxNsCsgh+LBUMNqw==
 
 "@fontsource/roboto@4.5.8":
   version "4.5.8"
