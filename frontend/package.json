@@ -77,6 +77,6 @@
     "prettier": "2.8.8",
     "ts-node": "10.9.1",
     "typescript": "5.0.4",
-    "webpack-bundle-analyzer": "4.8.0"
+    "webpack-bundle-analyzer": "4.9.0"
   }
 }
