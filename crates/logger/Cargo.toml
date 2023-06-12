@@ -12,7 +12,7 @@ edition = "2021"
 [dependencies]
 chrono = { version = "0.4.24", default-features = false }
 fern = "0.6.2"
-log = "0.4.17"
+log = "0.4.19"
 
 config = { path = "../config/" }
 types = { path = "../types/" }
