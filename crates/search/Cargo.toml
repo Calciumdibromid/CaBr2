@@ -12,7 +12,7 @@ edition = "2021"
 [dependencies]
 async-trait = "0.1.68"
 cfg-if = "1.0.0"
-chrono = { version = "0.4.24", default-feature = false }
+chrono = { version = "0.4.26", default-feature = false }
 env_logger = { version = "0.10.0", optional = true }
 futures = { version = "0.3.28", optional = true }
 lazy_static = "1.4.0"
