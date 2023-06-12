@@ -15,20 +15,20 @@ use crate::impls::{
 #[structopt(name = "basic")]
 struct Opt {
   /// socket address the webserver will start listening on
-  #[structopt(short, long, default_value = "127.0.0.1:3030")]
+  #[structopt(short, long, default_value = "127.0.0.1:3030", env = "CABR2_ADDRESS")]
   address: String,
 
   /// folder where created pdfs to download are stored
-  #[structopt(long, default_value = "/tmp/cabr2_server/created")]
+  #[structopt(long, default_value = "/tmp/cabr2_server/created", env = "CABR2_DOWNLOAD_FOLDER")]
   download_folder: PathBuf,
 
   /// public address that will be used to generate the download links
-  #[structopt(short, long, default_value = "https://api.cabr2.de")]
+  #[structopt(short, long, default_value = "https://api.cabr2.de", env = "CABR2_PUBLIC_ADDRESS")]
   public_address: String,
 
   /// domain which is allowed to make requests to the webserver,
   /// this is a security header which will be set on responses
-  #[structopt(short, long)]
+  #[structopt(short, long, env = "CABR2_CORS_ORIGINS")]
   cors_allow_origin: Vec<String>,
 
   /// allow any origin when requests are sent with CORS
@@ -177,9 +177,15 @@ pub async fn main() {
   */
 
   log::info!("Starting cleanup thread...");
-  tokio::spawn(load_save::cleanup_thread());
+  tokio::task::spawn(load_save::cleanup_thread());
 
   let address: std::net::SocketAddr = opt.address.parse().expect("failed to parse socket address");
+  let (_, server) = warp::serve(routes).bind_with_graceful_shutdown(address, async {
+    tokio::signal::ctrl_c().await.ok();
+    log::info!("Ctrl-C received, shutting down...");
+  });
+
+  // Spawn the server into a runtime
   log::info!("server starting...");
-  warp::serve(routes).run(address).await;
+  server.await;
 }

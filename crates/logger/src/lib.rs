@@ -46,6 +46,7 @@ pub async fn setup_logger() -> Result<(), fern::InitError> {
     .level_for("search", cabr2_level)
     .level_for("types", cabr2_level)
     .level_for("reqwest", convert_level(config.reqwest))
+    .level_for("hyper", LevelFilter::Warn)
     .chain(std::io::stdout())
     .chain(fs::OpenOptions::new().create(true).write(true).open(&log_file)?)
     .apply()?;

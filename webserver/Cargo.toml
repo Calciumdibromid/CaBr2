@@ -15,7 +15,7 @@ repository = "https://codeberg.org/Calciumdibromid/CaBr2"
 [dependencies]
 log = "0.4.19"
 serde = { version = "1.0.164", features = ["derive"] }
-tokio = { version = "1.28.2", features = ["macros", "rt-multi-thread"] }
+tokio = { version = "1.28.2", features = ["macros", "rt-multi-thread", "signal"] }
 uuid = { version = "1.3.3", features = ["v4"] }
 warp = { version = "0.3.5", default-features = false, features = ["compression"] }
 structopt = "0.3.26"
@@ -28,17 +28,17 @@ search = { path = "../crates/search/" }
 types = { path = "../crates/types/" }
 
 [features]
-portable = [ "config/portable" ]
+portable = ["config/portable"]
 
 # load_save file types
-beryllium = [ "load_save/beryllium" ]
-cabr2 = [ "load_save/cabr2" ]
-pdf = [ "load_save/pdf" ]
+beryllium = ["load_save/beryllium"]
+cabr2 = ["load_save/cabr2"]
+pdf = ["load_save/pdf"]
 
 # search providers
-gestis = [ "search/gestis" ]
+gestis = ["search/gestis"]
 
-default = [ "beryllium", "cabr2", "pdf", "gestis" ]
+default = ["beryllium", "cabr2", "pdf", "gestis"]
 
 [profile.release]
 panic = "abort"
