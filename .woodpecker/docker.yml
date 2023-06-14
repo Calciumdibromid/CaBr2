@@ -1,0 +1,82 @@
+when:
+  branch: [develop, main]
+
+variables:
+  - &platforms 'linux/amd64'
+
+steps:
+  create-tags:
+    image: bash
+    commands: |
+      case ${CI_COMMIT_BRANCH} in
+        develop)
+          echo next | tee .tags
+          ;;
+        main)
+          echo latest | tee .tags
+          ;;
+        *)
+          echo unsupported branch "${CI_COMMIT_BRANCH}"
+          exit 1
+          ;;
+      esac
+    when:
+      event: ["push", "tag"]
+
+  frontend-dryrun:
+    group: docker
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      registry: codeberg.org
+      repo: codeberg.org/calciumdibromid/app
+      dockerfile: dockerfiles/app/Dockerfile
+      platforms: *platforms
+      tag: test
+      dry-run: true
+    when:
+      event: "pull_request"
+
+  frontend:
+    group: docker
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      registry: codeberg.org
+      repo: codeberg.org/calciumdibromid/app
+      dockerfile: dockerfiles/app/Dockerfile
+      platforms: *platforms
+      tags_file: .tags
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+    when:
+      event: ["push", "tag"]
+
+  backend-dryrun:
+    group: docker
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      registry: codeberg.org
+      repo: codeberg.org/calciumdibromid/webserver
+      dockerfile: dockerfiles/webserver/Dockerfile
+      platforms: *platforms
+      tag: test
+      dry-run: true
+    when:
+      event: "pull_request"
+
+  backend:
+    group: docker
+    image: woodpeckerci/plugin-docker-buildx
+    settings:
+      registry: codeberg.org
+      repo: codeberg.org/calciumdibromid/webserver
+      dockerfile: dockerfiles/webserver/Dockerfile
+      platforms: *platforms
+      tags_file: .tags
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+    when:
+      event: ["push", "tag"]
