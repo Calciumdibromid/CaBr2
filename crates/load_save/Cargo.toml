@@ -10,7 +10,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-async-trait = "0.1.68"
+async-trait = "0.1.71"
 chrono = { version = "0.4.26", default-features = false, optional = true }
 handlebars = { version = "4.3.7", optional = true }
 lazy_static = "1.4.0"
