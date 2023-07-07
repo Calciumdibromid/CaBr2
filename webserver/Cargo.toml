@@ -14,7 +14,7 @@ repository = "https://codeberg.org/Calciumdibromid/CaBr2"
 
 [dependencies]
 log = "0.4.19"
-serde = { version = "1.0.164", features = ["derive"] }
+serde = { version = "1.0.167", features = ["derive"] }
 tokio = { version = "1.29.1", features = ["macros", "rt-multi-thread", "signal"] }
 uuid = { version = "1.4.0", features = ["v4"] }
 warp = { version = "0.3.5", default-features = false, features = ["compression"] }
