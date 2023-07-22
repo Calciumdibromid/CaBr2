@@ -3,6 +3,7 @@
 [![License: GPL3+](https://img.shields.io/badge/License-GPL3+-blue.svg?style=flat-square)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![status-badge](https://ci.codeberg.org/api/badges/Calciumdibromid/CaBr2/status.svg)](https://ci.codeberg.org/Calciumdibromid/CaBr2)
 [![Translation status](https://translate.codeberg.org/widgets/cabr2/-/svg-badge.svg)](https://translate.codeberg.org/engage/cabr2/)
+[![Please don't upload to GitHub](https://nogithub.codeberg.page/badge.svg)](https://nogithub.codeberg.page)
 
 Generate "experiment wise safety sheets" in compliance to European law.
 
